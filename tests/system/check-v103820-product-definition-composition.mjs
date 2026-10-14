@@ -1,0 +1,11 @@
+import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');const read=p=>fs.readFileSync(path.join(root,p),'utf8');const fail=m=>{throw new Error(m)};
+const version=read('VERSION').trim();if(!/^\d+\.\d+\.\d+$/.test(version))fail(`VERSION expected 10.38.20+ compatible release, got ${version}`);
+const pkg=JSON.parse(read('package.json'));if(!/^10\.38\.(20|21|22|23|24|25|26|27|28|29)$|^10\.39\.(0|1)$|^10\.40\.(0|1)$/.test(pkg.version))fail('package version mismatch');
+const migration=read('database/migrations/0091_product_definition_composition.sql');for(const token of ['platform_product_definitions','platform_product_definition_components','platform_product_definition_manifests','base_definition_id','compiled_hash'])if(!migration.includes(token))fail(`Composition migration missing ${token}`);
+const service=read('src/worker/security/product-definition.service.js');for(const token of ['PRODUCT_DEFINITION_VERSION','PRODUCT_DEFINITION_SCHEMAS','upsertProductComponent','compileProductDefinition','importProductComponents'])if(!service.includes(token))fail(`Definition engine missing ${token}`);
+const routes=read('src/worker/modules/admin-control/admin-control.routes.js');for(const token of ['/api/platform/admin/product-definitions','/components','/import','/compile','/api/platform/admin/product-definition-schema'])if(!routes.includes(token))fail(`Product definition route missing ${token}`);
+const admin=read('public/assets/js/frontend/admin/admin.js');for(const token of ['06 · PRODUCT DEFINITION','LEVEL 1 · VISUAL / STRUCTURED','LEVEL 3 · JSON IMPORT','COMPILE MANIFEST','ps-ComponentPayload'])if(!admin.includes(token))fail(`Product Studio composition UI missing ${token}`);
+const schema=read('database/schema.current.sql');for(const token of ['CREATE TABLE platform_product_definitions','CREATE TABLE platform_product_definition_components','CREATE TABLE platform_product_definition_manifests'])if(!schema.includes(token))fail(`Current schema missing ${token}`);
+if(!/contract:\{version:'10\.38\.(20|21|22|23)'/.test(read('src/worker/security/product-studio.service.js')))fail('Product Studio contract identity stale');
+console.log('10.38.20 Product Definition & Composition Engine: PASS');

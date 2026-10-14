@@ -1,0 +1,14 @@
+import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');const read=p=>fs.readFileSync(path.join(root,p),'utf8');const fail=m=>{throw new Error(m)};
+const version=read('VERSION').trim();if(!/^\d+\.\d+\.\d+$/.test(version))fail(`VERSION expected 10.38.21+ compatible release, got ${version}`);
+const pkg=JSON.parse(read('package.json'));if(!/^10\.38\.(21|22|23|24|25|26|27)$|^10\.40\.(0|1)$/.test(pkg.version))fail('package version mismatch');
+const runtime=read('src/worker/security/product-manifest-runtime.service.js');
+for(const token of ['PRODUCT_RUNTIME_VERSION','resolveRuntimeProductManifest','mergeGovernedProductContext','PRODUCT_DEFINITION_NOT_COMPILED','PRODUCT_MANIFEST_INTEGRITY_FAILED','evaluateCountryEligibility'])if(!runtime.includes(token))fail(`Governed runtime missing ${token}`);
+for(const forbidden of ['eval(','new Function(','Function('])if(runtime.includes(forbidden))fail(`Runtime must never execute arbitrary configuration code: ${forbidden}`);
+const context=read('src/worker/modules/product-context.routes.js');for(const token of ['resolveRuntimeProductManifest','mergeGovernedProductContext','runtime:{version:PRODUCT_RUNTIME_VERSION'])if(!context.includes(token))fail(`Product context runtime convergence missing ${token}`);
+const definition=read('src/worker/security/product-definition.service.js');if(!definition.includes("PRODUCT_DEFINITION_VERSION='10.38.23'"))fail('Definition compiler version not advanced');
+const studio=read('src/worker/security/product-studio.service.js');if(!studio.includes("contract:{version:'10.38.23'"))fail('Product Studio contract identity stale');
+const routes=read('src/worker/modules/admin-control/admin-control.routes.js');if(!routes.includes("version:'10.38.23'"))fail('Admin product definition contract version stale');
+const migration=fs.readdirSync(path.join(root,'database/migrations')).filter(x=>x.endsWith('.sql')).sort();if(!['0091_product_definition_composition.sql','0092_product_expansion_workspace.sql'].includes(migration[migration.length-1]))fail('10.38.21 must not add an unnecessary migration; schema high-water should remain 0091');
+const schema=read('database/schema.current.sql');if(!schema.includes('CREATE TABLE platform_product_definition_manifests'))fail('Manifest table missing from current schema');
+console.log('10.38.21+ Governed Product Manifest Runtime regression: PASS');

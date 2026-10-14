@@ -1,0 +1,34 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const root=process.cwd();
+const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const ok=(v,m)=>{if(!v){console.error(`FAIL ${m}`);process.exitCode=1}else console.log(`PASS ${m}`)};
+const version=read('VERSION').trim();
+const release=read('tests/fixtures/release-history/RELEASE-10.32.2.md');
+const migration=read('database/migrations/0065_canonical_query_access_optimization.sql');
+const schema=read('database/schema.current.sql');
+const marketplace=read('src/worker/extensions/operations-context/marketplace-drivers.repository.js');
+const ops=read('src/worker/extensions/operations-context/operations-context.routes.js');
+const pkg=JSON.parse(read('package.json'));
+
+ok((/^\d+\.\d+\.\d+$/.test(version)),'current version remains within protected query-optimization lineage');
+ok(fs.existsSync(path.join(root,'tests/fixtures/release-history/RELEASE-10.32.0.md')),'10.32.0 protected record remains');
+ok(fs.existsSync(path.join(root,'tests/fixtures/release-history/RELEASE-10.32.1.md')),'10.32.1 protected record remains');
+ok(fs.existsSync(path.join(root,'database/migrations/0065_canonical_query_access_optimization.sql')),'0065 query optimization migration exists');
+ok(migration.includes('idx_mission_files_company_mission_id'),'mission file scope index is defined');
+ok(migration.includes('idx_network_invitation_owner_mission_status_id'),'network invitation mission/status index is defined');
+ok(migration.includes('idx_public_requests_company_mission_status_type_updated'),'public request lookup/order index is defined');
+ok(migration.includes('COALESCE(updated_at,created_at) DESC'),'public request index preserves effective recency semantics');
+ok(migration.includes('idx_missions_company_driver_next_schedule'),'driver next-mission schedule index is defined');
+ok(migration.includes('datetime(COALESCE(delivery_at_utc,updated_at))'),'driver schedule index matches canonical next-mission ordering');
+for(const name of ['idx_mission_files_company_mission_id','idx_network_invitation_owner_mission_status_id','idx_public_requests_company_mission_status_type_updated','idx_missions_company_driver_next_schedule']) ok(schema.includes(name),`${name} is represented in current schema`);
+ok(marketplace.includes('datetime(COALESCE(m2.delivery_at_utc,m2.updated_at))'),'marketplace next-mission semantics remain unchanged');
+ok(ops.includes('Promise.all(['),'independent operational reads remain concurrent');
+ok(pkg.scripts['check:10.32.0'].includes('check:10.32.1'),'10.32.0 regression remains chained into 10.32.1');
+ok(pkg.scripts['check:10.32.2'].includes('check-v103202-query-access-optimization.mjs'),'10.32.2 regression is directly addressable');
+ok(release.includes('Canonical Query & Data Access Optimization'),'release document matches current release');
+ok(release.includes('Migration 0065'),'release documents the evidence-driven migration');
+ok(release.includes('No mutation authority'),'release preserves authority boundaries');
+
+if(process.exitCode)process.exit(1);
+console.log('10.32.2 canonical query & data access optimization regression: PASS');

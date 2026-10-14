@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const root=new URL('../..',import.meta.url).pathname;
+const html=fs.readFileSync(`${root}/public/admin.html`,'utf8');
+assert.ok(html.includes('dashboard-work-surface-102949.css?v=10.29.49&build=10.29.49'));
+assert.ok(html.includes('dashboard-work-surface-102949.js?v=10.29.49&build=10.29.49'));
+assert.ok(html.includes('data-nm-area="operations"'));
+assert.ok(html.includes('newWorkbench'));
+assert.ok(fs.existsSync(`${root}/public/assets/js/extensions/dashboard-work-surface-102949.js`));
+assert.ok(fs.existsSync(`${root}/public/assets/css/dashboard-work-surface-102949.css`));
+console.log('10.29.49 release surface integrity gate: PASS');

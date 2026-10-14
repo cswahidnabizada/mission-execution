@@ -1,0 +1,12 @@
+import fs from 'node:fs'; import path from 'node:path';
+const root=process.cwd(), read=f=>fs.readFileSync(path.join(root,f),'utf8');
+const version=read('VERSION').trim(); if(!['10.38.27','10.38.28','10.38.29'].includes(version))throw new Error('VERSION mismatch');
+const pkg=JSON.parse(read('package.json')); if(!['10.38.27','10.38.28','10.38.29'].includes(pkg.version))throw new Error('package version mismatch');
+const migration=read('database/migrations/0094_platform_data_control_and_bulk_operations.sql');
+for(const x of ['platform_admin_data_actions','platform_admin_bulk_operations','platform_data_control','DE_PLATFORM_DATA_CONTROL'])if(!migration.includes(x))throw new Error(`missing ${x}`);
+const trash=read('src/worker/security/platform-trash.service.js'); for(const x of ["PLATFORM_TRASH_VERSION='10.38.27'","type==='tenant'","type==='user'"])if(!trash.includes(x))throw new Error(`trash missing ${x}`);
+const svc=read('src/worker/security/platform-data-control.service.js'); for(const x of ['PLATFORM_DATA_CONTROL_VERSION','searchPlatformRecords','controlRecord','createBulkOperation','processBulkOperation','insertNotification'])if(!svc.includes(x))throw new Error(`data control missing ${x}`);
+const routes=read('src/worker/modules/admin-control/admin-control.routes.js'); for(const x of ['/api/platform/admin/data-control/search','/api/platform/admin/data-control/action','/api/platform/admin/data-control/bulk'])if(!routes.includes(x))throw new Error(`route missing ${x}`);
+const admin=read('public/assets/js/frontend/admin/admin.js'); for(const x of ["['Data Control','data-control']",'WARN ALL MATCHING','STOP ALL MATCHING','DELETE ALL → TRASH','Find, warn, stop, clean'])if(!admin.includes(x))throw new Error(`UI missing ${x}`);
+if(/eval\s*\(|new Function\s*\(/.test(svc+trash))throw new Error('arbitrary code execution detected');
+console.log('10.38.27 Platform Data Control & Bulk Cleanup: PASS');

@@ -1,0 +1,20 @@
+import fs from 'node:fs';
+const read=f=>fs.readFileSync(f,'utf8');
+const registry=read('public/assets/js/frontend/admin/workspace-registry.js');
+const panels=read('public/assets/js/frontend/admin/oversight-panels.js');
+const surfaceFiles=['build.js','monitor.js','control.js','governance.js','operations.js'].map(f=>read(`public/assets/js/frontend/admin/surfaces/${f}`)).join('\n');
+const panelRegistry=read('public/assets/js/frontend/admin/panel-registry.js');
+const controller=read('public/assets/js/frontend/admin/admin-controller.js');
+const runtime=read('public/assets/js/frontend/admin/admin-runtime.js');
+const shell=read('public/assets/js/frontend/admin/shell.js');
+const fail=[];
+const keys=[...registry.matchAll(/\['[^']+','([^']+)'/g)].map(m=>m[1]);
+const rendererBlock=(panels.match(/export const adminPanelRenderers=\{([\s\S]*?)\n\};/)?.[1]||'')+'\n'+panelRegistry+'\n'+surfaceFiles;
+const hasRenderer=key=>new RegExp(`(?:['\"]${key}['\"]|^\\s*${key})\\s*:`,'m').test(rendererBlock);
+for(const key of keys)if(!hasRenderer(key))fail.push(`registered workspace ${key} has no renderer`);
+if(!runtime.includes('ADMIN_WORKSPACE_GROUPS')||!runtime.includes('ADMIN_WORKSPACES'))fail.push('runtime does not consume canonical registry');
+if(!shell.includes('workspaceGroups.map(renderGroup)'))fail.push('shell does not render canonical workspace groups');
+if(!controller.includes('const aliases='))fail.push('controller compatibility aliases are missing');
+if(new Set(keys).size!==keys.length)fail.push('duplicate workspace route keys exist');
+if(fail.length){console.error('10.54.0 navigation completeness gate: FAIL');fail.forEach(x=>console.error('- '+x));process.exit(1)}
+console.log(`10.54.0 navigation completeness gate: PASS (${keys.length} registered workspaces, all routed)`);

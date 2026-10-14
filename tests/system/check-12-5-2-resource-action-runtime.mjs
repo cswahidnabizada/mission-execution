@@ -1,0 +1,16 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const root=process.cwd();
+const explorer=fs.readFileSync(`${root}/src/worker/security/platform-resource-explorer.service.js`,'utf8');
+const control=fs.readFileSync(`${root}/src/worker/security/platform-data-control.service.js`,'utf8');
+const route=fs.readFileSync(`${root}/src/worker/modules/admin-control/admin-build-data.routes.js`,'utf8');
+const schema=fs.readFileSync(`${root}/database/schema.current.sql`,'utf8');
+assert.match(explorer,/SELECT id,name,deletion_status AS status,updated_at,created_at FROM companies/,'Recent Resources must use the actual companies lifecycle column.');
+assert.doesNotMatch(explorer,/SELECT id,name,status,updated_at,created_at FROM companies/,'Recent Resources must not reference nonexistent companies.status.');
+assert.match(control,/platform-wide admin audit authority/,'Unified Resource actions must use the canonical platform audit authority.');
+assert.match(control,/Optional platform data action audit unavailable/,'Audit evidence failure must not falsely report a completed canonical mutation as failed.');
+assert.match(route,/Optional platform data-control audit unavailable/,'Resource action route must not convert completed actions into 503 because evidence logging failed.');
+assert.match(schema,/CREATE TABLE companies \(.*deletion_status TEXT NOT NULL DEFAULT 'active'/s,'Schema must confirm companies uses deletion_status.');
+const legacyCheck=/resource_type TEXT NOT NULL CHECK\(resource_type IN \(([^\)]*)\)\)/.exec(schema)?.[1]||'';
+assert.ok(legacyCheck.includes("'sector'") && !legacyCheck.includes("'role'") && !legacyCheck.includes("'provider'"),'Legacy action ledger must remain clearly historical, not a universal resource authority.');
+console.log('12.5.2 Resource action runtime: PASS');

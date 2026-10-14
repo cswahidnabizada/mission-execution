@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const root=new URL('../..',import.meta.url).pathname;
+assert.equal(fs.readFileSync(`${root}/VERSION`,'utf8').trim(),'10.29.50');
+const pkg=JSON.parse(fs.readFileSync(`${root}/package.json`,'utf8')); assert.equal(pkg.version,'10.29.50');
+for(const f of ['src/worker/extensions/operations-context/operational-readiness.contract.js','src/worker/extensions/operations-context/operations-context.routes.js','src/worker/extensions/operations-context/canonical-capability-exposure.contract.js','src/worker/extensions/operations-context/canonical-action-execution-bridge.contract.js']) assert.ok(fs.existsSync(`${root}/${f}`),`protected file missing: ${f}`);
+assert.ok(fs.existsSync(`${root}/public/assets/js/extensions/dashboard-work-surface-102950.js`));
+assert.ok(fs.existsSync(`${root}/public/assets/css/dashboard-work-surface-102950.css`));
+const old=fs.readFileSync(`${root}/public/assets/js/extensions/dashboard-work-surface-102949.js`,'utf8');
+assert.ok(old.includes('10.29.49'),'10.29.49 protected asset unexpectedly rewritten');
+console.log('10.29.50 protected baseline gate: PASS');

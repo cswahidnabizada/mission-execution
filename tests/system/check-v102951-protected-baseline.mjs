@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const root=new URL('../..',import.meta.url).pathname;
+const v=fs.readFileSync(`${root}/VERSION`,'utf8').trim(); assert.equal(v,'10.29.51');
+const release=fs.readFileSync(`${root}/RELEASE-10.29.51.md`,'utf8'); assert.ok(release.includes('Built from protected 10.29.50'));
+const js=fs.readFileSync(`${root}/public/assets/js/extensions/dashboard-work-surface-102951.js`,'utf8');
+for(const token of ['canonicalActionExecutionBridge','canonicalCapability','canonicalResponsibility']) assert.ok(js.includes(token));
+assert.ok(fs.existsSync(`${root}/src/worker/extensions/operations-context/canonical-action-execution-bridge.contract.js`));
+assert.ok(fs.existsSync(`${root}/src/worker/extensions/operations-context/canonical-capability-exposure.contract.js`));
+console.log('10.29.51 protected baseline gate: PASS');

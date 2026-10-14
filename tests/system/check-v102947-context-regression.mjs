@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const root=new URL('../..',import.meta.url).pathname;
+const route=fs.readFileSync(`${root}/src/worker/extensions/operations-context/operations-context.routes.js`,'utf8');
+const js=fs.readFileSync(`${root}/public/assets/js/extensions/dashboard-work-surface-102947.js`,'utf8');
+assert.ok(route.includes('const primary=unified?.primary||operatingSurface?.primary||null;'),'operations context must resolve primary in route scope');
+assert.ok(route.includes('const capabilityAudit=buildCapabilityAudit();'),'operations context must resolve capability audit in route scope');
+assert.ok(route.includes('primaryAction:primary'),'readiness contract must receive route-scoped primary action');
+assert.ok(route.indexOf('const primary=') < route.lastIndexOf('buildOperationalReadinessContract'),'primary must be initialized before readiness contract');
+assert.ok(route.indexOf('const capabilityAudit=') < route.lastIndexOf('buildOperationalReadinessContract'),'capability audit must be initialized before readiness contract');
+assert.ok(!js.includes('convergenceReadiness('),'removed legacy readiness helper must not be referenced');
+assert.ok(js.includes('canonicalReadiness('),'canonical readiness resolver must remain the sole frontend readiness resolver');
+assert.ok(js.includes('adaptiveDecision.readiness=adaptiveDecision.readiness||'),'decision must preserve canonical readiness');
+console.log('10.29.47 context regression gate: PASS');

@@ -1,0 +1,6 @@
+.actions-intelligence-secondary:empty{display:none}
+.mission-attention-actions.actions-intelligence-empty{display:none!important}
+.actions-intelligence-secondary{display:flex;gap:.55rem;flex-wrap:wrap;margin-top:.65rem}
+.actions-intelligence-secondary .workspace-btn{min-height:40px}
+
+.actions-intelligence-secondary.hidden{display:none!important}

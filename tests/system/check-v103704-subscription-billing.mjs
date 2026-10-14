@@ -1,0 +1,23 @@
+import fs from 'node:fs';
+const root=process.cwd();
+const fail=[];
+const migration=fs.readFileSync(`${root}/database/migrations/0082_subscription_billing_commercial_product.sql`,'utf8');
+const repo=fs.readFileSync(`${root}/src/worker/repositories/subscription.repository.js`,'utf8');
+const service=fs.readFileSync(`${root}/src/worker/modules/subscriptions/subscription.service.js`,'utf8');
+const webhook=fs.readFileSync(`${root}/src/worker/modules/subscriptions/stripe.webhook.js`,'utf8');
+const routes=fs.readFileSync(`${root}/src/worker/modules/subscriptions/subscription.routes.js`,'utf8');
+const admin=fs.readFileSync(`${root}/src/worker/modules/admin-control/admin-control.routes.js`,'utf8');
+const ui=fs.readFileSync(`${root}/public/assets/js/pages/subscription.js`,'utf8');
+const control=fs.readFileSync(`${root}/public/assets/js/frontend/admin/admin.js`,'utf8');
+for(const token of ['plan_product_configuration','subscription_entitlements','subscription_state_transitions','billing_identities','billing_invoices','billing_payments','billing_provider_events','billing_reconciliation_events','billing_state_transitions','billing_jurisdiction_policies']) if(!migration.includes(token)) fail.push(`migration missing ${token}`);
+for(const token of ['listPlans','replaceEntitlements','listEntitlements','getBillingIdentity','listInvoices','listPayments']) if(!repo.includes(token)) fail.push(`repository missing ${token}`);
+for(const token of ['availablePlans','syncBillingIdentityFromCompany','PLAN_NOT_ELIGIBLE_FOR_ORGANIZATION','SUBSCRIPTION_NOT_ELIGIBLE']) if(!service.includes(token)) fail.push(`service missing ${token}`);
+for(const token of ['billing_provider_events','invoice.paid','invoice.payment_failed','payment_intent.succeeded','processing_status']) if(!webhook.includes(token)) fail.push(`webhook missing ${token}`);
+for(const token of ['/api/subscriptions/plans','/api/subscriptions/current','/api/subscriptions/billing-identity','/api/subscriptions/checkout']) if(!routes.includes(token)) fail.push(`route missing ${token}`);
+if(!admin.includes('/api/platform/admin/subscriptions')) fail.push('Admin Control subscription authority endpoint missing');
+for(const token of ['renderPlans','renderInvoices','/api/subscriptions/current']) if(!ui.includes(token)) fail.push(`subscription UI missing ${token}`);
+for(const token of ['renderSubscriptions','renderBilling','OPEN CONFIGURATION CENTER']) if(!control.includes(token)) fail.push(`Admin Control UI missing ${token}`);
+if(/const PLANS=new Set/.test(service)) fail.push('hard-coded subscription plan allowlist remains');
+if(/stripe\.com|STRIPE_SECRET_KEY/.test(fs.readFileSync(`${root}/src/worker/security/user-situation.service.js`,'utf8'))) fail.push('Stripe dependency leaked into User Situation');
+if(fail.length){console.error('10.37.4 Subscription + Billing gate: FAIL');fail.forEach(x=>console.error('- '+x));process.exit(1)}
+console.log('10.37.4 Subscription + Billing gate: PASS');

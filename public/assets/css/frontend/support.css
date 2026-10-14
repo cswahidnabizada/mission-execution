@@ -1,0 +1,1 @@
+.support-banner{padding:18px;background:#fffaeb;border:1px solid #fedf89;border-radius:14px;color:#7a2e0e}.case-grid{display:grid;grid-template-columns:320px minmax(0,1fr);gap:16px}@media(max-width:850px){.case-grid{grid-template-columns:1fr}}

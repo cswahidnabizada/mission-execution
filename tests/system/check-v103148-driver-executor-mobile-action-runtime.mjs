@@ -1,0 +1,15 @@
+import fs from 'node:fs';import assert from 'node:assert/strict';import {execFileSync} from 'node:child_process';
+const read=p=>fs.readFileSync(p,'utf8');
+const version=fs.readFileSync('VERSION','utf8').trim();
+const action=read('public/assets/js/extensions/actions-intelligence.js');
+const secured=read('public/assets/js/extensions/secured-action-execution.js');
+const workspace=read('public/assets/ui/canonical-mission-workspace.js');
+const html=read('public/driver/dashboard.html');
+const css=read('public/assets/css/extensions/driver-executor-operational-desk-103048.css');
+assert.match(action,/t\.kind===\"mission_status\"/);assert.match(action,/jsonOptions\(t\.method\|\|\"POST\",t\.body\|\|\{\}, \{expectedUpdatedAt\}\)/);
+assert.ok(secured.includes(`actions-intelligence.js?v=${version}`),'secured action runtime import version is invalid');
+for(const x of ['driver-cmw-progress','driver-progress-track','driver-nav-button','MISSION PROGRESS','NAVIGATE'])assert.match(workspace,new RegExp(x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+for(const x of [version,'driver-executor-operational-desk-103048.css',`canonical-role-workspace.js?v=${version}`,'driverBrief'])assert.ok(html.includes(x),`mobile desk cache/version missing ${x}`);
+for(const x of ['.driver-cmw-progress','@media(max-width:600px)','.cmw-action-grid','.cmw-tabs'])assert.ok(css.includes(x),`CSS missing ${x}`);
+execFileSync(process.execPath,['--check','public/assets/js/extensions/actions-intelligence.js']);execFileSync(process.execPath,['--check','public/assets/js/extensions/secured-action-execution.js']);execFileSync(process.execPath,['--check','public/assets/ui/canonical-mission-workspace.js']);execFileSync(process.execPath,['--check','public/assets/js/pages/canonical-role-workspace.js']);
+console.log('10.31.48 Driver/Executor mobile action runtime + navigation + lifecycle: PASS');

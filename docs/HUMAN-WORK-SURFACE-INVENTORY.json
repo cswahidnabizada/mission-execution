@@ -1,0 +1,1368 @@
+{
+  "version": "10.90.0",
+  "base": "10.89.0",
+  "wave": "Wave 1 \u2014 Surface Inventory & Convergence Map",
+  "principle": "Everything is available through the Human Work Model where it represents human work; not everything is displayed on Today. Canonical domain authorities remain separate.",
+  "items": [
+    {
+      "surface_type": "HTML",
+      "path": "public/accept-invitation.html",
+      "classification": "NETWORK / ACCESS",
+      "disposition": "CONVERT TO CONTEXT",
+      "target": "/app#network",
+      "reason": "Invitation acceptance context"
+    },
+    {
+      "surface_type": "HTML",
+      "path": "public/access.html",
+      "classification": "ACCOUNT / ACCESS",
+      "disposition": "CONVERT TO CONTEXT",
+      "target": "/app#account",
+      "reason": "Canonical access context"
+    },
+    {
+      "surface_type": "HTML",
+      "path": "public/admin/index.html",
+      "classification": "LEGACY ROUTE",
+      "disposition": "RETIRE/REDIRECT",
+      "target": "/",
+      "reason": "Compatibility entry; canonical destination already exists"
+    },
+    {
+      "surface_type": "HTML",
+      "path": "public/admin-control.html",
+      "classification": "LEGACY ROUTE",
+      "disposition": "RETIRE/REDIRECT",
+      "target": "/",
+      "reason": "Compatibility entry; canonical destination already exists"
+    },
+    {
+      "surface_type": "HTML",
+      "path": "public/admin.html",
+      "classification": "LEGACY ROUTE",
+      "disposition": "RETIRE/REDIRECT",
+      "target": "/",
+      "reason": "Compatibility entry; canonical destination already exists"
+    },
+    {
+      "surface_type": "HTML",
+      "path": "public/app/index.html",
+      "classification": "HUMAN WORK ENTRY",
+      "disposition": "KEEP",
+      "target": "/app",
+      "reason": "Canonical authenticated human-work shell"
+    },
+    {
+      "surface_type": "HTML",
+      "path": "public/developer/index.html",
+      "classification": "SUPPORT / DEVELOPER",
+      "disposition": "KEEP SEPARATE",
+      "target": "/developer",
+      "reason": "Developer surface is not operational user work"
+    },
+    {
+      "surface_type": "HTML",
+      "path": "public/driver/dashboard.html",
+      "classification": "LEGACY ROUTE",
+      "disposition": "RETIRE/REDIRECT",
+      "target": "/app#work",
+      "reason": "Compatibility entry; canonical destination already exists"
+    },
+    {
+      "surface_type": "HTML",
+      "path": "public/driver/index.html",
+      "classification": "UNCLASSIFIED",
+      "disposition": "REVIEW",
+      "target": "public/driver/index.html",
+      "reason": "No automatic classification"
+    },
+    {
+      "surface_type": "HTML",
+      "path": "public/forgot-password.html",
+      "classification": "PUBLIC FOUNDATION",
+      "disposition": "KEEP SEPARATE",
+      "target": "public/forgot-password.html",
+      "reason": "Public/authentication journey"
+    },
+    {
+      "surface_type": "HTML",
+      "path": "public/foryou/index.html",
+      "classification": "NETWORK / PRIVATE ACCESS",
+      "disposition": "CONVERT TO CONTEXT",
+      "target": "/app#network",
+      "reason": "Controlled private mission/network access context"
+    },
+    {
+      "surface_type": "HTML",
+      "path": "public/index.html",
+      "classification": "PUBLIC FOUNDATION",
+      "disposition": "KEEP SEPARATE",
+      "target": "public/index.html",
+      "reason": "Public/authentication journey"
+    },
+    {
+      "surface_type": "HTML",
+      "path": "public/login.html",
+      "classification": "PUBLIC FOUNDATION",
+      "disposition": "KEEP SEPARATE",
+      "target": "public/login.html",
+      "reason": "Public/authentication journey"
+    },
+    {
+      "surface_type": "HTML",
+      "path": "public/marketplace/index.html",
+      "classification": "LEGACY ROUTE",
+      "disposition": "RETIRE/REDIRECT",
+      "target": "/foryou",
+      "reason": "Compatibility entry; canonical destination already exists"
+    },
+    {
+      "surface_type": "HTML",
+      "path": "public/missions.html",
+      "classification": "LEGACY ROUTE",
+      "disposition": "RETIRE/REDIRECT",
+      "target": "/app#work",
+      "reason": "Compatibility entry; canonical destination already exists"
+    },
+    {
+      "surface_type": "HTML",
+      "path": "public/my-driver/index.html",
+      "classification": "LEGACY ROUTE",
+      "disposition": "RETIRE/REDIRECT",
+      "target": "/app#people",
+      "reason": "Compatibility entry; canonical destination already exists"
+    },
+    {
+      "surface_type": "HTML",
+      "path": "public/platform/access/admin/index.html",
+      "classification": "CONTROL PLANE ENTRY",
+      "disposition": "KEEP",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin / Control Plane shell"
+    },
+    {
+      "surface_type": "HTML",
+      "path": "public/register.html",
+      "classification": "PUBLIC FOUNDATION",
+      "disposition": "KEEP SEPARATE",
+      "target": "public/register.html",
+      "reason": "Public/authentication journey"
+    },
+    {
+      "surface_type": "HTML",
+      "path": "public/reset-password.html",
+      "classification": "PUBLIC FOUNDATION",
+      "disposition": "KEEP SEPARATE",
+      "target": "public/reset-password.html",
+      "reason": "Public/authentication journey"
+    },
+    {
+      "surface_type": "HTML",
+      "path": "public/role-workspace.html",
+      "classification": "LEGACY ROUTE",
+      "disposition": "RETIRE/REDIRECT",
+      "target": "/app#work",
+      "reason": "Compatibility entry; canonical destination already exists"
+    },
+    {
+      "surface_type": "HTML",
+      "path": "public/status.html",
+      "classification": "PUBLIC SYSTEM STATUS",
+      "disposition": "KEEP SEPARATE",
+      "target": "/status.html",
+      "reason": "Public availability/status contract"
+    },
+    {
+      "surface_type": "HTML",
+      "path": "public/subscription.html",
+      "classification": "ACCOUNT / COMMERCIAL",
+      "disposition": "CONVERT TO CONTEXT",
+      "target": "/app#account",
+      "reason": "Subscription/billing context"
+    },
+    {
+      "surface_type": "HTML",
+      "path": "public/support/index.html",
+      "classification": "SUPPORT",
+      "disposition": "KEEP SEPARATE",
+      "target": "/support",
+      "reason": "Support surface remains distinct from operational work"
+    },
+    {
+      "surface_type": "HTML",
+      "path": "public/verification.html",
+      "classification": "ACCOUNT / ACTIVATION",
+      "disposition": "CONVERT TO CONTEXT",
+      "target": "/app#account",
+      "reason": "Activation/trust context"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/action-confirm.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/action-registry.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/activation-module.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/api.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/attention-panel.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/canonical-action-client.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/canonical-workspace-actions.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/country-picker.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/dom.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/global-nav.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/lifecycle-registry.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/live-notifications.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/liveness-registry.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/mission-coordination.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/mission-focus.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/mission-presentation.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/network-continuity.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/operational-attention.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/operational-mission-route.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/photo-preview.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/photo-upload.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/release.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/session.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/core/time.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/action-ui-adapter.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/actions-intelligence.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/adaptive-action-flow.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/adaptive-action-workspace.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/adaptive-coordination-experience.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/adaptive-operational-model.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/adaptive-orchestration-decision-bridge.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/adaptive-orchestration-experience.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/adaptive-orchestration-handoff-guard.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/adaptive-overview-reconciliation.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/canonical-dashboard-runtime.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/canonical-universalization.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/company-experience-model.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/company-operational-intelligence.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/coordinated-action-continuity.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/coordination-convergence.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/coordination-situation-contract.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/coordination-state-refresh.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/coordination-surface-boundary.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/intent-complete-journey.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/intent-context-action-contract.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/intent-dashboard-intelligence.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/intent-entry-contract.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/intent-intelligence.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/intent-object-context-contract.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/intent-object-contract.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/operational-contexts.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/operations-action-execution.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/operations-action-telemetry.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/operations-decision-coordinator.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/operations-flow-capability.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/runtime-render-efficiency.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/runtime-resilience.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/secured-action-execution.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/extensions/unified-action.js",
+      "classification": "DOMAIN PRESENTATION EXTENSION",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Existing extension layer to be consumed through Human Work Model where applicable"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/admin-controller.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/admin-runtime.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/admin.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/certification.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/command-center.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/command-palette.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/data-catalog.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/data-governance.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/data-studio.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/detail-drawer.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/governance-readiness.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/monitor.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/oversight/context.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/oversight/data.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/oversight/platform-governance.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/oversight/privacy-verification.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/oversight/product-factory.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/oversight/product-operations.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/oversight/product-studio.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/oversight-panels.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/panel-registry.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/product-publisher.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/shell.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/surfaces/build.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/surfaces/control.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/surfaces/governance.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/surfaces/monitor.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/surfaces/operations.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/ui-system.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/admin/workspace-registry.js",
+      "classification": "CONTROL PLANE",
+      "disposition": "KEEP / COMPOSE",
+      "target": "/platform/access/admin",
+      "reason": "Canonical Super Admin implementation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/app/app.js",
+      "classification": "HUMAN WORK RUNTIME",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Authenticated application shell and contextual work runtime"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/components/ui.js",
+      "classification": "HUMAN WORK RUNTIME",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Authenticated application shell and contextual work runtime"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/core/api.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/core/experience-context.js",
+      "classification": "CANONICAL FRONTEND INFRASTRUCTURE",
+      "disposition": "KEEP / SUPPORT",
+      "target": "/app",
+      "reason": "Shared client boundary; not a user surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/developer/developer.js",
+      "classification": "SUPPORT / DEVELOPER",
+      "disposition": "KEEP SEPARATE",
+      "target": "/developer",
+      "reason": "Developer-specific tooling"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/navigation/registry.js",
+      "classification": "HUMAN WORK RUNTIME",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Authenticated application shell and contextual work runtime"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/product-experience.js",
+      "classification": "OTHER FRONTEND",
+      "disposition": "REVIEW",
+      "target": "/app",
+      "reason": "Needs explicit convergence decision"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/public/landing.js",
+      "classification": "PUBLIC FOUNDATION",
+      "disposition": "KEEP SEPARATE",
+      "target": "/",
+      "reason": "Public/status foundation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/public/status.js",
+      "classification": "PUBLIC FOUNDATION",
+      "disposition": "KEEP SEPARATE",
+      "target": "/",
+      "reason": "Public/status foundation"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/shell/app-shell.js",
+      "classification": "HUMAN WORK RUNTIME",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Authenticated application shell and contextual work runtime"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/situation/store.js",
+      "classification": "HUMAN WORK RUNTIME",
+      "disposition": "KEEP / CONVERGE",
+      "target": "/app",
+      "reason": "Authenticated application shell and contextual work runtime"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/support/support.js",
+      "classification": "SUPPORT",
+      "disposition": "KEEP SEPARATE",
+      "target": "/support",
+      "reason": "Support-specific tooling"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/work/human-work-model.js",
+      "classification": "HUMAN WORK MODEL",
+      "disposition": "KEEP / CANONICAL COMPOSER",
+      "target": "/app",
+      "reason": "Shared human-work presentation/composition layer"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/frontend/work/role-work-model.js",
+      "classification": "HUMAN WORK MODEL",
+      "disposition": "KEEP / CANONICAL COMPOSER",
+      "target": "/app",
+      "reason": "Shared human-work presentation/composition layer"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/pages/accept-invitation.js",
+      "classification": "NETWORK / PRIVATE ACCESS",
+      "disposition": "CONVERT TO CONTEXT",
+      "target": "/app#network",
+      "reason": "Legacy/page-level collaboration surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/pages/access-workspace.js",
+      "classification": "ACCOUNT / ACTIVATION / COMMERCIAL",
+      "disposition": "CONVERT TO CONTEXT",
+      "target": "/app#account",
+      "reason": "Legacy/page-level account context"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/pages/access.js",
+      "classification": "PAGE IMPLEMENTATION",
+      "disposition": "REVIEW",
+      "target": "/app",
+      "reason": "Page implementation requiring surface convergence review"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/pages/analytics-dashboard-v1.js",
+      "classification": "PAGE IMPLEMENTATION",
+      "disposition": "REVIEW",
+      "target": "/app",
+      "reason": "Page implementation requiring surface convergence review"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/pages/executor-register.js",
+      "classification": "PUBLIC EXECUTOR ONBOARDING",
+      "disposition": "KEEP SEPARATE",
+      "target": "/driver",
+      "reason": "Public registration journey"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/pages/forgot-password.js",
+      "classification": "PAGE IMPLEMENTATION",
+      "disposition": "REVIEW",
+      "target": "/app",
+      "reason": "Page implementation requiring surface convergence review"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/pages/foryou.js",
+      "classification": "NETWORK / PRIVATE ACCESS",
+      "disposition": "CONVERT TO CONTEXT",
+      "target": "/app#network",
+      "reason": "Legacy/page-level collaboration surface"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/pages/landing.js",
+      "classification": "PAGE IMPLEMENTATION",
+      "disposition": "REVIEW",
+      "target": "/app",
+      "reason": "Page implementation requiring surface convergence review"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/pages/native-workspace-api.js",
+      "classification": "PAGE IMPLEMENTATION",
+      "disposition": "REVIEW",
+      "target": "/app",
+      "reason": "Page implementation requiring surface convergence review"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/pages/register.js",
+      "classification": "PAGE IMPLEMENTATION",
+      "disposition": "REVIEW",
+      "target": "/app",
+      "reason": "Page implementation requiring surface convergence review"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/pages/reset-password.js",
+      "classification": "PAGE IMPLEMENTATION",
+      "disposition": "REVIEW",
+      "target": "/app",
+      "reason": "Page implementation requiring surface convergence review"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/pages/subscription.js",
+      "classification": "ACCOUNT / ACTIVATION / COMMERCIAL",
+      "disposition": "CONVERT TO CONTEXT",
+      "target": "/app#account",
+      "reason": "Legacy/page-level account context"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/pages/support.js",
+      "classification": "PAGE IMPLEMENTATION",
+      "disposition": "REVIEW",
+      "target": "/app",
+      "reason": "Page implementation requiring surface convergence review"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/pages/tenant-product-experience.js",
+      "classification": "PAGE IMPLEMENTATION",
+      "disposition": "REVIEW",
+      "target": "/app",
+      "reason": "Page implementation requiring surface convergence review"
+    },
+    {
+      "surface_type": "JS",
+      "path": "public/assets/js/pages/verification.js",
+      "classification": "ACCOUNT / ACTIVATION / COMMERCIAL",
+      "disposition": "CONVERT TO CONTEXT",
+      "target": "/app#account",
+      "reason": "Legacy/page-level account context"
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:product-publisher",
+      "classification": "CONTROL PLANE / PRODUCT WORK",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#product-publisher",
+      "reason": "Prepare, configure, compose, validate, test, authorize, publish and verify products."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:data-catalog",
+      "classification": "CONTROL PLANE / DATA CONTEXT",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#data-catalog",
+      "reason": "Discover, inspect and reuse canonical platform data."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:data-studio",
+      "classification": "CONTROL PLANE / DATA CONTEXT",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#data-studio",
+      "reason": "Inspect, edit, preview, validate, version and manage one canonical record."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:countries",
+      "classification": "CONTROL PLANE / DATA CONTEXT",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#countries",
+      "reason": "Create and manage the deliberate Product Country market catalog."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:product-verification",
+      "classification": "CONTROL PLANE / OPERATIONS",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#product-verification",
+      "reason": "Controlled scenario proof and live verification."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:product-health",
+      "classification": "CONTROL PLANE / OPERATIONS",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#product-health",
+      "reason": "Live product health, blockers and next actions."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:system-health",
+      "classification": "CONTROL PLANE / OPERATIONS",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#system-health",
+      "reason": "Runtime, infrastructure and platform health."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:companies",
+      "classification": "CONTROL PLANE / GOVERNANCE & OPERATIONS",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#companies",
+      "reason": "Organization lifecycle and governed access."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:roles",
+      "classification": "CONTROL PLANE / GOVERNANCE & OPERATIONS",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#roles",
+      "reason": "Roles, access and responsibility."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:subscriptions",
+      "classification": "CONTROL PLANE / GOVERNANCE & OPERATIONS",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#subscriptions",
+      "reason": "Plans, eligibility and subscription state."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:billing",
+      "classification": "CONTROL PLANE / GOVERNANCE & OPERATIONS",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#billing",
+      "reason": "Billing governance and activation dependencies."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:policies",
+      "classification": "CONTROL PLANE / GOVERNANCE & OPERATIONS",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#policies",
+      "reason": "Jurisdiction, retention and platform policies."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:consent",
+      "classification": "CONTROL PLANE / GOVERNANCE & OPERATIONS",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#consent",
+      "reason": "Consent policy and privacy controls."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:residency",
+      "classification": "CONTROL PLANE / GOVERNANCE & OPERATIONS",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#residency",
+      "reason": "Data residency and geographic processing rules."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:providers",
+      "classification": "CONTROL PLANE / GOVERNANCE & OPERATIONS",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#providers",
+      "reason": "Approved external providers and infrastructure."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:analytics-governance",
+      "classification": "CONTROL PLANE / GOVERNANCE & OPERATIONS",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#analytics-governance",
+      "reason": "Analytics use and governance controls."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:privacy-rights",
+      "classification": "CONTROL PLANE / GOVERNANCE & OPERATIONS",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#privacy-rights",
+      "reason": "Data-subject rights administration."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:certification",
+      "classification": "CONTROL PLANE / OPERATIONS",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#certification",
+      "reason": "Release proof and platform certification."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:audit",
+      "classification": "CONTROL PLANE / OPERATIONS",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#audit",
+      "reason": "Administrative evidence and audit history."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:security",
+      "classification": "CONTROL PLANE / OPERATIONS",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#security",
+      "reason": "Security posture, controls and protection boundaries."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:backup-recovery",
+      "classification": "CONTROL PLANE / OPERATIONS",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#backup-recovery",
+      "reason": "Recovery evidence and continuity."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:recovery-reconciliation",
+      "classification": "CONTROL PLANE / OPERATIONS",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#recovery-reconciliation",
+      "reason": "Resolve interrupted canonical mutations and prove projection convergence."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:trash",
+      "classification": "CONTROL PLANE / OPERATIONS",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#trash",
+      "reason": "Governed quarantine, restore and purge."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:data-control",
+      "classification": "CONTROL PLANE / OPERATIONS",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#data-control",
+      "reason": "Search, warn, stop and quarantine records."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:data-entry",
+      "classification": "CONTROL PLANE / DATA CONTEXT",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#data-entry",
+      "reason": "Governed platform data entry and provenance."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:verification",
+      "classification": "CONTROL PLANE / OPERATIONS",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#verification",
+      "reason": "Organization and identity verification."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:notifications",
+      "classification": "CONTROL PLANE / OPERATIONS",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#notifications",
+      "reason": "Notification and communication governance."
+    },
+    {
+      "surface_type": "ADMIN WORKSPACE",
+      "path": "admin:missions",
+      "classification": "CONTROL PLANE / OPERATIONS",
+      "disposition": "KEEP / CONTROL PLANE",
+      "target": "/platform/access/admin#missions",
+      "reason": "Mission configuration and governance."
+    }
+  ]
+}

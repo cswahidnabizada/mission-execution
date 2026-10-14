@@ -1,0 +1,15 @@
+import fs from "node:fs";
+const root=process.cwd(); const read=f=>fs.readFileSync(`${root}/${f}`,'utf8');
+const m=read('database/migrations/0047_subscription_policy_engine.sql');
+const p=read('src/worker/security/subscription-policy.service.js');
+const e=read('src/worker/security/entitlements.js');
+const ms=read('src/worker/modules/missions/missions.service.js');
+const ds=read('src/worker/modules/people/people.service.js');
+const ui=read('public/assets/js/pages/subscription.js');
+for(const x of ['subscription_policies','subscription_usage_periods','tenant_admin','independent_executor','billing_period_days','grace_days']) if(!m.includes(x)) throw new Error(`Missing policy schema term: ${x}`);
+for(const x of ['countryCode','verification_required','missionsCreated','activeDrivers','MISSION_LIMIT_REACHED','DRIVER_LIMIT_REACHED']) if(!p.includes(x)) throw new Error(`Missing policy behavior: ${x}`);
+if(!e.includes('verification_status') || !e.includes('resolveSubscriptionContext')) throw new Error('Entitlements not connected to policy engine');
+if(!ui.includes('/api/user/situation') || !ui.includes('usageSummary')) throw new Error('Subscription UI is not policy-driven');
+if(!ms.includes('requireSubscriptionCapacity(env,session,"mission")') || !ms.includes('requireSubscriptionCapacity(env,session,"publicMission")')) throw new Error('Mission creation is not subscription guarded');
+if(!ds.includes('requireUserSituationCapacity') || !ds.includes('\"driver\"')) throw new Error('People/executor creation is not canonical situation capacity guarded');
+console.log('10.31.66 subscription policy engine: PASS');

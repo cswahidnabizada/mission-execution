@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const root=process.cwd();
+const lifecycle=fs.readFileSync(`${root}/src/worker/modules/admin-control/product-release-lifecycle.service.js`,'utf8');
+const contract=fs.readFileSync(`${root}/src/worker/modules/admin-control/product-contract.service.js`,'utf8');
+const scenario=fs.readFileSync(`${root}/src/worker/modules/admin-control/product-test-scenario.service.js`,'utf8');
+const verification=fs.readFileSync(`${root}/src/worker/modules/admin-control/product-verification-engine.service.js`,'utf8');
+const migration=fs.readFileSync(`${root}/database/migrations/0113_release_integrity_and_test_lab_hardening.sql`,'utf8');
+for(const token of ['contract_snapshot_json','dependency_snapshot_hash','state=\'verified\'','markProductReleaseLive','PRODUCT_RELEASE_VERIFICATION_INCOMPLETE'])assert(lifecycle.includes(token),`release lifecycle integrity missing ${token}`);
+assert(contract.includes('stable(contract)'), 'Product Contract must use stable canonical serialization');
+for(const token of ['contract_hash','dependency_snapshot_hash','PRODUCT_TEST_SCENARIO_CONTRACT_STALE'])assert(scenario.includes(token)||verification.includes(token),`scenario integrity missing ${token}`);
+for(const token of ['contract_snapshot_json','dependency_snapshot_hash','contract_hash'])assert(migration.includes(token),`0113 migration missing ${token}`);
+assert(lifecycle.includes("state='published'") && lifecycle.includes("state='verified'") && lifecycle.includes("state='live'"),'release lifecycle must persist published, verified and live states');
+console.log('10.52.1 Release Integrity: PASS');

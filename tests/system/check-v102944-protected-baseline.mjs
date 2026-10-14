@@ -1,0 +1,22 @@
+import fs from 'node:fs';
+const read=p=>fs.readFileSync(p,'utf8');
+const failures=[];
+const must=(s,n,l)=>{if(!s.includes(n))failures.push(`${l}: missing ${n}`)};
+const safety=read('src/worker/modules/transitions/transition-safety.service.js');
+const helper=read('src/worker/modules/transitions/transition-route.helper.js');
+const js=read('public/assets/js/extensions/dashboard-work-surface-102944.js');
+const html=read('public/admin.html');
+const pkg=JSON.parse(read('package.json'));
+must(safety,'TRANSITION_OUTCOME_UNCERTAIN','10.29.40 uncertainty guard');
+must(safety,'reconcileMissionTransitionTruth','10.29.40 reconciliation');
+must(helper,'ensureCanonicalMutationVersion','10.29.40 canonical version');
+must(helper,'invalidate:false','10.29.40 no double increment');
+must(js,'resolveAdaptiveDecision','10.29.44 adaptive decision');
+must(js,'renderUnifiedDecision','10.29.44 unified decision renderer');
+must(js,'SECURED SERVICES','secured authority boundary');
+must(html,'dashboard-work-surface-102944.js?v=10.29.44&build=10.29.44','active JS asset');
+must(html,'dashboard-work-surface-102944.css?v=10.29.44&build=10.29.44','active CSS asset');
+if(pkg.version!=='10.29.44') failures.push('package version mismatch');
+if(fs.readFileSync('VERSION','utf8').trim()!=='10.29.44') failures.push('VERSION mismatch');
+if(failures.length){console.error('FAIL');failures.forEach(x=>console.error('- '+x));process.exit(1)}
+console.log('PASS — 10.29.44 preserves protected mutation integrity and introduces one adaptive decision');

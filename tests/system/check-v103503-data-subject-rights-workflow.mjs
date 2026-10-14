@@ -1,0 +1,26 @@
+import fs from 'node:fs';
+const read=p=>fs.readFileSync(p,'utf8');
+const must=(s,n,l)=>{if(!s.includes(n))throw new Error(`Missing ${l}: ${n}`)};
+const migration=read('database/migrations/0071_data_subject_rights_workflow.sql');
+const service=read('src/worker/modules/privacy/privacy-admin.service.js');
+const routes=read('src/worker/modules/privacy/privacy-admin.routes.js');
+const ui=read('public/assets/js/frontend/admin/admin.js');
+const app=read('src/worker/app.js');
+const integrity=read('database/data-integrity-policy.json');
+for(const t of ['privacy_request_events','privacy_requests'])must(migration, t, `privacy workflow table ${t}`);
+const retentionSeed=migration.indexOf("VALUES ('DE_PRIVACY_WORKFLOW'");
+const classificationSeed=migration.indexOf("INSERT OR IGNORE INTO data_classification_registry");
+if(retentionSeed===-1 || classificationSeed===-1 || retentionSeed>classificationSeed) throw new Error('Workflow retention policy must be seeded before data-classification foreign-key rows');
+if(!/privacy_requests','response_channel',[\s\S]*?'DE_PRIVACY_WORKFLOW'/.test(migration)) throw new Error('Workflow classification must reference DE_PRIVACY_WORKFLOW');
+
+for(const f of ['assigned_role','assigned_at','last_reviewed_at','legal_hold_active','response_channel'])must(migration,f,`privacy workflow field ${f}`);
+for(const f of ['listPrivacyRequestsForAdmin','getPrivacyRequestForAdmin','transitionPrivacyRequest','assignPrivacyRequest','createPrivacyLegalHold','releasePrivacyLegalHold'])must(service,f,`privacy admin service ${f}`);
+for(const f of ['/api/platform/admin/privacy/requests','/legal-hold','/assign','/legal-holds'])must(routes,f,`privacy admin route ${f}`);
+for(const f of ['Data Subject Rights','Canonical workflow','Request queue','LEGAL HOLD','REVIEW'])must(ui,f,`privacy rights UI ${f}`);
+must(app,'registerPrivacyAdminRoutes','privacy admin routes registered');
+for(const f of ['privacy_request_events','privacy_requests'])must(integrity,f,`integrity governance ${f}`);
+if(/DELETE FROM privacy_requests/i.test(service))throw new Error('Admin privacy workflow must not delete requests');
+if(/DELETE FROM privacy_request_events/i.test(service))throw new Error('Privacy request history must be preserved');
+if(!/USE_ACCOUNT_DELETION/.test(service))throw new Error('Erasure must remain delegated to canonical account deletion');
+if(!/USE_PERSONAL_EXPORT/.test(service))throw new Error('Export must remain delegated to canonical personal-data export');
+console.log('10.35.4 data-subject-rights workflow contract: PASS');

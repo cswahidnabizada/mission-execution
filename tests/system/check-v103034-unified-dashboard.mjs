@@ -1,0 +1,14 @@
+import fs from "node:fs";
+import path from "node:path";
+const root=process.cwd();
+const html=fs.readFileSync(path.join(root,"public/admin.html"),"utf8");
+const js=fs.readFileSync(path.join(root,"public/assets/js/extensions/dashboard-experience-103034.js"),"utf8");
+const css=fs.readFileSync(path.join(root,"public/assets/css/dashboard-experience-103034.css"),"utf8");
+const must=["data-exp-area=\"home\"","data-exp-area=\"work\"","data-exp-area=\"network\"","data-exp-area=\"people\"","data-exp-area=\"insights\"","work-shell","workQueueHost","data-work-view=\"all\"","data-work-view=\"needs\"","data-work-view=\"active\"","data-work-view=\"waiting\"","data-work-view=\"done\"","homeSituation","homeNeeds","homeTodayActive","homeTodayWaiting","homeTodayDone","homePulseMissions","homePulseExecutors","homePulseNetwork"];
+for(const s of must) if(!html.includes(s)) throw new Error(`Missing dashboard contract: ${s}`);
+if(html.includes('data-exp-area="requests"')||html.match(/data-exp-area="find"[^>]*>\s*<svg/)) throw new Error("Competing Requests/Find primary navigation remains");
+if(!html.includes('dashboard-experience-103034.css')||!html.includes('dashboard-experience-103034.js')) throw new Error("10.30.34 dashboard assets are not active");
+if(!js.includes('function workViewMatch')||!js.includes('contextQueueLimit||30')) throw new Error("Work queue bounded/progressive behavior missing");
+if(!js.includes('openUniversalCreate')) throw new Error("Universal Create handler missing");
+if(!css.includes('.work-shell{')) throw new Error("Sidebar + main Work shell missing");
+console.log("10.30.34 unified dashboard contract: PASS");

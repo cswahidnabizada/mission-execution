@@ -1,0 +1,18 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const root=new URL('../../',import.meta.url).pathname;
+assert.equal(fs.readFileSync(`${root}VERSION`,'utf8').trim(),'10.19.36');
+const contract=fs.readFileSync(`${root}src/worker/extensions/adaptive-orchestration/adaptive-coordination-mesh-101936.contract.js`,'utf8');
+const routes=fs.readFileSync(`${root}src/worker/extensions/adaptive-orchestration/adaptive-orchestration.routes.js`,'utf8');
+const html=fs.readFileSync(`${root}public/admin.html`,'utf8');
+const js=fs.readFileSync(`${root}public/assets/js/extensions/dashboard-work-surface-101936.js`,'utf8');
+const css=fs.readFileSync(`${root}public/assets/css/dashboard-work-surface-101936.css`,'utf8');
+assert.ok(contract.includes("ADAPTIVE_COORDINATION_MESH_101936_VERSION = '10.19.36'"));
+assert.ok(contract.includes('nodes')&&contract.includes('edges')&&contract.includes('networkConnectionCount'),'mesh relationship model missing');
+assert.ok(contract.includes('readOnly')&&contract.includes('changesCustody')&&contract.includes('requiresFreshValidation'),'mesh safety boundary missing');
+assert.ok(routes.includes('buildAdaptiveCoordinationMesh101936')&&routes.includes('validateAdaptiveCoordinationMesh101936'),'route integration missing');
+assert.ok(html.includes('dashboard-work-surface-101936.js?v=10.19.36&build=10.19.36')); assert.ok(html.includes('dashboard-work-surface-101936.css?v=10.19.36&build=10.19.36'));
+assert.ok(js.includes('/api/operations/coordination-mesh?limit=100')&&js.includes('Adaptive Coordination Picture'));
+assert.ok(js.includes('connections')&&js.includes('CONNECTED LANES'),'mesh UX missing');
+assert.ok(css.includes('.coordination-mesh-summary')&&!/<script|import\s+.*from/.test(css),'CSS integrity failure');
+console.log('10.19.36 Adaptive Coordination Mesh: PASS');

@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const root=process.cwd();
+const read=f=>fs.readFileSync(path.join(root,f),'utf8');
+const migration=read('database/migrations/0109_final_certification_evidence_governance.sql');
+const assert=(ok,msg)=>{if(!ok)throw new Error(msg)};
+assert(migration.includes('platform_certification_evidence'),'certification evidence registry exists');
+assert(migration.includes("'static','schema','integration','adversarial','real_journey','recovery'"),'all six certification evidence classes are governed');
+assert(migration.includes('UNIQUE(run_key,evidence_type)'),'one evidence record per class/run is enforced');
+assert(migration.includes('platform_archive_governance'),'assignment archive governance exists');
+assert(migration.includes("retention_decision TEXT NOT NULL CHECK (retention_decision IN ('pending','retain','purge_after_legal_review'))"),'archive retention decision is explicit and cannot be silently invented');
+assert(migration.includes("runtime_reads INTEGER NOT NULL DEFAULT 0")&&migration.includes("runtime_writes INTEGER NOT NULL DEFAULT 0"),'archive runtime use is explicitly represented');
+const harness=read('tests/runtime/runtime-certification-harness.mjs');
+for(const token of ['adversarial tenant isolation','ON_MISSION_CERT_ATTACK_EMAIL','ON_MISSION_CERT_ATTACK_PASSWORD']) assert(harness.includes(token),`runtime harness contains ${token}`);
+const recovery=read('tests/runtime/recovery-certification-harness.mjs');
+for(const token of ['Recovery evidence simulation','stale transition','recovery_required','worker interruption']) assert(recovery.includes(token),`recovery harness contains ${token}`);
+console.log('Final certification evidence governance gate: PASS');

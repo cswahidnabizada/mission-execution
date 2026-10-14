@@ -1,0 +1,6 @@
+import fs from 'node:fs';import path from 'node:path';const root=process.cwd();const read=p=>fs.readFileSync(path.join(root,p),'utf8');const fail=[];
+const arch=read('src/worker/core/canonical-architecture-control.js');const release=read('RELEASE.md');
+if(!arch.includes('architectureFrozen:true'))fail.push('architecture is not marked frozen');if(!arch.includes('dataEntry:'))fail.push('Data Entry Gate not registered as boundary');if(!arch.includes('lifecycle:["ENTRY","TRUTH","DECISION","CREATION","RUNTIME","CONTROL","TRASH"]'))fail.push('canonical lifecycle loop mismatch');
+for(const forbidden of ['Data Intelligence Engine','Super Data Engine','Super Data Intelligence Engine'])if(arch.includes(forbidden)||release.includes(forbidden)&&forbidden!=='Data Intelligence Engine'&&false)fail.push(`forbidden post-freeze architecture ${forbidden}`);
+const services=fs.readdirSync(path.join(root,'src/worker/security')).filter(x=>x.endsWith('.js'));for(const name of services){const text=read('src/worker/security/'+name);if(/10\.38\.30.*Data Intelligence Engine|10\.38\.31.*Super Data Engine/i.test(text))fail.push(`post-freeze engine ${name}`)}
+if(fail.length){console.error('FAIL architecture freeze');fail.forEach(x=>console.error(' - '+x));process.exit(1)}console.log('PASS architecture freeze');

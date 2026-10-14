@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const html=fs.readFileSync('public/admin.html','utf8');
+const js=fs.readFileSync('public/assets/js/pages/dashboard-command-center.js','utf8');
+const css=fs.readFileSync('public/assets/css/dashboard-modern-responsive.css','utf8');
+const version=fs.readFileSync('VERSION','utf8').trim();
+for(const id of ['nmHome','om54CompletedMonth','om54ActiveTotal','om54TodayTotal']) assert.match(html,new RegExp(`id="${id}"`));
+assert.doesNotMatch(html,/data-om54-intent/,'Home operational redirect intents remain mounted');
+assert.doesNotMatch(js,/data-om54-intent/,'Home operational redirect handler remains');
+assert.match(js,/om54CompletedMonth/);assert.match(js,/om54ActiveTotal/);assert.match(js,/om54TodayTotal/);
+assert.ok(!html.includes('om54-intent-grid'),'legacy Home intent grid remains');
+assert.ok(!html.includes('om54-situation-actions'),'legacy Home action buttons remain');
+assert.match(html,new RegExp(`dashboard-command-center\\.js\\?v=${version}`));
+assert.match(html,new RegExp(`dashboard-modern-responsive\\.css\\?v=${version}`));
+console.log('Home adaptive totals contract: PASS');

@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+const html=fs.readFileSync(new URL('../../public/admin.html',import.meta.url),'utf8');
+const runtime=fs.readFileSync(new URL('../../public/assets/js/extensions/operations-context-runtime.js',import.meta.url),'utf8');
+const css=fs.readFileSync(new URL('../../public/assets/css/dashboard-complete.css',import.meta.url),'utf8');
+if(html.includes('id="opsWorkbenchContextNav"')) throw new Error('redundant workbench context navigation remains');
+if(!html.includes('data-ops-workbench-back')) throw new Error('workbench exit navigation missing');
+if(!html.includes('data-ops-recompute')) throw new Error('recompute action missing');
+if(runtime.includes('opsWorkbenchContextNav')) throw new Error('dead context navigation runtime hook remains');
+if(!css.includes('10.18.39 Workbench single-navigation contract')) throw new Error('single-navigation CSS contract missing');
+console.log('10.18.39 Workbench single-navigation: PASS');

@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const root=new URL('../..',import.meta.url).pathname;
+const version=fs.readFileSync(`${root}/VERSION`,'utf8').trim();
+assert.equal(version,'10.29.49');
+const pkg=JSON.parse(fs.readFileSync(`${root}/package.json`,'utf8'));
+assert.equal(pkg.version,'10.29.49');
+for(const file of ['src/worker/extensions/operations-context/operational-readiness.contract.js','src/worker/extensions/operations-context/operations-context.routes.js','src/worker/extensions/operations-context/mission-capability-convergence.js'])assert.ok(fs.existsSync(`${root}/${file}`),`protected file missing: ${file}`);
+assert.ok(fs.existsSync(`${root}/public/assets/js/extensions/dashboard-work-surface-102949.js`));
+assert.ok(fs.existsSync(`${root}/public/assets/css/dashboard-work-surface-102949.css`));
+console.log('10.29.49 protected baseline gate: PASS');

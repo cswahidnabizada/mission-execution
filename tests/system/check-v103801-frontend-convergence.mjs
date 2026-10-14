@@ -1,0 +1,24 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
+const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const assert=(ok,msg)=>{if(!ok)throw new Error(msg)};
+const admin=read('public/assets/js/frontend/admin/admin.js');
+const login=read('public/login.html');
+const adminIndex=read('public/admin/index.html');
+assert(admin.includes('function configTable('),'configTable helper is missing');
+assert(admin.includes('function safeSectionRender('),'platform section resilience wrapper is missing');
+assert(admin.includes("location.replace('/admin/')"),'platform sign-in does not converge to /admin/');
+assert(login.includes('/assets/js/pages/access.js?v=10.38.1'),'user sign-in is on the current release');
+assert(login.includes('/admin/'),'user sign-in does not expose the separate platform entry');
+assert(adminIndex.includes('/assets/js/pages/admin-control.js?v=10.38.1'),'canonical admin surface does not use the complete control plane');
+const obsolete=['public/assets/js/pages/admin.js','public/assets/js/pages/role-workspace.js','public/assets/js/pages/canonical-role-workspace.js','public/assets/js/pages/my-driver.js','public/assets/js/pages/missions.js','public/assets/js/pages/tenant-marketplace.js'];
+for(const p of obsolete)assert(!fs.existsSync(path.join(root,p)),`obsolete frontend implementation still exists: ${p}`);
+const publicText=[];
+function walk(dir){for(const name of fs.readdirSync(dir)){const p=path.join(dir,name),st=fs.statSync(p);if(st.isDirectory())walk(p);else if(/\.(js|html)$/.test(name))publicText.push(fs.readFileSync(p,'utf8'));}}
+walk(path.join(root,'public'));
+const joined=publicText.join('\n');
+assert(!joined.includes('/admin.html#'),'legacy admin operational references remain in public frontend');
+assert(!joined.includes('/driver/dashboard.html#mission'),'legacy executor mission references remain in public frontend');
+console.log('10.38.1 frontend convergence: PASS');

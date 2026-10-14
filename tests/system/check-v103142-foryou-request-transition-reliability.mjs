@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const safety=fs.readFileSync('src/worker/modules/transitions/transition-safety.service.js','utf8');
+const routes=fs.readFileSync('src/worker/modules/public/public.routes.js','utf8');
+const workspace=fs.readFileSync('public/assets/ui/canonical-mission-workspace.js','utf8');
+const map=fs.readFileSync('src/worker/application/actions/action-service-map.js','utf8');
+assert.match(safety,/action==='foryou_request'/);
+assert.match(safety,/canonical_foryou_request_exists/);
+assert.match(safety,/action==='foryou_approve' \|\| action==='foryou_decline' \|\| action==='foryou_cancel'/);
+assert.match(routes,/actionCode:"foryou_request"/);
+assert.match(routes,/actionCode:"foryou_cancel"/);
+assert.match(routes,/actionCode:"foryou_approve"/);
+assert.match(routes,/actionCode:"foryou_decline"/);
+assert.match(workspace,/request_foryou_mission/);
+assert.match(workspace,/cancel_foryou_request/);
+assert.match(map,/request_foryou_mission:route\("foryou"/);
+assert.match(map,/cancel_foryou_request:route\("foryou"/);
+console.log('10.31.42 ForYou request transition reliability OK');

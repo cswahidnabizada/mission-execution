@@ -1,0 +1,10 @@
+/* ON Mission 10.17.1-H1 — Intent Intelligence
+ * Presentation-only translation of the existing company decision into user intents.
+ * It does not calculate a competing operational priority authority.
+ */
+const LABELS=Object.freeze({intake:'Receive',operate:'Operate',act:'Act',find:'Find',marketplace:'Find Work'});
+const DESCRIPTIONS=Object.freeze({intake:'Review incoming requests and shared work.',operate:'Continue work that is already in progress.',act:'Handle the item that needs your attention now.',find:'Find people, missions, or available work.',marketplace:'Find available execution opportunities.'});
+const num=v=>Math.max(0,Number(v||0)); const text=v=>String(v??'').trim();
+function counts(model={}){const w=model.work||{};return Object.freeze({intake:num(w.pending),operate:num(w.active),act:num(w.critical)+num(w.attention)+num(w.custody)+num(w.focus),find:num(model.marketplace?.available)+num(model.marketplace?.recommended)+num(w.active),marketplace:num(model.marketplace?.available)+num(model.marketplace?.recommended)});}
+function rank(model={},available=[]){const next=text(model.nextIntent).toLowerCase(); const order=['act','intake','operate','marketplace','find']; return [...available].sort((a,b)=>{const ap=a===next?0:1,bp=b===next?0:1;if(ap!==bp)return ap-bp;return order.indexOf(a)-order.indexOf(b);});}
+export function buildIntentIntelligence(model={}){const available=Array.isArray(model.intents)?model.intents:[];const c=counts(model);const ordered=rank(model,available);const next=ordered[0]||null;const items=ordered.map((id,index)=>Object.freeze({id,label:LABELS[id]||id,description:DESCRIPTIONS[id]||'Open this part of your work.',count:c[id]||0,priority:index+1,recommended:id===next}));return Object.freeze({version:'10.17.1-H1',visible:items.length>0,nextIntent:next,items:Object.freeze(items),counts:c,safety:Object.freeze({readOnly:true,createsTruth:false,createsAuthorization:false,createsAction:false,executesAction:false,changesResponsibility:false,changesCustody:false})});}

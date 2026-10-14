@@ -1,0 +1,28 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+const root=process.cwd();
+const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const version=read('VERSION').trim();
+const pkg=JSON.parse(read('package.json'));
+const failures=[];
+if(!/^\d+\.\d+\.\d+$/.test(version)) failures.push(`VERSION must use semantic release format, got ${version}`);
+if(pkg.version && pkg.version!==version) failures.push('package.json version does not match VERSION');
+if(fs.existsSync(path.join(root,'database/schema.sql'))) failures.push('obsolete database/schema.sql still exists');
+if(!fs.existsSync(path.join(root,'database/schema.current.sql'))) failures.push('database/schema.current.sql missing');
+if(!fs.existsSync(path.join(root,'scripts/generate-schema-current.mjs'))) failures.push('schema generator missing');
+if(!fs.existsSync(path.join(root,'scripts/check-migration-contract.mjs'))) failures.push('migration contract checker missing');
+if(!fs.existsSync(path.join(root,'scripts/check-schema-current.mjs'))) failures.push('schema checker missing');
+if(!fs.existsSync(path.join(root,'build.sh'))) failures.push('deterministic build.sh missing');
+if(fs.existsSync(path.join(root,'release-check.txt'))) failures.push('obsolete release-check.txt remains');
+if(fs.existsSync(path.join(root,'release.log'))) failures.push('obsolete release.log remains');
+const migrations=fs.readdirSync(path.join(root,'database/migrations')).filter(x=>x.endsWith('.sql')).sort();
+const latestMigration=migrations.at(-1)||'';
+if(!/^\d{4}_.+\.sql$/.test(latestMigration)) failures.push('migration high-water mark is malformed');
+const schemaHash=crypto.createHash('sha256').update(read('database/schema.current.sql')).digest('hex');
+if(!schemaHash) failures.push('schema hash could not be computed');
+const release=read('RELEASE.md');
+for(const token of ['Global Compliance Context','Private ForYou','Consent & Privacy','Data Subject Rights','schema.current.sql','deterministic','migration contract','canonical domain','canonical capability','canonical vocabulary','Capability','Logistics','Cargo']) if(!release.includes(token)) failures.push(`release document missing: ${token}`);
+if(fs.existsSync(path.join(root,'tests/fixtures/release-history'))) failures.push('obsolete historical release fixture directory remains');
+if(failures.length){console.error('Release engineering gate: FAIL');for(const x of failures)console.error(`- ${x}`);process.exit(1)}
+console.log(`Release engineering gate: PASS (version ${version}, schema ${schemaHash.slice(0,16)}…, migrations ${migrations.length})`);

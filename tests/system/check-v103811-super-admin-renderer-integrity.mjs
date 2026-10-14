@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const root=process.cwd();
+const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const assert=(ok,msg)=>{if(!ok)throw new Error(msg)};
+const admin=read('public/assets/js/frontend/admin/admin.js');
+assert(read('VERSION').trim()==='10.38.12','VERSION must be 10.38.12');
+const pkg=JSON.parse(read('package.json'));
+assert(pkg.version==='10.38.12','package.json must be 10.38.12');
+assert(admin.includes("'privacy-rights':loadPrivacyRights"),'Privacy Rights renderer must be registered');
+assert(admin.includes("async function loadPrivacyRights()"),'Privacy Rights loader must be defined');
+assert(admin.includes("await api('/api/platform/admin/privacy/requests')"),'Privacy Rights loader must use canonical admin endpoint');
+assert(admin.includes("system:loadSystemHealth"),'Renderer registry must not reference an undefined system renderer');
+assert(admin.includes('function safeSectionRender(view,renderer){'),'section rendering must remain guarded');
+const refs=[...admin.matchAll(/(?:^|[,{])\s*([A-Za-z_$][\w$]*)\s*:/g)].map(m=>m[1]);
+for(const name of ['renderOverview','renderPlatformCenter','renderCountries','renderCompanies','loadVerificationQueue','renderPolicies','renderConsent','loadPrivacyRights','renderNotifications','renderAnalyticsGovernance','renderRoles','renderResidency','renderProviders','renderBackupRecovery','renderAudit','loadSystemHealth']) assert(admin.includes(`function ${name}(`)||admin.includes(`async function ${name}(`)||admin.includes(`${name}=`),`renderer dependency missing: ${name}`);
+console.log('10.38.12 Super Admin renderer dependency integrity: PASS');

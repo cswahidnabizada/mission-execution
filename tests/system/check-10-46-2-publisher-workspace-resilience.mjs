@@ -1,0 +1,18 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const root=process.cwd();
+const read=f=>fs.readFileSync(path.join(root,f),'utf8');
+const assert=(ok,msg)=>{if(!ok)throw new Error(msg)};
+const service=read('src/worker/modules/admin-control/product-publisher-orchestrator.service.js');
+const graph=read('src/worker/security/product-launch-workspace.service.js');
+const route=read('src/worker/modules/admin-control/admin-launch-config.routes.js');
+const shell=read('public/assets/js/frontend/admin/shell.js');
+assert(service.includes("configurationState:'not_required'"),'Initial publisher workspace must not require runtime configuration reads before a launch exists');
+assert(service.includes('Promise.all(specs.map(async([key,fn,fallback])=>'),'Publisher panel reads must degrade individually instead of crashing the whole workspace');
+assert(service.includes('readiness_unavailable'),'Publisher readiness failures must fail closed and remain visible as launch blockers');
+assert(service.includes("runPublisherProjection('dependency_graph'"),'Dependency graph refresh must be explicit and failure-visible after publisher mutation, not hidden inside GET');
+assert(graph.includes('export async function buildProductDependencyGraph')&&graph.includes('export async function getProductDependencyGraph')&&!graph.slice(graph.indexOf('export async function getProductDependencyGraph')).includes('buildProductDependencyGraph(env,launchId)'), 'Dependency graph GET must be read-only');
+assert(route.includes("requestId})=>{try{await requirePlatformAdministrator")&&route.includes("console.error('[product-publisher/workspace]'"),'Publisher workspace route must log a request id server-side while keeping the public error sanitized');
+const match=shell.match(/new Map\(sections\.map\(\(\[l,k\]\)=>\[k,\[l,k\]\]\)\)/);
+assert(Boolean(match),'Admin shell must de-duplicate view IDs before rendering');
+console.log('10.50.0 Product Publisher workspace resilience gate: PASS');

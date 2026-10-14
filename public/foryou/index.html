@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Mission Execution | ForYou</title>
+  <link rel="stylesheet" href="/assets/css/tailwind.local.css">
+  <link rel="stylesheet" href="/assets/css/base.css">
+  
+  <link rel="stylesheet" href="/assets/ui/canonical-ui-system.css">
+<link rel="stylesheet" href="/assets/css/global-nav.css"></head>
+<body class="bg-slate-50 min-h-screen p-4 sm:p-6">
+<header class="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-3 mb-7">
+  <a href="/" class="font-black">ON MISSION</a>
+  <div class="flex flex-wrap gap-2">
+    <a id="dashboardBack" href="/" class="foryou-nav">← LOGIN</a>
+    <a id="executorJoin" href="/driver" class="foryou-nav purple">EXECUTOR ACCOUNT</a>
+    <span class="foryou-pill">🌍 FORYOU</span>
+  </div>
+</header>
+
+<main class="max-w-6xl mx-auto space-y-8">
+  <section>
+    <div class="flex flex-col md:flex-row justify-between md:items-end gap-4">
+      <div>
+        <div class="text-[10px] font-black text-purple-600 tracking-widest">PRIVATE MISSION ACCESS</div>
+        <h1 class="impact-text text-4xl sm:text-5xl font-black">PRIVATE FORYOU</h1>
+        <p id="publicIntro" class="text-slate-500 mt-2">Private mission communication between an owning tenant and an authorized executor or tenant.</p>
+      </div>
+      <div class="w-full md:max-w-xl space-y-2"><input id="privateAccessCode" class="input" autocomplete="off" placeholder="Enter private mission access code"><textarea id="privateRequestMessage" class="input min-h-20" placeholder="Optional message to the owning tenant"></textarea><button id="privateAccessButton" class="request-button">OPEN PRIVATE MISSION</button><div id="privateAccessResult" class="text-sm text-slate-500"></div></div>
+    </div>
+  </section>
+
+  <section id="networkInvitationSection" class="hidden network-invitation-section">
+    <div class="section-title-row">
+      <div><div class="text-[10px] font-black text-emerald-700 tracking-widest">SENT DIRECTLY TO YOU</div><h2 class="impact-text text-2xl font-black">TRUSTED MISSION INVITATIONS</h2><p class="text-xs text-slate-500">Private invitations from partners you trust. Access starts only after you accept.</p></div>
+      <span id="networkInvitationCount" class="count-pill green">0</span>
+    </div>
+    <div id="networkInvitations" class="grid gap-3 mt-3"></div>
+  </section>
+
+  <section id="ownedSection" class="hidden">
+    <div class="section-title-row">
+      <div>
+        <div class="text-[10px] font-black text-emerald-700 tracking-widest">YOUR TENANT</div>
+        <h2 class="impact-text text-2xl font-black">YOUR PRIVATE SHARES</h2>
+        <p class="text-xs text-slate-500">Private shares are created from the Mission Workspace and delivered through an access code.</p>
+      </div>
+      <span id="ownedCount" class="count-pill green">0</span>
+    </div>
+    <div id="ownedMissions" class="grid md:grid-cols-2 gap-4 mt-3"></div>
+  </section>
+
+  <section>
+    <div class="section-title-row">
+      <div>
+        <div class="text-[10px] font-black text-purple-600 tracking-widest">NETWORK</div>
+        <h2 id="otherTitle" class="impact-text text-2xl font-black">PRIVATE MISSION ENTRY</h2>
+        <p id="otherHint" class="text-xs text-slate-500">A mission is displayed only after a valid access code is provided.</p>
+      </div>
+      <span id="otherCount" class="count-pill">0</span>
+    </div>
+    <div id="otherMissions" class="grid md:grid-cols-2 gap-4 mt-3"></div>
+  </section>
+</main>
+
+<script type="module" src="/assets/js/pages/foryou.js"></script>
+<script type="module" src="/assets/js/core/live-notifications.js"></script>
+<script type="module" src="/assets/js/core/global-nav.js?v=16.10.10"></script></body>
+</html>

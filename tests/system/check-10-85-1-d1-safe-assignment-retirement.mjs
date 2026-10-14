@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+const root=process.cwd();
+const migration=fs.readFileSync(path.join(root,'database/migrations/0123_final_assignment_schema_retirement.sql'),'utf8');
+const schema=fs.readFileSync(path.join(root,'database/schema.current.sql'),'utf8');
+assert.doesNotMatch(migration,/DROP TABLE\s+missions\b/i,'0123 must not drop the FK-referenced missions table');
+assert.doesNotMatch(migration,/ALTER TABLE\s+missions\s+DROP COLUMN\s+driver_id/i,'0123 must not attempt unsupported FK-bound column removal');
+assert.doesNotMatch(migration,/PRAGMA\s+foreign_keys\s*=\s*OFF/i,'0123 must not rely on disabling D1 foreign keys');
+assert.match(migration,/DROP INDEX IF EXISTS idx_missions_company_driver_next_schedule/);
+assert.match(migration,/DROP INDEX IF EXISTS idx_missions_company_driver_schedule/);
+assert.match(schema,/CREATE TABLE missions \([\s\S]*\bdriver_id INTEGER\b[\s\S]*FOREIGN KEY\(driver_id\) REFERENCES drivers\(id\)/);
+assert.doesNotMatch(schema,/idx_missions_company_driver_/);
+assert.doesNotMatch(schema,/CREATE VIEW mission_canonical_projection AS[\s\S]*m\.driver_id/);
+console.log('10.85.1 D1-safe assignment retirement migration gate: PASS (FK-bound compatibility column retained; destructive missions rebuild prohibited)');

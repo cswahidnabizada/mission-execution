@@ -1,0 +1,17 @@
+import fs from "node:fs";
+import assert from "node:assert/strict";
+const html=fs.readFileSync("public/admin.html","utf8");
+const runtime=fs.readFileSync("public/assets/js/extensions/operations-context-runtime.js","utf8");
+const rendering=fs.readFileSync("public/assets/js/extensions/operations-rendering-capability.js","utf8");
+for(const id of ["opsIntentSurface","opsWorkSurface","opsRuntimeQueueBody","opsMissionWorkbenchSurface"]) assert.match(html,new RegExp(`id="${id}"`));
+for(const mode of ["focus","find","create","attention"]) assert.match(html,new RegExp(`data-ops-mode="${mode}"`));
+assert.match(html,/id="opsRuntimeSearch"/);
+assert.doesNotMatch(html,/class="ops-work-search mission-control-search"/);
+assert.match(runtime,/function renderOperationsIntentSurface\(\)/);
+assert.match(runtime,/state\.intentMode/);
+assert.match(runtime,/if\(mode==="find"\)/);
+assert.match(runtime,/if\(mode==="attention"\)/);
+assert.match(rendering,/function renderQueue\(\)/);
+assert.match(rendering,/rows=sortQueue\(rows\)/);
+assert.match(rendering,/function renderSmartFindHints/);
+console.log("10.18.68 Operations Adaptive Mission Control surface contract: PASS");

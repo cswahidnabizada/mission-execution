@@ -1,0 +1,18 @@
+import fs from "node:fs";
+const policy=fs.readFileSync("src/worker/security/subscription-policy.service.js","utf8");
+const migration=fs.readFileSync("database/migrations/0048_subscription_eligibility_and_gift_access.sql","utf8");
+const secured=fs.readFileSync("src/worker/extensions/action-execution/secured-action-execution.routes.js","utf8");
+const mission=fs.readFileSync("src/worker/modules/missions/missions.service.js","utf8");
+const network=fs.readFileSync("src/worker/modules/network/network.service.js","utf8");
+const pub=fs.readFileSync("src/worker/modules/public/public.service.js","utf8");
+const custody=fs.readFileSync("src/worker/extensions/mission-management/custody-responsibility/canonical-custody-responsibility.service.js","utf8");
+if(!migration.includes("subscription_class")||!migration.includes("subscription_gift_codes")||!migration.includes("subscription_access_grants"))throw new Error("Eligibility/gift schema missing");
+for(const x of ["resolveSubscriptionEligibility","independent_executor","driver","gift_access","shareForYou","requestForYou","shareNetwork","acceptNetwork"])if(!policy.includes(x))throw new Error(`Policy eligibility marker missing: ${x}`);
+const situation=fs.readFileSync("src/worker/security/user-situation.service.js","utf8");
+if(!situation.includes("requireUserSituationAction"))throw new Error("Canonical user situation action gate missing");
+if(!secured.includes("requireOperationalAction"))throw new Error("Secured operational access lease gate missing");
+const billing=fs.readFileSync("src/worker/modules/subscriptions/subscription.service.js","utf8");
+if(!billing.includes("createPortalSession")||!billing.includes("checkoutFor")||!billing.includes("freshCustomer")||!billing.includes("isMissingCustomer"))throw new Error("Permanent Stripe recovery flow missing");
+if(!billing.includes("return checkoutFor(env,s,recoveryPlan,fresh)"))throw new Error("Missing-customer portal must recover through Checkout");
+for(const [name,text,marker] of [["mission",mission,'requireUserSituationAction(env,session,"create_mission")'],["network",network,'requireUserSituationAction(env,session,"share_network")'],["network accept",network,'requireUserSituationAction(env,session,"accept_network")'],["ForYou request",pub,'requireUserSituationAction(env,session,"request_foryou_mission")'],["ForYou publish",custody,'requireUserSituationAction(env,session,"share_foryou")']])if(!text.includes(marker))throw new Error(`${name} subscription action gate missing`);
+console.log("10.31.69 subscription eligibility/action policy: PASS");

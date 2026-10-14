@@ -1,0 +1,38 @@
+import fs from 'node:fs';
+const read=p=>fs.readFileSync(p,'utf8');
+const failures=[];
+const must=(s,n,l)=>{if(!s.includes(n))failures.push(`${l}: missing ${n}`)};
+const safety=read('src/worker/modules/transitions/transition-safety.service.js');
+const helper=read('src/worker/modules/transitions/transition-route.helper.js');
+const migration=read('database/migrations/0041_canonical_mutation_integrity.sql');
+const schema=read('database/schema.current.sql');
+const pkg=JSON.parse(read('package.json'));
+const release=read('docs/releases/RELEASE-10.29.40.md');
+const version=read('VERSION').trim();
+
+must(safety,'reconcileMissionTransitionTruth','durable reconciliation');
+must(safety,"mutation_phase='applied'",'applied mutation phase');
+must(safety,"mutation_phase='uncertain'",'uncertain mutation quarantine');
+must(safety,"mutation_phase='event_committed'",'event committed phase');
+must(safety,'TRANSITION_OUTCOME_UNCERTAIN','uncertain outcome guard');
+must(safety,'mission_event_ledger','authoritative event ledger');
+must(safety,'idempotency_key','idempotency record');
+must(safety,'state_lock_token','durable mission lease');
+must(safety,'state_version=state_version+1','expired lease invalidation');
+must(helper,'markMutationApplied','mutation acknowledgement durability');
+must(helper,'ensureCanonicalMutationVersion','canonical version normalization');
+must(helper,'invalidate:false','successful release does not double-increment state');
+must(helper,'mutationApplied=false','outcome tracking');
+must(migration,'ALTER TABLE mission_transition_requests ADD COLUMN mutation_phase','mutation phase schema');
+must(migration,'idx_transition_requests_reconciliation','reconciliation index');
+must(migration,'idx_event_ledger_transition_outcome','event lookup index');
+must(release,'Built from protected 10.19.39.','protected baseline');
+must(release,'Canonical Mutation Integrity & Transactional Truth','release scope');
+if(!Object.prototype.hasOwnProperty.call(pkg.scripts||{},'check:10.29.40'))failures.push('check:10.29.40 dedicated release gate missing');
+if(version!=='10.29.40')failures.push(`VERSION mismatch: ${version}`);
+if(pkg.version!=='10.29.40')failures.push(`package version mismatch: ${pkg.version}`);
+if(!fs.existsSync('docs/releases/RELEASE-10.29.40.md'))failures.push('protected release document missing');
+if(fs.readdirSync('.').some(x=>/^RELEASE-/.test(x)&&x!=='RELEASE-10.29.40.md'))failures.push('historical release artifact remains');
+if(!schema.includes('state_version'))failures.push('canonical state_version missing');
+if(failures.length){console.error('FAIL');failures.forEach(x=>console.error('- '+x));process.exit(1)}
+console.log('PASS — 10.29.40 canonical mutation integrity & transactional truth');

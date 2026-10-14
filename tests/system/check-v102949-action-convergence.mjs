@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const root=new URL('../..',import.meta.url).pathname;
+const route=fs.readFileSync(`${root}/src/worker/extensions/operations-context/operations-context.routes.js`,'utf8');
+const contract=fs.readFileSync(`${root}/src/worker/extensions/operations-context/canonical-capability-exposure.contract.js`,'utf8');
+const js=fs.readFileSync(`${root}/public/assets/js/extensions/dashboard-work-surface-102949.js`,'utf8');
+for(const token of ['buildCanonicalCapabilityExposure','canonicalCapability','operationalReadiness','capabilityExposure'])assert.ok(route.includes(token),`missing route convergence token ${token}`);
+for(const token of ['EXECUTABLE','NOT_EXPOSED','REQUIRES_VALIDATION','resolveActionTarget','createsAuthorization:false','executesAction:false'])assert.ok(contract.includes(token),`missing contract token ${token}`);
+for(const token of ['canonicalCapability','Canonical capability','EXECUTABLE','NOT_EXPOSED','execution availability'])assert.ok(js.includes(token),`missing UI convergence token ${token}`);
+assert.ok(!js.includes('dashboard-work-surface-102948.js'),'stale 10.29.48 script reference remains');
+console.log('10.29.49 action convergence gate: PASS');

@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const root=new URL('../..',import.meta.url).pathname;
+const html=fs.readFileSync(`${root}/public/admin.html`,'utf8');
+const js=fs.readFileSync(`${root}/public/assets/js/extensions/dashboard-work-surface-102951.js`,'utf8');
+assert.ok(html.includes('dashboard-work-surface-102951.css?v=10.29.51&build=10.29.51'));
+assert.ok(html.includes('dashboard-work-surface-102951.js?v=10.29.51&build=10.29.51'));
+assert.ok(js.includes('canonicalResponsibility'));
+assert.ok(js.includes('canonicalCapability'));
+assert.ok(js.includes('canonicalActionExecutionBridge'));
+console.log('10.29.51 release surface gate: PASS');

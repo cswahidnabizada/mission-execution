@@ -1,0 +1,22 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const root=process.cwd();
+const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const fail=[];
+const must=(ok,msg)=>{if(!ok)fail.push(msg)};
+const version=read('VERSION').trim();
+const pkg=JSON.parse(read('package.json'));
+const service=read('src/worker/modules/admin-control/admin-control.service.js');
+const admin=read('public/assets/js/frontend/admin/admin.js');
+const routes=read('src/worker/modules/admin-control/admin-control.routes.js');
+must(version==='10.40.0','10.40.1','VERSION must be 10.40.0');
+must(pkg.version===version,'package version must match VERSION');
+must(service.includes("release:'10.40.0','10.40.1'"),'System Health must expose the current release identity');
+must(service.includes('metadataOnly:false'),'System Health must remain live current-state');
+for(const token of ['currentSituation','currentData','activeProducts','evaluatedAt','pendingDataEntries','trashedRecords','openAdministrativeOperations'])must(service.includes(token),`System Health current-state contract missing: ${token}`);
+for(const token of ['Reading current platform situation','CURRENT DATA','RUNNING PRODUCT SURFACE','Latest governed activity','refreshSystemHealth'])must(admin.includes(token),`System Health live UI missing: ${token}`);
+must(!service.includes("release:'10.38.23'"),'Stale System Health release identity remains');
+must(routes.includes("/api/platform/admin/system-health"),'System Health route missing');
+must(!admin.includes('Operational metadata only. Tenant payloads and private content are never exposed here.'),'Old static System Health copy remains');
+console.log(`System Health current-situation gate ${fail.length?'FAIL':'PASS'} (${version})`);
+if(fail.length){for(const x of fail)console.error(`- ${x}`);process.exit(1)}

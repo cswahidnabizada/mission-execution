@@ -1,0 +1,11 @@
+import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');const read=p=>fs.readFileSync(path.join(root,p),'utf8');const fail=m=>{throw new Error(m)};
+const version=read('VERSION').trim();if(!/^\d+\.\d+\.\d+$/.test(version))fail(`VERSION expected 10.38.19+ compatible release, got ${version}`);
+const pkg=JSON.parse(read('package.json'));if(!/^10\.38\.(19|20|21|22|23|24|25|26|27|28|29)$|^10\.40\.(0|1)$/.test(pkg.version))fail('package version mismatch');
+const service=read('src/worker/security/product-studio.service.js');for(const token of ['getProductStudio','DESIGN_KEYS','country-foundation → product-design → product-version','presentation'])if(!service.includes(token))fail(`Product Studio service missing ${token}`);
+const routes=read('src/worker/modules/admin-control/admin-control.routes.js');if(!routes.includes("/api/platform/admin/product-studio"))fail('Product Studio read model route missing');if(!routes.includes('getProductStudio'))fail('Product Studio service not wired to admin route');
+const admin=read('public/assets/js/frontend/admin/admin.js');for(const token of ["['Product Studio','product-studio']","renderProductStudio","data-ps-stage","data-ps-panel","CREATE / OPEN FOUNDATION","CREATE PRODUCT VERSION","UI PRESENTATION","OPEN PRODUCT VERIFICATION"])if(!admin.includes(token))fail(`Unified Product Studio UI missing ${token}`);
+for(const legacy of ["['Product Factory','platform']","['Country Data Studio','country-data']","['Product Launch','product-launch']","['Product Verification','product-verification']"])if(admin.includes(legacy))fail(`Legacy product section still exposed in primary navigation: ${legacy}`);
+if(admin.includes('id="ps-Blueprint" class="input"') && (admin.match(/id="ps-Blueprint"/g)||[]).length>1)fail('Duplicate Product Studio blueprint selector');
+if(!admin.includes('data-ps-config-save'))fail('Product configuration actions not unified into Product Studio');
+console.log('10.38.19 Unified Product Studio: PASS');

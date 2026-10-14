@@ -1,0 +1,19 @@
+import fs from 'node:fs';import path from 'node:path';import crypto from 'node:crypto';
+const root=process.cwd(),read=p=>fs.readFileSync(path.join(root,p),'utf8'),fail=[];
+const files=[];function walk(d){for(const e of fs.readdirSync(d,{withFileTypes:true})){if(['node_modules','.git'].includes(e.name))continue;const p=path.join(d,e.name);if(e.isDirectory())walk(p);else files.push(p)}}walk(root);
+const hashes=new Map();for(const f of files){const h=crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');const a=hashes.get(h)||[];a.push(path.relative(root,f));hashes.set(h,a)}const dup=[...hashes.values()].filter(x=>x.length>1);if(dup.length)fail.push(`duplicate file groups: ${dup.length}`);
+const arch=read('src/worker/core/canonical-architecture-control.js'),entry=read('src/worker/security/platform-data-entry.service.js'),routes=read('src/worker/modules/admin-control/admin-control.routes.js'),data=read('src/worker/security/platform-data-control.service.js'),trash=read('src/worker/security/platform-trash.service.js'),ui=read('public/assets/js/frontend/admin/admin.js');
+for(const t of ['truth:','lifecycle:','actions:','authorization:','tenantBoundary:','dataEntry:'])if(!arch.includes(t))fail.push(`authority missing: ${t}`);
+if(!arch.includes('architectureFrozen:true'))fail.push('architecture not frozen');if(!arch.includes('ENTRY')||!arch.includes('TRUTH')||!arch.includes('DECISION')||!arch.includes('CREATION')||!arch.includes('RUNTIME')||!arch.includes('CONTROL')||!arch.includes('TRASH'))fail.push('canonical lifecycle loop missing');
+for(const t of ['prepareDataEntry','commitDataEntry','previewDataEntryImport','commitDataEntryImport','dependencyCheck','policyCheck','forbiddenSecrets','idempotencyKey','commitCanonical'])if(!entry.includes(t))fail.push(`entry gate control missing: ${t}`);
+for(const t of ['createProductDefinition','createCountryBlueprint','createCountryLaunchDraft','createExpansionCase','createConfigurationDraft'])if(!entry.includes(t))fail.push(`canonical creator delegation missing: ${t}`);
+for(const t of ['/api/platform/admin/data-entry/preview','/api/platform/admin/data-entry/import/preview','/api/platform/admin/data-entry/import/commit','/api/platform/admin/data-entry/'])if(!routes.includes(t))fail.push(`entry route missing: ${t}`);
+if(!routes.includes('requirePlatformSuperAdminStepUp(request,env)'))fail.push('step-up boundary missing');
+if(!data.includes("resourceType:'data_entry'"))fail.push('Data Control does not expose entry ledger');if(!data.includes('canonical_resource_type'))fail.push('Data Control lacks canonical entry linkage');
+if(!trash.includes('syncEntryLifecycle'))fail.push('Trash lifecycle does not synchronize Data Entry provenance');
+if(!ui.includes('Data Entry')||!ui.includes('data-entry')||!ui.includes('renderDataEntry'))fail.push('Data Entry UI missing');
+for(const bad of ['eval(','new Function','unsafe-eval','Data Intelligence Engine','Super Data Engine']){if(entry.includes(bad)||arch.includes(bad))fail.push(`forbidden construct in frozen entry architecture: ${bad}`)}
+const migration=read('database/migrations/0095_governed_data_entry_gate.sql');for(const t of ['platform_data_entry_records','provenance_json','purpose','classification','idempotency_key','canonical_resource_id','DE_PLATFORM_DATA_ENTRY'])if(!migration.includes(t))fail.push(`migration control missing: ${t}`);
+const schema=read('database/schema.current.sql');if(!schema.includes('CREATE TABLE platform_data_entry_records'))fail('current schema missing data entry table');
+const release=read('RELEASE.md');if(!release.includes('Status: final audited project'))fail.push('release not marked final audited project');
+console.log(`Complete Product Audit: ${fail.length?'FAIL':'PASS'} (${files.length} files scanned, ${dup.length} duplicate groups)`);if(fail.length){fail.forEach(x=>console.error(' - '+x));process.exit(1)}

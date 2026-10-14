@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Mission Execution | Company Registration</title>
+  <link rel="stylesheet" href="/assets/css/tailwind.local.css">
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/auth.css"><link rel="stylesheet" href="/assets/css/global-nav.css"><link rel="stylesheet" href="/assets/css/product-completion.css?v=16.10.10">
+</head>
+<body class="bg-slate-50 min-h-screen p-4 sm:p-6">
+  <header class="max-w-3xl mx-auto flex justify-between items-center mb-6">
+    <div><div class="text-[10px] font-black tracking-widest text-emerald-600">ON MISSION // COUNTRY PRODUCT</div><h1 class="impact-text text-3xl font-black">ORGANIZATION REGISTRATION</h1></div>
+    <a href="/login.html" class="border-2 border-slate-950 bg-white px-4 py-2 rounded-xl text-xs font-black">← LOGIN</a>
+  </header>
+  <main class="max-w-3xl mx-auto space-y-5">
+    <section class="bg-slate-950 text-white rounded-3xl p-6">
+      <div class="text-xs font-black text-lime-400">WHO CAN REGISTER?</div>
+      <div class="text-xl font-black mt-2">Start an organization in a launched country</div>
+      <p class="text-sm text-slate-300 mt-2">A country appears here only after Super Admin has completed and activated its product. Verification and access then follow that country’s configured rules.</p>
+    </section>
+<section id="availabilityCard" class="bg-white border-2 border-slate-200 rounded-3xl p-5"><div id="availabilityState" class="text-sm font-bold text-slate-600">Checking launched countries…</div></section><section class="launch-contract"><article><b>COUNTRY PRODUCT</b><span>Only activated countries can be selected.</span></article><article><b>ELIGIBILITY</b><span>Organization type, sector and user class are checked by policy.</span></article><article><b>VERIFICATION</b><span>Trust and review follow the selected country product.</span></article><article><b>FIRST OUTCOME</b><span>After activation, the journey continues to people and the first mission.</span></article></section><section id="accountCard" class="auth-card">
+      <div class="step text-blue-600">STEP 1</div><h2 class="text-2xl font-black">Create company admin</h2>
+      <p class="text-sm text-slate-500 mt-1">You can complete company verification after your account is created.</p>
+      <form id="registerForm" class="space-y-3 mt-5">
+        <select id="countryCode" class="input" autocomplete="country" required><option value="">Select your country *</option></select>
+        <input id="companyName" class="input" autocomplete="organization" placeholder="Official company name" required>
+        <select id="organizationType" class="input"><option value="company">Company</option><option value="nonprofit">Non-profit</option><option value="other">Other organization</option></select>
+        <select id="sectorCode" class="input"><option value="general">General</option></select>
+        <select id="purposeCode" class="input"><option value="operational_communications">Operational communications</option></select>
+        <input id="registrationNumber" class="input" placeholder="Registration number (if required by country)">
+        <input id="registeredAddressLine1" class="input" autocomplete="address-line1" placeholder="Registered address">
+        <div class="grid grid-cols-2 gap-2"><input id="registeredPostalCode" class="input" autocomplete="postal-code" placeholder="Postal code"><input id="registeredCity" class="input" autocomplete="address-level2" placeholder="City"></div>
+        <input id="adminName" class="input" autocomplete="name" placeholder="Admin full name" required>
+        <input id="email" type="email" class="input" autocomplete="email" placeholder="Business email" required>
+        <input id="newPassword" type="password" class="input" autocomplete="new-password" placeholder="Password (minimum 12 characters)" required minlength="12">
+        <input id="confirmPassword" type="password" class="input" autocomplete="new-password" placeholder="Confirm password" required minlength="12">
+        <button class="w-full bg-emerald-500 border-2 border-slate-950 rounded-xl py-3 font-black text-xs">START ORGANIZATION</button>
+        <div id="registerFeedback" class="text-xs font-bold"></div>
+      </form>
+    </section>
+  </main>
+  <script type="module" src="/assets/js/pages/register.js?v=16.10.10"></script>
+<script type="module">import {hydrateCountryPicker} from "/assets/js/core/country-picker.js?v=16.10.10"; hydrateCountryPicker("#countryCode");</script><script type="module" src="/assets/js/core/global-nav.js?v=16.10.10"></script></body>
+</html>

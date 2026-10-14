@@ -1,0 +1,18 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const root=process.cwd();
+const repo=fs.readFileSync(`${root}/src/worker/repositories/executor.repository.js`,'utf8');
+const registration=fs.readFileSync(`${root}/public/assets/js/pages/executor-register.js`,'utf8');
+const match=repo.match(/INSERT INTO public_executor_profiles \(([^)]+)\) VALUES \(([^)]+)\)/s);
+assert.ok(match,'public_executor_profiles INSERT must exist');
+const columns=match[1].split(',').map(x=>x.trim()).filter(Boolean);
+const values=match[2].split(',').map(x=>x.trim()).filter(Boolean);
+assert.equal(columns.length,12,'executor profile INSERT must target exactly 12 columns');
+assert.equal(values.length,12,'executor profile INSERT must provide exactly 12 values');
+assert.equal(columns.filter(x=>x==='country_code').length,1,'country_code must appear exactly once');
+assert.ok(columns.includes('website'),'website must be part of the canonical registration INSERT');
+assert.equal(values.filter(x=>x==='?').length,10,'executor profile INSERT must have 10 bound values');
+assert.equal(values.filter(x=>x==='CURRENT_TIMESTAMP').length,2,'executor profile INSERT must set created_at/updated_at server-side');
+assert.match(repo,/profile\.website\|\|null/);
+assert.match(registration,/countryCode/);
+console.log('10.31.65 independent executor registration integrity: PASS');

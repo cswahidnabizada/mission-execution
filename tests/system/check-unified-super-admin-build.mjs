@@ -1,0 +1,27 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const root=process.cwd();
+const read=f=>fs.readFileSync(path.join(root,f),'utf8');
+const failures=[];
+const routes=fs.readFileSync(path.join(root,'src/worker/modules/admin-control/admin-control.routes.js'),'utf8')+fs.readdirSync(path.join(root,'src/worker/modules/admin-control')).filter(f=>/^admin-.*\.routes\.js$/.test(f)).map(f=>fs.readFileSync(path.join(root,'src/worker/modules/admin-control',f),'utf8')).join('\n');
+const publisher=read('src/worker/modules/admin-control/product-publisher-orchestrator.service.js');
+const admin=read('public/assets/js/frontend/admin/admin.js');
+const adminRuntime=read('public/assets/js/frontend/admin/admin-runtime.js');
+const shell=read('public/assets/js/frontend/admin/shell.js');
+const workspaceRegistry=read('public/assets/js/frontend/admin/workspace-registry.js');
+const commandCenter=read('public/assets/js/frontend/admin/command-center.js');
+const controller=read('public/assets/js/frontend/admin/admin-controller.js');
+const buildData=read('src/worker/modules/admin-control/admin-build-data.routes.js');
+for(const needle of ['/api/platform/admin/product-publisher/start','/api/platform/admin/product-publisher/workspace','/validate','/publish','/verify'])if(!routes.includes(needle))failures.push(`missing Product Factory route: ${needle}`);
+for(const needle of ['country_blueprint','product_definition','country_product_launch'])if(!publisher.includes(needle)&&!buildData.includes(needle))failures.push(`Publisher/control projection missing ${needle}`);
+if(!publisher.includes('verifyPublisherWorkspace')||!routes.includes('product-publisher')||!routes.includes('/verify'))failures.push('Product verification must remain reachable through the canonical Publisher without duplicating its backend authority');
+for(const needle of ['Market Factory','Product Monitor','System Health','Certification'])if(!workspaceRegistry.includes(needle))failures.push(`Super Admin workspace registry missing ${needle}`);if(!shell.includes('CONTROL CENTER')||!shell.includes('data-view="overview"'))failures.push('Super Admin Command Center entry missing');
+for(const needle of ['product-build','product-studio','product-launch','product-ecosystem','expansion'])if(!controller.includes(`'${needle}':'product-publisher'`))failures.push(`Legacy destination ${needle} must converge to Product Factory`);
+if(shell.includes('Product & Country · Expansion'))failures.push('Expansion remains a parallel product-building navigation destination');
+if(commandCenter.includes('data-command-nav="product-studio"')||commandCenter.includes('data-command-nav="product-launch"'))failures.push('Command Center still routes to a legacy product builder');
+if(!(commandCenter.includes('data-command-action="product-publisher"')||commandCenter.includes('data-command-nav="product-publisher"')))failures.push('Command Center must open the canonical Market Factory/Product Publisher surface');
+if(!buildData.includes('deprecated:true')||!buildData.includes('getPublisherWorkspace'))failures.push('Legacy Product Studio/Build routes must return canonical Product Factory projections');
+if(admin.includes("['02 · Build','product-build']")||admin.includes("['02 · Product Studio','product-studio']")||admin.includes("['03 · Product Launch','product-launch']"))failures.push('Legacy duplicate product-build destinations remain in primary navigation');
+if((commandCenter.match(/document\.querySelectorAll\('\[data-command-nav\]'\)/g)||[]).length>1)failures.push('Command Center navigation is bound more than once');
+if(failures.length){console.error('Unified Super Admin canonical publisher gate: FAIL');for(const f of failures)console.error(`- ${f}`);process.exit(1)}
+console.log('Unified Super Admin canonical publisher gate: PASS');

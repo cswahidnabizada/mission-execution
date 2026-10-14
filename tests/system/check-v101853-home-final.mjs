@@ -1,0 +1,12 @@
+import fs from "node:fs";
+import assert from "node:assert/strict";
+const html=fs.readFileSync("public/admin.html","utf8");
+const js=fs.readFileSync("public/assets/js/pages/dashboard-command-center.js","utf8");
+const css=fs.readFileSync("public/assets/css/dashboard-modern-responsive.css","utf8");
+for(const id of ["nmHome","om53Situation","om53Active","om53Attention","om53Requests","om53Opportunities","om53AttentionList","om53Chart"]) assert.match(html,new RegExp(`id="${id}"`));
+for(const x of ["om53-home-head","om53-hero","om53-signal-grid","om53-main-grid","om53-trend-card"]) assert.ok(html.includes(x),`missing ${x}`);
+for(const x of ["async function loadHome(force=false)","renderOm53Attention","renderOm53Chart","om53Situation","om53Opportunities"]) assert.ok(js.includes(x),`missing ${x}`);
+assert.ok(css.includes(".om53-home-head")&&css.includes(".om53-main-grid"),"missing fresh Home CSS");
+assert.ok(!html.includes('class="nm-home-overview"')&&!html.includes('class="nm-home-chart"')&&!html.includes('id="nmSignal"'),"legacy Home presentation still mounted");
+assert.ok(!css.includes("/* Modern Home */"),"legacy Home CSS block still present");
+console.log("Home 10.18.53 final contract: PASS");

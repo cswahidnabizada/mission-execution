@@ -1,0 +1,47 @@
+{
+  "name": "Human Context Workspace",
+  "version": "10.93.0",
+  "wave": 4,
+  "principle": "Today tells people what matters. Work lets them work. Context lets them understand.",
+  "renderer": "public/assets/js/frontend/work/context-workspace.js",
+  "model": "public/assets/js/frontend/work/context-work-model.js",
+  "types": [
+    {
+      "type": "mission",
+      "authority": "mission",
+      "entry": "canonical Mission Workspace"
+    },
+    {
+      "type": "person",
+      "authority": "people",
+      "entry": "identity/person context"
+    },
+    {
+      "type": "organization",
+      "authority": "organization",
+      "entry": "composed read context"
+    },
+    {
+      "type": "network",
+      "authority": "network",
+      "entry": "relationship context"
+    },
+    {
+      "type": "object",
+      "authority": "object",
+      "entry": "mission-object context"
+    },
+    {
+      "type": "product",
+      "authority": "product",
+      "entry": "governed product context"
+    }
+  ],
+  "rules": [
+    "No duplicate domain authority",
+    "No mutation authority in context layer",
+    "No HumanWorkItem fabrication for stable reference data",
+    "Explicit degraded semantics for optional cross-domain reads",
+    "Control Plane remains separate"
+  ]
+}

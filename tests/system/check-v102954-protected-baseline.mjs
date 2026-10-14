@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const root=new URL('../..',import.meta.url).pathname;
+assert.equal(fs.readFileSync(`${root}/VERSION`,'utf8').trim(),'10.29.54');
+const release=fs.readFileSync(`${root}/RELEASE-10.29.54.md`,'utf8');
+assert.ok(release.includes('Built from protected 10.29.53'));
+const js=fs.readFileSync(`${root}/public/assets/js/extensions/dashboard-work-surface-102954.js`,'utf8');
+for(const token of ['canonicalResponsibility','canonicalCapability','canonicalActionExecutionBridge','canonicalOperatorIntent','canonicalOperatorActionInventory']) assert.ok(js.includes(token));
+assert.ok(js.includes('m.executor_name||"—"'));
+assert.ok(!js.includes('m.executor_name||m.driver_name'));
+const route=fs.readFileSync(`${root}/src/worker/extensions/operations-context/operations-context.routes.js`,'utf8');
+assert.ok(route.includes('const viewerActionSurface='));
+console.log('10.29.54 protected baseline gate: PASS');

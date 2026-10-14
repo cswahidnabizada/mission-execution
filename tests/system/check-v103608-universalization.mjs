@@ -1,0 +1,11 @@
+import fs from 'node:fs'; import path from 'node:path';
+const root=process.cwd(); const read=p=>fs.readFileSync(path.join(root,p),'utf8'); const must=(p,re,l)=>{if(!re.test(read(p)))throw new Error(`${p}: missing ${l}`)};
+must('database/migrations/0077_canonical_domain_capability_universalization.sql',/canonical_domain_registry/,'domain registry');
+must('database/migrations/0077_canonical_domain_capability_universalization.sql',/canonical_object_type_registry/,'object type registry');
+must('database/migrations/0077_canonical_domain_capability_universalization.sql',/\('cargo','Cargo','logistics','logistics'/,'Cargo logistics object');
+must('src/worker/core/canonical-domain-registry.js',/domainExtensions:Object\.freeze\(\{logistics:"Logistics"\}\)/,'Logistics domain extension');
+must('src/worker/core/canonical-vocabulary.js',/canonicalObjectContext/,'cargo context');
+must('src/worker/modules/objects/objects.routes.js',/\/api\/objects/,'objects route');
+must('public/assets/js/extensions/canonical-dashboard-runtime.js',/objects:'\[data-exp-area=\"objects\"\] \.nav-label'/,'Objects navigation runtime contract');
+must('src/worker/core/canonical-vocabulary.js',/LEGACY_USER_TERMS/,'Cargo compatibility vocabulary');
+console.log('10.36.8 universalization contract: PASS');

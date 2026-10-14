@@ -1,0 +1,28 @@
+import fs from 'node:fs';
+import {MISSION_LIVENESS_STATES,canonicalLivenessState,assessCanonicalMissionLiveness,validateCanonicalMissionLiveness} from '../../src/worker/core/canonical-liveness-registry.js';
+import {buildUnifiedOperationalExecution,validateUnifiedOperationalExecution} from '../../src/worker/extensions/operations-context/unified-operational-execution.contract.js';
+import {buildMissionContext} from '../../src/worker/modules/intelligence/mission-context.js';
+
+const root=process.cwd();
+if(MISSION_LIVENESS_STATES.join(',')!=='ACTIONABLE,WAITING,ESCALATED,BREACH,TERMINAL') throw new Error('Canonical liveness vocabulary mismatch');
+if(canonicalLivenessState('waiting')!=='WAITING'||canonicalLivenessState('BREACH')!=='BREACH'||canonicalLivenessState('unknown')!==null) throw new Error('Canonical liveness normalization mismatch');
+const terminal=assessCanonicalMissionLiveness({mission:{id:1,status:'Completed'},flow:{terminal:true}});
+if(terminal.state!=='TERMINAL') throw new Error('Terminal mission must be TERMINAL');
+if(validateCanonicalMissionLiveness({...terminal,missionId:1}).length) throw new Error('Valid terminal liveness rejected');
+const ctx=buildMissionContext({id:1,status:'Pending',company_id:1});
+if(ctx.lifecycle.statusIndex!==0) throw new Error('Mission context status index regression');
+const unified=buildUnifiedOperationalExecution({mission:{id:1,status:'Pending',state_version:3},session:{role:'admin'},truth:{lifecycle:{status:'Pending'}},liveness:{state:'ACTIONABLE',reasonCode:'owner_execution_selection'},readiness:{readiness:{state:'READY'},execution:{state:'EXECUTABLE'}},responsibility:{responsible:{type:'UNASSIGNED',name:'No execution responsibility established.'}},capability:{code:'assign_driver',label:'Assign Driver'},operatorIntent:{state:'EXECUTE',action:{code:'assign_driver'}},operatorActionInventory:{counts:{all:1,execution:1,support:0,management:0},all:[{code:'assign_driver',label:'Assign Driver'}],execution:[{code:'assign_driver',label:'Assign Driver'}],support:[],management:[]},decisionActionConsistency:{state:'CONSISTENT',problems:[]},operationalFlow:{state:'ACTIONABLE',action:{code:'assign_driver'}},actionExecutionBridge:{state:'EXECUTABLE',code:'assign_driver',label:'Assign Driver',target:{service:'assign_driver'},viewerCanExecute:true},actions:[{code:'assign_driver',label:'Assign Driver'}]});
+if(unified.liveness.state!=='ACTIONABLE'||!unified.missionId) throw new Error('Unified execution does not consume canonical liveness');
+if(validateUnifiedOperationalExecution(unified).some(x=>x==='invalid_canonical_liveness_state')) throw new Error('Unified execution rejected canonical liveness');
+const guard=fs.readFileSync(`${root}/src/worker/extensions/engine-coordinator/engine-coordinator.service.js`,'utf8');
+if(guard.includes('mission-liveness.guard.js')) throw new Error('Legacy liveness guard remains referenced');
+if(fs.existsSync(`${root}/src/worker/extensions/mission-liveness/mission-liveness.guard.js`)) throw new Error('Legacy liveness guard file still exists');
+const readiness=fs.readFileSync(`${root}/src/worker/extensions/operations-context/operational-readiness.contract.js`,'utf8');
+if(readiness.includes('LIVENESS_WAITING_STATES')) throw new Error('Duplicate liveness waiting vocabulary remains');
+const flow=fs.readFileSync(`${root}/src/worker/extensions/operations-context/canonical-operational-flow.contract.js`,'utf8');
+if(flow.includes('const FLOW_STATES=new Set(["ACTIONABLE"')) throw new Error('Duplicate liveness state vocabulary remains in operational flow');
+const route=fs.readFileSync(`${root}/src/worker/extensions/operations-context/operations-context.routes.js`,'utf8');
+if(!route.includes('buildUnifiedOperationalExecution')) throw new Error('Unified execution not integrated into context route');
+const admin=fs.readFileSync(`${root}/public/admin.html`,'utf8');
+if(!admin.includes('dashboard-experience-103056.js')) throw new Error('Active dashboard is not the current canonical UI surface');
+console.log('10.30.42 Canonical Liveness + Unified Operational Execution gate: PASS');

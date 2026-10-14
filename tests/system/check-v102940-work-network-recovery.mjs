@@ -1,0 +1,18 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const root=new URL('../../',import.meta.url).pathname;
+const routes=fs.readFileSync(`${root}src/worker/extensions/adaptive-orchestration/adaptive-orchestration.routes.js`,'utf8');
+const html=fs.readFileSync(`${root}public/admin.html`,'utf8');
+const version=fs.readFileSync(`${root}VERSION`,'utf8').trim();
+const js=fs.readFileSync(`${root}public/assets/js/extensions/dashboard-work-surface-${version.replaceAll('.','')}.js`,'utf8');
+const cc=fs.readFileSync(`${root}public/assets/js/pages/dashboard-command-center.js`,'utf8');
+assert.ok(routes.includes('getForSession, listForSession'),'mission session list import missing');
+assert.ok(routes.includes('listForSession(env, session'),'coordination mission loader missing');
+assert.ok(routes.includes('Promise.allSettled'),'coordination enrichment must be resilient');
+assert.ok(html.includes(`dashboard-work-surface-${version.replaceAll('.','')}.js?v=${version}&build=${version}`),'current work surface missing');
+assert.ok(html.includes(`dashboard-work-surface-${version.replaceAll('.','')}.css?v=${version}&build=${version}`),'current work CSS missing');
+assert.ok(html.includes('id="newNetworkQueue"')&&html.includes('id="nmNetworkSummary"')&&html.includes('id="nmNetworkBody"'),'network workspace hosts missing');
+assert.ok(cc.includes('function loadNetwork')&&cc.includes('function renderNetwork'),'network renderer missing');
+assert.ok(cc.includes('data-network-view')&&cc.includes('data-network-queue-index'),'network navigation/queue missing');
+assert.ok(js.includes('/api/operations/multi-mission?limit=100')&&js.includes('/api/operations/coordination-mesh?limit=100')&&js.includes('/api/operations/temporal-coordination?limit=100'),'work coordination endpoints missing');
+console.log('10.29.40 Work & Network Recovery: PASS');

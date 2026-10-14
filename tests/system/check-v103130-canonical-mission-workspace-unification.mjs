@@ -1,0 +1,31 @@
+import fs from "node:fs";
+import path from "node:path";
+import {spawnSync} from "node:child_process";
+const root=process.cwd(),fail=[];
+const read=f=>fs.readFileSync(path.join(root,f),"utf8");
+const ui=read("public/assets/ui/canonical-mission-workspace.js");
+const cap=read("src/worker/extensions/actions-intelligence/action-capability.engine.js");
+const reg=read("src/worker/application/actions/action-registry.js");
+const map=read("src/worker/application/actions/action-service-map.js");
+const role=read("public/assets/js/pages/canonical-role-workspace.js");
+const tv=read("public/assets/js/core/attention-panel.js");
+const dash=read("public/assets/js/extensions/canonical-dashboard-runtime.js");
+const fy=read("public/assets/js/pages/foryou.js");
+const driverHtml=read("public/driver/dashboard.html");
+for(const v of ["situation","execution","evidence","history","actions","mission-tv"])if(!ui.includes(`data-cmw-pane="${v}"`))fail.push(`missing canonical pane ${v}`);
+for(const f of ["renderSituation","renderExecution","renderEvidence","renderHistory","renderActions","renderMissionTv"])if((ui.match(new RegExp(`function ${f}\\(`,"g"))||[]).length!==1)fail.push(`duplicate/missing ${f}`);
+for(const code of ["withdraw_foryou","withdraw_network","approve_foryou_request","decline_foryou_request","accept_network","reject_network"])if(!reg.includes(code)||!map.includes(`${code}:`))fail.push(`action contract incomplete: ${code}`);
+if(!cap.includes("A.WITHDRAW_FORYOU")||!cap.includes("A.WITHDRAW_NETWORK"))fail.push("distribution withdrawal capabilities missing");
+if(!ui.includes("data-review-action")||!ui.includes("approve_foryou_request")||!ui.includes("accept_network"))fail.push("canonical request/invitation execution missing");
+if(ui.includes('"Share Mission"')===false)fail.push("single Share Mission presentation missing");
+if(tv.includes("data-tv-post")||tv.includes("/api/missions/status")||tv.includes("/api/mission-management/missions"))fail.push("Mission TV still contains direct mission mutation execution");
+if(fy.includes("/api/public/requests/")||fy.includes("distribution/withdraw-foryou")||fy.includes("/api/network/invitations/"))fail.push("ForYou page still contains direct mission decision execution");
+if(role.includes("/api/missions/")&&role.includes("/messages"))fail.push("driver cockpit still contains direct mission messaging");
+if(role.includes("/driver-assignment"))fail.push("driver cockpit still contains direct assignment mutation");
+if(dash.includes("data-request-approve")||dash.includes("data-request-decline")||dash.includes("data-network-invite-action"))fail.push("dashboard request/invitation mutation UI remains");
+if(!role.includes('params.get("mission")')||!role.includes('params.get("action")'))fail.push("driver deep-link support missing");
+if(driverHtml.includes("quickMessageForm"))fail.push("driver quick mission messaging surface remains");
+for(const f of ["public/assets/js/core/attention-panel.js","public/assets/js/pages/foryou.js","public/assets/js/pages/canonical-role-workspace.js","public/assets/js/extensions/canonical-dashboard-runtime.js","public/assets/ui/canonical-mission-workspace.js"]){const cp=spawnSync(process.execPath,["--check",path.join(root,f)],{encoding:"utf8"});if(cp.status!==0)fail.push(`${f} syntax\n${cp.stderr}`);}
+if(fs.existsSync(path.join(root,"public/assets/js/core/delivery-camera.js")))fail.push("unused delivery-camera helper remains");
+if(fail.length){console.error("FAIL 10.31.30 Canonical Mission Workspace Unification");for(const x of fail)console.error(" - "+x);process.exit(1)}
+console.log("PASS 10.31.30 Canonical Mission Workspace Unification");

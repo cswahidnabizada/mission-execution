@@ -1,0 +1,23 @@
+import fs from "node:fs";
+import assert from "node:assert/strict";
+import {deriveActionCapabilities} from "../../src/worker/extensions/actions-intelligence/action-capability.engine.js";
+const read=p=>fs.readFileSync(p,"utf8");
+const contract=read("src/worker/extensions/actions-intelligence/action-contract.engine.js");
+const cap=read("src/worker/extensions/actions-intelligence/action-capability.engine.js");
+const workspace=read("public/assets/ui/canonical-mission-workspace.js");
+const dashboard=read("public/assets/js/extensions/canonical-dashboard-runtime.js");
+
+const discovery={missionId:247,role:"admin",status:"Pending",accessKind:"foryou-discovery",mission:{id:247,public_enabled:1,status:"Pending"},perspective:{isOwner:false,isExecutingTenant:false,isPersonal:false},responsibility:{},source:{owned:false,shared:false,publicEnabled:true},assignmentFeature:{}};
+assert.deepEqual(deriveActionCapabilities(discovery).capabilities.map(x=>x.code),["request_foryou_mission"]);
+const pending={...discovery,accessKind:"pending-foryou",forYouRequest:{pending:true,status:"Pending",relation:"requester"}};
+assert.deepEqual(deriveActionCapabilities(pending).capabilities.map(x=>x.code),["cancel_foryou_request"]);
+assert.match(contract,/accessKind==="foryou-discovery"/);
+assert.match(contract,/foryou_request_required/);
+assert.match(contract,/foryou_owner_decision/);
+assert.match(cap,/ctx\.source\?\.publicEnabled/);
+assert.match(workspace,/Waiting for owner approval/);
+assert.match(workspace,/Request execution access/);
+assert.match(dashboard,/section=\$\{encodeURIComponent\(area\)\}/);
+assert.match(dashboard,/history\.pushState\(\{onMission:true,missionId:mid/);
+assert.match(dashboard,/window\.addEventListener\("popstate"/);
+console.log("PASS: 10.31.38 ForYou requester boundary + dynamic URL permanence");

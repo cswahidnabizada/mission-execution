@@ -1,0 +1,35 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {ACTION_REGISTRY,ACTION_CODES,ACTION_COMPATIBILITY_ALIASES,normalizeActionCode} from '../../src/worker/application/actions/action-registry.js';
+import {ACTION_SERVICE_MAP} from '../../src/worker/application/actions/action-service-map.js';
+import {auditActionRegistry} from '../../src/worker/extensions/actions-intelligence/action-registry-audit.js';
+import {auditActionQuality,actionQualitySummary} from '../../src/worker/extensions/actions-intelligence/action-quality-contract.js';
+const root=process.cwd();
+const ui=fs.readFileSync(`${root}/public/assets/js/core/action-registry.js`,'utf8');
+const html=fs.readFileSync(`${root}/public/admin.html`,'utf8');
+const dash=fs.readFileSync(`${root}/public/assets/js/extensions/dashboard-experience-103038.js`,'utf8');
+const dmc=fs.readFileSync(`${root}/public/assets/js/extensions/dashboard-mission-context-103038.js`,'utf8');
+const bridge=fs.readFileSync(`${root}/public/assets/js/extensions/canonical-action-experience-103038.js`,'utf8');
+assert.equal(Object.keys(ACTION_REGISTRY).length,44);
+assert.equal(Object.values(ACTION_CODES).length,44);
+assert.equal(Object.keys(ACTION_SERVICE_MAP).length,44);
+assert.deepEqual(auditActionRegistry(),[]);
+assert.deepEqual(auditActionQuality(),[]);
+const summary=actionQualitySummary();
+assert.equal(summary.canonicalActions,44);
+assert.equal(summary.compatibilityAliases,2);
+assert.equal(normalizeActionCode('accept_foryou'),'approve_foryou_request');
+assert.equal(normalizeActionCode('decline_foryou'),'decline_foryou_request');
+assert.ok(!('accept_foryou' in ACTION_REGISTRY));
+assert.ok(!('decline_foryou' in ACTION_REGISTRY));
+for(const [code,a] of Object.entries(ACTION_REGISTRY)){
+  assert.equal(a.id,code); assert.equal(a.canonical,true); assert.ok(a.quality);
+  assert.ok(a.quality.security&&a.quality.isolation&&a.quality.truth&&a.quality.concurrency&&a.quality.idempotency&&a.quality.audit&&a.quality.liveness&&a.quality.failure&&a.quality.execution);
+  assert.ok(ACTION_SERVICE_MAP[code]);
+}
+assert.ok(ui.includes('ACTION_COMPATIBILITY_ALIASES')&&ui.includes('ACTION_ID_LIST'));
+assert.ok(html.includes('dashboard-experience-103038.js')&&html.includes('dashboard-experience-103038.css'));
+assert.ok(dash.includes('canonicalActionId')&&dmc.includes('ACTION_GROUPS')&&bridge.includes('hasCanonicalAction'));
+const routes=fs.readFileSync(`${root}/src/worker/extensions/actions-intelligence/actions-intelligence.routes.js`,'utf8');
+assert.ok(routes.includes('version:"10.30.38"'));
+console.log('10.30.38 Canonical Action Quality & Execution Intelligence gate: PASS');

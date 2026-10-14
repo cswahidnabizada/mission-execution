@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const root=process.cwd();
+const read=f=>fs.readFileSync(path.join(root,f),'utf8');
+const backup=read('src/worker/security/backup-recovery-governance.service.js');
+const admin=read('public/assets/js/frontend/admin/admin.js');
+const gate=read('database/operations/migration-integrity-check.sql');
+if(!backup.includes("ORDER BY CASE WHEN b.status='active' THEN 1 ELSE 0 END DESC,b.code")) throw new Error('Backup governance ordering must use canonical backup status, not nonexistent active column.');
+if(admin.includes("state.data.backupRecoveryGovernance=await api('/api/platform/admin/backup-recovery-governance');")) throw new Error('Admin bootstrap must not fail closed on one governance module endpoint.');
+if(!admin.includes('Promise.allSettled')) throw new Error('Admin governance modules must load independently.');
+for(const token of ['DE_PRIVACY_REQUESTS','DE_BACKUP_DEFAULT','d1_managed_backup','primary_canonical','Expected result: zero rows']) if(!gate.includes(token)) throw new Error(`Migration integrity gate missing ${token}`);
+console.log('10.35.9 admin recovery + migration integrity contract: PASS');

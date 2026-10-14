@@ -1,0 +1,18 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const root=process.cwd();
+const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const assert=(ok,msg)=>{if(!ok)throw new Error(msg)};
+const auth=read('src/worker/core/auth-session.js');
+const access=read('public/assets/js/pages/access.js');
+const shell=read('public/assets/js/frontend/shell/app-shell.js');
+const admin=read('public/assets/js/frontend/admin/admin.js');
+assert(auth.includes('SESSION_AUTHORITY_CHECK_FAILED'),'session authority failure is not observable');
+assert(/catch \(error\) \{\n    \/\/ Do not convert an infrastructure\/D1\/KV failure into AUTH_REQUIRED/.test(auth),'infrastructure session failures are still collapsed into an anonymous session');
+assert(access.includes('Number(error?.status)===401'),'sign-in restore does not distinguish real expiry from transient server failure');
+assert(!access.includes('catch{clearSession();}'),'sign-in restore still clears session on every failure');
+assert(shell.includes('Number(e?.status)===401'),'app shell does not distinguish authentication expiry from runtime failure');
+assert(shell.includes('Workspace temporarily unavailable.'),'app shell lacks non-destructive runtime recovery state');
+assert(admin.includes('Number(error?.status)===401||Number(error?.status)===403'),'platform control does not distinguish authorization failure from runtime failure');
+assert(admin.includes('Platform temporarily unavailable'),'platform control lacks non-destructive runtime recovery state');
+console.log('10.38.3 authentication/session runtime convergence: PASS');

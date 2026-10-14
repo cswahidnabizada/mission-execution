@@ -1,0 +1,34 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {DatabaseSync} from 'node:sqlite';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
+const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const pkg=JSON.parse(read('package.json')); const lock=JSON.parse(read('package-lock.json')); const manifest=JSON.parse(read('RELEASE-MANIFEST.json')); const version=read('VERSION').trim();
+assert(['13.6.0','13.7.0','13.8.0','13.9.0','14.0.0','14.1.0','14.2.0','14.3.0','14.4.0','14.5.0','14.6.0','14.7.0','14.8.0','14.9.0','15.0.0','15.0.1','15.1.0','15.2.0','15.3.0','15.5.0','16.0.0','16.2.0','16.3.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10'].includes(version)); assert(['13.6.0','13.7.0','13.8.0','13.9.0','14.0.0','14.1.0','14.2.0','14.3.0','14.4.0','14.5.0','14.6.0','14.7.0','14.8.0','14.9.0','15.0.0','15.0.1','15.1.0','15.2.0','15.3.0','15.5.0','16.0.0','16.2.0','16.3.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10'].includes(pkg.version)); assert(['13.6.0','13.7.0','13.8.0','13.9.0','14.0.0','14.1.0','14.2.0','14.3.0','14.4.0','14.5.0','14.6.0','14.7.0','14.8.0','14.9.0','15.0.0','15.0.1','15.1.0','15.2.0','15.3.0','15.5.0','16.0.0','16.2.0','16.3.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10'].includes(lock.version)); assert(['13.6.0','13.7.0','13.8.0','13.9.0','14.0.0','14.1.0','14.2.0','14.3.0','14.4.0','14.5.0','14.6.0','14.7.0','14.8.0','14.9.0','15.0.0','15.0.1','15.1.0','15.2.0','15.3.0','15.5.0','16.0.0','16.2.0','16.3.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10'].includes(lock.packages[''].version));
+assert(['13.6.0','13.7.0','13.8.0','13.9.0','14.0.0','14.1.0','14.2.0','14.3.0','14.4.0','14.5.0','14.6.0','14.7.0','14.8.0','14.9.0','15.0.0','15.0.1','15.1.0','15.2.0','15.3.0','15.5.0','16.0.0','16.2.0','16.3.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10'].includes(manifest.version)); assert(['13.5.0','13.6.0','13.7.0','13.8.0','13.9.0','14.0.0','14.1.0','14.2.0','14.3.0','14.4.0','14.5.0','14.6.0','14.7.0','14.8.0','14.9.0','15.0.0','15.0.1','15.1.0','15.2.0','15.3.0','15.5.0','16.0.0','16.2.0','16.3.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10'].includes(manifest.base)); assert(['0144','0145','0146','0147','0148','0149','0151','0152','0153','0154','0155'].includes(manifest.migrationHighWaterMark)); assert([144,145,146,147,148,149,150,151,152,153,154,155].includes(manifest.migrationCount));
+const migration=read('database/migrations/0144_mission_continuity_next_situation.sql');
+for(const t of ['mission_next_situations','MISSION_NEXT_SITUATION_APPEND_ONLY','idx_mission_next_situation_sequence','canonical_capability_registry','capability_code','continuity']) assert(migration.includes(t),`13.6 migration missing ${t}`);
+const continuity=read('src/worker/security/mission-continuity-authority.service.js');
+for(const t of ["MISSION_CONTINUITY_AUTHORITY_VERSION='13.6.0'",'recordMissionNextSituation','getMissionNextSituation','NEXT_SITUATION_READY','RECOVERY_REQUIRED','append-only']) assert(continuity.includes(t),`continuity authority missing ${t}`);
+const outcome=read('src/worker/security/mission-outcome-authority.service.js');
+assert(outcome.includes("mission-continuity-authority.service.js")); assert(!outcome.includes('function deriveNextSituation'));
+const history=read('src/worker/extensions/agentic-layer/mission-outcome-history.service.js');
+assert(history.includes('mission-continuity-authority.service.js')); assert(!history.includes('function deriveNextSituation'));
+const arch=read('src/worker/core/canonical-architecture-control.js'); assert(arch.includes('continuity:"src/worker/security/mission-continuity-authority.service.js"'));
+const truth=read('src/worker/core/canonical-truth-registry.js'); assert(truth.includes('mission.next_situation'));
+const cap=read('src/worker/core/canonical-capability-registry.js'); assert(cap.includes('continuity:{domain:"platform",label:"Mission Continuity"}'));
+const coordinator=read('src/worker/extensions/mission-execution-coordinator/mission-execution-coordinator.contract.js'); assert(coordinator.includes("'continuity'")); assert(coordinator.includes("MISSION_EXECUTION_COORDINATOR_VERSION='15.1.0'") || coordinator.includes("MISSION_EXECUTION_COORDINATOR_VERSION='14.5.0'") || coordinator.includes("MISSION_EXECUTION_COORDINATOR_VERSION='14.4.0'") || coordinator.includes("MISSION_EXECUTION_COORDINATOR_VERSION='14.2.0'"));
+const gate=pkg.scripts['check:release']; assert(gate.includes('check-13-6-0-mission-continuity.mjs'));
+const schema=read('database/schema.current.sql');
+assert(schema.includes('CREATE TABLE mission_next_situations')); assert(schema.includes('CREATE UNIQUE INDEX idx_mission_next_situation_sequence'));
+const db=new DatabaseSync(':memory:');
+try{
+  db.exec(read('database/schema.current.sql'));
+  const cols=db.prepare('PRAGMA table_info(mission_next_situations)').all().map(r=>r.name);
+  assert(cols.includes('continuity_id')&&cols.includes('sequence_no'));
+  console.log('sqlite current-schema continuity validation: PASS');
+}finally{db.close();}
+console.log('13.6.0 mission continuity + next situation: PASS');
+console.log('One canonical continuity authority; no duplicate next-situation derivation remains.');

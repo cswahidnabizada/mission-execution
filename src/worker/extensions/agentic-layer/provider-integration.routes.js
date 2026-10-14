@@ -1,0 +1,9 @@
+import {json,readJson} from '../../core/http.js';
+import {requireSession} from '../../core/auth-session.js';
+import {limitAction} from '../../security/action-limit.js';
+import {listExternalProviderCapabilities,resolveExternalProviderCapability,EXTERNAL_PROVIDER_INTEGRATION_VERSION} from '../../security/external-provider-integration.service.js';
+
+export function registerProviderIntegrationRoutes(router){
+ router.get('/api/agent/providers/capabilities',async({request,env})=>{try{const session=await requireSession(request,env);await limitAction(env,session,'provider-capability-read',{limit:60,windowSeconds:60});const u=new URL(request.url);return json({success:true,version:EXTERNAL_PROVIDER_INTEGRATION_VERSION,capabilities:await listExternalProviderCapabilities(env,{companyId:Number(session?.tenantId||0)||0,providerCode:u.searchParams.get('providerCode'),actionCode:u.searchParams.get('actionCode'),limit:u.searchParams.get('limit')})});}catch(e){return json({success:false,error:e?.message||'Provider capability unavailable',code:e?.code||'PROVIDER_CAPABILITY_UNAVAILABLE'},e?.status||500);}});
+ router.post('/api/agent/providers/resolve',async({request,env})=>{try{const session=await requireSession(request,env);await limitAction(env,session,'provider-capability-resolve',{limit:30,windowSeconds:60});const body=await readJson(request);const capability=await resolveExternalProviderCapability(env,{companyId:Number(session?.tenantId||0)||0,countryCode:body?.countryCode||session?.countryCode||'ZZ',sectorCode:body?.sectorCode||'general',actionCode:body?.actionCode});return json({success:true,version:EXTERNAL_PROVIDER_INTEGRATION_VERSION,configured:Boolean(capability),capability:capability||null});}catch(e){return json({success:false,error:e?.message||'Provider resolution unavailable',code:e?.code||'PROVIDER_RESOLUTION_UNAVAILABLE'},e?.status||500);}});
+}

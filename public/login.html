@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>Mission Execution | Sign in</title>
+<link rel="stylesheet" href="/assets/css/tailwind.local.css?v=16.10.10">
+<link rel="stylesheet" href="/assets/css/frontend/tokens.css?v=16.10.10">
+<link rel="stylesheet" href="/assets/css/frontend/foundation.css?v=16.10.10">
+<link rel="stylesheet" href="/assets/css/frontend/components.css?v=16.10.10">
+<link rel="stylesheet" href="/assets/css/frontend/forms.css?v=16.10.10">
+<link rel="stylesheet" href="/assets/css/frontend/states.css?v=16.10.10">
+<link rel="stylesheet" href="/assets/css/frontend/public.css?v=16.10.10">
+</head>
+<body class="signin-page">
+<main class="signin-shell">
+  <section class="signin-brand">
+    <a href="/" class="brand-lockup"><span class="brand-mark">OM</span><span>ON MISSION</span></a>
+    <div class="signin-story">
+      <span class="eyebrow">SECURE WORKSPACE</span>
+      <h1>Sign in to your mission workspace.</h1>
+      <p>Mission Execution shows the work, responsibility and next valid action that belong to your current situation.</p>
+      <div class="signin-flow"><span>IDENTITY</span><i>→</i><span>SITUATION</span><i>→</i><span>WORK</span><i>→</i><span>OUTCOME</span></div>
+    </div>
+  </section>
+  <section class="signin-card">
+    <div class="eyebrow">ACCOUNT ACCESS</div>
+    <h2>Welcome back.</h2>
+    <p class="muted">Use your Mission Execution account. Access and available work are resolved by the platform.</p>
+    <form id="loginForm" class="signin-form" novalidate>
+      <label class="field">Email or username<input id="login" class="input" autocomplete="username" placeholder="you@example.com" required></label>
+      <label class="field">Password<input id="password" class="input" type="password" autocomplete="current-password" placeholder="Your password" required></label>
+      <button id="submitLogin" class="btn primary signin-submit" type="submit">SIGN IN</button>
+      <div id="loginError" class="error-state" role="alert" aria-live="polite"></div>
+    </form>
+    <div class="signin-links"><a href="/forgot-password.html">Forgot password?</a><a href="/register.html">Create an organization</a><a href="/driver">Become an executor</a></div>
+    <div class="signin-private"><strong>Private mission access</strong><span>Have a private mission code? Open the shared mission entry.</span><a href="/foryou/">OPEN PRIVATE MISSION →</a></div>
+    
+  </section>
+</main>
+<script type="module" src="/assets/js/pages/access.js?v=16.10.10"></script>
+</body></html>

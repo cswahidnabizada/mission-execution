@@ -1,0 +1,17 @@
+import fs from "node:fs";
+import assert from "node:assert/strict";
+const html=fs.readFileSync("public/admin.html","utf8");
+const runtime=fs.readFileSync("public/assets/js/extensions/operations-context-runtime.js","utf8");
+const rendering=fs.readFileSync("public/assets/js/extensions/operations-rendering-capability.js","utf8");
+const actions=fs.readFileSync("public/assets/js/extensions/operations-actions-capability.js","utf8");
+const command=fs.readFileSync("src/worker/extensions/operations-context/operations-command.routes.js","utf8");
+const repo=fs.readFileSync("src/worker/repositories/public.repository.js","utf8");
+assert.match(html,/data-ops-navigation="current"/); assert.match(html,/data-ops-mode="requests"/); assert.match(html,/data-ops-navigation="people"/);
+assert.doesNotMatch(html,/class="nm-wb-nav"/); assert.match(html,/data-ops-workbench-back/); assert.match(html,/data-ops-recompute/);
+for(const mode of ["mission","driver","customer","partner"]) assert.match(html,new RegExp(`data-ops-create-mode="${mode}"`));
+assert.doesNotMatch(actions,/nm-create-nav/); assert.match(runtime,/state\.section="requests"/); assert.match(runtime,/mode==="requests"/); assert.match(fs.readFileSync("public/assets/js/extensions/operations-navigation-capability.js","utf8"),/state\.requestCatalog=catalog/);
+assert.match(rendering,/state\.section==="requests"/); assert.match(command,/public_mission_requests/); assert.match(repo,/export async function listPublicRequests/); assert.match(repo,/export async function approveRequestStatus/); assert.match(repo,/export async function declineRequest/); assert.match(runtime,/renderRequestHandlingsWorkspace\(state\.selected\)/);
+console.log("PASS: dedicated Operations Requests scope exists");
+console.log("PASS: request queue uses existing tenant-scoped request catalog and management handlers");
+console.log("PASS: Workbench redundant internal navigation removed; one exit navigation plus recompute remain");
+console.log("PASS: Create Workbench fixed Mission / Driver / Customer / Partner navigation preserved");

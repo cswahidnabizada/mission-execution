@@ -1,0 +1,55 @@
+{
+  "version": "10.94.0",
+  "base": "10.93.0",
+  "wave": 5,
+  "name": "Navigation Collapse",
+  "principle": "Navigation represents human responsibilities, not backend entities.",
+  "canonicalDestinations": [
+    {
+      "key": "home",
+      "label": "Today",
+      "purpose": "orientation",
+      "question": "What matters now?"
+    },
+    {
+      "key": "work",
+      "label": "Work",
+      "purpose": "execution",
+      "question": "What can I work on now?"
+    },
+    {
+      "key": "network",
+      "label": "Network",
+      "purpose": "collaboration",
+      "question": "Who and what is connected to my work?"
+    },
+    {
+      "key": "objects",
+      "label": "Objects",
+      "purpose": "operations",
+      "question": "What operational objects matter?"
+    },
+    {
+      "key": "people",
+      "label": "People",
+      "purpose": "responsibility",
+      "question": "Who is involved and what responsibility/access do they have?"
+    },
+    {
+      "key": "account",
+      "label": "Account",
+      "purpose": "identity",
+      "question": "Who am I and what governs my account?"
+    }
+  ],
+  "rules": [
+    "The authenticated application exposes one canonical six-destination Human Work navigation model.",
+    "Product presentation may relabel destinations but cannot remove the canonical human navigation destinations.",
+    "Legacy human-facing hashes resolve to canonical destinations and remain compatibility bridges until Wave 6.",
+    "Context remains entered from Work or contextual surfaces and is not promoted to a seventh top-level destination.",
+    "Control Plane navigation remains separate and is never merged into Operations Plane navigation.",
+    "Navigation is presentation-only; domain authorities, authorization and canonical Action execution remain unchanged."
+  ],
+  "legacyAliasPolicy": "redirect-to-canonical-destination-until-wave-6",
+  "d1Migration": false
+}

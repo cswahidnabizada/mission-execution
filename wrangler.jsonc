@@ -1,0 +1,60 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "onmissionok-repo",
+  "compatibility_date": "2026-08-16",
+  "main": "_worker.js",
+  "keep_vars": true,
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash",
+    "run_worker_first": [
+      "/api/*"
+    ]
+  },
+  "kv_namespaces": [
+    {
+      "binding": "KV_BINDING",
+      "id": "0b949aa8a36b4b6abb3866fbca82b476"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "onmission-db",
+      "database_id": "73f56b45-ddb7-4b44-89de-12ce79d72a92"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "FILES",
+      "bucket_name": "onmission-files"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    "APP_URL": "https://onmissionok.com",
+    "SECURITY_STRICT_MODE": "true",
+    "TRUST_ENFORCEMENT_MODE": "enforce",
+    "AUDIT_RETENTION_DAYS": "365",
+    "PRIMARY_DATA_JURISDICTION": "DE",
+    "GERMANY_DATA_RESIDENCY": "required",
+    "DATA_PLANE_MODE": "jurisdiction-policy"
+  },
+  "triggers": {
+    "crons": [
+      "17 3 * * *"
+    ]
+  },
+  "ai": {
+    "binding": "AI"
+  },
+  "vectorize": [
+    {
+      "binding": "AGENT_VECTORIZE",
+      "index_name": "onmission-agent-memory"
+    }
+  ]
+}

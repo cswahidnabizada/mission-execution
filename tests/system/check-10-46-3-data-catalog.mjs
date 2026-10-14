@@ -1,0 +1,11 @@
+import fs from "node:fs";
+const runtime=fs.readFileSync("public/assets/js/frontend/admin/admin-runtime.js","utf8");
+const shell=fs.readFileSync("public/assets/js/frontend/admin/shell.js","utf8");
+const registry=fs.readFileSync("public/assets/js/frontend/admin/workspace-registry.js","utf8");
+const catalog=fs.readFileSync("public/assets/js/frontend/admin/data-catalog.js","utf8");
+const command=fs.readFileSync("public/assets/js/frontend/admin/command-center.js","utf8");
+if(!registry.includes("RESOURCES")||!registry.includes("Resource Management")) throw new Error("unified Resources navigation missing");
+if(registry.includes("['Data Catalog','data-catalog'")||registry.includes("['Data Entry','data-entry'")||registry.includes("['Data Studio','data-studio'")) throw new Error("legacy data-management surfaces remain primary navigation");
+for(const token of ["Countries","Sectors","Languages","Policies","Plans","Providers","Product Factory"]) if(!catalog.includes(token)) throw new Error(`catalog category missing ${token}`);
+if(command.includes("ADMIN JOURNEY · GOVERNED")||command.includes("What needs to happen?")) throw new Error("Command Center still contains legacy informational dashboard surfaces");
+console.log("10.50.0 data catalog gate: PASS");

@@ -1,0 +1,13 @@
+import fs from 'node:fs'; import path from 'node:path';
+const root=process.cwd(); const read=p=>fs.readFileSync(path.join(root,p),'utf8'); const failures=[]; const must=(p,re,msg)=>{if(!re.test(read(p)))failures.push(msg)};
+must('database/migrations/0078_product_foundation.sql',/CREATE TABLE IF NOT EXISTS organization_lifecycle_transitions/,'lifecycle transition ledger missing');
+must('database/migrations/0078_product_foundation.sql',/CREATE TABLE IF NOT EXISTS platform_configuration_versions/,'versioned configuration store missing');
+must('database/migrations/0078_product_foundation.sql',/DRAFT.*ONBOARDING.*PENDING_VERIFICATION.*VERIFIED.*ACTIVE.*RESTRICTED.*SUSPENDED.*ARCHIVED/,'canonical organization lifecycle vocabulary missing');
+must('src/worker/core/canonical-product-readiness-registry.js',/PRODUCT_READINESS_DOMAINS/,'product readiness domains missing');
+must('src/worker/core/canonical-product-readiness-registry.js',/canOrganizationLifecycleTransition/,'lifecycle transition authority missing');
+must('src/worker/security/organization-lifecycle.service.js',/UPDATE company_management_profiles/,'canonical lifecycle writer missing');
+must('src/worker/security/organization-lifecycle.service.js',/status_version/,'lifecycle concurrency protection missing');
+must('src/worker/modules/admin-control/admin-control.routes.js',/\/lifecycle/,'admin lifecycle route missing');
+must('public/assets/js/frontend/admin/admin.js',/ORGANIZATION LIFECYCLE/,'admin lifecycle UI missing');
+must('public/assets/js/frontend/admin/admin.js',/Versioned product configuration/,'system configuration UI missing');
+if(failures.length){console.error('10.37.0 Product Foundation gate: FAIL');failures.forEach(x=>console.error('- '+x));process.exit(1)} console.log('10.37.0 Product Foundation gate: PASS');

@@ -1,0 +1,18 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const read=p=>fs.readFileSync(p,'utf8');
+assert.match(read('VERSION').trim(), /^16\.10\.10$/);
+const migration=read('database/migrations/0155_regional_infrastructure_governance.sql');
+for(const token of ['platform_region_placements','platform_infrastructure_roadmap','eu-germany','EU','activation_allowed','INSERT OR IGNORE']) assert.ok(migration.includes(token),`migration missing ${token}`);
+const routes=read('src/worker/modules/admin-control/infrastructure-governance.routes.js');
+for(const token of ['requirePlatformAdministrator','requirePlatformSuperAdminStepUp','SELECT 1 AS ok','REGION_PROPOSAL_INVALID','ROADMAP_DEPENDENCIES_NOT_VERIFIED','activationAllowed:false','infrastructure-governance']) assert.ok(routes.includes(token),`route contract missing ${token}`);
+assert.ok(!routes.includes("status:'ACTIVE'"),'release must not auto-activate regions');
+const ui=read('public/assets/js/frontend/admin/infrastructure-governance.js');
+for(const token of ['Infrastructure Command Center','REFRESH OBSERVATIONS','PROPOSE REGION','SAVE GOVERNED UPDATE','activation is reserved','/api/platform/admin/infrastructure-governance']) assert.ok(ui.includes(token),`UI missing ${token}`);
+const market=read('src/worker/security/market-factory.service.js');
+for(const token of ['regionalPlacement','REGIONAL_PLACEMENT_CONTRACT_REQUIRED','REGIONAL_PLACEMENT_NOT_ACTIVE','REGIONAL_PLACEMENT_JURISDICTION_MISMATCH','regionalPlacement:parseJson']) assert.ok(market.includes(token),`Market Factory contract missing ${token}`);
+const registry=read('public/assets/js/frontend/admin/workspace-registry.js');
+assert.ok(registry.includes("'infrastructure-governance'"),'workspace navigation missing');
+assert.ok(read('src/worker/modules/admin-control/admin-control.routes.js').includes('registerInfrastructureGovernanceRoutes'),'routes not registered');
+const release=read('RELEASE.md');assert.ok(release.includes('# ON Mission 16.10.0'),'release notes missing');
+console.log('16.10.0 Regional Infrastructure Governance contract: PASS');

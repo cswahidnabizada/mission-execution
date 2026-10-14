@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+const read=p=>fs.readFileSync(p,'utf8');
+const assert=(ok,msg)=>{if(!ok)throw new Error(msg)};
+const control=read('public/assets/js/frontend/admin/admin.js');
+const routes=read('src/worker/modules/verification/verification.routes.js');
+assert(control.includes('/api/platform/verifications/pending'),'verification queue endpoint missing');
+assert(control.includes('/api/platform/verifications/${state.selectedVerification.profile.id}/check'),'canonical verification check mutation missing');
+assert(control.includes('/api/platform/verifications/${state.selectedVerification.profile.id}/approve'),'verification approval mutation missing');
+assert(routes.includes('requirePlatformSuperAdministrator'),'verification routes must require Super Admin');
+assert(!routes.includes('PLATFORM_REVIEW_SECRET'),'legacy reviewer secret must be absent');
+assert(!routes.includes('onmission_platform_reviewer'),'legacy reviewer cookie must be absent');
+console.log('platform verification console convergence: PASS');

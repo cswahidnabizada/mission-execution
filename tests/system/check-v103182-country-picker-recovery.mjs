@@ -1,0 +1,18 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const read=p=>fs.readFileSync(p,'utf8');
+const picker=read('public/assets/js/core/country-picker.js');
+const widget=read('public/assets/js/core/activation-module.js');
+const css=read('public/assets/css/verification.css');
+const verification=read('public/verification.html');
+assert(picker.includes('input.dataset.countryCode'), 'country picker must expose the canonical ISO code');
+assert(picker.includes('country-picker-change'), 'country picker must emit its canonical selection');
+assert(picker.includes('String(match.code).toUpperCase()'), 'country picker must normalize ISO codes');
+assert(widget.includes('omCountry'), 'activation must expose the canonical country picker');
+assert(widget.includes('/api/countries'), 'activation must load the canonical country catalog');
+assert(widget.includes('/api/verification/country/submit'), 'activation must use the secured country submission service');
+assert(widget.includes('omAddress1'), 'activation must contain address editing');
+assert(/10\.31\.87/.test(css), 'verification CSS must use a current protected-line version');
+assert(css.includes('.country-verification-step'), 'country verification layout styles missing');
+assert(/activation-module\.js\?v=10\.31\.87/.test(verification), 'verification page must load the canonical activation module');
+console.log('10.31.86 country picker / verification submission recovery: PASS');

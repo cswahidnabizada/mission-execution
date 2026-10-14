@@ -1,0 +1,13 @@
+@import "tailwindcss";
+@source "../../public";
+
+/* Runtime-computed feedback colors that static scanning cannot infer. */
+@source inline("text-red-600 text-green-600 text-amber-600");
+
+/* V4.21 — Mission Operating Context: one compact operational picture. */
+.operations-mission-picture{display:grid;grid-template-columns:2fr repeat(5,minmax(110px,1fr));gap:12px;margin:12px 0;padding:14px;border:1px solid rgb(226 232 240);border-radius:14px;background:rgb(248 250 252)}
+.operations-mission-picture>div{min-width:0}.operations-mission-picture span{display:block;font-size:10px;font-weight:700;letter-spacing:.08em;opacity:.65;margin-bottom:5px}.operations-mission-picture p,.operations-mission-picture b{display:block;margin:0;font-size:13px;line-height:1.35}.operations-mission-picture small{display:block;margin-top:4px;opacity:.7;font-size:11px}
+@media (max-width:1000px){.operations-mission-picture{grid-template-columns:repeat(2,minmax(0,1fr))}.operations-mission-picture>div:first-child{grid-column:1/-1}}
+
+/* 10.38.25 Product Ecosystem composition surface */
+.ecosystem-subview{display:none}.ecosystem-subview.active{display:block}.ecosystem-subview>.card:first-child{margin-top:0}

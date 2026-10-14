@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+import {buildClosedLoopCoordination,validateClosedLoopCoordination} from '../../src/worker/extensions/adaptive-orchestration/closed-loop-coordination.contract.js';
+const route=fs.readFileSync('src/worker/extensions/adaptive-orchestration/adaptive-orchestration.routes.js','utf8');
+const ui=fs.readFileSync('public/assets/js/extensions/dashboard-work-surface-101920.js','utf8');
+const html=fs.readFileSync('public/admin.html','utf8');
+const model=buildClosedLoopCoordination({mission:{id:7,status:'InTransit',state_version:5},orchestration:{situation:{state:'ACTIONABLE'},significance:{level:'HIGH',reason:'deadline'},next:{state:'ACT_NOW',action:{code:'start_transit',label:'Start Transit',reason:'ready',nextStatus:'InTransit'}},safeAction:{available:true,code:'start_transit'}},telemetry:{latest:{action_code:'start_transit',phase:'succeeded',outcome:'success',created_at:new Date().toISOString()}},now:Date.now()});
+if(validateClosedLoopCoordination(model).length)throw new Error('Closed-loop contract invalid');
+if(model.readOnly!==true||model.authoritative!==false||model.act.execute!==false)throw new Error('Closed-loop safety boundary failed');
+if(model.state!=='REASSESS')throw new Error(`Expected REASSESS, got ${model.state}`);
+if(model.reassess.state!=='CONTINUE'||model.reassess.nextAction?.code!=='start_transit')throw new Error('Reassessment contract missing next step');
+if(!route.includes('api\\/operations\\/closed-loop')||!route.includes('latestActionTelemetry'))throw new Error('Closed-loop route missing');
+if(!ui.includes('/api/operations/closed-loop/${id}')||!ui.includes('Closed-Loop Operational Coordination'))throw new Error('Closed-loop Workbench surface missing');
+if(!html.includes('dashboard-work-surface-101920.js?v=10.19.25&build=10.19.25'))throw new Error('10.19.25 work surface asset not pinned');
+if(/INSERT\s+INTO|UPDATE\s+|DELETE\s+FROM/i.test(fs.readFileSync('src/worker/extensions/adaptive-orchestration/closed-loop-coordination.contract.js','utf8')))throw new Error('Closed-loop contract contains mutation SQL');
+console.log('10.19.25 closed-loop operational coordination: PASS');

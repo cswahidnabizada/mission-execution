@@ -1,0 +1,7 @@
+import {json,publicErrorMessage} from '../core/http.js';
+import {requireSession} from '../core/auth-session.js';
+import {resolveProductConfiguration,publicProductConfiguration} from '../security/product-configuration.service.js';
+import {resolveRuntimeProductManifest,mergeGovernedProductContext,PRODUCT_RUNTIME_VERSION} from '../security/product-manifest-runtime.service.js';
+export function registerProductContextRoutes(router){
+  router.get('/api/product/context',async({request,env})=>{try{const session=await requireSession(request,env);const base=await resolveProductConfiguration(env);const runtime=await resolveRuntimeProductManifest(env,session);const c=mergeGovernedProductContext(base,runtime);const launch=runtime.launch&&runtime.launch.active?runtime.launch:null;return json({success:true,context:{...publicProductConfiguration(c),runtime:{version:PRODUCT_RUNTIME_VERSION,available:runtime.available,reason:runtime.reason,manifest:runtime.manifest,integrity:runtime.integrity||null,launch:runtime.launch||null,eligibility:runtime.eligibility||null},availability:{status:launch?'start':'under_development',countryCode:session.countryCode||null,countryName:launch?.countryName||null,launchMessage:launch?.launchMessage||null}},organizationRole:session.organizationRole||null});}catch(e){return json({success:false,error:publicErrorMessage(e,'Product context unavailable')},e?.status||500);}});
+}

@@ -1,0 +1,23 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const root=process.cwd();
+const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const fail=[];const must=(c,m)=>{if(!c)fail.push(m)};
+const version=read('VERSION').trim();
+const pkg=JSON.parse(read('package.json'));
+const lock=JSON.parse(read('package-lock.json'));
+const manifest=JSON.parse(read('RELEASE-MANIFEST.json'));
+const publisher=read('src/worker/modules/admin-control/product-publisher-orchestrator.service.js');
+const ui=read('public/assets/js/frontend/admin/product-publisher.js');
+const release=read('RELEASE.md');
+must(version===pkg.version,'VERSION must be 10.73.0');
+must(pkg.version===version,'package.json must match VERSION');
+must(lock.version===version&&lock.packages?.['']?.version===version,'package-lock root versions must match VERSION');
+must(manifest.version===version&&manifest.release==='RELEASE.md','release manifest must use canonical VERSION and RELEASE.md');
+must(release.includes('10.73.0 — post-baseline integrity hardening'),'release must document 10.73.0 integrity hardening');
+must(publisher.includes('projectionWarnings')&&publisher.includes('runPublisherProjection'),'Product Factory projection failures must be explicit, not silently discarded');
+must(ui.includes('Canonical product state was saved')&&ui.includes('refreshPublisherProjection'),'Product Factory UI must surface and refresh projection warnings');
+must(!publisher.includes("admin.product-publisher.foundation-saved',resourceType:'country_product_launch',resourceId:launchId,requestId,metadata:{countryCode:launch.country_code}}).catch"),'foundation audit must use explicit projection handling');
+must(!publisher.includes('buildProductDependencyGraph(env,Number(launchId)).catch(()=>{})'),'foundation dependency refresh must use explicit projection handling');
+if(fail.length){console.error('Current Post-Baseline Integrity: FAIL');for(const x of fail)console.error(` - ${x}`);process.exit(1)}
+console.log('Current Post-Baseline Integrity: PASS');

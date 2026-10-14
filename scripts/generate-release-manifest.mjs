@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+const root=process.cwd();
+const version=fs.readFileSync(path.join(root,'VERSION'),'utf8').trim();
+const schema=fs.readFileSync(path.join(root,'database/schema.current.sql'));
+const migrations=fs.readdirSync(path.join(root,'database/migrations')).filter(x=>x.endsWith('.sql')).sort();
+const releaseDoc=fs.readFileSync(path.join(root,'RELEASE.md'),'utf8');
+const baseMatch=releaseDoc.match(/^Base:\s*ON Mission\s+([^\s—-]+)/m);
+const manifest={version,release:'RELEASE.md',base:baseMatch?.[1]||null,migrationHighWaterMark:migrations.at(-1)?.slice(0,4)||null,migrationCount:migrations.length,schemaSnapshot:{file:'database/schema.current.sql',sha256:crypto.createHash('sha256').update(schema).digest('hex')},generatedFrom:'deterministic-release-pipeline'};
+fs.writeFileSync(path.join(root,'RELEASE-MANIFEST.json'),JSON.stringify(manifest,null,2)+'\n');
+console.log(`Release manifest generated for ${version}`);

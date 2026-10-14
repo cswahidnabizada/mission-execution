@@ -1,0 +1,31 @@
+{
+  "version": "10.91.0",
+  "name": "HumanWorkItem",
+  "purpose": "Canonical immutable presentation contract for human operational work.",
+  "authority": "presentation-only; canonical domain and Action Registry authorities remain owners of truth and mutation",
+  "fields": {
+    "id": "stable string identifier",
+    "type": "context/entity type",
+    "situation": "current human-readable operational situation",
+    "priority": {"level": "normalized priority/state level", "score": "bounded numeric signal score"},
+    "responsibility": "current responsibility when known; null when not applicable",
+    "sourceAuthority": "canonical read authority contributing the item",
+    "reason": {"code": "canonical reason code when available", "label": "human-readable reason", "icon": "optional presentation icon"},
+    "context": {"type": "context type", "id": "context id", "reference": "human reference", "href": "canonical context destination", "details": "bounded context presentation details"},
+    "availableAction": {"id": "action/navigation descriptor", "label": "human label", "href": "canonical destination", "enabled": "presentation availability only"},
+    "waitingCondition": {"active": "boolean", "code": "waiting reason code", "label": "human explanation"},
+    "evidence": "bounded presentation evidence references",
+    "nextState": {"code": "next canonical state/status", "label": "human label"},
+    "state": "normalized human-work state",
+    "status": "canonical source status",
+    "updatedAt": "source update timestamp when available",
+    "deadlineAt": "canonical deadline when available",
+    "degraded": "explicit read-model degradation flag"
+  },
+  "normalizedStates": ["urgent", "attention", "waiting", "watch", "working", "done", "escalated", "breach"],
+  "normalizedAuthorities": ["mission", "attention", "liveness", "assignment", "network", "people", "object", "product", "system"],
+  "mutationRule": "HumanWorkItem never performs or authorizes mutation; mutations remain behind canonical secured command/action authorities.",
+  "tenantRule": "HumanWorkItem may only contain data already authorized by the source read model; the contract adds no cross-tenant access path.",
+  "wave": 2,
+  "nextWave": "Surface Conversion"
+}

@@ -1,0 +1,14 @@
+import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');const read=p=>fs.readFileSync(path.join(root,p),'utf8');const fail=m=>{throw new Error(m)};
+const version=read('VERSION').trim();if(!['10.38.22','10.38.23','10.38.24','10.38.25','10.38.26','10.38.27','10.38.28','10.38.28','10.38.29','10.40.0','10.40.1'].includes(version))fail(`VERSION expected 10.38.22+ compatible release, got ${version}`);
+const pkg=JSON.parse(read('package.json'));if(!['10.38.22','10.38.23','10.38.24','10.38.25','10.38.26','10.38.27','10.38.28','10.38.28','10.38.29','10.40.0','10.40.1'].includes(pkg.version))fail('package version mismatch');
+const engine=read('public/assets/js/frontend/product-experience.js');
+for(const token of ['TRUSTED_EXPERIENCE_TYPES','workspace','section','navigation','card','panel','form','empty-state','guidance','renderProductExperience','resolveTrustedNavigation'])if(!engine.includes(token))fail(`Declarative Experience Engine missing ${token}`);
+for(const forbidden of ['eval(','new Function(','Function('])if(engine.includes(forbidden))fail(`Trusted renderer must never execute configuration as code: ${forbidden}`);
+const route=read('src/worker/modules/product-experience.routes.js');for(const token of ["/api/product/experience","resolveRuntimeProductManifest","PRODUCT_RUNTIME_VERSION"])if(!route.includes(token))fail(`Product experience route missing ${token}`);
+const app=read('src/worker/app.js');if(!app.includes('registerProductExperienceRoutes'))fail('Product experience route not registered');
+const frontend=read('public/assets/js/frontend/app/app.js');if(!frontend.includes('renderProductExperience'))fail('Product experience not consumed by app runtime');
+const shell=read('public/assets/js/frontend/shell/app-shell.js');if(!shell.includes('resolveTrustedNavigation'))fail('Product experience navigation not converged with shell');
+const runtime=read('src/worker/security/product-manifest-runtime.service.js');for(const token of ['evaluateCountryEligibility','PRODUCT_MANIFEST_INTEGRITY_FAILED','executionAuthority:\'canonical-capabilities\''])if(!runtime.includes(token))fail(`Governed runtime authority boundary missing ${token}`);
+const migrations=fs.readdirSync(path.join(root,'database/migrations')).filter(x=>x.endsWith('.sql')).sort();if(!['0091_product_definition_composition.sql','0092_product_expansion_workspace.sql','0093_platform_trash_and_cleanup.sql','0094_platform_data_control_and_bulk_operations.sql','0095_governed_data_entry_gate.sql'].includes(migrations[migrations.length-1]))fail('10.38.22 must not add an unnecessary migration');
+console.log('10.38.22 Declarative Experience Engine: PASS');

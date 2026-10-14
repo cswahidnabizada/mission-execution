@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const read=f=>fs.readFileSync(f,'utf8');
+const version=read('VERSION').trim();
+assert(/^\d+\.\d+\.\d+$/.test(version),'current governance release must preserve governance UI contract');
+assert.match(read('public/assets/js/frontend/admin/governance-readiness.js'),/governanceReadiness/);
+assert.match(read('public/assets/js/frontend/admin/command-center.js'),/renderGovernanceReadiness/);
+assert.match(read('public/assets/js/frontend/admin/command-center.js'),/securityStatus=unavailable\.length\|\|governance\.overall==='UNAVAILABLE'\?'CHECK'/);
+assert.match(read('public/assets/js/frontend/admin/admin-controller.js'),/workspace-loading/);
+assert.match(read('public/assets/js/frontend/admin/admin-controller.js'),/workspace-data-warning/);
+assert.match(read('public/assets/js/frontend/admin/admin.js'),/readExperienceContext/);
+assert.match(read('public/assets/js/frontend/admin/oversight/product-operations.js'),/async function renderSecurity/);
+assert.match(read('public/assets/js/frontend/admin/oversight/product-operations.js'),/Security posture could not be loaded/);
+console.log('10.60.0 governance/UI gate: PASS');

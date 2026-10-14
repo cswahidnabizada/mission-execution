@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const root=new URL('../..',import.meta.url).pathname;
+assert.equal(fs.readFileSync(`${root}/VERSION`,'utf8').trim(),'10.29.56');
+const release=fs.readFileSync(`${root}/RELEASE-10.29.56.md`,'utf8');
+assert.ok(release.includes('Built from protected 10.29.55'));
+assert.ok(fs.existsSync(`${root}/public/assets/js/extensions/dashboard-work-surface-102955.js`));
+const prior=fs.readFileSync(`${root}/public/assets/js/extensions/dashboard-work-surface-102955.js`,'utf8');
+for(const token of ['contextToken','Global Coordination Picture','renderSelectedDecision']) assert.ok(prior.includes(token));
+const js=fs.readFileSync(`${root}/public/assets/js/extensions/dashboard-work-surface-102956.js`,'utf8');
+for(const token of ['canonicalResponsibility','canonicalCapability','canonicalActionExecutionBridge','canonicalOperatorIntent','canonicalOperatorActionInventory','renderActionCenter(canonicalOperatorActionInventory,primaryAction,deniedActions)']) assert.ok(js.includes(token));
+assert.ok(!js.includes('dashboard-work-surface-102954'));
+console.log('10.29.56 protected baseline gate: PASS');

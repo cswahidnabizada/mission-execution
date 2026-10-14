@@ -1,0 +1,16 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const root=process.cwd(), fail=[];
+const read=f=>fs.readFileSync(path.join(root,f),'utf8');
+const service=read('src/worker/modules/verification/verification.service.js');
+const repo=read('src/worker/repositories/verification.repository.js');
+const auth=read('src/worker/repositories/auth.repository.js');
+const migration=read('database/migrations/0045_reconcile_approved_company_verification.sql');
+const access=read('public/assets/js/pages/access.js');
+if(!service.includes('authRepo.markCompanyVerified(env,Number(profile.identity_id))')) fail.push('reviewer approval does not synchronize canonical company verification');
+if(!service.includes('profile.identity_type==="tenant"')) fail.push('company verification synchronization is not tenant-scoped');
+if(!repo.includes('for(const type of ["email","phone","company","country","identity"])')) fail.push('new verification profiles must create canonical email/phone/company/country/identity checks');
+if(!migration.includes("review_status='approved'") || !migration.includes("status='verified'")) fail.push('repair migration does not reconcile approved tenant profiles');
+if(!access.includes('/api/user/operational-gate') || !access.includes('g.decision')) fail.push('login access gate missing canonical operational routing');
+console.log(fail.length?'FAIL 10.31.62 verification access convergence: '+fail.join('; '):'PASS 10.31.62 verification access convergence');
+if(fail.length) process.exit(1);

@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+const overview={id:'view-overview',innerHTML:'',querySelector:(s)=>s==='#commandApplyScope'?{addEventListener(){}}:null,querySelectorAll:()=>[]};
+globalThis.document={querySelector:(s)=>s==='#view-overview'?overview:null,querySelectorAll:()=>[]};
+const mod=await import(`../../public/assets/js/frontend/admin/command-center.js?runtime=${Date.now()}`);
+const sample={surface:{status:'ATTENTION',version:'10.60.0',stats:[{key:'active-products',value:0},{key:'open-work',value:1},{key:'in-flight',value:0},{key:'organizations',value:0}],workspaceStates:[{key:'product-publisher',status:'ATTENTION',count:11,action:'product-publisher'},{key:'system-health',status:'LIVE',count:0,action:'system-health'}],lifecycle:[{label:'DRAFT',count:0}],queue:[{type:'platform',title:'Product preparation',status:'attention',label:'Continue build',action:'product-publisher',reason:'Required configuration is missing.'}],preview:{productStatus:'IN PREPARATION',readinessPercent:0},},now:{reason:'Required configuration is missing.',actionKey:'product-publisher',actionLabel:'CONTINUE PRODUCT BUILD'},next:{reason:'Continue product build',actionKey:'product-publisher',actionLabel:'CONTINUE'},productLens:{productState:'SELECT A SCOPE',result:'Select a country and sector.'},recentOperations:[],unavailableAuthorities:[]};
+await mod.renderCommandCenter({$:(s)=>s==='#view-overview'?overview:null,state:{view:'overview',commandScope:{}},loadCommandCenter:async()=>sample,navigate:()=>{}});
+assert.match(overview.innerHTML,/ATTENTION/);
+assert.match(overview.innerHTML,/Product preparation/);
+assert.match(overview.innerHTML,/DETAILS/);
+assert.match(overview.innerHTML,/data-attention-detail/);
+assert.doesNotMatch(overview.innerHTML,/Nothing urgent/);
+console.log('10.55.0 Command Center contract: PASS');

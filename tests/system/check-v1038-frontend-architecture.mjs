@@ -1,0 +1,12 @@
+import fs from 'node:fs';import path from 'node:path';
+const root=process.cwd();
+const required=['public/app/index.html','public/admin/index.html','public/developer/index.html','public/support/index.html','public/status.html','public/assets/js/frontend/core/api.js','public/assets/js/frontend/situation/store.js','public/assets/js/frontend/shell/app-shell.js','public/assets/js/frontend/app/app.js','public/assets/js/frontend/admin/admin.js','public/assets/js/frontend/developer/developer.js','public/assets/js/frontend/support/support.js','public/assets/js/frontend/public/landing.js'];
+for(const f of required)if(!fs.existsSync(path.join(root,f)))throw new Error(`Missing frontend artifact: ${f}`);
+const app=fs.readFileSync(path.join(root,'public/assets/js/frontend/app/app.js'),'utf8');
+const situation=fs.readFileSync(path.join(root,'public/assets/js/frontend/situation/store.js'),'utf8');
+for(const x of ['/api/user/situation'])if(!situation.includes(x))throw new Error(`Situation frontend missing canonical integration: ${x}`);
+for(const x of ['/api/missions','canonical-mission-workspace'])if(!app.includes(x))throw new Error(`App frontend missing canonical integration: ${x}`);
+const landing=fs.readFileSync(path.join(root,'public/assets/js/frontend/public/landing.js'),'utf8');if(!landing.includes('/api/product/availability'))throw new Error('Public availability contract missing');
+const access=fs.readFileSync(path.join(root,'public/assets/js/pages/access.js'),'utf8');if(!access.includes('return "/app/"'))throw new Error('Authenticated login does not converge on /app');
+const css=['tokens','foundation','components','layout','navigation','forms','states','tables','public','app','admin','developer','support'];for(const x of css)if(!fs.existsSync(path.join(root,`public/assets/css/frontend/${x}.css`)))throw new Error(`Missing frontend CSS: ${x}`);
+console.log(`PASS — 10.38 frontend architecture artifacts present (${required.length} core files, ${css.length} CSS layers)`);

@@ -1,0 +1,17 @@
+import fs from "node:fs";
+import {buildPredictiveOperations} from "../../src/worker/modules/intelligence/predictive-operations.engine.js";
+const ui=fs.readFileSync("public/assets/js/extensions/dashboard-work-surface-101920.js","utf8");
+const actionRoute=fs.readFileSync("src/worker/extensions/actions-intelligence/actions-intelligence.routes.js","utf8");
+const map=fs.readFileSync("src/worker/application/actions/action-service-map.js","utf8");
+const html=fs.readFileSync("public/admin.html","utf8");
+if(!ui.includes("/api/actions-intelligence/missions/${id}"))throw new Error("Workbench does not consume the secured Action Contract.");
+if(!ui.includes("renderActionCenter")||!ui.includes("data-new-intel-action"))throw new Error("Workbench Action Center missing.");
+if(!ui.includes("executeActionTarget"))throw new Error("Action execution must converge on the secured target layer.");
+if(!ui.includes("expectedUpdatedAt"))throw new Error("Lifecycle action execution missing stale-state token forwarding.");
+if(!actionRoute.includes("requireSession")||!actionRoute.includes("getForSession"))throw new Error("Action contract route is not session/canonical-mission scoped.");
+if(!map.includes("ACTION_SERVICE_MAP")||!map.includes("resolveActionTarget"))throw new Error("Action Service Map missing.");
+if(!html.includes("dashboard-work-surface-101920.js?v=10.19.23&build=10.19.23"))throw new Error("Current converged work surface asset not pinned.");
+if(/fetch\([^)]*https?:\/\/|axios\.post|XMLHttpRequest/i.test(ui))throw new Error("Unexpected direct external/mutation transport in work surface.");
+const model=buildPredictiveOperations({now:Date.parse("2026-09-08T12:00:00Z"),missions:[{id:1,status:"Pending",deadline_at_utc:"2026-09-08T13:00:00Z",pickup_city:"Oldenburg",delivery_city:"Bremen"}]});
+if(model.authoritative!==false||model.readOnly!==true)throw new Error("Predictive boundary regressed.");
+console.log("10.19.22 action + feature convergence contract: PASS");

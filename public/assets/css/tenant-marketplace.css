@@ -1,0 +1,40 @@
+#tenantMarketplace{display:grid;gap:18px}
+.marketplace-hero{display:flex;justify-content:space-between;align-items:end;gap:18px;flex-wrap:wrap;padding:22px;border:1px solid #e2e8f0;border-radius:18px;background:#fff}
+.marketplace-hero span,.marketplace-section-head span,.marketplace-card-head span,.marketplace-request span{font-size:10px;font-weight:900;letter-spacing:.12em;color:#64748b}
+.marketplace-hero h2{margin:3px 0 4px;font-size:25px;font-weight:900;color:#0f172a}
+.marketplace-hero p{margin:0;color:#64748b;font-size:13px}
+.marketplace-search{min-width:280px;max-width:430px;flex:1}
+.marketplace-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.marketplace-summary article{padding:16px 18px;border:1px solid #e2e8f0;border-radius:16px;background:#fff}
+.marketplace-summary span{display:block;font-size:10px;font-weight:900;letter-spacing:.1em;color:#64748b}.marketplace-summary strong{display:block;margin-top:5px;font-size:25px;color:#0f172a}
+.marketplace-section{border:1px solid #e2e8f0;border-radius:18px;background:#fff;padding:18px}
+.marketplace-section-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px}.marketplace-section-head h3{margin:3px 0 0;font-size:18px;font-weight:900;color:#0f172a}.marketplace-section-head b{font-size:12px;color:#64748b}
+.marketplace-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.marketplace-card{border:1px solid #e2e8f0;border-radius:15px;padding:15px;background:#fff}.marketplace-card-head,.marketplace-card-foot{display:flex;justify-content:space-between;gap:12px;align-items:center}.marketplace-card-head h3{margin:3px 0 0;font-size:17px;font-weight:900;color:#0f172a}.marketplace-card-head>b{font-size:11px;color:#64748b}.marketplace-route{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin:14px 0}.marketplace-route>div{padding:10px;border-radius:12px;background:#f8fafc}.marketplace-route span{display:block;font-size:9px;font-weight:900;color:#64748b}.marketplace-route b{display:block;margin-top:2px;font-size:13px;color:#0f172a}.marketplace-route small{display:block;margin-top:3px;font-size:10px;color:#64748b}.marketplace-route i{font-style:normal;color:#94a3b8;font-weight:900}.marketplace-card-meta{display:flex;flex-wrap:wrap;gap:6px}.marketplace-card-meta span{font-size:10px;color:#475569;border:1px solid #e2e8f0;border-radius:999px;padding:4px 7px}.marketplace-card-foot{margin-top:13px;padding-top:11px;border-top:1px solid #f1f5f9}.marketplace-card-foot small{font-size:10px;color:#64748b}.marketplace-action{border:1px solid #cbd5e1;background:#fff;color:#334155;border-radius:9px;padding:8px 11px;font-size:10px;font-weight:900;cursor:pointer}.marketplace-action.primary{background:#0f172a;border-color:#0f172a;color:#fff}.marketplace-action.muted{background:#f8fafc;color:#64748b;cursor:default}.marketplace-request{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px;border:1px solid #e2e8f0;border-radius:13px}.marketplace-request b{display:block;margin-top:3px;font-size:13px;color:#0f172a}.marketplace-request small{display:block;margin-top:2px;color:#64748b;font-size:10px}.marketplace-empty{padding:22px;border:1px dashed #cbd5e1;border-radius:13px;color:#64748b;font-size:12px;text-align:center}.marketplace-empty.error{color:#b91c1c}
+@media(max-width:800px){.marketplace-summary,.marketplace-grid{grid-template-columns:1fr}.marketplace-search{min-width:100%}.marketplace-route{grid-template-columns:1fr}.marketplace-route>i{text-align:center;transform:rotate(90deg)}}
+.marketplace-fit{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:12px;padding:10px 12px;border:1px solid #dbe4ee;border-radius:12px;background:#f8fafc}.marketplace-fit span{display:block;font-size:9px;font-weight:900;letter-spacing:.1em;color:#64748b}.marketplace-fit b{display:block;margin-top:2px;font-size:11px;color:#0f172a}.marketplace-fit small{display:block;margin-top:3px;font-size:10px;color:#64748b}.marketplace-fit>strong{font-size:11px;color:#334155;white-space:nowrap}
+
+/* 10.5.5 — Marketplace workspace model: clean market first, tools on demand. */
+.marketplace-workspace-bar{display:flex;flex-wrap:wrap;gap:8px;padding:4px 0 2px}
+.marketplace-workspace-btn{border:1px solid #dbe2e8;background:#fff;color:#475569;border-radius:999px;padding:9px 13px;font-size:10px;font-weight:900;letter-spacing:.04em;cursor:pointer}
+.marketplace-workspace-btn:hover{border-color:#b8c2cc;background:#f8fafc;color:#0f172a}
+.marketplace-workspace-btn.active{background:#0f172a;border-color:#0f172a;color:#fff}
+.marketplace-workspace-btn span{display:inline-flex;min-width:18px;justify-content:center;margin-left:4px;padding:2px 5px;border-radius:999px;background:#eef2f6;color:#475569}
+.marketplace-workspace-btn.active span{background:rgba(255,255,255,.16);color:#fff}
+.marketplace-workspace{display:block}
+.marketplace-market-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin:4px 0 12px;padding:2px 2px 0}
+.marketplace-market-head span{font-size:9px;font-weight:900;letter-spacing:.13em;color:#64748b}
+.marketplace-market-head h3{margin:3px 0 3px;font-size:20px;font-weight:900;color:#0f172a}
+.marketplace-market-head p{margin:0;max-width:760px;color:#64748b;font-size:12px}
+.marketplace-market-head>b{font-size:11px;color:#64748b;white-space:nowrap}
+.marketplace-market-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.marketplace-market-grid .marketplace-card{min-height:230px;display:flex;flex-direction:column}
+.marketplace-market-grid .marketplace-card-foot{margin-top:auto}
+.marketplace-workspace .marketplace-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.marketplace-request-list{display:grid;gap:10px}
+.marketplace-request-list .marketplace-request{background:#fff}
+@media(max-width:1050px){.marketplace-market-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.marketplace-market-grid,.marketplace-workspace .marketplace-grid{grid-template-columns:1fr}.marketplace-market-head{align-items:start;flex-direction:column}.marketplace-workspace-btn{flex:1 1 auto}}
+
+/* 10.12.0 adaptive list/delist: unavailable workspaces leave no empty tab gap. */
+.marketplace-workspace-btn[hidden]{display:none!important}

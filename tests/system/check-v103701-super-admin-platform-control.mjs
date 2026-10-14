@@ -1,0 +1,25 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const root=process.cwd();
+const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const failures=[];
+const must=(p,re,msg)=>{if(!re.test(read(p)))failures.push(msg)};
+must('database/migrations/0079_super_admin_platform_control.sql',/platform_configuration_change_requests/,'configuration change request governance missing');
+must('database/migrations/0079_super_admin_platform_control.sql',/platform_admin_security_events/,'platform security event ledger missing');
+must('src/worker/security/platform-super-administrator.js',/PLATFORM_SUPER_ADMIN_SECRET/,'separate Super Admin elevation boundary missing');
+must('src/worker/security/platform-super-administrator.js',/platform_super_admin:/,'elevated session storage missing');
+must('src/worker/security/platform-configuration.service.js',/PLATFORM_CONFIGURATION_DOMAINS/,'canonical platform configuration domains missing');
+must('src/worker/security/platform-configuration.service.js',/validatePlatformConfiguration/,'configuration validation missing');
+must('src/worker/security/platform-configuration.service.js',/previewConfigurationImpact/,'configuration impact preview missing');
+must('src/worker/security/platform-configuration.service.js',/status='retired'/,'configuration activation retirement missing');
+must('src/worker/security/platform-configuration.service.js',/rollbackConfiguration/,'safe rollback draft path missing');
+must('src/worker/modules/admin-control/admin-control.routes.js',/super-admin\/elevate/,'Super Admin elevation route missing');
+must('src/worker/modules/admin-control/admin-control.routes.js',/platform-configurations\/drafts/,'configuration draft route missing');
+must('src/worker/modules/admin-control/admin-control.routes.js',/platform-configurations.*activate/,'configuration activation route missing');
+must('src/worker/modules/admin-control/admin-control.routes.js',/platform-configurations.*rollback/,'configuration rollback route missing');
+must('public/assets/js/frontend/admin/admin.js',/Platform Configuration Center/,'Platform Configuration Center UI missing');
+must('public/assets/js/frontend/admin/admin.js',/ELEVATE SUPER ADMIN/,'Super Admin elevation UI missing');
+must('public/assets/js/frontend/admin/admin.js',/System Health/,'System Health UI missing');
+must('src/worker/modules/admin-control/admin-control.service.js',/metadataOnly:true/,'metadata-only health contract missing');
+if(failures.length){console.error('10.37.2 Super Admin + Platform Control gate: FAIL');failures.forEach(x=>console.error('- '+x));process.exit(1)}
+console.log('10.37.2 Super Admin + Platform Control gate: PASS');

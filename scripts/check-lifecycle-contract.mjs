@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const root=process.cwd();
+const schema=fs.readFileSync(path.join(root,'database/schema.current.sql'),'utf8');
+const required=['platform_lifecycle_definitions','platform_lifecycle_states','platform_lifecycle_transitions','platform_product_sector_lifecycles','mission_stops','mission_objects','mission_assignment_events','mission_custody_events','mission_evidence_events'];
+const missing=required.filter(t=>!new RegExp(`CREATE TABLE(?: IF NOT EXISTS)?\\s+${t}\\b`,'i').test(schema));
+if(missing.length)throw new Error(`Lifecycle schema missing: ${missing.join(', ')}`);
+const service=fs.readFileSync(path.join(root,'src/worker/security/sector-lifecycle.service.js'),'utf8');
+for(const token of ['createOrUpdateLifecycleDefinition','validateLifecycleDefinition','activateLifecycleForLaunchSector','resolveLifecycleForMission','assertLifecycleTransition'])if(!service.includes(`export async function ${token}`))throw new Error(`Lifecycle service missing ${token}`);
+console.log('Sector lifecycle contract gate: PASS');

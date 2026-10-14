@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const root=new URL('../../',import.meta.url).pathname;
+assert.equal(fs.readFileSync(`${root}VERSION`,'utf8').trim(),'10.19.37');
+const contract=fs.readFileSync(`${root}src/worker/extensions/adaptive-orchestration/temporal-adaptive-coordination-101937.contract.js`,'utf8');
+const routes=fs.readFileSync(`${root}src/worker/extensions/adaptive-orchestration/adaptive-orchestration.routes.js`,'utf8');
+const html=fs.readFileSync(`${root}public/admin.html`,'utf8');
+const js=fs.readFileSync(`${root}public/assets/js/extensions/dashboard-work-surface-101937.js`,'utf8');
+const css=fs.readFileSync(`${root}public/assets/css/dashboard-work-surface-101937.css`,'utf8');
+assert.ok(contract.includes('TEMPORAL_COORDINATION_VERSION="10.19.37"'));
+assert.ok(contract.includes('temporalPicture')&&contract.includes('temporalMesh')&&contract.includes('networkTiming'));
+assert.ok(contract.includes('readOnly:true')&&contract.includes('requiresFreshValidation:true'));
+assert.ok(routes.includes('temporal-adaptive-coordination-101937.contract.js')&&routes.includes('networkPartners:partners'));
+assert.ok(html.includes('dashboard-work-surface-101937.js?v=10.19.37&build=10.19.37')&&html.includes('dashboard-work-surface-101937.css?v=10.19.37&build=10.19.37'));
+assert.ok(js.includes('WHEN / TREND')&&js.includes('TEMPORAL CONNECTIONS')&&js.includes('Adaptive Coordination Picture'));
+assert.ok(css.includes('.coordination-temporal-summary')&&!/<script|import\s+.*from/.test(css));
+console.log('10.19.37 Temporal Adaptive Coordination: PASS');

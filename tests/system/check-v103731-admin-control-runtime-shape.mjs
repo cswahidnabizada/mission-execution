@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+const js=fs.readFileSync('public/assets/js/frontend/admin/admin.js','utf8');
+const svc=fs.readFileSync('src/worker/modules/admin-control/admin-control.service.js','utf8');
+const must=(c,m)=>{if(!c)throw new Error(m)};
+must(/const asArray=v=>Array\.isArray\(v\)/.test(js),'admin control array normalization missing');
+must(/const configList=\(\)=>asArray\(state\.data\?\.configurations\)/.test(js),'canonical configuration accessor missing');
+must(/configs=configList\(\)/.test(js),'platform center is not using normalized configurations');
+must(/configs=configList\(\)\.filter/.test(js),'configuration domain view is not using normalized configurations');
+must(/state\.data\.configurations=configList\(\)/.test(js),'control-plane response normalization missing');
+must(/release:'10\.37\.3'/.test(svc),'system health release identity stale');
+console.log('10.37.3 admin control runtime shape gate: PASS');

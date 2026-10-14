@@ -1,0 +1,32 @@
+import fs from "node:fs";
+const read=p=>fs.readFileSync(p,"utf8");
+const fail=[];const ok=(x,m)=>x||fail.push(m);
+const dash=read("public/assets/js/extensions/canonical-dashboard-runtime.js");
+const actions=read("public/assets/js/core/canonical-workspace-actions.js");
+const registry=read("src/worker/application/actions/action-registry.js");
+const map=read("src/worker/application/actions/action-service-map.js");
+const migration=read("database/migrations/0061_canonical_legacy_mission_reconciliation.sql");
+const html=read("public/admin.html");
+// People owns executors only. Customers and partners are Network concerns.
+ok(/const allPeople=\(d\?\.drivers\|\|\[\]\)\.map/.test(dash),"People must load executor/driver records only");
+ok(!/allPeople=\[.*customer/.test(dash),"People must not merge customers into the people directory");
+ok(!/allPeople=\[.*partner/.test(dash),"People must not merge partners into the people directory");
+ok(/data-person-manage/.test(dash),"People object must expose one Manage entry point");
+ok(!/data-person-action/.test(dash),"People detail must not expose duplicate direct action buttons");
+ok(/kind\(x\)==="mission"\|\|kind\(x\)==="request"/.test(dash),"Work Queue must contain operational work, not people directory objects");
+ok(/function networkItems\(view\).*seen=new Set/.test(dash),"Network records must be deduplicated by stable identity");
+ok(/remove_driver/.test(actions),"Remove executor action missing from workspace model");
+ok(!/reset_driver_credentials/.test(actions),"Driver credential reset must not be a tenant People action");
+ok(!/delete_driver/.test(actions),"Legacy delete_driver action must be removed from active workspace model");
+ok(/REMOVE_DRIVER:"remove_driver"/.test(registry),"Canonical remove_driver action missing");
+ok(/remove_driver:route\("people"/.test(map),"remove_driver service route missing");
+ok(/mission_status_history/.test(migration) && /state_version/.test(migration),"Legacy mission reconciliation migration missing");
+ok(/\?v=10\.31\.94/.test(html)===false,"admin.html must not retain 10.31.94 cache identity");
+const oldFiles=["canonical-action-experience-103035.js","canonical-action-experience-103037.js","operational-contexts-103014.js","operational-contexts-103033.js"];
+for(const f of oldFiles)ok(!fs.existsSync(`public/assets/js/${f}`),`obsolete runtime file remains: ${f}`);
+if(fail.length){console.error(`10.31.95 regression: FAIL (${fail.length})`);for(const x of fail)console.error(`- ${x}`);process.exit(1)}
+console.log("10.31.95 regression: PASS");
+console.log("People = executors only; Network = external relationships");
+console.log("Work Queue = mission/request operational work only");
+console.log("Canonical Manage → Workspace → Action execution path enforced");
+console.log("Legacy mission reconciliation migration present");

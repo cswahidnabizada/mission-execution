@@ -1,0 +1,12 @@
+import fs from 'node:fs';import assert from 'node:assert/strict';
+const engine='src/worker/extensions/action-orchestration/adaptive-action-orchestration.engine.js';
+const route='src/worker/extensions/action-orchestration/action-orchestration.routes.js';
+const app='src/worker/app.js';const js='public/assets/js/extensions/dashboard-work-surface-101930.js';const html='public/admin.html';
+for(const p of [engine,route,app,js,html])assert.ok(fs.existsSync(p),`missing ${p}`);
+const e=fs.readFileSync(engine,'utf8'),r=fs.readFileSync(route,'utf8'),j=fs.readFileSync(js,'utf8'),h=fs.readFileSync(html,'utf8');
+for(const x of ['buildAdaptiveActionOrchestration','source:"existing-unified-action-contract"','safeNow','afterAction','evidence','confidence'])assert.ok(e.includes(x),`engine missing ${x}`);
+assert.ok(r.includes('action-orchestration'), 'route missing');assert.ok(r.includes('requireSession')&&r.includes('getForSession'),'route security/truth boundary missing');
+assert.ok(j.includes('/api/operations/action-orchestration/${id}'),'workbench does not consume orchestration');assert.ok(j.includes('DO THIS NOW')&&j.includes('Confidence:')&&j.includes('After action:'),'adaptive action UX missing');
+assert.ok(h.includes('dashboard-work-surface-101930'),'current dashboard does not pin 10.19.30 asset');
+assert.ok(!e.match(/\b(fetch|axios)\s*\(/),'engine must remain pure/read-only');
+console.log('PASS 10.19.30 adaptive action orchestration contract');

@@ -1,0 +1,13 @@
+/* 10.35.5 — canonical dynamic queues */
+.work-queue-item{display:flex;align-items:stretch;gap:.55rem;width:100%;text-align:left;padding:0;border:1px solid var(--border-color,#e5e7eb);background:var(--surface,#fff);border-radius:12px;overflow:hidden;margin-bottom:.55rem}
+.work-queue-item .wqi-open{flex:1;min-width:0;border:0;background:transparent;text-align:left;padding:.75rem;cursor:pointer}
+.wqi-actions{display:flex;align-items:center;padding:.45rem;border-left:1px solid var(--border-color,#e5e7eb)}
+.wqi-action{border:1px solid var(--border-color,#d1d5db);border-radius:8px;background:var(--surface,#fff);padding:.5rem .65rem;font-size:.72rem;font-weight:700;cursor:pointer;white-space:nowrap}
+.wqi-action.wb-primary{background:#111827;color:#fff;border-color:#111827}
+.wqi-action.danger,.network-card-actions .danger{color:#b91c1c;border-color:#fecaca}
+.network-card-actions{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.75rem}
+.network-card-actions button{border:1px solid var(--border-color,#d1d5db);border-radius:8px;background:var(--surface,#fff);padding:.5rem .65rem;font-size:.72rem;font-weight:700;cursor:pointer}
+.network-card-actions .wb-primary{background:#111827;color:#fff;border-color:#111827}
+.ctx-action-row{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.8rem}
+.ctx-action-row button{border:1px solid var(--border-color,#d1d5db);border-radius:8px;background:var(--surface,#fff);padding:.5rem .65rem;font-size:.72rem;font-weight:700;cursor:pointer}
+.ctx-action-row .wb-primary{background:#111827;color:#fff;border-color:#111827}

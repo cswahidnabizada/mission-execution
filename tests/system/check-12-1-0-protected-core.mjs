@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const read=p=>fs.readFileSync(p,'utf8');
+assert.match(read('VERSION').trim(),/^(?:12\.(1|2|3|4|5|6|7|8|9)\.\d+|13\.\d+\.\d+|14\.\d+\.\d+|16\.\d+\.\d+)$/);
+const docs=read('docs/PROTECTED-CORE.md');
+for(const x of ['Mission truth','Assignment','Canonical Action Registry','Authorization','Product Contract','Country Product Launch','UNKNOWN','AUTHORITY_UNAVAILABLE','one current action']) assert.ok(docs.includes(x),`protected core contract missing ${x}`);
+const arch=read('tests/system/check-10-74-0-architecture-debt.mjs'); assert.ok(arch.includes('Canonical failure boundaries'));
+const actionMap=read('src/worker/extensions/action-orchestration/adaptive-action-orchestration.engine.js'); assert.ok(actionMap.includes('existing-unified-action-contract'));
+const production=read('src/worker/extensions/agentic-layer/agent-production-execution.service.js');
+assert.ok(production.includes('canonicalMissionTruth:true')&&production.includes('canonicalAuthorization:true')&&production.includes('canonicalActionExecution:true'));
+const css=read('public/assets/css/admin-control.css'); assert.ok(css.includes('.current-action-card'));
+console.log('12.1.0 Protected Core Contract: PASS');

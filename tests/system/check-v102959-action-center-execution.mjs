@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+const root=process.cwd();
+const js=fs.readFileSync(path.join(root,'public/assets/js/extensions/dashboard-work-surface-102959.js'),'utf8');
+const map=fs.readFileSync(path.join(root,'src/worker/application/actions/action-service-map.js'),'utf8');
+const mgmt=fs.readFileSync(path.join(root,'src/worker/extensions/mission-management/mission-management.service.js'),'utf8');
+assert.match(js,/code==="edit_mission"\|\|code==="edit_mission_data"/,'Edit Mission must route to the secured edit workspace.');
+assert.match(js,/X-Mission-State-Token/,'Action Center mutations must carry a canonical state token.');
+assert.match(js,/await freshState\(\)/,'Critical direct mutations must refresh the state token immediately before execution.');
+for(const code of ['delete_mission','cancel_mission','reclaim_execution','start_custody_resolution','reassign_custody_receiver','finalize_custody_transfer','abort_custody_transfer']) assert.match(js,new RegExp(code),`Action Center missing executable path for ${code}`);
+for(const code of ['edit_mission','delete_mission','cancel_mission','reclaim_execution','start_custody_resolution','reassign_custody_receiver','finalize_custody_transfer','abort_custody_transfer']) assert.match(mgmt,new RegExp(code),`Management contract missing ${code}`);
+for(const code of ['edit_mission_data','delete_mission','reclaim_execution','start_custody_resolution','reassign_custody_receiver','finalize_custody_transfer','abort_custody_transfer']) assert.match(map,new RegExp(code),`Service map missing ${code}`);
+assert.match(js,/if\(code==="edit_mission"\|\|code==="edit_mission_data"\)\{await renderEditAction\(x\);return;\}/);

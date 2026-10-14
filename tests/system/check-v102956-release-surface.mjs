@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const root=new URL('../..',import.meta.url).pathname;
+const js=fs.readFileSync(`${root}/public/assets/js/extensions/dashboard-work-surface-102956.js`,'utf8');
+const html=fs.readFileSync(`${root}/public/admin.html`,'utf8');
+assert.ok(js.includes('10.29.56'),'missing release asset version');
+assert.ok(html.includes('dashboard-work-surface-102956.css?v=10.29.56&build=10.29.56'));
+assert.ok(html.includes('dashboard-work-surface-102956.js?v=10.29.56&build=10.29.56'));
+assert.ok(!html.includes('dashboard-work-surface-102955.js'));
+assert.ok(!html.includes('dashboard-work-surface-102955.css'));
+console.log('10.29.56 release surface gate: PASS');

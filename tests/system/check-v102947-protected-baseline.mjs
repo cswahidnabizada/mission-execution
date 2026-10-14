@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const root=new URL('../..',import.meta.url).pathname;
+const js=fs.readFileSync(`${root}/public/assets/js/extensions/dashboard-work-surface-102947.js`,'utf8');
+const integrity=fs.readFileSync(`${root}/src/worker/extensions/operations-context/operational-readiness.contract.js`,'utf8');
+assert.ok(js.includes('secured-action-execution-102940.js'),'secured action execution path must remain');
+assert.ok(js.includes('Canonical mission truth'),'canonical truth presentation must remain');
+assert.ok(integrity.includes('createsAuthorization:false'),'readiness cannot create authorization');
+assert.ok(integrity.includes('changesCustody:false'),'readiness cannot change custody');
+assert.ok(integrity.includes('changesResponsibility:false'),'readiness cannot change responsibility');
+console.log('10.29.47 protected baseline gate: PASS');

@@ -1,0 +1,8 @@
+import fs from 'node:fs';import assert from 'node:assert/strict';import {execFileSync} from 'node:child_process';
+const root=process.cwd();const h=fs.readFileSync('public/driver/dashboard.html','utf8');const js=fs.readFileSync('public/assets/js/pages/canonical-role-workspace.js','utf8');const map=fs.readFileSync('src/worker/application/actions/action-service-map.js','utf8');const css=fs.readFileSync('public/assets/ui/canonical-ui-system.css','utf8');const cap=fs.readFileSync('src/worker/extensions/actions-intelligence/action-capability.engine.js','utf8');
+for(const x of ['data-role-nav="home"','data-role-nav="queue"','data-role-nav="current"','data-role-nav="actions"','data-role-nav="status"','data-role-nav="profile"','id="missionQueue"','id="queueContext"','id="actionReadyList"','id="profileForm"'])assert.match(h,new RegExp(x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+assert.match(h,/role-workspace/);assert.match(css,/\.role-rail/);for(const x of ['renderMissionWorkbench','renderMissionWorkbench','/api/missions?limit=100','/api/driver/me/operational','/api/executor/me/operational','confirm_arrival','capture_delivery_proof','complete_mission'])assert.ok(js.includes(x),`role runtime missing ${x}`);
+for(const x of ['confirm_arrival:status("Arrived")','confirm_pickup:status("PickedUp")','start_transit:status("InTransit")','confirm_delivery:status("Delivered")','complete_mission:status("Completed")','report_exception','navigate'])assert.ok(map.includes(x),`canonical service map missing ${x}`);
+assert(cap.includes("personalExecutionReady") && cap.includes("executionBelongsToViewer"));
+execFileSync(process.execPath,['--check','public/assets/js/pages/canonical-role-workspace.js']);
+console.log('Driver + Independent Executor operational desk: PASS');

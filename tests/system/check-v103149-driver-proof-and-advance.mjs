@@ -1,0 +1,15 @@
+import fs from 'node:fs';import assert from 'node:assert/strict';import {execFileSync} from 'node:child_process';
+const read=p=>fs.readFileSync(p,'utf8');
+const registry=read('src/worker/application/actions/action-registry.js');
+const uiRegistry=read('public/assets/js/core/action-registry.js');
+const map=read('src/worker/application/actions/action-service-map.js');
+const auth=read('src/worker/extensions/action-execution/secured-action-authorization.contract.js');
+const cap=read('src/worker/extensions/actions-intelligence/action-capability.engine.js');
+const contract=read('src/worker/extensions/actions-intelligence/action-contract.engine.js');
+const workspace=read('public/assets/ui/canonical-mission-workspace.js');
+const route=read('src/worker/modules/files/files.routes.js');
+const transition=read('src/worker/modules/transitions/transition-safety.service.js');
+const css=read('public/assets/css/extensions/driver-executor-operational-desk-103048.css');
+for(const [src,needle] of [[registry,'ADVANCE_EXECUTION:"advance_execution"'],[registry,'[A.ADVANCE_EXECUTION]:def("Continue Execution"'],[uiRegistry,'"advance_execution"'],[map,'advance_execution:route("mission_flow",{kind:"ui",intent:"advance_execution"'],[auth,'code==="advance_execution"'],[cap,'A.ADVANCE_EXECUTION'],[contract,'nextActionCode'],[workspace,'function renderAdvanceExecution'],[workspace,'normalizeProofImage'],[workspace,'RETAKE PHOTO'],[workspace,'SUBMIT & CONTINUE'],[workspace,'hiddenDriverLifecycle'],[transition,"action==='capture_delivery_proof'"],[route,'actionCode:"capture_delivery_proof"'],[transition,"action==='capture_delivery_proof'"],[css,'.cmw-proof-preview'],[css,'.driver-action-primary']])assert.match(src,new RegExp(needle.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')),`missing ${needle}`);
+for(const f of ['src/worker/application/actions/action-registry.js','src/worker/application/actions/action-service-map.js','src/worker/extensions/action-execution/secured-action-authorization.contract.js','src/worker/extensions/actions-intelligence/action-capability.engine.js','src/worker/extensions/actions-intelligence/action-contract.engine.js','public/assets/ui/canonical-mission-workspace.js','src/worker/modules/files/files.routes.js','src/worker/modules/transitions/transition-safety.service.js','public/assets/js/pages/canonical-role-workspace.js'])execFileSync(process.execPath,['--check',f]);
+console.log('10.31.49 Driver/Executor advance execution + delivery evidence preview/retake/reconciliation: PASS');

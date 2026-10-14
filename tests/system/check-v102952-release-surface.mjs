@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const root=new URL('../..',import.meta.url).pathname;
+const html=fs.readFileSync(`${root}/public/admin.html`,'utf8');
+const js=fs.readFileSync(`${root}/public/assets/js/extensions/dashboard-work-surface-102952.js`,'utf8');
+assert.ok(html.includes('dashboard-work-surface-102952.css?v=10.29.52&build=10.29.52'));
+assert.ok(html.includes('dashboard-work-surface-102952.js?v=10.29.52&build=10.29.52'));
+assert.ok(js.includes('canonicalOperatorIntent'));
+assert.ok(fs.existsSync(`${root}/src/worker/extensions/operations-context/canonical-operator-intent.contract.js`));
+console.log('10.29.52 release surface gate: PASS');

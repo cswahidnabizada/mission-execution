@@ -1,0 +1,18 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const read=p=>fs.readFileSync(p,'utf8');
+const pkg=JSON.parse(read('package.json'));const lock=JSON.parse(read('package-lock.json'));
+const [major,minor]=pkg.version.split('.').map(Number);assert(major>15||(major===15&&minor>=5),'current release must preserve the 15.5 fixture contract');assert.equal(lock.version,pkg.version);assert.equal(lock.packages[''].version,pkg.version);
+const migration=read('database/migrations/0151_product_experience_fixture_completion.sql');
+for(const x of ['platform_demo_product_profiles','platform_demo_fixtures','platform_demo_fixture_users','country_code','product_definition_id'])assert(migration.includes(x),`missing fixture completion contract: ${x}`);
+const fixture=read('src/worker/modules/admin-control/demo-fixture.service.js');
+for(const x of ['ONM-DEMO-DE-15','ON Mission Demo GmbH','demo-admin@demo.onmission.test','demo-manager@demo.onmission.test','demo-operator@demo.onmission.test','onmission-logistics-demo','onmission-field-service-demo','SIMULATED_EXTERNAL_SIDE_EFFECTS'])assert(fixture.includes(x),`missing stable demo fixture: ${x}`);
+const routes=read('src/worker/modules/admin-control/demo-fixture.routes.js');
+for(const x of ['/api/platform/admin/demo/fixture','/api/platform/admin/demo/fixture/provision','/api/platform/admin/demo/fixture/reset'])assert(routes.includes(x),`missing demo fixture route: ${x}`);
+const cert=read('src/worker/modules/admin-control/certification-environment.service.js');
+for(const x of ['ONM-CERT-DE-15','ON Mission Certification GmbH','ON Mission Isolation Test GmbH','cert-admin@cert.onmission.test','cert-attacker@cert.onmission.test'])assert(cert.includes(x),`missing certification fixture: ${x}`);
+const ui=read('public/assets/js/frontend/admin/product-experience.js');
+for(const x of ['PROVISION DEMO FIXTURE','PROVISION CERTIFICATION','QUARANTINE CERTIFICATION'])assert(ui.includes(x),`missing Product Experience fixture control: ${x}`);
+const provider=read('src/worker/security/external-provider-integration.service.js');
+for(const x of ['EXECUTION_INTENT_REQUIRED_FOR_PROVIDER_EFFECT','DEMO_EXTERNAL_EFFECT_BLOCKED','NON_PRODUCTION_REAL_PROVIDER_BLOCKED'])assert(provider.includes(x),`missing external-effect fence: ${x}`);
+console.log('Product Experience fixture completion contract: PASS');

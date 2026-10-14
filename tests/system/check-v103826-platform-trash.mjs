@@ -1,0 +1,18 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const root=process.cwd();
+const service=fs.readFileSync(path.join(root,'src/worker/security/platform-trash.service.js'),'utf8');
+const routes=fs.readFileSync(path.join(root,'src/worker/modules/admin-control/admin-control.routes.js'),'utf8');
+const ui=fs.readFileSync(path.join(root,'public/assets/js/frontend/admin/admin.js'),'utf8');
+const migration=fs.readFileSync(path.join(root,'database/migrations/0093_platform_trash_and_cleanup.sql'),'utf8');
+const pkg=JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8'));
+const version=fs.readFileSync(path.join(root,'VERSION'),'utf8').trim();
+const must=(text,needle,label)=>{if(!text.includes(needle))throw new Error(`Missing ${label}: ${needle}`)};
+if(!['10.38.26','10.38.27','10.38.28','10.38.28','10.38.29'].includes(version))throw new Error(`VERSION ${version}`);
+if(!['10.38.26','10.38.27','10.38.28','10.38.28','10.38.29'].includes(pkg.version))throw new Error(`package version ${pkg.version}`);
+for(const x of ['listCleanupCandidates','trashResource','restoreTrash','purgeTrash','PLATFORM_TRASH_VERSION'])must(service,x,x);
+for(const x of ['/api/platform/admin/trash','/api/platform/admin/trash/candidates','/restore','/purge'])must(routes,x,`route ${x}`);
+for(const x of ['Trash & Cleanup','renderTrash','data-trash-candidate','data-trash-restore','data-trash-purge'])must(ui,x,x);
+for(const x of ['platform_trash_items','DE_PLATFORM_TRASH','data_classification_registry'])must(migration,x,x);
+for(const x of ['eval(','new Function','Function('])if(service.includes(x))throw new Error(`Unsafe execution token ${x}`);
+console.log('10.38.26 Platform Trash & Cleanup: PASS');

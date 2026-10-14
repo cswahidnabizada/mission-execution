@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+const read=p=>fs.readFileSync(p,'utf8');
+const version=read('VERSION').trim();
+if(!['10.38.28','10.38.29','10.39.0','10.39.1','10.40.0','10.40.1'].includes(version))throw new Error(`VERSION ${version}`);
+const pkg=JSON.parse(read('package.json')); if(!['10.38.28','10.38.29','10.39.0','10.39.1','10.40.0','10.40.1'].includes(pkg.version))throw new Error('package version mismatch');
+const admin=read('public/assets/js/frontend/admin/admin.js');
+for(const x of ["let stepUpPromise=null","const rawApi=async","PLATFORM_SUPER_ADMIN_STEP_UP_REQUIRED","if(await ensureStepUp())return await rawApi(path,request)","request.body=JSON.stringify(request.body)","rawApi('/api/platform/access/admin/status')","rawApi('/api/platform/access/admin/step-up"])if(!admin.includes(x))throw new Error(`step-up flow missing ${x}`);
+const routes=read('src/worker/modules/admin-control/admin-control.routes.js');
+for(const x of ["requirePlatformSuperAdminStepUp(request,env)","/api/platform/admin/data-control/action","/api/platform/admin/data-control/bulk","/api/platform/admin/trash"])if(!routes.includes(x))throw new Error(`backend step-up boundary missing ${x}`);
+const sec=read('src/worker/security/platform-super-administrator.js');
+const routesSec=read('src/worker/modules/admin-control/admin-control.routes.js');
+for(const x of ["STEPUP_TTL_SECONDS=5*60"])if(!sec.includes(x))throw new Error(`step-up security control missing ${x}`);
+for(const x of ["HttpOnly","SameSite=Strict","Secure"])if(!routesSec.includes(x))throw new Error(`step-up cookie security control missing ${x}`);
+console.log('10.38.28 Super Admin Step-Up Completion: PASS');

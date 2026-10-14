@@ -1,0 +1,14 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+const render=fs.readFileSync("public/assets/js/extensions/operations-rendering-capability.js","utf8");
+const css=fs.readFileSync("public/assets/css/operations-context-runtime.css","utf8");
+assert.ok(render.includes("ops-wb-frame-v51"));
+assert.ok(!render.includes("ops-wb-frame-v50"));
+assert.ok(!render.includes("ops-wb-frame-v49"));
+assert.ok(!render.includes("ops-wb-situation-statement"));
+assert.ok(!render.includes("Next: ${esc(actionText)}"));
+assert.ok(!render.includes("Why: ${esc(whyText)}"));
+assert.ok(css.includes(".ops-wb-frame-v51"));
+assert.ok(!css.includes("ops-wb-frame-v50"));
+assert.ok(!css.includes("ops-wb-frame-v49"));
+console.log("10.18.51 Workbench deduplication contract: PASS");

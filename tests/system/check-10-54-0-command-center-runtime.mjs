@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+const overview={id:'view-overview',innerHTML:'',querySelector:(s)=>s==='#commandApplyScope'?{addEventListener(){}}:null,querySelectorAll:()=>[]};
+globalThis.document={querySelector:(s)=>s==='#view-overview'?overview:null,querySelectorAll:()=>[]};
+const mod=await import(`../../public/assets/js/frontend/admin/command-center.js?runtime=${Date.now()}`);
+const sample={surface:{status:'HEALTHY',version:'10.60.0',stats:[{key:'active-products',label:'Active products',value:1,action:'product-health'},{key:'open-work',label:'Open work',value:0,action:'product-health'},{key:'in-flight',label:'In-flight operations',value:0,action:'system-health'},{key:'organizations',label:'Organizations',value:1,action:'companies'}],workspaceStates:[{key:'product-publisher',status:'READY',count:1,action:'product-publisher'}],lifecycle:[{label:'DRAFT',count:1}],queue:[],preview:{productStatus:'OPERATING',activeCountries:1,activeProducts:1,readinessPercent:100,pendingReviews:0}},now:{reason:'No blocking work',actionKey:'product-health',actionLabel:'CONTINUE'},next:{reason:'Monitor live product',actionKey:'product-health',actionLabel:'OPEN MONITOR'},productLens:{countryCode:null,sectorCode:null,productState:'PLATFORM',result:'Select a country and sector.'},recentOperations:[],unavailableAuthorities:[]};
+await mod.renderCommandCenter({$:(s)=>s==='#view-overview'?overview:null,state:{view:'overview',commandScope:{}},esc:v=>String(v??''),loadCommandCenter:async()=>sample,api:async()=>({}),navigate:()=>{}});
+assert.match(overview.innerHTML,/Control Center/);
+assert.match(overview.innerHTML,/CURRENT SITUATION/);
+assert.match(overview.innerHTML,/WORKING ON/);
+assert.match(overview.innerHTML,/CURRENT ACTION/);
+assert.match(overview.innerHTML,/RELEASE JOURNEY/);
+assert.match(overview.innerHTML,/EXPLORE PLATFORM/);
+console.log('10.54.0 Command Center runtime contract: PASS');

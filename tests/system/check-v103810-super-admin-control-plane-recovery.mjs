@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const root=process.cwd();
+const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const assert=(ok,msg)=>{if(!ok)throw new Error(msg)};
+const admin=read('public/assets/js/frontend/admin/admin.js');
+const service=read('src/worker/modules/admin-control/admin-control.service.js');
+assert(admin.includes("await api('/api/platform/admin/super-admin/session')"),'Super Admin session gate missing');
+assert(admin.indexOf('shell();')>admin.indexOf("await api('/api/platform/admin/super-admin/session')"),'Studio must open only after Super Admin authentication');
+assert(admin.includes('await refreshData();'),'control-plane data load missing');
+assert(admin.includes('Super Admin authenticated'),'runtime must distinguish authenticated session from data-plane failure');
+assert(service.includes('safeAll('),'control-plane reads must degrade independently');
+assert(service.includes("dataQuality:{status:warnings.length?'degraded':'healthy',warnings}"),'control-plane data quality must be explicit');
+assert(service.includes("safeAll(()=>env.DB.prepare(`SELECT id,code,name,active FROM plans WHERE active=1 ORDER BY id`),'plans')"),'control plane must expose active plans canonically');
+console.log('10.38.12 Super Admin/control-plane separation and recovery: PASS');

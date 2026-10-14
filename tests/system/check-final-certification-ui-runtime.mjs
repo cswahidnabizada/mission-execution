@@ -1,0 +1,16 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const root=process.cwd();
+const read=f=>fs.readFileSync(path.join(root,f),'utf8');
+const assert=(ok,msg)=>{if(!ok)throw new Error(msg)};
+const ui=read('public/assets/js/frontend/admin/certification.js');
+const admin=read('public/assets/js/frontend/admin/admin.js');
+const adminPanels=read('public/assets/js/frontend/admin/surfaces/control.js');
+const command=read('public/assets/js/frontend/admin/command-center.js');
+assert(ui.includes("const q=(selector)=>document.querySelector(selector)"),'Certification renderer must own its DOM query boundary');
+assert(!ui.includes("renderCertification({$,api,esc,show})"),'Certification renderer must not depend on an injected $ function');
+assert(ui.includes("renderCertification({api,esc,show})"),'Certification refresh/retry must use the renderer contract');
+assert(adminPanels.includes("certification:()=>renderCertification({api,esc,show:navigate})"),'Certification renderer must remain registered with the controller and receive UI dependencies');
+assert(command.includes("id=\"openCertification\"")&&command.includes("navigate('certification')"),'Command Center certification action must open Certification, not System Health');
+assert(command.includes('AUTHORITY UNAVAILABLE'),'Command Center must distinguish certification authority failure from product state');
+console.log('Final certification UI runtime integrity gate: PASS');

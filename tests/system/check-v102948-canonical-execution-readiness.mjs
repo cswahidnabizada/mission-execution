@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+const root=new URL('../..',import.meta.url).pathname;
+const contract=fs.readFileSync(`${root}/src/worker/extensions/operations-context/operational-readiness.contract.js`,'utf8');
+const js=fs.readFileSync(`${root}/public/assets/js/extensions/dashboard-work-surface-102948.js`,'utf8');
+for(const token of ['OPERATIONAL_READINESS_CONTRACT_VERSION="2.0"','execution','EXECUTABLE','NOT_EXPOSED','REQUIRES_VALIDATION','risk','deadline_overdue','risk_misrepresented_as_unblock_condition','createsTruth:false','executesAction:false']) assert.ok(contract.includes(token),`missing ${token}`);
+for(const token of ['NEXT VALID STEP','OPERATIONAL READINESS','EXECUTION AVAILABILITY','WAITING / RESPONSIBLE ACTOR','RISK / LIVENESS','EXECUTION AVAILABILITY','Review execution availability']) assert.ok(js.includes(token),`missing ${token}`);
+assert.ok(!js.includes('Unblock condition: ${view.convergedDecision.readiness.condition}'),'legacy risk/unblock presentation remains');
+assert.ok(js.includes('Waiting condition: ${view.convergedDecision.readiness.condition}'),'waiting condition presentation missing');
+assert.ok(js.includes('operationalReadiness?.execution?.state'),'execution availability must come from canonical contract');
+console.log('10.29.48 canonical execution readiness gate: PASS');

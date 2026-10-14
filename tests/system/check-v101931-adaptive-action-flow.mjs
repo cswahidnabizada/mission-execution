@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+const js=fs.readFileSync('public/assets/js/extensions/dashboard-work-surface-101931.js','utf8');
+const flow=fs.readFileSync('public/assets/js/extensions/adaptive-action-flow.js','utf8');
+const html=fs.readFileSync('public/admin.html','utf8');
+const css=fs.readFileSync('public/assets/css/dashboard-work-surface-101931.css','utf8');
+for(const [n,r] of [['flow import',/adaptive-action-flow\.js/],['DO THIS NOW',/DO THIS NOW/],['outcome',/classifyActionOutcome/],['stale',/stale|state token/i],['canonical reload',/loadWork\(\)/],['secured execution',/executeActionTarget/]]) if(!r.test(js+flow)) throw new Error(`FAIL ${n}`);
+if(!/dashboard-work-surface-101931\.js\?v=10\.19\.31/.test(html)||!/dashboard-work-surface-101931\.css\?v=10\.19\.31/.test(html)) throw new Error('FAIL asset pin');
+if(!/new-action-flow-card/.test(css)) throw new Error('FAIL UX styles');
+if(/localStorage\.setItem|sessionStorage\.setItem/.test(flow)) throw new Error('FAIL competing persistence');
+console.log('PASS: 10.19.31 Adaptive Action Flow & Outcome Intelligence contract');

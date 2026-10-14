@@ -1,0 +1,8 @@
+import * as messageRepo from '../../repositories/message.repository.js';
+import { resolveMissionAccess } from '../../security/mission-access.js';
+import { audit } from '../../security/audit.js';
+import { requireWorkTrust } from '../verification/verification.service.js';
+import {notifyTenantMessage,notifyTenantParticipantMessage} from '../notifications/notifications.service.js';
+export async function listChat(env,session,missionId,filters={}){const a=await resolveMissionAccess(env,session,missionId);if(!a)throw forbidden();return messageRepo.listMessages(env,a.tenantId,missionId,filters);}
+export async function sendChat(env,session,missionId,message){await requireWorkTrust(env,session);const a=await resolveMissionAccess(env,session,missionId);if(!a)throw forbidden();const senderRole=session.role==='admin'?'admin':session.role==='executor'?'executor':'driver';const driverId=session.role==='driver'?Number(session.driverId):null;const id=await messageRepo.insertMessage(env,{tenantId:a.tenantId,missionId,senderRole,driverId,message,messageType:'text',attentionRequired:session.role!=='admin'});if(session.role==='admin'){await messageRepo.resolveAttentionMessages(env,a.tenantId,missionId);await notifyTenantMessage(env,{ownerCompanyId:Number(a.tenantId),missionId:Number(missionId),messageId:id,reference:a.mission?.reference});}else await notifyTenantParticipantMessage(env,{ownerCompanyId:Number(a.tenantId),missionId:Number(missionId),messageId:id,reference:a.mission?.reference,senderRole});await audit(env,{session:{...session,tenantId:a.tenantId},action:'message.send',resourceType:'mission',resourceId:missionId});return id;}
+function forbidden(){const e=new Error('Not authorized for this mission');e.status=403;return e;}

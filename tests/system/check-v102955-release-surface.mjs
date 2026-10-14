@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const root=new URL('../..',import.meta.url).pathname;
+assert.equal(fs.readFileSync(`${root}/VERSION`,'utf8').trim(),'10.29.55');
+const html=fs.readFileSync(`${root}/public/admin.html`,'utf8');
+assert.ok(html.includes('dashboard-work-surface-102955.js'));
+assert.ok(html.includes('dashboard-work-surface-102955.css'));
+assert.ok(!html.includes('dashboard-work-surface-102954.js'));
+assert.ok(!html.includes('dashboard-work-surface-102954.css'));
+const js=fs.readFileSync(`${root}/public/assets/js/extensions/dashboard-work-surface-102955.js`,'utf8');
+assert.ok(js.includes('contextToken'));
+assert.ok(js.includes('Global Queue Decision'));
+console.log('10.29.55 release surface gate: PASS');

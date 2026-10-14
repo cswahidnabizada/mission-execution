@@ -1,0 +1,18 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const read=p=>fs.readFileSync(p,'utf8');
+assert.ok(['15.3.0','15.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10'].includes(read('VERSION').trim()));
+const pkg=JSON.parse(read('package.json')); const lock=JSON.parse(read('package-lock.json'));
+assert.ok(['15.3.0','15.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10'].includes(pkg.version));assert.ok(['15.3.0','15.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10'].includes(lock.version));assert.ok(['15.3.0','15.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10'].includes(lock.packages[''].version));
+const migration=read('database/migrations/0149_demo_product_environment.sql');
+assert.match(migration,/platform_environment_profiles/);assert.match(migration,/DEMO/);assert.match(migration,/demo_scenario_instances/);assert.match(migration,/demo_execution_events/);
+const service=read('src/worker/modules/admin-control/user-experience-lab.service.js');
+assert.match(service,/DEMO_PRODUCT_VERSION/);assert.match(service,/SIMULATED_EXTERNAL_SIDE_EFFECTS/);assert.match(service,/createDemoUser/);assert.match(service,/createDemoScenario/);assert.match(service,/advanceDemoScenario/);assert.match(service,/canonicalTruthUnchanged:true/);assert.match(service,/externalSideEffects:false/);
+const routes=read('src/worker/modules/admin-control/admin-user-experience.routes.js');
+for(const x of ['/api/platform/admin/demo-product','demo-product/tenants','demo-product/users','demo-product/scenarios','scenarios/advance'])assert.match(routes,new RegExp(x.replaceAll('/','\\/')));
+const ui=read('public/assets/js/frontend/admin/demo-product.js');
+for(const x of ['Demo Product','CREATE DEMO TENANT','CREATE DEMO USER','ADVANCE NEXT STAGE','SIMULATED_EXTERNAL_SIDE_EFFECTS'])assert.match(ui,new RegExp(x));
+const registry=read('public/assets/js/frontend/admin/workspace-registry.js');assert.match(registry,/Product Experience/);assert.match(registry,/demo-product/);
+const schema=read('database/schema.current.sql');assert.match(schema,/platform_environment_profiles/);assert.match(schema,/demo_scenario_instances/);assert.match(schema,/demo_execution_events/);
+assert.doesNotMatch(service,/return[^\n]*(password|generatedPassword)/i);
+console.log('15.2.0 Demo Product contract: PASS');

@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import path from 'node:path';
+const root=process.cwd(); const read=f=>fs.readFileSync(path.join(root,f),'utf8');
+const version=read('VERSION').trim(); assert.ok(['15.1.0','15.2.0','15.3.0','15.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10'].includes(version),`15.x current release expected, got ${version}`);
+const pkg=JSON.parse(read('package.json')); const lock=JSON.parse(read('package-lock.json')); assert.equal(pkg.version,version); assert.equal(lock.version,version); assert.equal(lock.packages[''].version,version);
+const service=read('src/worker/extensions/mission-execution-coordinator/mission-platform-certification.service.js');
+for(const x of ['MISSION_PLATFORM_CERTIFICATION_VERSION','PLATFORM_ROADMAP','EXECUTOR_TYPES','certifyMissionPlatform','unknownIsNotSuccess','autonomyDisabled','noNewAuthority']) assert(service.includes(x),`missing 15.0 contract: ${x}`);
+const routes=read('src/worker/extensions/mission-execution-coordinator/mission-execution-coordinator.routes.js'); assert(routes.includes('/api/mission-execution/missions/${params.missionId}/platform-certification')||routes.includes('platform-certification'));
+const ui=read('public/assets/ui/canonical-mission-workspace.js'); for(const x of ['/api/mission-execution/missions/${id}/platform-certification','REFERENCE MISSION','GOVERNED / OFF']) assert(ui.includes(x),`missing workspace convergence: ${x}`);
+const journey=read('src/worker/extensions/mission-execution-coordinator/mission-certification.service.js'); assert(journey.includes('GERMANY_LOGISTICS_RUNTIME')); assert(journey.includes('RUNTIME_OUTCOME')); assert(journey.includes('RUNTIME_NEXT_SITUATION'));
+const schema=read('database/schema.current.sql'); assert(schema.includes('CREATE TABLE mission_execution_intents')); assert(schema.includes('CREATE TABLE mission_outcome_assessments'));
+const release=read('RELEASE.md'); assert(release.includes('15.0.0','15.0.1','15.1.0')); assert(release.includes('REAL END-TO-END MISSION')); assert(release.includes('15.1+')); assert(release.includes('16.x')); assert(release.includes('17.x')); assert(release.includes('18.x')); assert(release.includes('19.x')); assert(release.includes('20.x'));
+console.log('15.1.0 real end-to-end mission platform: PASS (18 checks)');

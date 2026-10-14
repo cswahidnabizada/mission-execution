@@ -1,0 +1,16 @@
+import fs from "node:fs";
+import assert from "node:assert/strict";
+const html=fs.readFileSync("public/admin.html","utf8");
+const runtime=fs.readFileSync("public/assets/js/extensions/operations-context-runtime.js","utf8");
+const rendering=fs.readFileSync("public/assets/js/extensions/operations-rendering-capability.js","utf8");
+const css=fs.readFileSync("public/assets/css/operations-work-queue-modern.css","utf8");
+for(const id of ["opsIntentSurface","opsRuntimeSearch","opsAttentionEntry","opsWorkSurface","opsRuntimeQueueBody","opsMissionWorkbenchSurface","opsRuntimeContextBody","opsRuntimeWorkbench","opsWorkMissionCategories"]) assert.match(html,new RegExp(`id="${id}"`));
+for(const marker of ["data-ops-intent=\"create\"","data-ops-intent=\"attention\"","data-ops-navigation=\"current\"","data-ops-navigation=\"requests\"","data-ops-navigation=\"people\""]) assert.match(html,new RegExp(marker));
+assert.doesNotMatch(html,/class="nm-wb-nav"/); assert.match(html,/id="opsCreateNavigation"/);
+assert.match(runtime,/state\.operationMode="surface"/); assert.match(runtime,/state\.operationMode="workbench"/);
+assert.match(runtime,/state\.search/); assert.match(runtime,/state\.contextScope/);
+assert.match(runtime,/state\.categoryMissions/); assert.match(rendering,/missionCategoryPredicate\(state\.missionView\)/);
+assert.match(runtime+fs.readFileSync("public/assets/js/extensions/operations-navigation-capability.js","utf8"),/const attentionCount=/);
+assert.match(runtime,/workSurface\.hidden=workbenchVisible/);
+for(const marker of ["ops-work-command-surface","ops-work-queue-surface","ops-work-category-nav","ops-work-queue-item"]) assert.match(css,new RegExp(marker));
+console.log("10.18.49 Operations Work Queue contract: PASS");

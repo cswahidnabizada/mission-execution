@@ -1,0 +1,13 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const read=p=>fs.readFileSync(p,'utf8');
+const version=read('VERSION').trim();
+assert.ok(['10.97.0','11.02.0','11.03.0','11.04.0','11.04.1','11.05.0','11.05.1','11.06.0','11.07.0','11.08.0','11.08.1','11.09.0','11.10.0','11.11.0','11.12.0','11.13.0','11.14.0','11.15.0','11.16.0','11.17.0','11.18.0','12.0.0','12.0.1','12.1.0','12.2.0','12.3.0','12.4.0','12.4.1','12.5.0','12.5.1','12.5.2','12.5.3','12.6.0','12.7.0','12.8.0','12.9.0','13.0.0','13.1.0','13.2.0','13.3.0','13.4.0','13.5.0','13.6.0','13.7.0','13.8.0','13.9.0','14.0.0','14.2.0','14.3.0','14.4.0','14.5.0','14.6.0','14.7.0','14.8.0','14.9.0','15.0.0','15.0.1','15.1.0','15.2.0','15.3.0','15.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10'].includes(version));
+const registry=read('public/assets/js/frontend/admin/workspace-registry.js');
+assert.match(registry,/human-platform/);
+const studio=read('public/assets/js/frontend/admin/human-platform-studio.js');
+for(const x of ['Configure','Preview','Test Lab','Release','Tenant Inspection','Runtime / Recovery','CREATE GOVERNED DRAFT','/simulate','/test-lab','/tenant-inspection'])assert.match(studio,new RegExp(x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+const control=read('public/assets/js/frontend/admin/surfaces/control.js');assert.match(control,/renderHumanPlatformStudio/);
+const routes=read('src/worker/modules/admin-control/admin-human-platform.routes.js');assert.match(routes,/requirePlatformSuperAdminStepUp/);assert.match(routes,/human-platform-control.*preview/);
+const service=read('src/worker/modules/admin-control/human-platform-control.service.js');const configService=read('src/worker/security/platform-configuration.service.js');for(const x of ['HUMAN_PLATFORM_CONFIG_KEY','HUMAN_PLATFORM_DESTINATIONS','HUMAN_PLATFORM_CONTEXTS','createConfigurationDraft','activateConfiguration','rollbackConfiguration'])assert.match(service,new RegExp(x));assert.match(configService,/platform_configuration_versions/);
+console.log('10.97.0 Human Platform Configuration Studio continuity: PASS');

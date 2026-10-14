@@ -1,0 +1,18 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const read=p=>fs.readFileSync(p,'utf8');
+const resources=read('public/assets/js/frontend/admin/resource-management.js');
+const explorer=read('src/worker/security/platform-resource-explorer.service.js');
+const control=read('src/worker/security/platform-data-control.service.js');
+const routes=read('src/worker/modules/admin-control/admin-build-data.routes.js');
+const studio=read('src/worker/security/platform-data-studio.service.js');
+assert(routes.includes('entryId') && routes.includes('/commit'));
+assert.match(resources,/data-entry\/\$\{encodeURIComponent\(entry\.entry_id\)\}\/commit/);
+assert.match(explorer,/listReusableData/);
+assert(explorer.includes("sector:['MANAGE'"));
+assert.match(control,/deactivateReusableData\(env,actor,\{type:'sector'/);
+assert(!control.includes("platform_country_product_sectors SET status='blocked'"));
+assert(!control.includes("resourceType==='sector'?'country_sector':resourceType"));
+assert.match(studio,/REUSABLE_TYPES/);
+assert.match(resources,/definitions\.some\(x=>x\.entryType===r\.type\)/);
+console.log('12.4.1 Resource journey repair: PASS');

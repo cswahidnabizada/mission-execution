@@ -1,0 +1,38 @@
+{
+  "version": "10.95.0",
+  "base": "10.94.0",
+  "wave": 6,
+  "title": "Human Work Model \u2014 Wave 6 Surface Retirement",
+  "principle": "Retire duplicate human-facing operational surfaces permanently while preserving canonical authorities, necessary public journeys, and safe compatibility redirects.",
+  "canonicalOperations": [
+    "Today",
+    "Work",
+    "Network",
+    "Objects",
+    "People",
+    "Account"
+  ],
+  "retiredOperationalSurfaces": [
+    "public/admin.html",
+    "public/admin-control.html",
+    "public/admin/index.html",
+    "public/driver/dashboard.html",
+    "public/missions.html",
+    "public/my-driver/index.html",
+    "public/role-workspace.html",
+    "public/marketplace/index.html",
+    "public/access.html",
+    "public/subscription.html",
+    "public/verification.html"
+  ],
+  "retirementRules": [
+    "No retired surface renders an operational UI.",
+    "Authenticated access, verification and billing readiness converge into Account Activation Context.",
+    "Mission, executor, role, assignment and company legacy entries redirect to canonical Human Work destinations.",
+    "Marketplace remains only as a compatibility entry to the distinct public/private mission-access journey at /foryou.",
+    "Public authentication, independent executor registration, invitation acceptance, private mission access, support, developer and status journeys remain separate because they are not duplicate authenticated operational surfaces.",
+    "Control Plane remains separate from Operations Plane.",
+    "Canonical domain authorities, Action Registry, truth, liveness, tenant isolation and authorization are unchanged."
+  ],
+  "finalModel": "Today tells people what matters. Work lets them work. Context lets them understand. Account governs identity and readiness. Control Plane governs the platform."
+}

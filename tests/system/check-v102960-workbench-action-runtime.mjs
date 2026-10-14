@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+const root=process.cwd();
+const js=fs.readFileSync(path.join(root,'public/assets/js/extensions/dashboard-work-surface-102960.js'),'utf8');
+const req=js.slice(js.indexOf('async function requestWorkspace'),js.indexOf('async function driverWorkspace'));
+const drv=js.slice(js.indexOf('async function driverWorkspace'),js.indexOf('async function customerWorkspace'));
+assert.match(js,/canonicalOperatorActionInventory\?\.all/);
+assert.match(js,/const actionCatalog=new Map\(\)/);
+assert.match(js,/actionCatalog\.get\(code\)/);
+for(const code of ['edit_mission','delete_mission','cancel_mission','reclaim_execution','assign_driver','change_driver','start_custody_resolution','reassign_custody_receiver']) assert.match(js,new RegExp(code));
+assert.match(req,/\/api\/public\/requests/);
+assert.match(req,/X-Mission-State-Token/);
+assert.match(req,/approve/); assert.match(req,/decline/);
+for(const marker of ['data-driver-edit','data-driver-toggle','data-driver-credentials','data-driver-delete','data-driver-message']) assert.match(drv,new RegExp(marker));
+console.log('10.29.60 Workbench Action Runtime: PASS');

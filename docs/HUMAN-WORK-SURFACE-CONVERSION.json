@@ -1,0 +1,17 @@
+{
+  "version": "10.92.0",
+  "base": "10.91.0",
+  "wave": 3,
+  "name": "Human Work Model — Surface Conversion",
+  "principle": "Everything actionable is reachable through Human Work; stable information remains contextual.",
+  "converted": [
+    {"domain":"mission","surface":"Work queue","authority":"mission","target":"canonical Mission Workspace"},
+    {"domain":"network","surface":"Mission invitations","authority":"network","target":"HumanWorkItem"},
+    {"domain":"network","surface":"Trust requests","authority":"network","target":"HumanWorkItem"},
+    {"domain":"request","surface":"ForYou mission-access requests","authority":"network","target":"HumanWorkItem"}
+  ],
+  "contextual_next_wave": ["people","objects","mission_context","organization_context","network_relationship_context","product_context"],
+  "mutation_boundary": "Canonical Action Registry / secured Action Client",
+  "migrationHighWaterMark": "0124",
+  "databaseMigration": false
+}

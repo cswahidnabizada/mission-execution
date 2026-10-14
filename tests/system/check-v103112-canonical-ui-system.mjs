@@ -1,0 +1,9 @@
+import fs from "node:fs";import path from "node:path";import assert from "node:assert/strict";
+const root=process.cwd(),pub=path.join(root,"public");const read=p=>fs.readFileSync(p,"utf8");const exists=p=>fs.existsSync(path.join(pub,p.replace(/^\//,"")));
+const htmls=["public/admin.html","public/driver/dashboard.html"];const refs=[];for(const h of htmls){const s=read(path.join(root,h));for(const m of s.matchAll(/(?:href|src)=["'](\/assets\/[^"']+)["']/g))refs.push(m[1].split("?")[0]);}
+for(const r of refs)assert.ok(exists(r),`Missing HTML asset: ${r}`);
+const jsFiles=[];function walk(d){for(const e of fs.readdirSync(d,{withFileTypes:true})){const p=path.join(d,e.name);if(e.isDirectory())walk(p);else if(/\.m?js$/.test(e.name))jsFiles.push(p);}}walk(path.join(pub,"assets"));
+for(const f of jsFiles){const s=read(f);for(const m of s.matchAll(/(?:from|import\()[\s"']([^"']+\.m?js)(?:[?][^"']*)?["']/g)){const spec=m[1];if(spec.startsWith(".")){const resolved=path.normalize(path.join(path.dirname(f),spec));assert.ok(fs.existsSync(resolved),`Missing JS import ${spec} from ${path.relative(root,f)}`);}}}
+for(const bad of ["assets/ui/index.js","assets/ui/index.js","dashboard-v103111","product-ui-103111"]){const hits=[];for(const f of [...htmls,...jsFiles]){if(read(f).includes(bad))hits.push(path.relative(root,f));}assert.equal(hits.length,0,`Obsolete UI reference remains: ${bad} -> ${hits.join(",")}`);}
+assert.ok(fs.existsSync(path.join(pub,"assets/ui/index.js")));assert.ok(fs.existsSync(path.join(pub,"assets/ui/canonical-ui-system.css")));assert.ok(fs.existsSync(path.join(pub,"assets/js/extensions/canonical-dashboard-runtime.js")));assert.ok(fs.existsSync(path.join(pub,"assets/js/pages/canonical-role-workspace.js")));
+console.log("10.31.12 canonical UI dependency completeness: PASS");

@@ -1,0 +1,10 @@
+import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';import {spawnSync} from 'node:child_process';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');const fail=[];const exists=f=>fs.existsSync(path.join(root,f));const read=f=>fs.readFileSync(path.join(root,f),'utf8');
+const must=['public/admin.html','public/assets/js/extensions/dashboard-experience-103057.js','public/assets/css/product-ui-103057.css','public/assets/js/core/canonical-ui-components-103056.js','public/assets/js/extensions/canonical-custody-responsibility-ui-103056.js'];for(const f of must)if(!exists(f))fail.push('missing:'+f);
+const admin=read('public/admin.html');for(const t of ['dashboard-experience-103057','product-ui-103057','canonical-ui-components-103056','canonical-custody-responsibility-ui-103056'])if(!admin.includes(t))fail.push('admin_not_registered:'+t);
+const js=read('public/assets/js/extensions/dashboard-experience-103057.js');
+for(const t of ['const unifiedExecution=','/api/network/invitations','accept_network','reject_network','requestKind==="network_invitation"'])if(!js.includes(t))fail.push('runtime_contract_missing:'+t);
+const css=read('public/assets/css/product-ui-103057.css');for(const t of ['.work-shell','.workbench','.wb-form','.network-layout','.ctx-workspace','.create-mission-workspace'])if(!css.includes(t))fail.push('css_missing:'+t);
+const routes=read('src/worker/modules/public/public.routes.js');if(!routes.includes("network_mission_invitations WHERE recipient_type='tenant'"))fail.push('request_count_not_network_aware');
+function syntax(f){const r=spawnSync(process.execPath,['--check',path.join(root,f)],{encoding:'utf8'});if(r.status!==0)fail.push('syntax:'+f+'\n'+r.stderr)}for(const f of must.filter(f=>f.endsWith('.js')))syntax(f);
+if(fail.length){console.error('FAIL 10.30.57 UI Runtime + Requests');for(const x of fail)console.error(' - '+x);process.exit(1)}console.log('PASS 10.30.57 UI Runtime + Requests: Workbench execution, active UI CSS and incoming Network requests are converged');

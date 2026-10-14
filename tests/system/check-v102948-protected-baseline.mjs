@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const root=new URL('../..',import.meta.url).pathname;
+const version=fs.readFileSync(`${root}/VERSION`,'utf8').trim();
+const pkg=JSON.parse(fs.readFileSync(`${root}/package.json`,'utf8'));
+const html=fs.readFileSync(`${root}/public/admin.html`,'utf8');
+assert.equal(version,'10.29.48');
+assert.equal(pkg.version,'10.29.48');
+assert.ok(html.includes('dashboard-work-surface-102948.js?v=10.29.48&build=10.29.48'));
+assert.ok(html.includes('dashboard-work-surface-102948.css?v=10.29.48&build=10.29.48'));
+assert.ok(fs.existsSync(`${root}/src/worker/extensions/operations-context/operational-readiness.contract.js`));
+assert.ok(fs.existsSync(`${root}/src/worker/extensions/operations-context/operations-context.routes.js`));
+assert.ok(fs.existsSync(`${root}/public/assets/js/extensions/dashboard-work-surface-102947.js`),'protected 10.29.47 asset must remain available for regression comparison');
+console.log('10.29.48 protected baseline gate: PASS');

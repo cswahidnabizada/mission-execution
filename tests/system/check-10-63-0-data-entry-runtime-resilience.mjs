@@ -1,0 +1,42 @@
+import fs from 'node:fs';
+const read=p=>fs.readFileSync(p,'utf8');
+const fail=[];
+const reusable=read('src/worker/security/platform-reusable-data.service.js');
+const entry=read('src/worker/security/platform-data-entry.service.js');
+const routes=read('src/worker/modules/admin-control/admin-build-data.routes.js');
+const ctx=read('src/worker/modules/admin-control/admin-route-context.js');
+const ui=read('public/assets/js/frontend/admin/data-governance.js');
+const catalog=read('public/assets/js/frontend/admin/data-catalog.js');
+const migration=read('database/migrations/0117_reusable_data_provenance.sql');
+const schema=read('database/schema.current.sql');
+const pkg=JSON.parse(read('package.json'));
+const requiredTables=['platform_reusable_sectors','platform_reusable_languages','platform_reusable_currencies','platform_reusable_regions','platform_reusable_classifications','platform_reusable_policies','platform_reusable_responsibilities','platform_storage_registry','platform_reusable_pages','platform_reusable_features','platform_reusable_guidance','platform_reusable_eligibility','platform_reusable_pricing'];
+for(const t of requiredTables) if(!schema.includes(`CREATE TABLE ${t} `)) fail.push(`schema missing reusable table: ${t}`);
+for(const t of ['platform_product_country_catalog','platform_product_definition_components','organization_role_catalog','canonical_capability_registry','external_provider_registry','plans']) if(!schema.includes(`CREATE TABLE ${t} `)||!new RegExp(`CREATE TABLE ${t} \\([\\s\\S]*?data_entry_id`).test(schema)) fail.push(`schema missing provenance column: ${t}`);
+if(!reusable.includes('existingTables')||!reusable.includes('reusableReadiness')) fail.push('reusable authority readiness probe missing');
+if(!reusable.includes('DATA_ENTRY_SCHEMA_NOT_READY')) fail.push('creation schema readiness fence missing');
+if(!reusable.includes('policy_type=?')) fail.push('policy/residency/retention projection separation missing');
+if(!reusable.includes('platform_reusable_pricing')) fail.push('pricing authority projection missing');
+if(!entry.includes("result?.status??(result?.active===1?")) fail.push('canonical resource status precedence fix missing');
+if(!routes.includes('/api/platform/admin/data-entry/reusable-readiness')) fail.push('readiness route missing');
+if(!ctx.includes('getReusableDataReadiness')) fail.push('readiness route context missing');
+if(!ui.includes('Promise.allSettled')) fail.push('Data Entry independent loading resilience missing');
+if(!ui.includes('CATALOG READINESS')) fail.push('Data Entry readiness warning UI missing');
+if(!catalog.includes('CATALOG READINESS')) fail.push('Data Catalog readiness warning UI missing');
+if(!pkg.scripts?.['migrate:production']) fail.push('production migration script missing');
+if(pkg.scripts?.deploy !== 'npm run deploy:production') fail.push('deploy must delegate to the canonical production deployment command');
+if(!pkg.scripts?.['deploy:production']?.includes('migrate:production')) fail.push('deploy:production is not migration-first');
+if(!migration.includes('data_entry_id')||!migration.includes('uq_product_country_data_entry')) fail.push('0117 provenance/index migration incomplete');
+if(!entry.includes("case 'product_country'")||!entry.includes('createReusableData(env,actor')) fail.push('Data Entry reusable canonical commit boundary missing');
+console.log(fail.length?`FAIL\n${fail.join('\n')}`:'PASS — 10.64.0 Data Entry runtime resilience contract');
+process.exitCode=fail.length?1:0;
+
+const {listReusableData,getReusableDataReadiness,createReusableData}=await import('../../src/worker/security/platform-reusable-data.service.js');
+const existing=new Set(['platform_country_product_blueprints','platform_product_country_catalog','organization_role_catalog','canonical_capability_registry','canonical_domain_registry','external_provider_registry','plans','plan_product_configuration','consent_policy_versions','platform_product_definition_components','platform_product_definitions','platform_configuration_versions']);
+const fakeDb={prepare(sql){return {bind(...args){return this},async all(){if(sql.includes('sqlite_master'))return {results:[...existing].map(name=>({name}))};return {results:[]}},async first(){return null},async run(){return {meta:{changes:0,last_row_id:1}}}}}};
+const fakeEnv={DB:fakeDb};
+const readiness=await getReusableDataReadiness(fakeEnv,{});if(readiness.ready)fail.push('runtime readiness incorrectly reports a pre-0116 schema as ready');
+const projection=await listReusableData(fakeEnv,{limit:250});if(!projection?.readiness?.missing?.length)fail.push('runtime projection did not expose missing schema dependencies');
+try{await createReusableData(fakeEnv,{role:'platform_super_administrator',id:'test'},'sector',{name:'Logistics',code:'logistics'});fail.push('creation did not block against missing canonical schema');}catch(e){if(e?.code!=='DATA_ENTRY_SCHEMA_NOT_READY'||Number(e?.status)!==503)fail.push('creation schema fence returned the wrong failure contract');}
+if(fail.length){console.error(`FAIL\n${fail.join('\n')}`);process.exit(1)}
+console.log('PASS — runtime missing-schema simulation remains explicit and non-destructive');

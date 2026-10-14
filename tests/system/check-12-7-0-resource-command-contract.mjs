@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+const routes=fs.readFileSync('src/worker/modules/admin-control/admin-build-data.routes.js','utf8');
+const bridge=fs.readFileSync('public/assets/js/frontend/admin/resource-explorer.js','utf8');
+const resources=fs.readFileSync('public/assets/js/frontend/admin/resource-management.js','utf8');
+if(!routes.includes('/api/platform/admin/resource-management/action')) throw new Error('Resource command route missing');
+for(const x of ['RESOURCE_IDENTITY_REQUIRED','RESOURCE_ACTION_NOT_SUPPORTED','getResourceExplorer(env,resourceType,resourceId)','outcome:action===\'purge\'?\'PURGED\':\'APPLIED\'']) if(!routes.includes(x)) throw new Error(`Resource command contract missing: ${x}`);
+if(!bridge.includes('/api/platform/admin/resource-management/action')) throw new Error('Resource client does not use canonical command route');
+if(!bridge.includes('Idempotency-Key')) throw new Error('Resource commands missing idempotency key');
+if(!resources.includes('RESOURCE CONTRACT TYPE') || !resources.includes('resourceTypeSelect')) throw new Error('Resource contract selector missing');
+if(resources.includes('data-add-resource-type')) throw new Error('Old resource category chip selector remains');
+console.log('12.7.0 Resource command contract: PASS');

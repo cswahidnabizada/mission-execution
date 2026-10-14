@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const root=process.cwd();
+const js=fs.readFileSync(`${root}/public/assets/js/extensions/dashboard-work-surface-102944.js`,'utf8');
+const css=fs.readFileSync(`${root}/public/assets/css/dashboard-work-surface-102944.css`,'utf8');
+const html=fs.readFileSync(`${root}/public/admin.html`,'utf8');
+for (const token of ['resolveAdaptiveDecision','renderUnifiedDecision','ONE CURRENT DECISION','SECURED SERVICES','does not create truth']) assert.ok(js.includes(token),`missing ${token}`);
+for (const token of ['new-adaptive-decision','decision-critical','new-adaptive-decision-grid']) assert.ok(css.includes(token),`missing ${token}`);
+assert.match(html,/dashboard-work-surface-102944\.css\?v=10\.29\.44&build=10\.29\.44/);
+assert.match(html,/dashboard-work-surface-102944\.js\?v=10\.29\.44&build=10\.29\.44/);
+assert.equal(js.includes('fetch('),false,'workspace must use existing API abstraction');
+console.log('10.29.44 adaptive operational decision: PASS');

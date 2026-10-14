@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const read=p=>fs.readFileSync(p,'utf8');
+const missions=read('src/worker/modules/missions/missions.service.js');
+const runtime=read('public/assets/js/extensions/canonical-dashboard-runtime.js');
+const admin=read('public/admin.html');
+assert.match(missions,/const \[owned,shared,custodyPending\]=await Promise\.all\(\[/);
+assert.match(missions,/cc\.status='awaiting_acceptance' AND cc\.recipient_type='tenant' AND cc\.recipient_id=\?/);
+assert.match(missions,/for\(const row of custodyPending\|\|\[\]\)/);
+assert.doesNotMatch(missions,/const \[owned,shared\]=await Promise\.all\(\[/);
+assert.match(runtime,/\/api\/missions\?limit=100/);
+assert.match(runtime,/\/api\/operations\/multi-mission\?limit=100/);
+assert.match(admin,/canonical-dashboard-runtime\.js\?v=10\.31\.77&build=10\.31\.77/);
+console.log('10.31.79 mission-list/admin orchestration regression: PASS');

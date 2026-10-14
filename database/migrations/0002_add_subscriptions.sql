@@ -1,0 +1,3 @@
+-- Subscription tables were already created in D1 during setup.
+-- Keep this file as the project migration record.
+-- See the production D1 schema for plans, subscriptions, and usage_counters.

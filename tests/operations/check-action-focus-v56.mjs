@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const root=new URL('../../',import.meta.url).pathname;
+const html=fs.readFileSync(`${root}/public/admin.html`,'utf8');
+const render=fs.readFileSync(`${root}/public/assets/js/extensions/operations-rendering-capability.js`,'utf8');
+const actions=fs.readFileSync(`${root}/public/assets/js/extensions/operations-actions-capability.js`,'utf8');
+const css=fs.readFileSync(`${root}/public/assets/css/operations-work-queue-modern.css`,'utf8');
+assert.match(render,/ops-wb-frame-v57/);
+assert.match(render,/data-ops-workbench-back/);
+assert.match(render,/ops-wb-action-surface-v57/);
+assert.match(css,/data-ops-mode="workbench"/);
+for(const selector of ['#opsIntentSurface','#opsWorkSurface','.nm-wb-head','.nm-wb-toolbar','#opsCreateNavigation','.nm-context-panel']) assert.match(css,new RegExp(selector.replace(/[.#]/g,'\\$&')));
+assert.doesNotMatch(actions,/data-ops-action="close-intake">BACK TO OPERATIONS/);
+assert.match(html,/data-ops-workbench-back/);
+console.log('10.18.57 action-focus contract: PASS');

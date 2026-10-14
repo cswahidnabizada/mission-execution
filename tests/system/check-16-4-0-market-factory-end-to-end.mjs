@@ -1,0 +1,13 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const read=p=>fs.readFileSync(p,'utf8');
+const ui=read('public/assets/js/frontend/admin/market-factory.js');
+const service=read('src/worker/security/market-factory.service.js');
+assert.match(ui,/const mutation=\(clientApi,path,body=\{\}\)=>clientApi\(path/,'mutations must use the injected API client, not an undeclared global');
+assert.doesNotMatch(ui,/const mutation=\(path,body=\{\}\)=>api\(/,'no global api reference may remain in mutation helper');
+for(const action of ['validate','authorize','publish']) assert.ok(ui.includes('mutation(api,`/api/platform/admin/market-factory/versions/${b.dataset.mf'+action[0].toUpperCase()+action.slice(1)+'}/'+action+'`)'),'action must use injected api client');
+assert.match(ui,/await refresh\(\);/,'import must await refresh to avoid stale selected-market state');
+assert.match(service,/MARKET_FACTORY_VERSION=RELEASE_VERSION/,'Market Factory version must use canonical release authority');
+assert.match(service,/LEGAL_REVIEW_REQUIRED_/,'required legal review must block publication until explicitly reviewed');
+assert.match(service,/LEFT JOIN platform_product_country_catalog c ON c.code=p.country_code/,'staged packages must remain visible before the canonical country is created');
+console.log('16.4.0 Market Factory end-to-end workflow contract: PASS');
