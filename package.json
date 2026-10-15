@@ -61,6 +61,6 @@
     "node": "24.x",
     "npm": ">=10 <12"
   },
-  "version": "16.10.18",
+  "version": "16.10.19",
   "packageManager": "npm@10.9.2"
 }

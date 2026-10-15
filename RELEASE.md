@@ -1,3 +1,19 @@
+# Mission Execution 16.10.19 — Release-Gate Compatibility & Convergence Continuity
+
+Status: protected source candidate; not deployed by this package.
+
+## Changes
+- Repairs historical release-continuity tests that used frozen exact-version allowlists and rejected valid later releases. Existing behavioral assertions remain in place; the compatibility lists now include 16.10.18 and 16.10.19.
+- Keeps the 16.10.18 atomic objective-step claim regression active on later releases instead of pinning it to one exact release string.
+- Preserves the objective execution race fix and unified-convergence documentation from 16.10.18.
+- No database migrations, customer-data changes, production binding changes, or deployment actions.
+
+## Validation status
+- Source and targeted checks are run for this candidate; full release gate and supported build must be reported from actual execution below.
+- Production deployment and live runtime verification are not included.
+
+---
+
 # Mission Execution 16.10.18 — Unified Convergence & Atomic Objective Execution
 
 Status: protected candidate; not deployed by this package.

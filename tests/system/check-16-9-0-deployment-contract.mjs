@@ -6,7 +6,8 @@ const version=fs.readFileSync('VERSION','utf8').trim();
 const npmrc=fs.readFileSync('.npmrc','utf8');
 const build=fs.readFileSync('scripts/check-build-environment.mjs','utf8');
 const docs=fs.readFileSync('docs/16.9.0-DEPLOYMENT-CONTRACT.md','utf8');
-assert.equal(version,'16.10.17','canonical VERSION must be 16.10.17');
+const currentVersion=version.split('.').map(Number);
+assert.ok(currentVersion[0]>16 || (currentVersion[0]===16 && (currentVersion[1]>10 || (currentVersion[1]===10 && currentVersion[2]>=17))),`canonical VERSION must preserve the 16.10.17+ deployment contract; got ${version}`);
 assert.equal(pkg.version,version);
 assert.equal(lock.version,version);
 assert.equal(lock.packages[''].version,version);
@@ -31,4 +32,4 @@ const fixtureService=fs.readFileSync('src/worker/modules/admin-control/certifica
 assert.match(onboarding,/certificationFixture && actor\?\.type!==['"]platform_super_administrator['"]/);
 assert.match(onboarding,/if\(!certificationFixture\)/);
 assert.match(fixtureService,/certificationFixture:true/);
-console.log('Production-only deployment contract: PASS (16.10.17; development deployment logic removed)');
+console.log(`Production-only deployment contract: PASS (${version}; development deployment logic removed)`);
