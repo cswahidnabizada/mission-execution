@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 const read=p=>fs.readFileSync(p,'utf8');
 const version=read('VERSION').trim();
-assert.ok(['15.3.0','15.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10','16.10.11','16.10.12'].includes(version));
+assert.ok(['15.3.0','15.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10','16.10.11','16.10.12','16.10.13'].includes(version));
 const service=read('src/worker/modules/admin-control/user-experience-lab.service.js');
 const routes=read('src/worker/modules/admin-control/admin-user-experience.routes.js');
 const session=read('src/worker/core/auth-session.js');

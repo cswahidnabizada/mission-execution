@@ -1,9 +1,9 @@
 /* ON Mission 10.79.0 — unified operational Command Center */
-import {workspaceFor} from './workspace-registry.js?v=16.10.12';
-import {statusTone,displayValue,escapeHtml} from './ui-system.js?v=16.10.12';
-import {ADMIN_WORKSPACE_GROUPS} from './workspace-registry.js?v=16.10.12';
-import {openAdminDrawer} from './detail-drawer.js?v=16.10.12';
-import {governanceReadiness,renderGovernanceReadiness} from './governance-readiness.js?v=16.10.12';
+import {workspaceFor} from './workspace-registry.js?v=16.10.13';
+import {statusTone,displayValue,escapeHtml} from './ui-system.js?v=16.10.13';
+import {ADMIN_WORKSPACE_GROUPS} from './workspace-registry.js?v=16.10.13';
+import {openAdminDrawer} from './detail-drawer.js?v=16.10.13';
+import {governanceReadiness,renderGovernanceReadiness} from './governance-readiness.js?v=16.10.13';
 
 export async function renderCommandCenter({$,state,esc,loadCommandCenter,api,navigate}){
  const box=$('#view-overview');
@@ -39,6 +39,15 @@ export async function renderCommandCenter({$,state,esc,loadCommandCenter,api,nav
       <div><span class="eyebrow">ON MISSION · PLATFORM CONTROL</span><h1 class="title">Control Center</h1><p class="sub">One operational surface for situation, work, system health and governed platform navigation.</p></div>
       <div class="control-hero-actions"><span class="pill ${tone(platformHealth)}">${escapeHtml(platformHealth)}</span><span class="mini">v${escapeHtml(s.version||'—')}</span>${action('overview','REFRESH')}</div>
     </header>
+
+    <section class="card section objective-command" aria-labelledby="objective-command-title">
+      <header class="section-head"><div><span class="eyebrow">OBJECTIVE-DRIVEN CONTROL</span><h2 id="objective-command-title">What would you like to accomplish?</h2><p class="sub">Describe the outcome once. Mission Execution will inspect current control-plane signals and prepare a dependency-aware proposal before any action is taken.</p></div><span class="pill ok">PLAN FIRST · NO AUTOMATIC MUTATION</span></header>
+      <form id="objectiveCommandForm" class="objective-command-form">
+        <label class="field" for="objectiveCommandInput">Objective<textarea id="objectiveCommandInput" class="input" rows="3" maxlength="1200" required placeholder="Prepare Mission Execution for a production-ready logistics launch in Germany. Inspect blockers, prepare safe work, and show only decisions requiring my approval."></textarea><small>Keep the goal specific. Do not include passwords, tokens, or other secrets.</small></label>
+        <div class="objective-command-controls"><label class="field" for="objectiveCommandMode">Planning mode<select id="objectiveCommandMode" class="input"><option value="inspect">Inspect and prepare plan</option><option value="readiness">Readiness assessment</option></select></label><button class="btn primary" id="objectivePrepareButton" type="submit">PREPARE PLAN</button></div>
+      </form>
+      <div id="objectivePlanResults" class="objective-plan-results" aria-live="polite"><div class="objective-empty"><b>Ready when you are.</b><span>Preparing a plan is read-only. Execution, publishing, resource changes and data migration remain behind their existing canonical authorization gates.</span></div></div>
+    </section>
 
     <section class="os-command-strip">
       <article class="os-command-health"><span class="eyebrow">PLATFORM POSTURE</span><strong>${escapeHtml(os.health||platformHealth)}</strong><small>${escapeHtml(os.unavailableAuthorities?.length?`${os.unavailableAuthorities.length} canonical authorities unavailable`:'Canonical platform reads available')}</small></article>
@@ -78,6 +87,32 @@ export async function renderCommandCenter({$,state,esc,loadCommandCenter,api,nav
     ${unavailable.length?`<section class="card section authority-card"><header class="section-head"><div><span class="eyebrow">AUTHORITY AVAILABILITY</span><h2>Some canonical reads are unavailable</h2><div class="mini">AUTHORITY UNAVAILABLE is a distinct platform state; no certification or product result is inferred.</div><p class="sub">No empty values were substituted. Resolve the owning authority before treating the platform as healthy.</p></div><span class="pill bad">${unavailable.length} UNAVAILABLE</span></header><div class="authority-list">${unavailable.map(a=>`<div><b>${escapeHtml(a.authority)}</b><span>${escapeHtml(a.code||'AUTHORITY_UNAVAILABLE')}</span></div>`).join('')}</div></section>`:''}
   </div>`;
 
+  const objectiveForm=$('#objectiveCommandForm');
+  objectiveForm?.addEventListener('submit',async(event)=>{
+    event.preventDefault();
+    const input=$('#objectiveCommandInput');const result=$('#objectivePlanResults');const submit=$('#objectivePrepareButton');
+    const objective=String(input?.value||'').trim();if(!objective||!result)return;
+    if(objective.length>1200){result.innerHTML='<div class="notice">Objective is too long. Keep it under 1,200 characters.</div>';return;}
+    submit.disabled=true;submit.textContent='INSPECTING…';
+    result.innerHTML='<div class="objective-empty"><b>Inspecting current platform signals…</b><span>Reading the existing command-center and operating-system authorities. No mutation is being performed.</span></div>';
+    try{
+      const [freshCC,freshOS]=await Promise.all([loadCommandCenter(state.commandScope||{}),typeof api==='function'?api('/api/platform/admin/operating-system'):Promise.resolve(null)]);
+      const fsurface=freshCC?.surface||{};const fqueue=fsurface.queue||[];const fUnavailable=freshCC?.unavailableAuthorities||[];const fhealth=String(fsurface.status||freshOS?.operatingSystem?.health||'UNKNOWN');const fstats=Object.fromEntries((fsurface.stats||[]).map(x=>[x.key,x]));
+      const mode=$('#objectiveCommandMode')?.value||'inspect';
+      const safe=escapeHtml;const escText=value=>safe(String(value??'UNAVAILABLE'));
+      const stages=[
+        {name:'Inspect canonical authorities',detail:'Read current platform posture and authority availability.',status:fUnavailable.length?'BLOCKED':'INSPECTED',proof:fUnavailable.length?`${fUnavailable.length} authority/authorities unavailable`:'Command-center authority response received'},
+        {name:'Resolve prerequisites and dependencies',detail:'Identify existing work, missing prerequisites and the highest-priority open item.',status:fqueue.length?'REVIEW REQUIRED':'ASSESSED',proof:fqueue.length?`${fqueue.length} current work item(s) projected`:'No current actionable item was returned'},
+        {name:'Assess security and execution boundaries',detail:'Preserve authorization, tenant scope, step-up and canonical action ownership.',status:'GATE PRESERVED',proof:'This planning action does not execute canonical actions'},
+        {name:mode==='readiness'?'Assess launch readiness':'Prepare proposed work plan',detail:'Turn the objective into a reviewable sequence; confirm each step against its owning authority before execution.',status:fUnavailable.length?'BLOCKED':'PROPOSAL',proof:`Platform posture: ${fhealth}; active missions: ${fstats['active-missions']?.value??'not supplied'}`},
+        {name:'Present decisions and next actions',detail:'Surface only blockers, approvals and exceptions that require an authorized operator.',status:fqueue.length||fUnavailable.length?'ATTENTION':'REVIEW',proof:fqueue.length?String(fqueue[0].title||fqueue[0].label||'Current action'):fUnavailable.length?'Resolve unavailable authorities':'Review proposed plan before any execution'}
+      ];
+      result.innerHTML=`<div class="objective-plan-head"><div><span class="eyebrow">PROPOSED OBJECTIVE PLAN</span><h3>${escText(objective)}</h3><p>Built from a fresh read of the current platform response. This is a proposal, not proof that work was executed or that production is ready.</p></div><span class="pill ${tone(fUnavailable.length?'BLOCKED':'REVIEW')} ">${fUnavailable.length?'BLOCKED':'PROPOSAL'}</span></div><div class="objective-plan-steps">${stages.map((step,i)=>`<article class="objective-plan-step"><span class="objective-step-number">${i+1}</span><div class="objective-step-copy"><b>${escText(step.name)}</b><p>${escText(step.detail)}</p><small>${escText(step.proof)}</small></div><span class="pill ${tone(step.status)}">${escText(step.status)}</span></article>`).join('')}</div><div class="notice"><b>Safety boundary:</b> no production resource, binding, customer record, release or mission state was changed. The next iteration will persist plans and execute approved steps through canonical services; this release only prepares the proposal.</div><div class="objective-plan-actions"><button class="btn muted" type="button" id="objectiveCopyPlan">COPY PLAN SUMMARY</button><button class="btn primary" type="button" id="objectiveReinspect">RE-INSPECT</button></div>`;
+      $('#objectiveCopyPlan')?.addEventListener('click',()=>{const summary=[`Objective: ${objective}`,`Platform posture: ${fhealth}`,`Unavailable authorities: ${fUnavailable.length}`, ...stages.map((x,i)=>`${i+1}. ${x.name} — ${x.status}: ${x.proof}`),'No mutations performed.'].join('\n');if(navigator.clipboard?.writeText)navigator.clipboard.writeText(summary).catch(()=>{});});
+      $('#objectiveReinspect')?.addEventListener('click',()=>objectiveForm.requestSubmit());
+    }catch(error){result.innerHTML=`<div class="notice"><b>Plan unavailable.</b> Current canonical platform state could not be inspected, so no readiness conclusion or executable plan was produced. <span>${escapeHtml(error?.message||'Authority unavailable')}</span></div>`;}
+    finally{submit.disabled=false;submit.textContent='PREPARE PLAN';}
+  });
   const apply=()=>{state.commandScope={countryCode:$('#commandCountry')?.value.trim().toUpperCase()||'',sectorCode:$('#commandSector')?.value.trim().toLowerCase()||''};navigate('overview')};
   $('#toggleSafeMode')?.addEventListener('click',()=>{state.safeMode=!Boolean(state.safeMode);localStorage.setItem('onmission_super_admin_safe_mode',state.safeMode?'1':'0');navigate('overview')});
   $('#commandApplyScope')?.addEventListener('click',apply);

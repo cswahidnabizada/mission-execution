@@ -1,0 +1,16 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const ui=fs.readFileSync('public/assets/js/frontend/admin/command-center.js','utf8');
+const css=fs.readFileSync('public/assets/css/frontend/admin.css','utf8');
+assert.match(ui,/OBJECTIVE-DRIVEN CONTROL/);
+assert.match(ui,/objectiveCommandForm/);
+assert.match(ui,/PREPARE PLAN/);
+assert.match(ui,/loadCommandCenter\(state\.commandScope\|\|\{\}\)/);
+assert.match(ui,/api\('\/api\/platform\/admin\/operating-system'\)/);
+assert.match(ui,/no production resource, binding, customer record, release or mission state was changed/);
+assert.match(ui,/Current canonical platform state could not be inspected/);
+assert.match(ui,/authorization/);
+assert.match(ui,/canonical services/);
+assert.doesNotMatch(ui,/fetch\(['"]\/api\/platform\/admin\/.*(?:execute|publish|migrate|provision)/i);
+assert.match(css,/16\.10\.13 — objective-driven Super Admin command center/);
+console.log('16.10.13 Objective-Driven Super Admin Command Center: PASS');

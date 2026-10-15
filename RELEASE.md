@@ -1,7 +1,17 @@
-# Mission Execution 16.10.12 — Canonical Journey + Infrastructure Gate Convergence
+# Mission Execution 16.10.13 — Objective-Driven Super Admin Command Center
 
 Base: ON Mission 16.10.0 — Regional Infrastructure Governance.
-Status: protected candidate — full Node 24 release gate and live Cloudflare runtime certification remain unverified.
+Status: hardening candidate — objective-driven planning UI added; full Node 24 release gate and live Cloudflare runtime certification remain unverified.
+
+
+## 16.10.13 — Objective-Driven Super Admin Command Center
+
+- Adds a single objective intake surface to the existing Super Admin Control Center.
+- Refreshes the existing command-center and operating-system read authorities to prepare a reviewable proposal.
+- Presents authority availability, current projected work, safety boundaries and next decisions in one place.
+- Planning remains read-only. It does not persist objectives or execute platform mutations.
+- Full persistent objective orchestration, server-side dependency planning, approval aggregation, canonical action execution, operation journaling and recovery/resume remain explicit follow-up work.
+- The existing canonical mission journey and infrastructure governance boundaries remain in force.
 
 ## 16.10.11 release identity and production deployment boundary
 
