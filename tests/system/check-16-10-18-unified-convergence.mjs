@@ -1,0 +1,18 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const version=fs.readFileSync('VERSION','utf8').trim();
+const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
+const route=fs.readFileSync('src/worker/modules/admin-control/objective-orchestrator.routes.js','utf8');
+const command=fs.readFileSync('public/assets/js/frontend/admin/command-center.js','utf8');
+assert.equal(version,'16.10.18');
+assert.equal(pkg.version,version);
+assert.match(route,/step\.step_code==='confirm_market_scope'/,'scope validation remains an explicit allowlisted adapter');
+assert.match(route,/step\.step_code==='inspect_market_package'/,'package inspection remains an explicit allowlisted adapter');
+assert.match(route,/WHERE step_id=\? AND status IN \('APPROVED','READY','PROPOSED'\)/,'step claim must atomically reject blocked or stale steps');
+assert.doesNotMatch(route,/WHERE step_id=\? AND status IN \('APPROVED','READY','PROPOSED','BLOCKED'\)/,'blocked steps cannot be claimed during a race');
+assert.match(route,/expectedRevision/,'objective run uses optimistic revision checks');
+assert.match(route,/lease_token/,'objective execution uses a lease');
+assert.match(command,/id="objectiveCommandForm"/,'objective-first experience remains in active Command Center');
+assert.match(command,/id="objectiveGlobalApprovals"/,'approval inbox remains consolidated');
+assert.match(command,/id="objectiveRecentRuns"/,'objective history remains consolidated');
+console.log('16.10.18 unified convergence + atomic step-claim regression: PASS');

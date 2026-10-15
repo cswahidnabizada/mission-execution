@@ -4,8 +4,8 @@ const command=fs.readFileSync('public/assets/js/frontend/admin/command-center.js
 const readiness=fs.readFileSync('public/assets/js/frontend/admin/governance-readiness.js','utf8');
 const routes=fs.readFileSync('src/worker/modules/admin-control/objective-orchestrator.routes.js','utf8');
 const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
-assert.equal(fs.readFileSync('VERSION','utf8').trim(),'16.10.17');
-assert.equal(pkg.version,'16.10.17');
+assert.equal(pkg.version,fs.readFileSync('VERSION','utf8').trim(),'package and canonical release identity must remain aligned');
+assert.ok(pkg.version.localeCompare('16.10.17',undefined,{numeric:true})>=0,'historical 16.10.17 contract must remain covered by later releases');
 assert.match(command,/id="objectiveGlobalApprovals"/,'overview must contain consolidated approval inbox');
 assert.match(command,/id="objectiveRecentRuns"/,'overview must contain persistent objective history');
 assert.match(command,/api\('\/api\/platform\/admin\/objectives\/approvals'\)/,'inbox must read canonical approval endpoint');

@@ -1,9 +1,9 @@
 /* ON Mission 10.82.0 — GOVERN / SECURE / PLATFORM surface composition. */
-import { renderOverview, renderCountries, renderPolicies, renderConsent, renderNotifications, renderAnalyticsGovernance, renderResidency, renderProviders, renderAudit, renderBackupRecovery, renderRecoveryReconciliation } from '../oversight/platform-governance.js?v=16.10.17';
-import { renderProductStudio, renderCountryDataStudio } from '../oversight/product-studio.js?v=16.10.17';
-import { renderProductVerification, loadVerificationQueue, loadPrivacyRights } from '../oversight/privacy-verification.js?v=16.10.17';
-import { renderSecurity, renderConfigDomain } from '../oversight/product-operations.js?v=16.10.17';
-import { renderDataEntry, renderDataControl, renderTrash } from '../data-governance.js?v=16.10.17';
+import { renderOverview, renderCountries, renderPolicies, renderConsent, renderNotifications, renderAnalyticsGovernance, renderResidency, renderProviders, renderAudit, renderBackupRecovery, renderRecoveryReconciliation } from '../oversight/platform-governance.js?v=16.10.18';
+import { renderProductStudio, renderCountryDataStudio } from '../oversight/product-studio.js?v=16.10.18';
+import { renderProductVerification, loadVerificationQueue, loadPrivacyRights } from '../oversight/privacy-verification.js?v=16.10.18';
+import { renderSecurity, renderConfigDomain } from '../oversight/product-operations.js?v=16.10.18';
+import { renderDataEntry, renderDataControl, renderTrash } from '../data-governance.js?v=16.10.18';
 
 export const governanceSurface = Object.freeze({
   overview: renderOverview,

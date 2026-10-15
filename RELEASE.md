@@ -1,3 +1,33 @@
+# Mission Execution 16.10.18 — Unified Convergence & Atomic Objective Execution
+
+Status: protected candidate; not deployed by this package.
+
+## Purpose
+Advance the unified operating-system program with a focused correctness fix at the Objective Orchestrator execution boundary. Preserve the active Command Center, canonical domain authorities, Market Factory lifecycle and existing customer data.
+
+## Changes
+- Closes a step-claim race: a step selected as eligible can only be claimed if it remains `APPROVED`, `READY`, or `PROPOSED` at the atomic update. A concurrent transition to `BLOCKED` can no longer be overwritten by the claim statement.
+- Adds a regression contract for the atomic claim, objective revision and lease protections, explicit read-only market adapters, and unified Command Center surfaces.
+- Preserves the single objective experience, consolidated approval inbox and persisted objective history.
+- Keeps unsupported actions fail-closed; no generic objective-text execution is introduced.
+- Keeps Market Factory as the sole authority for package composition, validation, authorization, publication, verification and activation.
+- Adds the first convergence program document with the canonical layers, UI surface model, completion gates and the permanent mission journey.
+
+## Unified completion program
+1. Canonical truth and system inventory.
+2. Security and execution-contract convergence.
+3. Unified experience and objective operations.
+4. Germany market and controlled logistics mission certification.
+5. Controlled autonomy and production readiness.
+
+## Explicit non-goals
+This release does not claim the entire platform is unified or autonomously complete. It does not mutate customer data, create market packages, activate markets, migrate data, switch production bindings, or change provider infrastructure.
+
+## Validation required
+Run `npm run build` and `npm run check:release` under Node 24.18.0. Verify the live Control Center and objective step execution in Cloudflare after deployment. Release-contract tests do not substitute for production runtime certification.
+
+---
+
 # Mission Execution 16.10.17 — Unified Objective Operations + Truth-Aware Readiness
 
 Status: protected candidate; not deployed by this package.
