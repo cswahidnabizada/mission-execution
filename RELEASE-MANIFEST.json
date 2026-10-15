@@ -1,5 +1,5 @@
 {
-  "version": "16.10.29",
+  "version": "16.10.30",
   "release": "RELEASE.md",
   "base": "16.10.0",
   "migrationHighWaterMark": "0159",

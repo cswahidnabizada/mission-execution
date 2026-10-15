@@ -1,6 +1,6 @@
-# Mission Execution — Product & Market Readiness Reconciliation 16.10.29
+# Mission Execution — Controlled Germany Product Launch Certification 16.10.30
 
-This source candidate extends the existing canonical Market Factory reconciliation preview with issue classification, owning-authority guidance, and safe next steps. It is not deployed. Before any deployment, use Node 24.18.0, run `npm run build`, `npm run check:release`, and the production certification path. See `RELEASE.md` for exact verification limits and the full canonical mission journey.
+This protected source candidate adds an evidence-gated launch supervisor to the canonical Market Factory workbench. It reports the next governed action, distinguishes system-owned steps from human-required reviews, and never claims launch completion until canonical market and package state are LIVE. It is not deployed or runtime-certified. Before deployment, use Node 24.18.0, run `npm run build`, `npm run check:release`, and the production certification path. See `RELEASE.md` for verification limits and the full canonical mission journey.
 
 # Mission Execution 16.10.19 — Release-Gate Compatibility & Convergence Continuity
 

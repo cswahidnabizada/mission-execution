@@ -1,3 +1,31 @@
+# Mission Execution 16.10.30 — Controlled Germany Product Launch Certification
+
+Status: protected source candidate; **not deployed or runtime-certified**. This increment adds an evidence-gated controlled-launch supervisor to the existing Market Factory workbench. It chooses the next governed task, identifies when a human review or canonical authority is required, and never declares launch complete based on task counts alone.
+
+## Changes
+- Added a read-only certification assessor for canonical market/package state, workbench tasks, reconciliation conflicts, and canonical-authority availability.
+- Added `GET /api/platform/admin/market-factory/versions/:versionId/certification` to expose the next safe launch action and explicit stop reason.
+- Added a Market Factory workbench supervisor panel with status, next task, owner, and reassessment action.
+- Completion requires the canonical market and package to be `LIVE`; a draft, clean reconciliation, full task count, or readiness percentage cannot substitute for the actual release lifecycle.
+- Human review remains mandatory for legal decisions, localized customer-facing content, runtime certification, and the mission journey. Canonical authorities retain all mutation and authorization rights.
+- No migration, schema change, live-market mutation, publication, activation, or onboarding change is included.
+
+## Verification boundary
+- The focused certification test covers human-input waits, unavailable authorities, reconciliation blockers, system-owned next steps, and terminal completion semantics.
+- The API and UI provide guided continuation; they do not autonomously fabricate legal review, runtime evidence, approvals, or mission outcomes. Existing governed actions remain the only mutation path.
+- Build and live production journey certification must be completed in the supported Node 24.18.0 environment before production deployment.
+
+## Next steps
+1. Run build and release gates under Node 24.18.0.
+2. Open the existing Germany logistics draft and use the controlled launch supervisor to work through canonical blockers.
+3. Supply genuine reviewer decisions and runtime/test evidence where requested; the supervisor will reassess after each update.
+4. Validate, authorize, publish, verify and activate only through the existing Market Factory lifecycle. Keep onboarding `INVITE_ONLY` for the controlled pilot.
+
+Security → Truth → Liveness → Stability → Experience → Scale.
+Canonical journey: `OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE`.
+
+---
+
 # Mission Execution 16.10.29 — Product & Market Readiness Reconciliation
 
 Status: protected candidate; **not deployed**. This increment hardens evidence quality in the existing Market Factory launch workbench. It does not manufacture legal review, product content, runtime certification, or live-market readiness.
