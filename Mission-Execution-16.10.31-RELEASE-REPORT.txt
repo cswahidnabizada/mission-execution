@@ -1,0 +1,43 @@
+ON MISSION — RELEASE 16.10.31
+Single-Screen Objective Completion Workspace
+
+STATUS
+Protected source candidate. NOT deployed by this package build. Production build/runtime and live customer journey are not certified here.
+
+WHAT CHANGED
+- Reworked the existing Super Admin Control Center objective section into the default Objective Workspace: start an objective once, inspect its persisted plan, submit missing information, see approvals, continue governed work, and verify outcome evidence in one primary area.
+- Put broad platform metrics, situational panels, specialist workspace explorer, release journey and platform context behind an on-demand “Platform status and specialist workspaces” disclosure. No specialist route or authority was deleted.
+- Added browser refresh continuity using only the last selected canonical run ID. On refresh the UI fetches the run from the existing canonical API; browser storage is not treated as objective truth.
+- Reuses the existing objective prepare/input/reassess/gap/continuation/execute/outcome/approval/completion APIs. No competing workflow engine, duplicate authority, or new database migration was introduced.
+- Reuses the same idempotency key for retries of the same objective payload during the current page session, reducing accidental duplicate creation after transient failures. Changed payloads get a new intent key.
+- Added responsive objective workspace styling and 16.10.31 asset cache-busting identity.
+- Updated historical compatibility gates to recognize the new release identity and adjusted the prior Command Center test for the new objective-first wording.
+
+VERIFICATION
+PASS — focused 16.10.31 source contract.
+PASS — `node --check` on modified Command Center JavaScript and new focused test.
+PASS — complete configured `npm run check:release` under Node 22.16.0, including security baseline, data integrity, current architecture convergence, current schema/migrations, release engineering and cumulative historical system checks.
+PASS — release integrity check; 159 ordered migrations, high-water mark 0159, 249 tables and 459 indexes retained; no migration added.
+PASS — ZIP integrity and SHA-256 recorded alongside this package.
+
+BUILD LIMITATION
+`npm run build` was attempted and correctly stopped at the supported environment gate because this packaging environment is Node 22.16.0 while the project requires Node 24.18.0 (`.node-version=24.18.0`, `engines.node=24.x`). CSS compilation, production build, Cloudflare deployment, live API health, and browser end-to-end tests are therefore NOT claimed as passed. Run build and required runtime/recovery certification under Node 24.18.0 before deployment.
+
+SAFETY / NOT CLAIMED
+- No production data, customer records, D1 schema, market release, billing, or tenant resources were changed.
+- No proof is claimed that the six reportedly inactive product configuration authorities are healthy, organization counts are reconciled, Germany legal/content review is complete, or Germany logistics is LIVE.
+- Objective completion remains evidence-gated; execution remains behind canonical authorization, step-up, executor, freshness, and recovery gates.
+- This archive is built from the 16.10.30 source candidate, which does not contain `.github/workflows`. Do not replace the canonical GitHub checkout wholesale. Review/apply the diff in the canonical repository and preserve `.github/workflows`, secrets/configuration, and unrelated work.
+
+REMAINING
+1. Review/apply the candidate diff in the canonical GitHub repository; preserve existing workflows and unrelated changes.
+2. Use Node 24.18.0: `npm ci`, `npm run build`, `npm run check:release`, required runtime certification and recovery certification.
+3. Verify the one-screen experience against live canonical APIs, including input persistence after refresh, retry/idempotency, stale revision, denied authorization, unavailable authority, and interrupted work.
+4. Reconcile the inactive configuration authorities and inconsistent organization counts from canonical sources.
+5. Complete genuine Germany legal/content review, privacy/consent/residency/billing/identity/tenant-isolation checks, controlled release lifecycle, and a real customer mission with verified outcome.
+
+PERMANENT PRIORITY
+Security → Truth → Liveness → Stability → Experience → Scale
+
+CANONICAL JOURNEY
+OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE

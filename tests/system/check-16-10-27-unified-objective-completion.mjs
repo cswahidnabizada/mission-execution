@@ -6,7 +6,7 @@ const manifest=JSON.parse(fs.readFileSync('RELEASE-MANIFEST.json','utf8'));
 const release=fs.readFileSync('RELEASE.md','utf8');
 const routes=fs.readFileSync('src/worker/modules/admin-control/objective-orchestrator.routes.js','utf8');
 const ui=fs.readFileSync('public/assets/js/frontend/admin/command-center.js','utf8');
-assert.equal(version,'16.10.30');
+assert.equal(version,'16.10.31');
 assert.equal(pkg.version,version);
 assert.equal(manifest.version,version);
 for (const f of [

@@ -1,3 +1,37 @@
+# Mission Execution 16.10.31 — Single-Screen Objective Completion Workspace
+
+Status: protected source candidate; **not deployed or production-certified by this package build**. This release converges the existing objective command, persisted run, approvals, guided input, gap assessment, continuation, outcome verification and recovery controls into one focused workspace. Specialist platform surfaces remain available on demand. No competing workflow authority is introduced.
+
+## Changes
+- Reframed the existing Command Center objective area as the default Objective Workspace, with clearer start, progress, input and approval language.
+- Collapsed the broader platform metrics, status panels and specialist workspaces behind an on-demand details disclosure; existing specialist routes remain available.
+- Restores the last selected objective run after a page refresh using a browser-side run ID pointer; run state is always fetched from the canonical server endpoint and never trusted from browser storage.
+- Reuses the existing canonical objective, approval, gap, continuation, execution and outcome endpoints; no duplicate workflow engine or new authority is added.
+- Reuses the same idempotency key when retrying the same objective payload in the same page session, reducing accidental duplicate objective creation after a transient request failure. A changed payload receives a new intent key.
+- Adds focused responsive styling for the objective-first experience.
+- No database migration, schema change, live market mutation, publication, activation, tenant data mutation or resource provisioning is included.
+
+## Safety boundaries
+- Execution remains one registered step at a time through existing authorization, step-up, canonical executor and evidence gates.
+- User input is persisted through the existing objective-input endpoint and followed by canonical reassessment.
+- A browser-stored run ID is only a convenience pointer; if its canonical run cannot be fetched, the UI reports that and offers the persisted objective inbox.
+- Objective completion remains evidence-gated; no empty queue, hidden workspace, local state, or successful UI response implies completion.
+- The details disclosure changes presentation only and does not retire any canonical administrative surface.
+
+## Verification boundary
+The focused source contract and syntax checks are run during packaging. This package does not prove that production APIs are healthy, that the six previously reported authorities are restored, or that Germany logistics has been legally reviewed, published, activated, or certified through a real customer mission. Run the full release and runtime certification gates under Node 24.18.0 before deployment.
+
+## Next steps
+1. Review/apply the source diff in the canonical repository while preserving `.github/workflows` and unrelated changes.
+2. Run `npm ci`, `npm run build`, `npm run check:release`, and required runtime/recovery certification under Node 24.18.0.
+3. Verify the objective workspace against live canonical APIs; reconcile contradictory counts and inactive authorities rather than masking them.
+4. Complete genuine Germany legal/content review, release gates, controlled pilot, and mission outcome evidence through existing authorities.
+
+Security → Truth → Liveness → Stability → Experience → Scale.
+Canonical journey: `OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE`.
+
+---
+
 # Mission Execution 16.10.30 — Controlled Germany Product Launch Certification
 
 Status: protected source candidate; **not deployed or runtime-certified**. This increment adds an evidence-gated controlled-launch supervisor to the existing Market Factory workbench. It chooses the next governed task, identifies when a human review or canonical authority is required, and never declares launch complete based on task counts alone.

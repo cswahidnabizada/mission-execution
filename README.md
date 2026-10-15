@@ -1,3 +1,11 @@
+# ON MISSION — Release 16.10.31
+
+The current source candidate is **16.10.31 — Single-Screen Objective Completion Workspace**. Start with the objective workspace to define the desired outcome, inspect persisted plans, submit missing input, review pending approvals, continue governed work and verify evidence. The broader Control Center, Market Factory, Product Factory, governance and recovery surfaces remain available under **Platform status and specialist workspaces**. Existing canonical authorities remain the only mutation and release authorities; publishing still follows the governed lifecycle, including **CREATE NEXT VERSION** for immutable release changes.
+
+This is a source candidate, not proof of production deployment or live Germany launch. Use Node 24.18.0 for the supported build and required runtime/recovery certification.
+
+---
+
 # Mission Execution — Controlled Germany Product Launch Certification 16.10.30
 
 This protected source candidate adds an evidence-gated launch supervisor to the canonical Market Factory workbench. It reports the next governed action, distinguishes system-owned steps from human-required reviews, and never claims launch completion until canonical market and package state are LIVE. It is not deployed or runtime-certified. Before deployment, use Node 24.18.0, run `npm run build`, `npm run check:release`, and the production certification path. See `RELEASE.md` for verification limits and the full canonical mission journey.
