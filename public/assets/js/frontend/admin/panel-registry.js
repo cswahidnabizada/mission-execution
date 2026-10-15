@@ -8,7 +8,8 @@ import {renderResourceManagement} from './resource-management.js?v=16.10.10';
 import {renderUserExperienceLab} from './user-experience-lab.js?v=16.10.10';
 import {renderDemoProduct} from './demo-product.js?v=16.10.10';
 import {renderProductExperience} from './product-experience.js?v=16.10.10';
-import {renderInfrastructureGovernance} from './infrastructure-governance.js?v=16.10.10';
+import {renderInfrastructureGovernance} from './infrastructure-governance.js?v=16.10.11';
+import {renderProductIdentity} from './product-identity.js?v=16.10.11';
 
 let show=null;
 export function configureAdminPanelShow(fn){
@@ -32,6 +33,7 @@ export const adminPanelRenderers={...oversightRenderers,
   'agentic-control':renderAgenticControl,
   'product-experience':renderProductExperience,
   'infrastructure-governance':renderInfrastructureGovernance,
+  'product-identity':renderProductIdentity,
   'user-experience':renderUserExperienceLab,
   'demo-product':renderDemoProduct
 };

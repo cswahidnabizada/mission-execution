@@ -8,6 +8,7 @@ import {registerAdminHumanPlatformRoutes} from './admin-human-platform.routes.js
 import {registerSuperAdminOperatingSystemRoutes} from './super-admin-operating-system.routes.js';
 import {registerInfrastructureGovernanceRoutes} from './infrastructure-governance.routes.js';
 import {registerAdminUserExperienceRoutes} from './admin-user-experience.routes.js';
+import {registerProductIdentityRoutes} from './product-identity.routes.js';
 
 export function registerAdminControlRoutes(router){
   registerAdminAccessRoutes(router);
@@ -20,4 +21,5 @@ export function registerAdminControlRoutes(router){
   registerSuperAdminOperatingSystemRoutes(router);
   registerInfrastructureGovernanceRoutes(router);
   registerAdminUserExperienceRoutes(router);
+  registerProductIdentityRoutes(router);
 }
