@@ -1,3 +1,0 @@
-Build environment gate: FAIL
-- Node contract mismatch: runtime=22.16.0, .node-version=24.18.0, engines.node=24.x
-Configure Cloudflare Workers Builds to use Node.js 24.18.0. The build image may expose npm 10.x or 11.x; both are accepted by this release contract.

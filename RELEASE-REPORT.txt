@@ -1,0 +1,49 @@
+ON MISSION — RELEASE 16.10.29
+Product & Market Readiness Reconciliation
+
+STATUS
+Protected source candidate. Not deployed. No production changes were made.
+
+WHAT CHANGED
+- Added a pure read-only classifier over the existing Market Factory reconciliation preview.
+- Categorizes issues as BLOCKED, REQUIRES_GOVERNED_CREATE, or HUMAN_REVIEW_REQUIRED, with issue category, canonical owner, and next governed step.
+- Updated Market Factory UI to present issue counts and actionable owner/next-step information, while keeping raw canonical comparisons in an expandable advanced section.
+- Explicitly warns that reconciliation is not legal, billing, runtime-health, or customer-journey certification.
+- Added a 16.10.29 regression test and included it in the release gate.
+- Updated release identity, package manifest/lock, runtime release references, and prior-release compatibility allowlists.
+
+SAFE CLEANUP
+- Removed stale generated build.log, build-environment.log, and release-gate.log from the source package; these were artifacts from the prior candidate, not source or authoritative test results.
+- Preserved source, tests, migrations, schema snapshot, release scripts, documentation, and protected architecture.
+- No database schema or migration changes.
+- No live market publication, activation, or onboarding changes.
+
+VERIFICATION PASSED
+- npm run check:release (complete configured release gate; exit code 0)
+- 16.10.29 Product & Market Readiness Reconciliation regression test
+- 16.10.28 Market Launch Evidence Integrity test
+- 16.10.27 cumulative Objective Completion contract test updated for current release identity
+- Release integrity and release engineering checks
+- Data-integrity check
+- Migration contract: 159 ordered migrations, high-water mark 0159
+- Current schema: 249 tables, 459 indexes
+- Architecture boundary scan: 424 JavaScript files, 1,602 local imports, zero import cycles; one canonical mission lifecycle writer
+- Duplicate-file-content check: 1,377 unique files
+- Syntax checks for changed JavaScript modules
+
+NOT PASSED / NOT RUN
+- npm run build stopped at the environment gate because this runner has Node 22.16.0, while the project requires Node 24.18.0. CSS compilation therefore did not run.
+- Runtime certification and live production/customer journey verification were not run.
+- This source archive did not contain a .github/workflows directory. Do not replace the repository clone with this ZIP or overwrite local hidden workflows. Apply the intended source changes to the actual repository and inspect the diff before committing/pushing.
+
+NEXT REQUIRED ACTIONS
+1. Apply changes to the canonical development checkout, preserving its hidden workflows and unrelated work.
+2. Run npm ci and npm run build under Node 24.18.0.
+3. Run required runtime/recovery certification in the supported environment.
+4. Deploy through the gated production deployment path only after checks pass.
+5. Verify fresh live canonical readiness and complete the Germany logistics controlled-pilot journey. Do not mark the market LIVE solely because reconciliation is conflict-free.
+
+CANONICAL JOURNEY
+OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE
+
+No canonical journey stage or Germany market launch is newly certified by this release.

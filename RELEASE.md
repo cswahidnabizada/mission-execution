@@ -1,6 +1,6 @@
-# Mission Execution 16.10.28 — Market Launch Evidence Integrity
+# Mission Execution 16.10.29 — Product & Market Readiness Reconciliation
 
-Status: protected source candidate; **not deployed**. This increment hardens evidence quality in the existing Market Factory launch workbench. It does not manufacture legal review, product content, runtime certification, or live-market readiness.
+Status: protected candidate; **not deployed**. This increment hardens evidence quality in the existing Market Factory launch workbench. It does not manufacture legal review, product content, runtime certification, or live-market readiness.
 
 ## Changes
 - Adds a shared decision-grade evidence contract for launch tasks.
@@ -758,3 +758,19 @@ The Infrastructure & Data Location Studio remains proposal-driven: no provider r
 
 See `docs/16.10.12-CANONICAL-JOURNEY-CERTIFICATION.md` for the full journey matrix and remaining proof obligations.
 
+
+
+## 16.10.29 — Product & Market Readiness Reconciliation
+
+- Extends the existing read-only Market Factory canonical reconciliation preview; no parallel readiness authority is introduced.
+- Classifies package-to-canonical issues as `BLOCKED`, `REQUIRES_GOVERNED_CREATE`, or `HUMAN_REVIEW_REQUIRED`, with category, owning authority, and next governed step.
+- Updates the Market Factory UI to show issue counts, owners, next steps, and an expandable canonical value comparison.
+- Explicitly distinguishes a clean reconciliation preview from legal approval, billing readiness, runtime health, or customer-journey certification.
+- Adds regression coverage for the pure classification function and service/UI wiring.
+- No schema/migration change, production mutation, market publication, activation, or onboarding change. Existing canonical authorities and immutable release lifecycle remain in control.
+
+### Verification boundary
+
+Targeted 16.10.29, 16.10.28 and cumulative objective-completion tests passed. `npm run check:release` passed. Release integrity, release engineering, JavaScript syntax, data-integrity, migration contract, current schema, architecture boundaries, and duplicate-file-content checks passed. Architecture scan: 424 JavaScript files, 1,602 local imports, zero import cycles, one canonical mission lifecycle writer. Migration contract: 159 ordered migrations through 0159; schema snapshot: 249 tables and 459 indexes. `npm run build` remains blocked before CSS compilation because this package-generation runtime is Node 22.16.0 while the repository requires Node 24.18.0. Runtime certification and live production/customer journey verification are not claimed as passed.
+
+Canonical mission journey remains: `OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE`. No stage is newly certified by this release.

@@ -1,6 +1,6 @@
-# Mission Execution — Unified Objective Completion 16.10.28
+# Mission Execution — Product & Market Readiness Reconciliation 16.10.29
 
-This source candidate consolidates Objective Completion Contract, Gap & Dependency Intelligence, Guided Data Preparation, Governed Continuation, and Outcome & Recovery into one release. It is not deployed. Before any deployment, use Node 24.18.0, run `npm run build`, `npm run check:release`, and the production certification path. See `RELEASE.md` for exact verification limits and the full canonical mission journey.
+This source candidate extends the existing canonical Market Factory reconciliation preview with issue classification, owning-authority guidance, and safe next steps. It is not deployed. Before any deployment, use Node 24.18.0, run `npm run build`, `npm run check:release`, and the production certification path. See `RELEASE.md` for exact verification limits and the full canonical mission journey.
 
 # Mission Execution 16.10.19 — Release-Gate Compatibility & Convergence Continuity
 

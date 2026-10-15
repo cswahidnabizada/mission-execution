@@ -4,7 +4,7 @@ const root=process.cwd();
 const version=fs.readFileSync(path.join(root,"VERSION"),"utf8").trim();
 const releaseFile='RELEASE.md';
 const required=[
-  "VERSION","RELEASE.md","package.json",
+  "VERSION","RELEASE.md","package.json","src/worker/security/market-readiness-reconciliation.js","tests/system/check-16-10-29-market-readiness-reconciliation.mjs",
   "tests/system/check-v103027-adaptive-context-queues.mjs",
   "tests/security/check-v103027-authorization-adversarial.mjs",
   "tests/system/check-v103027-dashboard-width-queue.mjs",
