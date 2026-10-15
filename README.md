@@ -1,3 +1,7 @@
+# Mission Execution — Unified Objective Completion 16.10.27
+
+This source candidate consolidates Objective Completion Contract, Gap & Dependency Intelligence, Guided Data Preparation, Governed Continuation, and Outcome & Recovery into one release. It is not deployed. Before any deployment, use Node 24.18.0, run `npm run build`, `npm run check:release`, and the production certification path. See `RELEASE.md` for exact verification limits and the full canonical mission journey.
+
 # Mission Execution 16.10.19 — Release-Gate Compatibility & Convergence Continuity
 
 Release 16.10.21 extends Objective into a governed input-and-reassessment loop: Super Admins can submit bounded missing context, the system rereads canonical platform state, and execution is blocked until reassessment is complete. The gated `npm run deploy` path remains required; raw `npx wrangler deploy` bypasses release and runtime gates. Product Publisher retains **CREATE NEXT VERSION**.
@@ -353,3 +357,23 @@ The Super Admin Command Center now persists objectives, plans, run steps, approv
 ## Mission Execution 16.10.15 — Market Launch Objective Integration
 
 The Super Admin Command Center can now prepare a market-launch objective using a single country/product/sector scope. The server reads the canonical Market Factory package/version and launch-task evidence, then persists a seven-stage plan: confirm scope, inspect or create the package, compose and normalize it, preview canonical reconciliation, complete launch evidence, validate an immutable version, and authorize/publish/verify/activate through the existing governed lifecycle. The objective plan is coordination and reporting only: market creation and release transitions remain in Market Factory, and country selection never proves data residency or launch readiness. The Product Factory retains **CREATE NEXT VERSION** and immutable release lineage.
+
+## Current source candidate: 16.10.22 — Objective Completion Contract
+
+This candidate adds an explicit, revision-checked objective completion contract with success criteria, constraints, scope confirmation and required evidence. Execution requires a confirmed contract and fresh canonical reassessment. The contract defines success but does not prove it; each criterion remains unverified until its owning canonical authority supplies evidence. This source candidate is not deployed.
+
+## Current source candidate: 16.10.23 — Gap & Dependency Intelligence
+
+This increment adds a canonical-context gap assessment to Objective. It identifies unavailable authorities, existing canonical queue work, missing required evidence and unverified success criteria, then records an ordered gap ledger. The ledger is advisory and governed: it does not execute actions, create canonical records or infer completion. This source candidate is not deployed.
+
+## Current source candidate: 16.10.24 — Guided Data Preparation
+
+Discovered evidence gaps and unverified criteria can now expose contextual preparation forms. Inputs are validated and saved as proposals, with optional reuse restricted to canonical resource references already observed in the current queue. The proposal remains unverified until the owning authority accepts it. This candidate does not create domain records and is not deployed.
+
+## Current source candidate: 16.10.25 — Governed Continuation
+
+Objective now asks the continuation selector for one safe next step before execution. The selector requires a confirmed contract, completed reassessment, fresh gap assessment, available canonical authorities and an eligible persisted step. Only registered read-only adapters can be selected; approval-required steps must be approved and execution retains step-up authorization. This candidate is not deployed.
+
+## Current source candidate: 16.10.26 — Outcome & Recovery Loop
+
+Objective can reconcile recorded step evidence against fresh canonical context, surface unverified criteria, identify failed/uncertain steps and provide a recovery plan. It never blindly retries and never treats the absence of tasks as completion. This increment deliberately does not mark objectives complete; domain-specific canonical verification and a separate completion gate are still required. This candidate is not deployed.
