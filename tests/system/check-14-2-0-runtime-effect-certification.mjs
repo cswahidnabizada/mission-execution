@@ -10,7 +10,7 @@ const read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const version=read('VERSION').trim();
 const pkg=JSON.parse(read('package.json'));
 const lock=JSON.parse(read('package-lock.json'));
-assert.ok(['14.2.0','14.3.0','14.4.0','14.5.0','14.6.0','14.7.0','14.8.0','14.9.0','15.0.0','15.0.1','15.1.0','15.2.0','15.3.0','15.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10','16.10.11','16.10.12','16.10.13','16.10.14','16.10.15','16.10.16'].includes(version));
+assert.ok(['14.2.0','14.3.0','14.4.0','14.5.0','14.6.0','14.7.0','14.8.0','14.9.0','15.0.0','15.0.1','15.1.0','15.2.0','15.3.0','15.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10','16.10.11','16.10.12','16.10.13','16.10.14','16.10.15','16.10.16','16.10.17'].includes(version));
 assert.equal(pkg.version,version);
 assert.equal(lock.version,version);
 assert.equal(lock.packages[''].version,version);
@@ -27,7 +27,7 @@ assert(!coordinator.includes("phase('POLICY_CHECK'"),'Coordinator must emit cano
 const cert=read('src/worker/extensions/mission-execution-coordinator/mission-certification.service.js');
 for(const token of ['MISSION_CERTIFICATION_VERSION','GERMANY_LOGISTICS','mission_authority','mission_execution_intents','mission_evidence_events','agent_execution_recovery_events','agent_learning_observations','unknownEffectNotSuccess']) assert(cert.includes(token),`certification authority missing ${token}`);
 assert.deepEqual(CANONICAL_MISSION_JOURNEY,['OBSERVE','UNDERSTAND','PLAN','EVALUATE','ACCEPT','AUTHORIZE','PREPARE','ASSIGN','EXECUTE','EFFECT','VERIFY','RECOVER','OUTCOME','LEARN','NEXT_SITUATION']);
-assert(['14.5.0','14.6.0','14.7.0','14.8.0','14.9.0','15.0.0','15.0.1','15.1.0','15.2.0','15.3.0','15.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10','16.10.11','16.10.12','16.10.13','16.10.14','16.10.15','16.10.16'].includes(MISSION_CERTIFICATION_VERSION));
+assert(['14.5.0','14.6.0','14.7.0','14.8.0','14.9.0','15.0.0','15.0.1','15.1.0','15.2.0','15.3.0','15.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10','16.10.11','16.10.12','16.10.13','16.10.14','16.10.15','16.10.16','16.10.17'].includes(MISSION_CERTIFICATION_VERSION));
 assert.equal(EXECUTION_INTENT_VERSION,'12.9.0');
 assert.equal(EXECUTION_EFFECT_INTEGRITY_VERSION,'14.2.0');
 
@@ -62,7 +62,7 @@ db.prepare("INSERT INTO canonical_capability_registry(code,label,domain_code,des
 db.prepare("INSERT INTO canonical_capability_contracts(capability_code,purpose) VALUES('execution','Canonical execution contract')").run();
 
 const certified=await certifyMissionJourney(env,{companyId:1,missionId:1001,profile:'GERMANY_LOGISTICS'});
-assert(['14.5.0','14.6.0','14.7.0','14.8.0','14.9.0','15.0.0','15.0.1','15.1.0','15.2.0','15.3.0','15.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10','16.10.11','16.10.12','16.10.13','16.10.14','16.10.15','16.10.16'].includes(certified.version));
+assert(['14.5.0','14.6.0','14.7.0','14.8.0','14.9.0','15.0.0','15.0.1','15.1.0','15.2.0','15.3.0','15.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10','16.10.11','16.10.12','16.10.13','16.10.14','16.10.15','16.10.16','16.10.17'].includes(certified.version));
 assert.equal(certified.status,'PASS',JSON.stringify(certified.checks));
 assert.equal(certified.controls.effectEvidenceRequired,true);
 assert.equal(certified.checks.find(x=>x.phase==='EFFECT_EVIDENCE')?.status,'PASS');

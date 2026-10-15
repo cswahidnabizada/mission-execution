@@ -1,3 +1,31 @@
+# Mission Execution 16.10.17 — Unified Objective Operations + Truth-Aware Readiness
+
+Status: protected candidate; not deployed by this package.
+
+## Purpose
+Unify Super Admin objective preparation, pending approvals, recent objectives and execution results in the active Command Center while preserving canonical domain authorities.
+
+## Changes
+- Adds a consolidated pending-approval inbox and persisted objective history to the active Control Center.
+- Adds a guarded “Execute next safe step” interaction for one registered executor step at a time. It uses the existing step-up-protected endpoint and expected run revision; production mutations remain governed by their canonical adapters.
+- Tightens runner selection so BLOCKED steps are never selected for execution.
+- Corrects governance readiness projections: zero active consent, residency, analytics, notification policies, or providers are attention states, not READY.
+- Keeps package composition, validation, authorization, publication, verification and activation under the Market Factory lifecycle.
+- Adds regression coverage for the unified inbox, revision-guarded runner call, blocked-step exclusion and readiness semantics.
+
+## Explicit non-goals
+This release does not create a second market registry, mutate customer data, activate a market, migrate data, change production bindings, or infer residency from a country selection.
+
+## Validation required
+Run `npm run build` and `npm run check:release` under Node 24.18.0, then deploy through the governed Cloudflare pipeline and verify the live Control Center, objective inbox, read-only adapters, and failure states.
+
+## 16.10.16 — Command Center Route Repair + Read-Only Market Adapters
+
+- Fixes the active Super Admin overview route to render the objective-first Command Center into `#view-overview`.
+- Adds explicit read-only adapters for market scope confirmation and canonical package inspection.
+- Keeps Market Factory lifecycle and authorization boundaries authoritative.
+
+
 # Mission Execution 16.10.16 — Command Center Route Repair + Read-Only Market Adapters
 
 Status: source candidate; not deployed by this package.

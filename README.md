@@ -1,3 +1,9 @@
+# Mission Execution 16.10.17 — Unified Objective Operations
+
+The Super Admin Command Center now combines objective intake, persisted objective history, pending approvals, and one-step governed execution in a single surface. The runner selects only explicitly eligible steps; blocked steps are never executable. Governance projections treat missing active consent, residency, analytics, notification policies, or providers as attention states rather than READY. Market Factory remains the sole authority for package composition and release transitions. Run `npm run build` and `npm run check:release` under Node 24.18.0 before deployment.
+
+---
+
 # Mission Execution 16.10.16 — Command Center Route Repair
 
 The active Super Admin overview now renders the objective-first Command Center. Market preparation supports explicit, read-only adapters for validating scope and inspecting the canonical Market Factory registry. Mutating market actions remain in the existing governed Market Factory workflow, including immutable versioning, authorization, publication, verification and activation. Product Publisher retains **CREATE NEXT VERSION**.

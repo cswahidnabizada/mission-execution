@@ -1,7 +1,7 @@
 /* ON Mission 10.72.0 — shared governance operational state projection.
  * Presentation only. Existing governance authorities remain canonical.
  */
-import {statusTone,escapeHtml} from './ui-system.js?v=16.10.16';
+import {statusTone,escapeHtml} from './ui-system.js?v=16.10.17';
 
 const asArray=v=>Array.isArray(v)?v:[];
 const present=(data,key)=>Object.prototype.hasOwnProperty.call(data||{},key)&&data[key]!==undefined&&data[key]!==null;
@@ -17,25 +17,25 @@ export function governanceReadiness(data={}){
   }else add('privacy','Privacy requests','Privacy Administration',null,'unavailable','Privacy authority did not return a state projection.','privacy-rights');
 
   const consent=asArray(data.consentPolicies);
-  if(present(data,'consentPolicies')) add('consent','Consent policy','Consent & Privacy',countActive(consent),'ready',`${countActive(consent)} active polic${countActive(consent)===1?'y':'ies'}.`,'consent');
+  if(present(data,'consentPolicies')) { const active=countActive(consent); add('consent','Consent policy','Consent & Privacy',active,active?'ready':'attention',active?`${active} active polic${active===1?'y':'ies'}.`:'No active consent policies; configure and verify the required policy before launch.','consent'); }
   else add('consent','Consent policy','Consent & Privacy',null,'unavailable','Consent policy authority did not return a state projection.','consent');
 
   const residency=asArray(data.residency);
-  if(present(data,'residency')) add('residency','Residency','Residency Policy',countActive(residency),'ready',residency.length?`${residency.length} active residency polic${residency.length===1?'y':'ies'}.`:'No active residency policies configured.','residency');
+  if(present(data,'residency')) { const active=countActive(residency); add('residency','Residency','Residency Policy',active,active?'ready':'attention',active?`${active} active residency polic${active===1?'y':'ies'}.`:'No active residency policies configured; jurisdiction readiness is not proven.','residency'); }
   else add('residency','Residency','Residency Policy',null,'unavailable','Residency authority did not return a state projection.','residency');
 
   const pg=data.externalProviderGovernance;
   if(present(data,'externalProviderGovernance')){
     const providers=asArray(pg?.providers),policies=asArray(pg?.policies); const active=providers.filter(x=>x?.active===true||Number(x?.active)===1); const approved=active.filter(x=>['approved','configured'].includes(String(x.contract_status||'').toLowerCase()));
-    add('providers','Providers','Provider Governance',active.length,approved.length===active.length?'ready':'attention',`${approved.length}/${active.length||0} active providers are contract-approved or configured.`, 'providers');
+    add('providers','Providers','Provider Governance',active.length,active.length>0&&approved.length===active.length?'ready':'attention',active.length?`${approved.length}/${active.length} active providers are contract-approved or configured.`:'No active providers are configured; provider readiness is not proven.', 'providers');
   }else add('providers','Providers','Provider Governance',null,'unavailable','Provider governance authority did not return a state projection.','providers');
 
   const analytics=data.analyticsGovernance;
-  if(present(data,'analyticsGovernance')) add('analytics','Analytics governance','Analytics Governance',countActive(analytics?.policies),'ready','Governance metadata is available; tenant results remain isolated.','analytics-governance');
+  if(present(data,'analyticsGovernance')) { const active=countActive(analytics?.policies); add('analytics','Analytics governance','Analytics Governance',active,active?'ready':'attention',active?'Governance metadata is available; tenant results remain isolated.':'No active analytics governance policies; review configuration before launch.','analytics-governance'); }
   else add('analytics','Analytics governance','Analytics Governance',null,'unavailable','Analytics governance authority did not return a state projection.','analytics-governance');
 
   const notifications=data.notificationGovernance;
-  if(present(data,'notificationGovernance')) add('notifications','Notification governance','Notification Governance',countActive(notifications?.policies),'ready','Notification policy metadata is available.','notifications');
+  if(present(data,'notificationGovernance')) { const active=countActive(notifications?.policies); add('notifications','Notification governance','Notification Governance',active,active?'ready':'attention',active?'Notification policy metadata is available.':'No active notification policies; notification readiness is not proven.','notifications'); }
   else add('notifications','Notification governance','Notification Governance',null,'unavailable','Notification governance authority did not return a state projection.','notifications');
 
   const backup=data.backupRecoveryGovernance;
