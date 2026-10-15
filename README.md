@@ -334,3 +334,7 @@ This release adds a phase-by-phase certification matrix for the full canonical j
 ## Mission Execution 16.10.14 — Objective Orchestration
 
 The Super Admin Command Center now persists objectives, plans, run steps, approval requests and append-only operation events. Objective preparation is based on fresh canonical platform reads; approval decisions require step-up authorization and optimistic revision checks. Execution remains fail-closed until a matching tested canonical executor is registered. Existing Product Factory release workflow continues to support **CREATE NEXT VERSION**.
+
+## Mission Execution 16.10.15 — Market Launch Objective Integration
+
+The Super Admin Command Center can now prepare a market-launch objective using a single country/product/sector scope. The server reads the canonical Market Factory package/version and launch-task evidence, then persists a seven-stage plan: confirm scope, inspect or create the package, compose and normalize it, preview canonical reconciliation, complete launch evidence, validate an immutable version, and authorize/publish/verify/activate through the existing governed lifecycle. The objective plan is coordination and reporting only: market creation and release transitions remain in Market Factory, and country selection never proves data residency or launch readiness. The Product Factory retains **CREATE NEXT VERSION** and immutable release lineage.
