@@ -1,7 +1,7 @@
 /* ON Mission 10.72.0 — shared governance operational state projection.
  * Presentation only. Existing governance authorities remain canonical.
  */
-import {statusTone,escapeHtml} from './ui-system.js?v=16.10.11';
+import {statusTone,escapeHtml} from './ui-system.js?v=16.10.12';
 
 const asArray=v=>Array.isArray(v)?v:[];
 const present=(data,key)=>Object.prototype.hasOwnProperty.call(data||{},key)&&data[key]!==undefined&&data[key]!==null;

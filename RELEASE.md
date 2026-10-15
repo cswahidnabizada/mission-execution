@@ -1,11 +1,11 @@
-# Mission Execution 16.10.11 — Infrastructure & Data Location Governance
+# Mission Execution 16.10.12 — Canonical Journey + Infrastructure Gate Convergence
 
 Base: ON Mission 16.10.0 — Regional Infrastructure Governance.
-Status: final source package candidate — full Node 24 release gate and live Cloudflare runtime certification remain unverified.
+Status: protected candidate — full Node 24 release gate and live Cloudflare runtime certification remain unverified.
 
 ## 16.10.11 release identity and production deployment boundary
 
-This release adds a governed infrastructure resource registry and a Super Admin proposal workflow for provider resources, environment scope, capability ownership and jurisdiction. Proposals are metadata only: they do not provision resources, change bindings, migrate customer data, or assert verified residency. The canonical release identity is `/VERSION`; package metadata and generated runtime identity must align to 16.10.11. Cloudflare deployment and live-runtime certification remain unverified until the production pipeline reports success. Apply migration 0157 only through the governed production deployment command after release and runtime certification gates pass.
+This release adds a governed infrastructure resource registry and a Super Admin proposal workflow for provider resources, environment scope, capability ownership and jurisdiction. Proposals are metadata only: they do not provision resources, change bindings, migrate customer data, or assert verified residency. The canonical release identity is `/VERSION`; package metadata and generated runtime identity must align to 16.10.12. Cloudflare deployment and live-runtime certification remain unverified until the production pipeline reports success. Apply migrations through 0158 only through the governed production deployment command after release and runtime certification gates pass.
 
 # ON Mission 16.10.0 — Regional Infrastructure Governance (inherited product baseline)
 
@@ -444,3 +444,12 @@ The 16.9.1 Cloudflare build selected Node.js 24.18.0 but stopped in `check:runti
 ## 16.9.4 — Protected certification bootstrap
 
 The certification fixture now calls canonical organization onboarding with an explicit certification-fixture mode. That mode bypasses only the public country-launch eligibility check and is rejected unless the caller actor is `platform_super_administrator`. Required country, jurisdiction, residency, sector, processing-purpose, identity, membership, and audit authorities remain enforced. No product or country is marked LIVE by this change.
+
+## 16.10.12 journey and infrastructure gate convergence
+
+This release adds a phase-by-phase certification contract for the complete canonical mission journey and migration 0158 to retire the obsolete generic `dev-isolation` roadmap dependency. It preserves concrete production gates for residency, backup/restore, market certification, release integrity and regional activation. It does not claim that the full journey or environment isolation has been proven in live production.
+
+The Infrastructure & Data Location Studio remains proposal-driven: no provider resources are provisioned, no bindings are switched, no customer data is migrated, and no residency claim is made. Product Identity Studio propagation to every public/authenticated surface and live journey execution remain explicit verification work.
+
+See `docs/16.10.12-CANONICAL-JOURNEY-CERTIFICATION.md` for the full journey matrix and remaining proof obligations.
+

@@ -6,8 +6,8 @@ assert.match(read('VERSION').trim(),/^(?:12\.(1|2|3|4|5|6|7|8|9)\.\d+|13\.\d+\.\
 assert.equal(JSON.parse(read('package.json')).version,read('VERSION').trim());
 const manifest=JSON.parse(read('RELEASE-MANIFEST.json'));
 assert.equal(manifest.version,read('VERSION').trim());
-assert.ok(['0137','0138','0139','0140','0141','0142','0143','0144','0145','0146','0147','0148','0149','0151','0152','0153','0154','0155','0156','0157'].includes(manifest.migrationHighWaterMark));
-assert.ok([137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157].includes(manifest.migrationCount));
+assert.ok(['0137','0138','0139','0140','0141','0142','0143','0144','0145','0146','0147','0148','0149','0151','0152','0153','0154','0155','0156','0157','0158'].includes(manifest.migrationHighWaterMark));
+assert.ok([137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158].includes(manifest.migrationCount));
 assert.ok(read('database/migrations/0137_first_production_mission_execution.sql').includes('AGENT_PRODUCTION_EXECUTION_APPEND_ONLY'));
 const service=read('src/worker/extensions/agentic-layer/agent-production-execution.service.js');
 assert.match(service,/canonicalMissionTruth:true/);
