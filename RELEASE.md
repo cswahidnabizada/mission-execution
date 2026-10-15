@@ -1,3 +1,21 @@
+# Mission Execution 16.10.20 — Deployment Pipeline Gate & Release Identity Alignment
+
+Status: protected source candidate; not deployed by this package.
+
+## Changes
+- Adds an automated release contract proving the canonical `npm run deploy` path invokes the production sequence in order: build, full release checks, required runtime/recovery certification, production migrations, then Wrangler deployment.
+- Aligns the documented Cloudflare Workers Builds command with the package's gated deployment entry point. A raw `npx wrangler deploy` command is explicitly treated as a bypass, not a certified release.
+- Removes stale fixed-version references from the deployment contract so post-deploy checks compare against the canonical `/VERSION` file.
+- Aligns `VERSION`, `package.json`, and the package-lock root version at 16.10.20.
+- No migrations, production data, bindings, or infrastructure are changed by this source package.
+
+## Validation status
+- Deployment pipeline contract and release integrity checks are run for this candidate.
+- The supplied 2026-10-15 Cloudflare log proves a Worker deployment succeeded, but it used `npx wrangler deploy`; it does not prove the repository build, release gate, runtime/recovery certification, or migration gates ran.
+- Production deployment and live mission verification are not included in this package.
+
+---
+
 # Mission Execution 16.10.19 — Release-Gate Compatibility & Convergence Continuity
 
 Status: protected source candidate; not deployed by this package.
