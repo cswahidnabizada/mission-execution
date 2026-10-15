@@ -1,7 +1,13 @@
-# Mission Execution 16.10.13 — Objective-Driven Super Admin Command Center
+# Mission Execution 16.10.14 — Persistent Objective & Plan Orchestrator
+
+## 16.10.14 — Persistent Objective & Plan Orchestrator
+
+Status: hardening candidate
+
+Adds persistent objective/run/step/approval/event records, stable identifiers, idempotent plan creation, revision-guarded approval decisions, lease-based run concurrency protection, canonical Command Center authority snapshots, a unified objective approval inbox, and an operation journal. Objective plans are generated server-side from fresh canonical read signals. Execution is fail-closed: a step may execute only through a registered, tested canonical executor adapter. In this release, generic objective text is never translated directly into a mutation; when an adapter is missing, the run is journaled and blocked without domain mutation. Migration 0159 adds orchestration records only. Full deployment and live runtime certification remain pending until the supported Node 24 build and all release gates pass.
 
 Base: ON Mission 16.10.0 — Regional Infrastructure Governance.
-Status: hardening candidate — objective-driven planning UI added; full Node 24 release gate and live Cloudflare runtime certification remain unverified.
+Status: hardening candidate — persistent objective orchestration and governed approval inbox added; full Node 24 build and live Cloudflare runtime certification remain unverified.
 
 
 ## 16.10.13 — Objective-Driven Super Admin Command Center

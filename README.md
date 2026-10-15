@@ -330,3 +330,7 @@ The Product Factory continues to use the governed release lifecycle and **CREATE
 ## Mission Execution 16.10.12 — Canonical Journey + Infrastructure Gate Convergence
 
 This release adds a phase-by-phase certification matrix for the full canonical journey and an additive migration that retires the legacy generic `dev-isolation` dependency from production roadmap gates without asserting that environment isolation has been proven. Product release lifecycle remains governed by DRAFT → VALIDATED → AUTHORIZED → PUBLISHED → VERIFIED → LIVE, including **CREATE NEXT VERSION** and immutable release evidence. The Infrastructure & Data Location Studio remains proposal-only; live provider changes, residency claims and end-to-end production mission certification remain gated on external evidence.
+
+## Mission Execution 16.10.14 — Objective Orchestration
+
+The Super Admin Command Center now persists objectives, plans, run steps, approval requests and append-only operation events. Objective preparation is based on fresh canonical platform reads; approval decisions require step-up authorization and optimistic revision checks. Execution remains fail-closed until a matching tested canonical executor is registered. Existing Product Factory release workflow continues to support **CREATE NEXT VERSION**.

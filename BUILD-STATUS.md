@@ -30,3 +30,8 @@
 - Other regions remain proposed/blocked until infrastructure, security, residency, operational and compliance evidence is validated.
 - Priorities: Security → Truth → Liveness → Stability → Experience → Scale.
 - Canonical mission journey release gate: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+
+
+## 16.10.14 — Objective & Plan Orchestrator
+
+Source candidate adds persistent objective/run/step/approval/event records, idempotent plan preparation, optimistic approval concurrency, run leases, a consolidated approval inbox, and fail-closed executor selection. `npm run check:release` passes. `npm run build` is blocked in this runtime because it is Node 22.16.0 while the project requires Node 24.18.0; do not promote until the supported build and production certification pipeline pass.

@@ -10,6 +10,7 @@ import {registerInfrastructureGovernanceRoutes} from './infrastructure-governanc
 import {registerAdminUserExperienceRoutes} from './admin-user-experience.routes.js';
 import {registerProductIdentityRoutes} from './product-identity.routes.js';
 import {registerInfrastructureResourceRoutes} from './infrastructure-resource.routes.js';
+import {registerObjectiveOrchestratorRoutes} from './objective-orchestrator.routes.js';
 
 export function registerAdminControlRoutes(router){
   registerAdminAccessRoutes(router);
@@ -22,6 +23,7 @@ export function registerAdminControlRoutes(router){
   registerSuperAdminOperatingSystemRoutes(router);
   registerInfrastructureGovernanceRoutes(router);
   registerInfrastructureResourceRoutes(router);
+  registerObjectiveOrchestratorRoutes(router);
   registerAdminUserExperienceRoutes(router);
   registerProductIdentityRoutes(router);
 }

@@ -1,5 +1,5 @@
-import {openAdminDrawer} from './detail-drawer.js?v=16.10.12';
-import {isAuthorityUnavailable,renderAuthorityUnavailable} from './admin-runtime.js?v=16.10.12';
+import {openAdminDrawer} from './detail-drawer.js?v=16.10.14';
+import {isAuthorityUnavailable,renderAuthorityUnavailable} from './admin-runtime.js?v=16.10.14';
 export async function renderMonitor({$,api,esc,show,state}){
   const box=$('#view-product-health');if(!box)return;
   box.innerHTML='<div class="empty">Loading Product Monitor…</div>';

@@ -5,7 +5,7 @@ const route=fs.readFileSync('src/worker/modules/admin-control/admin-build-data.r
 const ui=fs.readFileSync('public/assets/js/frontend/admin/market-factory.js','utf8');
 const release=fs.readFileSync('RELEASE.md','utf8');
 const manifest=JSON.parse(fs.readFileSync('RELEASE-MANIFEST.json','utf8'));
-assert.ok(['16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10','16.10.11','16.10.12'].includes(fs.readFileSync('VERSION','utf8').trim()));
+assert.ok(['16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10','16.10.11','16.10.12','16.10.13','16.10.14'].includes(fs.readFileSync('VERSION','utf8').trim()));
 assert.match(service,/MARKET_FACTORY_VERSION=RELEASE_VERSION/);
 assert.match(service,/MARKET_\$\{String\(domain\)\.toUpperCase\(\)\}_CANONICAL_DRIFT/);
 assert.match(service,/Canonical reconciliation blocked by/);
@@ -22,6 +22,6 @@ assert.match(ui,/scrollIntoView/);
 assert.match(release,/Base: ON Mission 16\.7\.0/);
 assert.equal(manifest.version,fs.readFileSync('VERSION','utf8').trim());
 assert.equal(manifest.base,'16.10.0');
-assert.equal(manifest.migrationHighWaterMark,'0158');
-assert.equal(manifest.migrationCount,158);
+assert.ok(['0158','0159'].includes(manifest.migrationHighWaterMark));
+assert.ok([158,159].includes(manifest.migrationCount));
 console.log('16.7.0 canonical safety + lifecycle preservation remains present in current release: PASS');

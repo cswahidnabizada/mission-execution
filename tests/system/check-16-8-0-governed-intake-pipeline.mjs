@@ -12,7 +12,7 @@ const routes=read('src/worker/modules/admin-control/admin-build-data.routes.js')
 const ui=read('public/assets/js/frontend/admin/data-governance.js');
 const migration=read('database/migrations/0154_governed_intake_pipeline.sql');
 const release=read('RELEASE.md');
-assert.equal(pkg.version,version);assert.equal(lock.version,version);assert.equal(lock.packages[''].version,version);assert.equal(manifest.version,version);assert.equal(manifest.base,'16.10.0');assert.equal(manifest.migrationHighWaterMark,'0158');assert.equal(manifest.migrationCount,158);
+assert.equal(pkg.version,version);assert.equal(lock.version,version);assert.equal(lock.packages[''].version,version);assert.equal(manifest.version,version);assert.equal(manifest.base,'16.10.0');assert.ok(['0158','0159'].includes(manifest.migrationHighWaterMark));assert.ok([158,159].includes(manifest.migrationCount));
 for(const token of ['beginGovernedIntake','recordGovernedIntakeItem','finishGovernedIntake','getGovernedIntake','listGovernedIntakes','sha256Intake','GOVERNED_INTAKE_IDEMPOTENCY_CONFLICT'])assert.ok(intake.includes(token),`intake service missing ${token}`);
 for(const token of ['previewDataEntryImport','blocked','duplicates','linkGovernedIntakeEntry','RECEIVE','VERIFY'])assert.ok(entry.includes(token),`Data Entry intake integration missing ${token}`);
 for(const token of ['importMarketPackageCore','beginGovernedIntake','stagedOnly:true','canonicalMutation'])assert.ok(market.includes(token),`Market Factory intake integration missing ${token}`);

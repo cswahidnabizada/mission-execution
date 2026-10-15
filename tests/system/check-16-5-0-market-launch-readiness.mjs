@@ -7,7 +7,7 @@ const ui=read('public/assets/js/frontend/admin/market-factory.js');
 const publisher=read('public/assets/js/frontend/admin/product-publisher.js');
 const registry=read('public/assets/js/frontend/admin/workspace-registry.js');
 const version=read('VERSION').trim();
-assert.ok(['16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10','16.10.11','16.10.12','16.10.13'].includes(read('VERSION').trim()));
+assert.ok(['16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10','16.10.11','16.10.12','16.10.13','16.10.14'].includes(read('VERSION').trim()));
 assert.match(service,/MARKET_FACTORY_VERSION=RELEASE_VERSION/,'Market Factory version must use canonical release authority');
 assert.match(service,/export async function previewMarketReconciliation/,'must expose read-only canonical reconciliation preview');
 assert.match(service,/readOnly:true/,'reconciliation preview must explicitly be read-only');

@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 const root=process.cwd(); const read=f=>fs.readFileSync(path.join(root,f),'utf8');
-const version=read('VERSION').trim(); assert.ok(['15.1.0','15.2.0','15.3.0','15.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10','16.10.11','16.10.12','16.10.13'].includes(version),`15.x current release expected, got ${version}`);
+const version=read('VERSION').trim(); assert.ok(['15.1.0','15.2.0','15.3.0','15.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10','16.10.11','16.10.12','16.10.13','16.10.14'].includes(version),`15.x current release expected, got ${version}`);
 const pkg=JSON.parse(read('package.json')); const lock=JSON.parse(read('package-lock.json')); assert.equal(pkg.version,version); assert.equal(lock.version,version); assert.equal(lock.packages[''].version,version);
 const service=read('src/worker/extensions/mission-execution-coordinator/mission-platform-certification.service.js');
 for(const x of ['MISSION_PLATFORM_CERTIFICATION_VERSION','PLATFORM_ROADMAP','EXECUTOR_TYPES','certifyMissionPlatform','unknownIsNotSuccess','autonomyDisabled','noNewAuthority']) assert(service.includes(x),`missing 15.0 contract: ${x}`);
