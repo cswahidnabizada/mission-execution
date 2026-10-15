@@ -1,3 +1,22 @@
+# Mission Execution 16.10.16 — Command Center Route Repair + Read-Only Market Adapters
+
+Status: source candidate; not deployed by this package.
+
+## 16.10.16 — Command Center Route Repair + Read-Only Market Adapters
+
+- Fixes the active Super Admin `overview` route to render the objective-first Command Center into the actual `#view-overview` mount instead of the retired `#view-control` surface.
+- Adds a regression contract for active-route composition and explicit market preparation adapters.
+- Adds two allowlisted, read-only objective adapters: `confirm_market_scope.v1` and `inspect_market_package.v1`. They revalidate the structured scope and re-read the canonical Market Factory package registry, recording evidence and audit events.
+- No objective text is interpreted as an action. No market package, country, product version, binding, publication or activation is created or changed by these adapters.
+- All package composition, task evidence mutation, validation, authorization, publication, verification and activation remain with the existing Market Factory services and their authorization gates.
+- Unsupported plan steps remain blocked; no generic execution fallback is introduced.
+
+## Validation
+
+Targeted UI route, adapter contract, JavaScript syntax, objective orchestration and release-integrity checks are required. Full release gate, supported Node 24 build and Cloudflare runtime verification must be recorded separately.
+
+---
+
 # Mission Execution 16.10.15 — Market Launch Objective Integration
 
 Status: protected candidate

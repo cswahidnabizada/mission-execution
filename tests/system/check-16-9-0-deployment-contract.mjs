@@ -6,7 +6,7 @@ const version=fs.readFileSync('VERSION','utf8').trim();
 const npmrc=fs.readFileSync('.npmrc','utf8');
 const build=fs.readFileSync('scripts/check-build-environment.mjs','utf8');
 const docs=fs.readFileSync('docs/16.9.0-DEPLOYMENT-CONTRACT.md','utf8');
-assert.equal(version,'16.10.15','canonical VERSION must be 16.10.15');
+assert.equal(version,'16.10.16','canonical VERSION must be 16.10.16');
 assert.equal(pkg.version,version);
 assert.equal(lock.version,version);
 assert.equal(lock.packages[''].version,version);

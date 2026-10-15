@@ -34,5 +34,5 @@
 /* 16.10.14 — persistent objective orchestration and governed approval inbox */
 .objective-approval-inbox{display:grid;gap:12px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border,#d9dee7)}.objective-approval-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.objective-approval-inbox .objective-plan-step{align-items:center}
 
-/* 16.10.15 — market launch objective workflow */
+/* 16.10.16 — market launch objective workflow */
 .objective-market-scope{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:14px;border:1px solid #dbe3ec;border-radius:12px;background:#f8fafc}.objective-market-scope[hidden]{display:none!important}.objective-market-scope .mini{grid-column:1/-1;margin:0}.objective-market-summary{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px;margin:14px 0;border:1px solid #cbd5e1;border-radius:12px;background:#f8fafc}.objective-market-summary h3{margin:5px 0}.objective-market-summary p{margin:5px 0;font-size:12px}.objective-market-summary small{color:#64748b;font-size:11px}@media(max-width:680px){.objective-market-scope{grid-template-columns:1fr}.objective-market-summary{align-items:stretch;flex-direction:column}}
