@@ -8,7 +8,7 @@ const manifest = JSON.parse(fs.readFileSync('RELEASE-MANIFEST.json', 'utf8'));
 const contract = fs.readFileSync('docs/16.9.0-DEPLOYMENT-CONTRACT.md', 'utf8');
 const release = fs.readFileSync('RELEASE.md', 'utf8');
 
-assert.equal(version, '16.10.20', 'candidate version must be explicit');
+assert.ok(version.localeCompare('16.10.20',undefined,{numeric:true})>=0, 'deployment pipeline contract must remain covered by later releases');
 assert.equal(pkg.version, version, 'package version must match VERSION');
 assert.equal(lock.version, version, 'lockfile root version must match VERSION');
 assert.equal(lock.packages[''].version, version, 'lockfile package root must match VERSION');

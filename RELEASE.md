@@ -1,3 +1,20 @@
+# Mission Execution 16.10.21 — Objective Completion Loop
+
+Status: protected source candidate; deployment not performed by this package.
+
+## Changes
+- Added an audited, bounded Super Admin objective-input endpoint with optimistic revision checks.
+- Added a canonical reassessment endpoint that refreshes current platform context after new input.
+- Prevented execution while a run is marked `REASSESSMENT_REQUIRED`.
+- Added a Command Center continuation form so users can submit missing facts/decisions and immediately reassess.
+- Preserved canonical domain authorities, step-up execution controls, allowlisted read-only adapters and terminal-run protections.
+- Added regression tests for input, reassessment and execution gating.
+
+## Verification
+- Automated checks are run and recorded in the release report; a supported build and live mission certification remain separate requirements.
+
+---
+
 # Mission Execution 16.10.20 — Deployment Pipeline Gate & Release Identity Alignment
 
 Status: protected source candidate; not deployed by this package.

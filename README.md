@@ -1,6 +1,6 @@
 # Mission Execution 16.10.19 — Release-Gate Compatibility & Convergence Continuity
 
-Release 16.10.20 is the current protected source candidate. It adds a deployment-pipeline contract requiring Cloudflare Workers Builds to use the gated `npm run deploy` path; raw `npx wrangler deploy` bypasses build, release, runtime/recovery certification, and migration gates. Product Publisher retains **CREATE NEXT VERSION**.
+Release 16.10.21 extends Objective into a governed input-and-reassessment loop: Super Admins can submit bounded missing context, the system rereads canonical platform state, and execution is blocked until reassessment is complete. The gated `npm run deploy` path remains required; raw `npx wrangler deploy` bypasses release and runtime gates. Product Publisher retains **CREATE NEXT VERSION**.
 
 
 The Super Admin Command Center now combines objective intake, persisted objective history, pending approvals, and one-step governed execution in a single surface. The runner selects only explicitly eligible steps; blocked steps are never executable. Governance projections treat missing active consent, residency, analytics, notification policies, or providers as attention states rather than READY. Market Factory remains the sole authority for package composition and release transitions. Run `npm run build` and `npm run check:release` under Node 24.18.0 before deployment.
