@@ -11,7 +11,7 @@ const ui=read('public/assets/js/frontend/admin/market-factory.js');
 const publisher=read('public/assets/js/frontend/admin/product-publisher.js');
 const policy=JSON.parse(read('database/data-integrity-policy.json'));
 const pkg=JSON.parse(read('package.json'));
-assert(['16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10'].includes(pkg.version),'package version must be current Market Factory release');
+assert(['16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10','16.10.11'].includes(pkg.version),'package version must be current Market Factory release');
 assert(migration.includes('platform_market_packages'),'market package table missing');
 assert(migration.includes('platform_market_package_versions'),'market version table missing');
 assert(migration.includes('platform_market_release_contracts'),'release contract table missing');

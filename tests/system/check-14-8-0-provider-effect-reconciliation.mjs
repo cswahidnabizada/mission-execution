@@ -9,7 +9,7 @@ const recovery=read('src/worker/extensions/mission-execution-coordinator/mission
 const provider=read('src/worker/security/external-provider-integration.service.js');
 const schema=read('database/schema.current.sql');
 const release=read('RELEASE.md');
-assert(['14.8.0','14.9.0','15.0.0','15.0.1','15.1.0','15.2.0','15.3.0','15.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10'].includes(version));
+assert(['14.8.0','14.9.0','15.0.0','15.0.1','15.1.0','15.2.0','15.3.0','15.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10','16.10.11'].includes(version));
 assert(reconciliation.includes("PROVIDER_EFFECT_RECONCILIATION_VERSION='14.8.0'"));
 assert(reconciliation.includes("AGREED_VERIFIED"));
 assert(reconciliation.includes("PROVIDER_CANONICAL_DISAGREEMENT"));

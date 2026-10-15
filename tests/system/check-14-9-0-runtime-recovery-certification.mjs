@@ -10,7 +10,7 @@ const routes=read('src/worker/extensions/mission-execution-coordinator/mission-e
 const recovery=read('src/worker/extensions/agentic-layer/agent-execution-recovery.service.js');
 const intent=read('src/worker/extensions/execution-engine/execution-intent.service.js');
 const release=read('RELEASE.md');
-assert(['14.9.0','15.0.0','15.0.1','15.1.0','15.2.0','15.3.0','15.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10'].includes(version));
+assert(['14.9.0','15.0.0','15.0.1','15.1.0','15.2.0','15.3.0','15.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10','16.10.11'].includes(version));
 assert(certification.includes("MISSION_RECOVERY_CERTIFICATION_VERSION='15.1.0'"));
 assert(certification.includes('safeToRetry:false'));
 assert(certification.includes('automaticRetry:false'));

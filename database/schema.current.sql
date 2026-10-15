@@ -1,5 +1,5 @@
 -- ON Mission current database schema snapshot
--- Generated from the complete ordered migration chain through 0155.
+-- Generated from the complete ordered migration chain through 0157.
 -- This is the canonical schema snapshot for fresh/recovery environments.
 -- Production evolution remains migration-first: apply database/migrations/*.sql in order.
 -- Do not edit manually; regenerate with scripts/generate-schema-current.mjs.
@@ -2792,6 +2792,39 @@ CREATE TABLE platform_governed_intake_items (
   FOREIGN KEY(intake_id) REFERENCES platform_governed_intake_batches(intake_id) ON DELETE CASCADE
 );
 
+-- table: platform_infrastructure_resource_events
+CREATE TABLE platform_infrastructure_resource_events (
+  event_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  resource_id TEXT NOT NULL REFERENCES platform_infrastructure_resources(resource_id),
+  event_type TEXT NOT NULL CHECK(event_type IN ('PROPOSED','VALIDATED','ACTIVATED','DEGRADED','RETIRED','EVIDENCE_ADDED')),
+  from_state TEXT,
+  to_state TEXT NOT NULL,
+  actor_id TEXT NOT NULL,
+  reason TEXT NOT NULL,
+  evidence_json TEXT NOT NULL DEFAULT '[]' CHECK(json_valid(evidence_json)),
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- table: platform_infrastructure_resources
+CREATE TABLE platform_infrastructure_resources (
+  resource_id TEXT PRIMARY KEY,
+  display_name TEXT NOT NULL CHECK(length(display_name) BETWEEN 2 AND 120),
+  resource_type TEXT NOT NULL CHECK(resource_type IN ('D1_DATABASE','R2_BUCKET','KV_NAMESPACE','VECTORIZE_INDEX','AI_SERVICE','WORKER','OTHER')),
+  provider_code TEXT NOT NULL CHECK(length(provider_code) BETWEEN 2 AND 40),
+  environment_scope TEXT NOT NULL CHECK(environment_scope IN ('production','development','shared')),
+  owner_capability TEXT NOT NULL CHECK(length(owner_capability) BETWEEN 2 AND 100),
+  jurisdiction_code TEXT NOT NULL CHECK(length(jurisdiction_code) BETWEEN 2 AND 16),
+  provider_reference TEXT NOT NULL CHECK(length(provider_reference) BETWEEN 2 AND 240),
+  schema_version TEXT,
+  lifecycle_state TEXT NOT NULL DEFAULT 'PROPOSED' CHECK(lifecycle_state IN ('PROPOSED','VALIDATED','ACTIVE','DEGRADED','RETIRED')),
+  evidence_json TEXT NOT NULL DEFAULT '[]' CHECK(json_valid(evidence_json)),
+  reason TEXT NOT NULL CHECK(length(reason) BETWEEN 8 AND 500),
+  created_by TEXT NOT NULL,
+  updated_by TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 -- table: platform_infrastructure_roadmap
 CREATE TABLE platform_infrastructure_roadmap (
   task_key TEXT PRIMARY KEY,
@@ -3208,6 +3241,32 @@ CREATE TABLE platform_product_expansion_tasks (
   UNIQUE(expansion_id,task_key),
   FOREIGN KEY(expansion_id) REFERENCES platform_product_expansion_cases(id) ON DELETE CASCADE,
   FOREIGN KEY(dependency_task_id) REFERENCES platform_product_expansion_tasks(id) ON DELETE SET NULL
+);
+
+-- table: platform_product_identity_active
+CREATE TABLE platform_product_identity_active (
+  singleton_id INTEGER PRIMARY KEY CHECK(singleton_id = 1),
+  revision_id INTEGER NOT NULL REFERENCES platform_product_identity_revisions(revision_id),
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_by TEXT NOT NULL
+);
+
+-- table: platform_product_identity_revisions
+CREATE TABLE platform_product_identity_revisions (
+  revision_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  display_name TEXT NOT NULL CHECK(length(display_name) BETWEEN 2 AND 80),
+  short_name TEXT NOT NULL CHECK(length(short_name) BETWEEN 1 AND 12),
+  tagline TEXT NOT NULL DEFAULT '' CHECK(length(tagline) <= 180),
+  logo_asset_key TEXT,
+  favicon_asset_key TEXT,
+  scope TEXT NOT NULL DEFAULT 'platform' CHECK(scope IN ('platform','market','tenant')),
+  scope_key TEXT NOT NULL DEFAULT 'global',
+  status TEXT NOT NULL DEFAULT 'DRAFT' CHECK(status IN ('DRAFT','PUBLISHED','SUPERSEDED')),
+  reason TEXT NOT NULL CHECK(length(reason) BETWEEN 8 AND 500),
+  created_by TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  published_by TEXT,
+  published_at TEXT
 );
 
 -- table: platform_product_preparation_research
@@ -4600,6 +4659,15 @@ CREATE INDEX idx_governed_intake_source_hash ON platform_governed_intake_batches
 -- index: idx_governed_intake_status
 CREATE INDEX idx_governed_intake_status ON platform_governed_intake_batches(status,updated_at DESC,id DESC);
 
+-- index: idx_infra_resource_events_resource
+CREATE INDEX idx_infra_resource_events_resource ON platform_infrastructure_resource_events(resource_id,event_id DESC);
+
+-- index: idx_infra_resources_environment
+CREATE INDEX idx_infra_resources_environment ON platform_infrastructure_resources(environment_scope,lifecycle_state,resource_type);
+
+-- index: idx_infra_resources_owner
+CREATE INDEX idx_infra_resources_owner ON platform_infrastructure_resources(owner_capability,lifecycle_state);
+
 -- index: idx_lifecycle_definitions_scope
 CREATE INDEX idx_lifecycle_definitions_scope ON platform_lifecycle_definitions(country_code,sector_code,status,version DESC);
 
@@ -5265,6 +5333,12 @@ CREATE INDEX idx_product_expansion_source ON platform_product_expansion_cases(so
 
 -- index: idx_product_expansion_tasks
 CREATE INDEX idx_product_expansion_tasks ON platform_product_expansion_tasks(expansion_id,status,required,id);
+
+-- index: idx_product_identity_revisions_created
+CREATE INDEX idx_product_identity_revisions_created ON platform_product_identity_revisions(created_at DESC);
+
+-- index: idx_product_identity_revisions_scope
+CREATE INDEX idx_product_identity_revisions_scope ON platform_product_identity_revisions(scope,scope_key,status,revision_id DESC);
 
 -- index: idx_product_prep_research_launch
 CREATE INDEX idx_product_prep_research_launch ON platform_product_preparation_research(launch_id,status,updated_at DESC);

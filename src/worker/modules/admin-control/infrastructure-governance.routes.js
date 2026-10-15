@@ -3,7 +3,7 @@ import {requirePlatformAdministrator} from '../../security/platform-administrato
 import {requirePlatformSuperAdminStepUp} from '../../security/platform-super-administrator.js';
 import {auditAdminControl} from './admin-control.audit.js';
 
-const VERSION='16.10.0';
+const VERSION="16.10.11";
 const clean=(v,n=240)=>String(v??'').replace(/[\u0000-\u001f]/g,' ').trim().slice(0,n);
 function fail(e){return json({success:false,error:publicErrorMessage(e?.message||'Infrastructure governance unavailable'),code:e?.code||e?.message||'INFRASTRUCTURE_GOVERNANCE_UNAVAILABLE'},e?.status||500);}
 async function snapshot(env){

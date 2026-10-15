@@ -1,12 +1,12 @@
 {
-  "version": "16.10.10",
+  "version": "16.10.11",
   "release": "RELEASE.md",
   "base": "16.10.0",
-  "migrationHighWaterMark": "0155",
-  "migrationCount": 155,
+  "migrationHighWaterMark": "0157",
+  "migrationCount": 157,
   "schemaSnapshot": {
     "file": "database/schema.current.sql",
-    "sha256": "e2a44dada8db0b95d56148702695c5f4196ec6660ec222dda469cd41d31db20d"
+    "sha256": "1356f3b2d832f944c8fb21e43ce14aac5b2494816f98001cd6051ea4cf5de412"
   },
   "generatedFrom": "deterministic-release-pipeline"
 }

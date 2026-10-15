@@ -1,11 +1,11 @@
-# Mission Execution 16.10.10 — Production Product Release
+# Mission Execution 16.10.11 — Infrastructure & Data Location Governance
 
 Base: ON Mission 16.10.0 — Regional Infrastructure Governance.
 Status: final source package candidate — full Node 24 release gate and live Cloudflare runtime certification remain unverified.
 
-## 16.10.10 release identity and production deployment boundary
+## 16.10.11 release identity and production deployment boundary
 
-This release carries forward the current canonical Mission Execution product and its existing ordered migrations. It does not add, remove, reorder, or rewrite database migrations. The canonical release identity is `/VERSION`; package metadata, generated runtime identity, and release manifest are aligned to 16.10.10. This source package does not claim that Cloudflare deployment or live-runtime certification has occurred. Production migrations must be applied only through the repository's governed production deployment command after the release and runtime certification gates pass.
+This release adds a governed infrastructure resource registry and a Super Admin proposal workflow for provider resources, environment scope, capability ownership and jurisdiction. Proposals are metadata only: they do not provision resources, change bindings, migrate customer data, or assert verified residency. The canonical release identity is `/VERSION`; package metadata and generated runtime identity must align to 16.10.11. Cloudflare deployment and live-runtime certification remain unverified until the production pipeline reports success. Apply migration 0157 only through the governed production deployment command after release and runtime certification gates pass.
 
 # ON Mission 16.10.0 — Regional Infrastructure Governance (inherited product baseline)
 

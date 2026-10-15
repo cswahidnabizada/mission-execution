@@ -320,3 +320,9 @@ No fixture is a second canonical authority. Reset/quarantine is the supported cl
 Market Factory extends the governed Product Factory with strict market package intake, readiness, authorization, release replacement, export/import and canonical identity reconciliation. Existing release lifecycle controls remain active, including **CREATE NEXT VERSION**, explicit authorization, immutable release evidence and rollback metadata.
 
 The 16.3.0 Market Factory fixes governed-action handling under Safe Mode, supports multipart ZIP and JSON-file intake, makes release history selectable, and surfaces precise validation errors. It remains integrated with the existing **Test Lab** and **Release Integrity** controls; market publication cannot replace those governed release gates.
+
+## Mission Execution 16.10.11 — Infrastructure & Data Location Governance
+
+This release adds a canonical infrastructure resource registry for governed resource proposals. Super Admin can register intended resource identity, provider, environment scope, owning capability, jurisdiction, schema version, and a reason. Every proposal is step-up authorized and audited. Registry entries are descriptive governance records: this capability does not provision infrastructure, change provider bindings, migrate data, or claim residency without provider evidence.
+
+The Product Factory continues to use the governed release lifecycle and **CREATE NEXT VERSION** workflow. The **Test Lab** and **Release Integrity** checks remain part of the release process. Migration history is ordered through `0157_infrastructure_resource_registry.sql`; production migration must run only through the governed production deployment command after release and runtime certification.
