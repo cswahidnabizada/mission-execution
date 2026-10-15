@@ -1,3 +1,25 @@
+# Mission Execution 16.10.28 — Market Launch Evidence Integrity
+
+Status: protected source candidate; **not deployed**. This increment hardens evidence quality in the existing Market Factory launch workbench. It does not manufacture legal review, product content, runtime certification, or live-market readiness.
+
+## Changes
+- Adds a shared decision-grade evidence contract for launch tasks.
+- Rejects generic completion claims and placeholder/example references such as `i resolved the market lifecycle` + `test one` when attempting to mark a required task complete.
+- Applies the evidence-quality check to the workbench gates and to market validation for lifecycle, legal, content, reconciliation, runtime certification, mission journey, publication recovery, and final release-report evidence.
+- Keeps the existing Market Factory, Product Factory, authorization, immutable versioning, publication, verification, activation, and recovery authorities canonical.
+- No database migration, production data mutation, customer resource provisioning, or infrastructure change is included.
+
+## Verification boundary
+- The new focused contract test must pass alongside the cumulative release gates.
+- This is an evidence-integrity improvement, not a claim that Germany logistics is ready. Required legal decisions, customer-ready localized content, canonical dependencies, product definitions, runtime certification, mission journey proof, and publication-recovery evidence must still be completed and independently verified.
+- Deployment and live customer E2E are not included in this package.
+
+## Permanent invariants
+Security → Truth → Liveness → Stability → Experience → Scale.
+Canonical journey: `OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE`.
+
+---
+
 # Mission Execution 16.10.27 — Unified Objective Completion System
 
 Status: protected unified source candidate; **not deployed**. This release composes the cumulative 16.10.21–16.10.26 objective-completion increments into one versioned package. It does not claim that a live production objective has been completed.
