@@ -408,3 +408,8 @@ Release baseline: `16.10.38`. This release consolidates responsive structural la
 ## Current release candidate
 
 Version: 16.10.39 — Layout Inventory & Ownership Map. Product release workflow retains the governed **CREATE NEXT VERSION** path; published releases are immutable and changes flow through authorization, publication, verification, and rollback governance.
+
+
+## 16.10.40 — Consolidated Layout Studio candidate
+
+The session-gated draft workspace is available at `/layout-studio.html`. Draft state is browser-local and publication is intentionally disabled pending canonical release lifecycle integration. See `docs/16.10.40-layout-studio.md`.

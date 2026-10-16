@@ -1,58 +1,52 @@
-ON MISSION 16.10.39 — Layout Inventory & Ownership Map
-Status: protected source candidate; not deployed or production-certified
-Base: user-reported deployed and tested 16.10.38
+ON MISSION 16.10.40 — CONSOLIDATED LAYOUT STUDIO ROADMAP CANDIDATE
+Date: 2026-10-16
+Status: SOURCE CANDIDATE — NOT DEPLOYED OR PRODUCTION-CERTIFIED
 
-PURPOSE
-Create the evidence base for the governed Layout Studio roadmap. This release inventories current HTML entry points, linked CSS/JS assets, relative JavaScript imports, repeated CSS selector declarations, and byte-identical CSS files before any risky retirement.
+DECISION / HONEST SCOPE
+The accepted 16.10.40–16.10.44 roadmap has been consolidated into one source candidate. It is NOT truthful to claim every roadmap capability is production-complete in this single release. The draft editor, typed composition schema, token/component editing, page/journey composition, market variants, responsive preview frame, validation, and JSON export are implemented. Canonical server-side draft persistence, immutable version lifecycle, step-up publication, verification, rollback, full existing-route composition integration, and browser visual/accessibility certification remain unimplemented or unverified. Publish is explicitly disabled. Do not treat this candidate as the finished live Layout Studio.
 
-CHANGES
-- Added scripts/generate-layout-inventory.mjs and npm run inventory:layout.
-- Added docs/16.10.39-layout-inventory.json (machine-readable route/asset/import/selector inventory).
-- Added docs/16.10.39-layout-inventory.md (human-readable inventory and ownership map).
-- Added tests/system/check-16-10-39-layout-inventory.mjs and included it in npm run check:release.
-- Synchronized VERSION, package.json, package-lock.json, RELEASE-MANIFEST.json, generated runtime release identities, and versioned asset references to 16.10.39.
-- Updated historical release allowlists and the cleanliness gate for the new release identity.
-- Preserved canonical authorities, Market Factory publication ownership, mission behavior, route implementations, and database schema.
+WHAT CHANGED
+- VERSION/package/lock/manifest/runtime identity advanced to 16.10.40.
+- Added public/layout-studio.html and isolated responsive styling.
+- Added Super Admin session gate using the canonical shared API boundary (/api/platform/admin/super-admin/session).
+- Added draft editor areas: Experience Explorer, Design System, Market Composition, Validate & Release.
+- Added approved component-type allowlist; typed component properties; token references; page composition across homepage, onboarding, organization setup, executor workspace, mission experience and shared components.
+- Added desktop/tablet/mobile preview frame, structural checks, market-to-page/token reference checks, and draft JSON export.
+- Added schemas/layout-composition-v1.schema.json and docs/16.10.40-layout-studio.md.
+- Added tests/system/check-16-10-40-layout-studio.mjs and included it in the cumulative release gate.
+- Updated cumulative release allowlists and version-bound checks for 16.10.40.
+- No CSS/JS implementations were deleted. No database migrations, schema changes, production data writes, or cloud resource changes were made.
 
-STATIC INVENTORY RESULTS
-- 24 HTML pages
-- 43 CSS files
-- 137 JavaScript modules
-- 113 local page asset references
-- 223 relative JavaScript import edges
-- 0 missing local page assets
-- 0 missing relative imports
-- 763 repeated selector/file pairs flagged for review
-- 0 byte-identical CSS file groups
-- 159 ordered migrations; high-water mark 0159
-- 249 tables; 459 indexes
-- No new migration
-
-IMPORTANT INTERPRETATION
-The 763 repeated selector/file pairs are an investigation queue, not a deletion list. Selector repetition may be intentional due to cascade order, media queries, state selectors, or specificity. The inventory is static and does not prove browser route reachability, dynamic imports, event ownership, computed styles, or safe retirement. No CSS or JavaScript implementation was deleted in this inventory release.
+GOVERNANCE BOUNDARIES
+- The editor uses browser-local draft persistence only; localStorage is not canonical storage, is not synced, and is not a backup.
+- JSON export is a transport format only.
+- Publish is disabled because a canonical Layout Studio server-side release adapter, immutable release records, step-up authorization, verification evidence, and rollback integration were not verified/implemented.
+- Market Factory remains the single publisher of market releases.
+- Existing mission truth, authorization, lifecycle, tenant, identity and billing authorities remain unchanged.
+- The 763 repeated selector/file pairs from 16.10.39 remain review candidates; none were auto-deleted.
 
 VERIFICATION
-- npm run check:release: PASS (full configured cumulative suite; final convergence gate reported 26 checks passed)
-- New 16.10.39 inventory contract: PASS
-- 16.10.38 platform layout convergence contract: PASS
-- Inventory generation and test syntax checks: PASS
-- npm run build: BLOCKED at environment gate. Current runtime is Node 22.16.0; project contract requires Node 24.18.0 (.node-version) and Node 24.x engines. CSS compilation did not run.
-- Live browser visual certification: NOT RUN
-- Deployment: NOT performed by this package build
+PASS: node --check public/assets/js/frontend/admin/layout-studio.js
+PASS: node tests/system/check-16-10-40-layout-studio.mjs
+PASS: node tests/system/check-16-10-39-layout-inventory.mjs (historical inventory preserved)
+PASS: node tests/system/check-16-10-38-platform-layout-convergence.mjs
+PASS: npm run check:release — full configured cumulative suite completed successfully, including security, data-integrity, architecture convergence, migrations/schema, release engineering, historical release contracts, and runtime SQLite contracts.
+PASS: ZIP integrity check (recorded after packaging)
+BLOCKED: npm run build — environment gate rejected available Node 22.16.0; project requires Node 24.18.0. CSS compilation did not run.
+PENDING: Live browser visual/responsive certification, accessibility audit, production route integration, server-side persistence, publish/verify/rollback integration, step-up adversarial testing for new release operations, and deployment.
 
-NEXT STEPS
-1. Run npm ci, npm run build, and npm run check:release with Node 24.18.0.
-2. Review the generated route-to-asset map and classify each repeated selector by declaration, media query, specificity, and consumer.
-3. Trace component imports, dynamic imports, DOM event registrations, and route references before proposing retirements.
-4. Add browser visual/behavior checks before deleting or merging any competing implementation.
-5. Continue 16.10.40 — Canonical Design Tokens & Components, followed by 16.10.41 — Governed Layout Studio, 16.10.42 — Page/Journey Composition, 16.10.43 — Market Experience Governance, and 16.10.44 — Platform-Wide Visual Certification.
+CANONICAL MISSION JOURNEY
+The release does not change the mission lifecycle. Journey remains:
+OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+No new stage is claimed visually or operationally certified by this Layout Studio source candidate.
 
-GOVERNING INVARIANTS
-Security → Truth → Liveness → Stability → Experience → Scale
+REMAINING TO CALL THE LAYOUT STUDIO ROADMAP COMPLETE
+1. Connect this workspace to canonical Super Admin navigation/route ownership.
+2. Add dedicated server-owned Layout Studio draft/version authority with strict server-side schema validation and audit.
+3. Integrate Validate → Approve → Publish → Verify → Rollback with existing release lifecycle, immutable hashes/dependency snapshots and step-up authorization.
+4. Connect actual page/component registry and Product/Market Factory compatibility contracts; shared component changes must list affected markets/products.
+5. Add automated browser tests at mobile/tablet/desktop breakpoints, accessibility checks, keyboard/interaction checks, authorization and tenant-boundary tests, and rollback tests.
+6. Run npm ci/build/check:release/production certification on Node 24.18.0, then deploy and verify the actual live runtime.
 
-OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE
-
-The Layout Studio remains a presentation authority only. It must not replace mission truth, authorization, lifecycle, tenant data, or Market Factory release authority. Draft previews never mutate active production experiences. Published versions are immutable and rollback must select a previously verified compatible version.
-
-SAFE APPLICATION
-Merge the reviewed changes into the canonical repository; do not replace the repository wholesale. Preserve existing .github/workflows, secrets, environment configuration, and unrelated work. This ZIP does not contain .github/workflows.
+RECOMMENDATION
+Treat this as a reviewable consolidated source candidate, not a one-step production-complete release. Do not deploy it as a claim that all 16.10.40–16.10.44 functionality is finished. Preserve the deployed 16.10.39 baseline until the remaining production integrations and certifications pass.

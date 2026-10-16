@@ -1,4 +1,4 @@
-# Mission Execution 16.10.39
+# Mission Execution 16.10.40 — Consolidated Layout Studio Roadmap Candidate
 
 Status: protected candidate
 
@@ -155,3 +155,8 @@ Base: ON Mission 16.7.0. Current source baseline is the deployed 16.10.38 platfo
 Historical schema contract reference: `0154_governed_intake_pipeline.sql` remains part of the cumulative governed intake baseline. This 16.10.39 release adds no migration.
 
 # ON Mission 16.10.0
+
+
+## 16.10.40 consolidated Layout Studio
+
+See `docs/16.10.40-layout-studio.md`. This candidate combines the agreed Layout Studio roadmap into one source release, while deliberately keeping publish disabled until canonical server-side release integration and runtime certification are complete.
