@@ -413,3 +413,12 @@ Version: 16.10.39 — Layout Inventory & Ownership Map. Product release workflow
 ## 16.10.40 — Consolidated Layout Studio candidate
 
 The session-gated draft workspace is available at `/layout-studio.html`. Draft state is browser-local and publication is intentionally disabled pending canonical release lifecycle integration. See `docs/16.10.40-layout-studio.md`.
+
+
+## 16.10.41 — Layout Studio Server-Owned Drafts
+
+Adds server-owned Layout Studio draft persistence, optimistic revision checks, immutable draft revision snapshots with SHA-256 digests, and audited draft events. Draft saving does not publish or change active production. Publication remains blocked until the canonical release lifecycle adapter and verification evidence are integrated.
+
+### 16.10.41 — Server-owned Layout Studio drafts
+
+The Layout Studio now supports server-owned draft persistence and immutable revision history through the canonical admin API. Draft saves are revision-checked, audited, and protected by Super Admin step-up authorization. This does not publish active layouts; publication remains blocked until the canonical release lifecycle adapter and runtime verification are complete.

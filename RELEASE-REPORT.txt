@@ -1,52 +1,39 @@
-ON MISSION 16.10.40 — CONSOLIDATED LAYOUT STUDIO ROADMAP CANDIDATE
-Date: 2026-10-16
-Status: SOURCE CANDIDATE — NOT DEPLOYED OR PRODUCTION-CERTIFIED
-
-DECISION / HONEST SCOPE
-The accepted 16.10.40–16.10.44 roadmap has been consolidated into one source candidate. It is NOT truthful to claim every roadmap capability is production-complete in this single release. The draft editor, typed composition schema, token/component editing, page/journey composition, market variants, responsive preview frame, validation, and JSON export are implemented. Canonical server-side draft persistence, immutable version lifecycle, step-up publication, verification, rollback, full existing-route composition integration, and browser visual/accessibility certification remain unimplemented or unverified. Publish is explicitly disabled. Do not treat this candidate as the finished live Layout Studio.
+ON MISSION 16.10.41 — Layout Studio Server-Owned Drafts
+Release type: Source candidate; additive migration; publication remains blocked.
+Baseline: 16.10.40 (user-reported deployed)
 
 WHAT CHANGED
-- VERSION/package/lock/manifest/runtime identity advanced to 16.10.40.
-- Added public/layout-studio.html and isolated responsive styling.
-- Added Super Admin session gate using the canonical shared API boundary (/api/platform/admin/super-admin/session).
-- Added draft editor areas: Experience Explorer, Design System, Market Composition, Validate & Release.
-- Added approved component-type allowlist; typed component properties; token references; page composition across homepage, onboarding, organization setup, executor workspace, mission experience and shared components.
-- Added desktop/tablet/mobile preview frame, structural checks, market-to-page/token reference checks, and draft JSON export.
-- Added schemas/layout-composition-v1.schema.json and docs/16.10.40-layout-studio.md.
-- Added tests/system/check-16-10-40-layout-studio.mjs and included it in the cumulative release gate.
-- Updated cumulative release allowlists and version-bound checks for 16.10.40.
-- No CSS/JS implementations were deleted. No database migrations, schema changes, production data writes, or cloud resource changes were made.
-
-GOVERNANCE BOUNDARIES
-- The editor uses browser-local draft persistence only; localStorage is not canonical storage, is not synced, and is not a backup.
-- JSON export is a transport format only.
-- Publish is disabled because a canonical Layout Studio server-side release adapter, immutable release records, step-up authorization, verification evidence, and rollback integration were not verified/implemented.
-- Market Factory remains the single publisher of market releases.
-- Existing mission truth, authorization, lifecycle, tenant, identity and billing authorities remain unchanged.
-- The 763 repeated selector/file pairs from 16.10.39 remain review candidates; none were auto-deleted.
+- Added migration 0160 with server-owned Layout Studio draft storage, revision snapshots, and draft audit events.
+- Added guarded API routes for reading the canonical global experience draft, reading revision history, and saving drafts with optimistic revision checks.
+- Draft writes require Super Admin step-up authorization. Reads require platform administrator authorization.
+- Added server-side schema/size/component/property/responsive/governance validation; arbitrary HTML/JS/CSS remains disallowed.
+- Stored draft revision snapshots include SHA-256 digests. Database triggers reject update/delete of historical draft snapshots.
+- Connected Layout Studio to load the server draft, save a new revision, and view server-side version history. Browser local storage remains a fallback if the server draft authority is unavailable; it is not treated as server truth.
+- Save responses explicitly state activeProductionChanged=false. Publishing remains disabled because canonical release adapter, immutable active release, post-publish verification and rollback are not integrated.
+- No existing migration was changed; migration 0160 is additive. No production data was accessed or changed by this build.
 
 VERIFICATION
-PASS: node --check public/assets/js/frontend/admin/layout-studio.js
-PASS: node tests/system/check-16-10-40-layout-studio.mjs
-PASS: node tests/system/check-16-10-39-layout-inventory.mjs (historical inventory preserved)
-PASS: node tests/system/check-16-10-38-platform-layout-convergence.mjs
-PASS: npm run check:release — full configured cumulative suite completed successfully, including security, data-integrity, architecture convergence, migrations/schema, release engineering, historical release contracts, and runtime SQLite contracts.
-PASS: ZIP integrity check (recorded after packaging)
-BLOCKED: npm run build — environment gate rejected available Node 22.16.0; project requires Node 24.18.0. CSS compilation did not run.
-PENDING: Live browser visual/responsive certification, accessibility audit, production route integration, server-side persistence, publish/verify/rollback integration, step-up adversarial testing for new release operations, and deployment.
+PASS: full configured npm run check:release (including the cumulative release chain).
+PASS: new 16.10.41 Layout Studio server-draft contract.
+PASS: migration contract (160 ordered migrations; high-water 0160).
+PASS: schema gate (252 tables, 461 indexes).
+PASS: release engineering and production-cleanliness/version convergence.
+PASS: JavaScript syntax checks for new route and updated Studio module.
+PASS: migration 0160 SQLite smoke test created the three expected tables and trigger definitions.
+PASS: ZIP integrity check.
+BLOCKED: npm run build stopped at the required Node environment gate. Runtime available here is Node 22.16.0; project requires Node 24.18.0. CSS compilation did not run.
+NOT TESTED: live browser certification, visual/accessibility checks, end-to-end step-up/save conflict behavior against deployed D1, and actual production deployment.
 
-CANONICAL MISSION JOURNEY
-The release does not change the mission lifecycle. Journey remains:
-OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
-No new stage is claimed visually or operationally certified by this Layout Studio source candidate.
+KNOWN LIMITATIONS / NEXT WORK
+1. Draft persistence is server-owned and versioned, but the active production layout is not switched by this release.
+2. Page/component registry and canonical renderers still need verified integration so approved layouts affect real pages.
+3. Publication must be wired into the existing release lifecycle and Market Factory boundaries; do not add a parallel publisher.
+4. Need runtime tests for unauthorized access, revision conflicts, event/audit integrity, version immutability, accessibility, responsive behavior and rollback.
+5. Build and CSS compilation must run in Node 24.18.0 before production certification.
 
-REMAINING TO CALL THE LAYOUT STUDIO ROADMAP COMPLETE
-1. Connect this workspace to canonical Super Admin navigation/route ownership.
-2. Add dedicated server-owned Layout Studio draft/version authority with strict server-side schema validation and audit.
-3. Integrate Validate → Approve → Publish → Verify → Rollback with existing release lifecycle, immutable hashes/dependency snapshots and step-up authorization.
-4. Connect actual page/component registry and Product/Market Factory compatibility contracts; shared component changes must list affected markets/products.
-5. Add automated browser tests at mobile/tablet/desktop breakpoints, accessibility checks, keyboard/interaction checks, authorization and tenant-boundary tests, and rollback tests.
-6. Run npm ci/build/check:release/production certification on Node 24.18.0, then deploy and verify the actual live runtime.
+CANONICAL JOURNEY
+OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE
+This release does not claim new mission journey stages as certified. Layout Studio cannot bypass mission truth, assignment, authorization, evidence, recovery or lifecycle authorities.
 
-RECOMMENDATION
-Treat this as a reviewable consolidated source candidate, not a one-step production-complete release. Do not deploy it as a claim that all 16.10.40–16.10.44 functionality is finished. Preserve the deployed 16.10.39 baseline until the remaining production integrations and certifications pass.
+RELEASE DECISION
+Source candidate is prepared for review/deployment pipeline testing, not certified as a complete production-ready Layout Studio. Preserve 16.10.40 as the production baseline until Node 24.18.0 build and browser/runtime gates pass.

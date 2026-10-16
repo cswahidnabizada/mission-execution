@@ -1,4 +1,4 @@
-# Mission Execution 16.10.40 — Consolidated Layout Studio Roadmap Candidate
+# Mission Execution 16.10.41 — Consolidated Layout Studio Roadmap Candidate
 
 Status: protected candidate
 
@@ -157,6 +157,12 @@ Historical schema contract reference: `0154_governed_intake_pipeline.sql` remain
 # ON Mission 16.10.0
 
 
-## 16.10.40 consolidated Layout Studio
+## 16.10.41 consolidated Layout Studio
 
-See `docs/16.10.40-layout-studio.md`. This candidate combines the agreed Layout Studio roadmap into one source release, while deliberately keeping publish disabled until canonical server-side release integration and runtime certification are complete.
+See `docs/16.10.41-layout-studio.md`. This candidate combines the agreed Layout Studio roadmap into one source release, while deliberately keeping publish disabled until canonical server-side release integration and runtime certification are complete.
+
+## 16.10.41 — Layout Studio Server-Owned Drafts
+
+This release adds the first server-owned Layout Studio draft/version foundation. The platform persists draft compositions with optimistic revision checks, immutable SHA-256-stamped revision snapshots, and audited events. Draft writes require Super Admin step-up authorization and server-side validation. Draft saving does not publish or mutate active production. The canonical release lifecycle and Market Factory remain the required publication authorities; publication remains disabled pending their verified integration and end-to-end certification.
+
+See `RELEASE-REPORT.txt` for the exact verification boundary and outstanding work.

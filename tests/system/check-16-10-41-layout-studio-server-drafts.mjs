@@ -1,0 +1,12 @@
+import fs from 'node:fs';import assert from 'node:assert/strict';
+const migration=fs.readFileSync('database/migrations/0160_layout_studio_server_drafts.sql','utf8');
+const routes=fs.readFileSync('src/worker/modules/admin-control/layout-studio.routes.js','utf8');
+const adminRoutes=fs.readFileSync('src/worker/modules/admin-control/admin-control.routes.js','utf8');
+const ui=fs.readFileSync('public/assets/js/frontend/admin/layout-studio.js','utf8');
+const page=fs.readFileSync('public/layout-studio.html','utf8');
+assert.match(migration,/CREATE TABLE IF NOT EXISTS platform_layout_drafts/);
+assert.match(migration,/CREATE TABLE IF NOT EXISTS platform_layout_draft_versions/);
+assert.match(migration,/CREATE TABLE IF NOT EXISTS platform_layout_draft_events/);assert.match(migration,/LAYOUT_DRAFT_VERSIONS_IMMUTABLE/);
+assert.match(routes,/requirePlatformAdministrator/);assert.match(routes,/LAYOUT_DRAFT_REVISION_CONFLICT/);assert.match(routes,/content_sha256/);assert.match(routes,/activeProductionChanged:false/);assert.match(routes,/COMPONENT_TYPE_NOT_ALLOWED/);assert.match(routes,/MANDATORY_GOVERNANCE_CONTROLS_REQUIRED/);assert.match(routes,/requirePlatformSuperAdminStepUp/);
+assert.match(adminRoutes,/registerLayoutStudioRoutes\(router\)/);assert.match(ui,/\/api\/platform\/admin\/layout-studio\/draft/);assert.match(ui,/expectedRevision:serverRevision/);assert.match(ui,/Publish \(blocked\)/);assert.match(page,/v=16\.10\.41/);
+console.log('16.10.41 Layout Studio server draft contract: PASS');

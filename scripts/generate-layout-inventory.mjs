@@ -117,7 +117,7 @@ repeatedSelectors.length>500?`- … ${repeatedSelectors.length-500} additional e
 '1. Inspect missing references and classify redirects/intentional runtime resolution before changing them.',
 '2. Group repeated selectors by selector + declaration + media query + specificity and inspect computed styles at supported viewports.',
 '3. Trace UI helper imports, event listeners and route consumers before proposing retirement.',
-'4. Use the inventory to select a small, high-impact token/component migration for 16.10.40.',
+'4. Use the inventory to select a small, high-impact token/component migration for 16.10.41.',
 '5. Add browser visual and behavior certification before retiring existing implementations.', ''
 ].join('\n');
 fs.writeFileSync(path.join(outDir, `16.10.39-layout-inventory.md`), md);

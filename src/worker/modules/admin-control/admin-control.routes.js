@@ -11,6 +11,7 @@ import {registerAdminUserExperienceRoutes} from './admin-user-experience.routes.
 import {registerProductIdentityRoutes} from './product-identity.routes.js';
 import {registerInfrastructureResourceRoutes} from './infrastructure-resource.routes.js';
 import {registerObjectiveOrchestratorRoutes} from './objective-orchestrator.routes.js';
+import {registerLayoutStudioRoutes} from './layout-studio.routes.js';
 
 export function registerAdminControlRoutes(router){
   registerAdminAccessRoutes(router);
@@ -24,6 +25,7 @@ export function registerAdminControlRoutes(router){
   registerInfrastructureGovernanceRoutes(router);
   registerInfrastructureResourceRoutes(router);
   registerObjectiveOrchestratorRoutes(router);
+  registerLayoutStudioRoutes(router);
   registerAdminUserExperienceRoutes(router);
   registerProductIdentityRoutes(router);
 }
