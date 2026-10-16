@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+const releaseVersion=fs.readFileSync(new URL('../../VERSION', import.meta.url),'utf8').trim();
 /* ON Mission Runtime Certification Harness — 14.4.0
  * Executes against a real deployed environment. Structural PASS is never runtime proof.
  * Full execution is opt-in because it can mutate a real mission.
@@ -53,7 +55,7 @@ try{
       const key=crypto.randomUUID();
       const body=country==='DE'&&sector==='logistics'
         ? {idempotencyKey:key,missionType:'private',capabilityCode:'logistics',objective:'Controlled Germany logistics runtime certification',countryCode:'DE',sectorCode:'logistics',reference:`CERT-RUNTIME-${Date.now()}`,missionDate:new Date().toISOString().slice(0,10),pickupCompany:'Certification Pickup',pickupAddress:'Teststrasse 1, 20095 Hamburg',pickupStreet:'Teststrasse 1',pickupZipCode:'20095',pickupCity:'Hamburg',deliveryCompany:'Certification Delivery',deliveryAddress:'Hafenstrasse 2, 20457 Hamburg',deliveryStreet:'Hafenstrasse 2',deliveryZipCode:'20457',deliveryCity:'Hamburg',pickupTime:'09:00',deliveryTime:'12:00',deadlineAt:new Date(Date.now()+6*3600000).toISOString().slice(0,16),pickupAtUtc:new Date(Date.now()+3600000).toISOString(),deliveryAtUtc:new Date(Date.now()+2*3600000).toISOString(),deadlineAtUtc:new Date(Date.now()+6*3600000).toISOString(),scheduleTimezone:'Europe/Berlin',objectType:'Controlled Test Object',objectDescription:'Runtime certification object',responsibilityMode:'owner',driverId:Number(process.env.ON_MISSION_CERT_DRIVER_ID||0)||null}
-        : {idempotencyKey:key,missionType:'private',objective:'Controlled universal mission runtime certification',countryCode:country,sectorCode:sector,capabilityCode:sector,responsibilityMode:'assigned',reference:`CERT-RUNTIME-${Date.now()}`,missionDate:new Date().toISOString().slice(0,10),missionContext:{certification:true,source:'16.10.33'}};
+        : {idempotencyKey:key,missionType:'private',objective:'Controlled universal mission runtime certification',countryCode:country,sectorCode:sector,capabilityCode:sector,responsibilityMode:'assigned',reference:`CERT-RUNTIME-${Date.now()}`,missionDate:new Date().toISOString().slice(0,10),missionContext:{certification:true,source:releaseVersion}};
       createdMissionBody=body;
       const result=await request('/api/missions',{method:'POST',body,expected:[200,201]});missionId=result.missionId||result.mission?.id; if(!missionId)throw new Error('Mission create response did not return a canonical mission ID');return {missionId,idempotencyKey:key};
     });
@@ -89,5 +91,5 @@ try{
   if(missionId&&attackEmail&&attackPassword){
     await step('adversarial tenant isolation',async()=>{const primary=[...cookieJar.entries()];const tenantOf=x=>Number(x?.tenantId||x?.session?.tenantId||x?.user?.tenantId||x?.companyId||x?.session?.companyId||0)||null;const primaryTenant=tenantOf(primaryIdentity);cookieJar.clear();let attack=null;try{attack=await request('/api/auth/login',{method:'POST',body:{email:attackEmail,password:attackPassword},expected:[200]});const attackTenant=tenantOf(attack);if(!primaryTenant||!attackTenant)throw new Error('Tenant isolation cannot be certified: login responses did not expose both canonical tenant IDs');if(primaryTenant===attackTenant)throw new Error('Tenant isolation cannot be certified: attack account resolves to the same tenant as the mission owner');await request(`/api/missions/${missionId}`,{expected:[403,404]});await request(`/api/mission-execution/missions/${missionId}/certification`,{expected:[403,404]});return {missionId,primaryTenant,attackTenant,blocked:true,attackRole:attack?.role||attack?.session?.role||null}}finally{cookieJar.clear();for(const [k,v] of primary)cookieJar.set(k,v);await request('/api/auth/login',{method:'POST',body:{email,password},expected:[200]});}});
   }
-  console.log(JSON.stringify({status:'passed',version:'16.10.33',country,sector,missionId,planId,actionCode,evidence},null,2));
-}catch(error){console.error(JSON.stringify({status:'failed',version:'16.10.33',country,sector,missionId,planId,actionCode,error:String(error?.message||error),evidence},null,2));process.exit(1)}
+  console.log(JSON.stringify({status:'passed',version:releaseVersion,country,sector,missionId,planId,actionCode,evidence},null,2));
+}catch(error){console.error(JSON.stringify({status:'failed',version:releaseVersion,country,sector,missionId,planId,actionCode,error:String(error?.message||error),evidence},null,2));process.exit(1)}

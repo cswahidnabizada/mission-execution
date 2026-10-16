@@ -1,5 +1,5 @@
 import { $, api, esc, state, configList, loadCountryLaunches, loadCountryBlueprints, loadAdminCountries, loadProductCountries, countryPickerMarkup, bindCountryPicker, bindProductCountryPicker, loadCommandCenter, launchManifestFromForm, ensureStepUp, login, navigate, productEcosystemState } from './context.js';
-import {isAuthorityUnavailable,renderAuthorityUnavailable} from '../admin-runtime.js?v=16.10.33';
+import {isAuthorityUnavailable,renderAuthorityUnavailable} from '../admin-runtime.js?v=16.10.34';
 import { refreshAdminData as refreshData } from './data.js';
 import { loadCommercial, createCountryLaunchDraft, countryLaunchAction, renderProductLaunch, createConfigDraft, refreshConfigurationAction } from './product-operations.js';
 import { renderStudioCard, saveStudioDraft, configTable } from './platform-governance.js';

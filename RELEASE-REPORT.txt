@@ -1,17 +1,14 @@
-ON MISSION 16.10.32 — RELEASE SUMMARY
+MISSION EXECUTION 16.10.34 — CLEAN PRODUCTION SOURCE
 
-Candidate: Adversarial End-to-End Certification & Existing Defect Repair
-Full detailed report: Mission-Execution-16.10.32-RELEASE-REPORT.txt
+Status: protected source candidate. Not deployed or production-certified by this package build.
 
-Status: source candidate only; not deployed or production-certified by this package build.
+Scope: clean production source packaging, canonical Node 24.18.0 pin convergence, local-artifact hygiene, and a regression gate that prevents stale release reports and obsolete build generators from re-entering the release archive.
 
-Release checks: PASS — npm run check:release, including the cumulative historical suite, security, data integrity, architecture convergence, migration/schema contracts, release engineering, and focused dynamic-route/count regression.
+Preserved: application source, public assets, Cloudflare Worker configuration, package manifest and lockfile, database schema and all 159 ordered migrations, operational scripts, test suites, permanent release documentation, and canonical VERSION. No production data was modified and no database migration was added.
 
-Production build: BLOCKED by supported environment gate because this packaging runtime is Node 22.16.0 while the project requires Node 24.18.0. CSS build, deployment, live API probes, and runtime/customer certification are not claimed.
+Removed from the root package: stale per-release report copies for 16.10.30–16.10.33 obsolete build15.py (a generator for a historical 15.0.0 candidate), stale BUILD-STATUS.md, and superseded NODE24-UPGRADE.md. Current release report remains in this file and RELEASE.md remains the canonical detailed release record.
 
-Primary fixes: shared parameterized route matching; consistent canonical active-organization counts with unavailable-on-read-failure semantics; explicit NO RUN UI state for objectives with no persisted run.
-
-Safety: no production data or database migration changed. Apply the reviewed diff to the canonical GitHub checkout; do not replace the repository wholesale. Preserve .github/workflows, secrets/configuration, and unrelated work.
+Verification boundary: this environment uses Node 22.16.0, while the project requires Node 24.18.0. Source-level release checks may be run here; production build, CSS compilation, deployment, and live runtime certification remain unverified until run under the supported toolchain.
 
 Permanent priority: Security → Truth → Liveness → Stability → Experience → Scale.
 Canonical journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.

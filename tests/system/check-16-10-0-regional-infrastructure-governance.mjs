@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 const read=p=>fs.readFileSync(p,'utf8');
-assert.ok(['16.10.10','16.10.11','16.10.12','16.10.13','16.10.14','16.10.15','16.10.16','16.10.17','16.10.18','16.10.19','16.10.20','16.10.21','16.10.22','16.10.23','16.10.24','16.10.25','16.10.26','16.10.27','16.10.28','16.10.29','16.10.30','16.10.31','16.10.32','16.10.33'].includes(read('VERSION').trim()),'regional governance continuity must be preserved');
+assert.ok(['16.10.10','16.10.11','16.10.12','16.10.13','16.10.14','16.10.15','16.10.16','16.10.17','16.10.18','16.10.19','16.10.20','16.10.21','16.10.22','16.10.23','16.10.24','16.10.25','16.10.26','16.10.27','16.10.28','16.10.29','16.10.30','16.10.31','16.10.32','16.10.33','16.10.34'].includes(read('VERSION').trim()),'regional governance continuity must be preserved');
 const migration=read('database/migrations/0155_regional_infrastructure_governance.sql');
 for(const token of ['platform_region_placements','platform_infrastructure_roadmap','eu-germany','EU','activation_allowed','INSERT OR IGNORE']) assert.ok(migration.includes(token),`migration missing ${token}`);
 const routes=read('src/worker/modules/admin-control/infrastructure-governance.routes.js');

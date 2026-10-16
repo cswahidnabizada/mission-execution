@@ -1,6 +1,6 @@
-# ON MISSION — Release 16.10.33
+# ON MISSION — Release 16.10.34
 
-The current source candidate is **16.10.33 — Truthful Runtime Certification & Adversarial Proof**. The existing runtime certification harness now actually replays the same controlled mission-create request to verify idempotency, proves the owner and attack accounts belong to different canonical tenants before cross-tenant probes, and rejects missing or duplicate canonical phase evidence. The shared router repair, canonical organization counts, and single-screen Objective Workspace from 16.10.31–16.10.32 remain intact. Immutable release changes continue through **CREATE NEXT VERSION**.
+The current source candidate is **16.10.34 — Clean Production Source & Toolchain Convergence**. This release removes stale root-level release report copies and the obsolete historical `build15.py` generator, preserves all application source, assets, deployment configuration, tests, and canonical documentation, aligns `.nvmrc` and `.node-version` on Node 24.18.0, and adds a production-cleanliness gate. The truthful runtime certification, adversarial route/count checks, single-screen Objective Workspace, Market Factory, Test Lab, and Release Integrity gates remain in the cumulative suite. Immutable release changes continue through **CREATE NEXT VERSION**.
 
 This is a source candidate, not proof of production deployment or live Germany launch. Use Node 24.18.0 for the supported build and required runtime/recovery certification. The six inactive configuration entries and Germany legal/content/customer journey gates are not fabricated or bypassed.
 

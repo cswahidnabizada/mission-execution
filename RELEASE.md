@@ -1,4 +1,15 @@
-# Mission Execution 16.10.33 — Truthful Runtime Certification & Adversarial Proof
+# Mission Execution 16.10.34 — Clean Production Source & Toolchain Convergence
+
+Status: protected source candidate; not deployed or production-certified by this package build.
+
+## 16.10.34 — Clean production source & toolchain convergence
+- Removed obsolete historical root release-report copies and the unused `build15.py` generator for a historical 15.0.0 candidate. Kept the canonical release documentation, source, tests, migrations, and deployment configuration.
+- Added `.nvmrc` at Node `24.18.0`, matching `.node-version`, so local version managers and Cloudflare builds use the same supported runtime.
+- Expanded `.gitignore` for OS files, dependency/build artifacts, local secrets, logs, temporary files, and editor backups.
+- Added a production-cleanliness release gate so removed development artifacts and Node-version drift are detected before release.
+- No schema or migration changes; no production data touched.
+
+## Previous release record (16.10.33) — Truthful Runtime Certification & Adversarial Proof
 
 Status: protected candidate; **not deployed or production-certified by this package build**. This release hardens the existing runtime certification harness so it cannot report idempotency or tenant-isolation proof without actually performing the relevant checks. No competing workflow authority is introduced.
 
