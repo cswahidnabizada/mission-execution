@@ -14,21 +14,21 @@ const EXPERIENCE_REGISTRY=[
  {id:'layout-studio',title:'Layout Studio',route:'/layout-studio.html',sourcePage:'public/layout-studio.html',area:'Platform administration',editability:'INSPECT_ONLY',rendererBinding:'NOT_CONNECTED'}
 ];
 const COMPONENT_REGISTRY=[
- {type:'header',label:'Header',status:'STUDIO_PREVIEW_ONLY',properties:['label','density']},
- {type:'footer',label:'Footer',status:'STUDIO_PREVIEW_ONLY',properties:['label']},
- {type:'hero',label:'Hero',status:'STUDIO_PREVIEW_ONLY',properties:['eyebrow','title','description','cta']},
- {type:'section',label:'Section',status:'STUDIO_PREVIEW_ONLY',properties:['label','description']},
- {type:'card',label:'Card',status:'STUDIO_PREVIEW_ONLY',properties:['label','state','description']},
- {type:'button',label:'Button',status:'STUDIO_PREVIEW_ONLY',properties:['label','variant']},
- {type:'badge',label:'Badge',status:'STUDIO_PREVIEW_ONLY',properties:['label','tone']},
- {type:'input',label:'Input',status:'STUDIO_PREVIEW_ONLY',properties:['label','placeholder']},
- {type:'table',label:'Table',status:'STUDIO_PREVIEW_ONLY',properties:['label','description']},
- {type:'dialog',label:'Dialog',status:'STUDIO_PREVIEW_ONLY',properties:['label','description']},
- {type:'navigation',label:'Navigation',status:'STUDIO_PREVIEW_ONLY',properties:['label']},
- {type:'mission-list',label:'Mission list',status:'STUDIO_PREVIEW_ONLY',properties:['label','description']},
- {type:'evidence-panel',label:'Evidence panel',status:'STUDIO_PREVIEW_ONLY',properties:['label','description']},
- {type:'status-panel',label:'Status panel',status:'STUDIO_PREVIEW_ONLY',properties:['label','state','description']},
- {type:'progress',label:'Progress',status:'STUDIO_PREVIEW_ONLY',properties:['label','state']}
+ {type:'header',label:'Header',status:'CANONICAL_STUDIO_PREVIEW_ONLY',properties:['label','density']},
+ {type:'footer',label:'Footer',status:'CANONICAL_STUDIO_PREVIEW_ONLY',properties:['label']},
+ {type:'hero',label:'Hero',status:'CANONICAL_STUDIO_PREVIEW_ONLY',properties:['eyebrow','title','description','cta']},
+ {type:'section',label:'Section',status:'CANONICAL_STUDIO_PREVIEW_ONLY',properties:['label','description']},
+ {type:'card',label:'Card',status:'CANONICAL_STUDIO_PREVIEW_ONLY',properties:['label','state','description']},
+ {type:'button',label:'Button',status:'CANONICAL_STUDIO_PREVIEW_ONLY',properties:['label','variant']},
+ {type:'badge',label:'Badge',status:'CANONICAL_STUDIO_PREVIEW_ONLY',properties:['label','tone']},
+ {type:'input',label:'Input',status:'CANONICAL_STUDIO_PREVIEW_ONLY',properties:['label','placeholder']},
+ {type:'table',label:'Table',status:'CANONICAL_STUDIO_PREVIEW_ONLY',properties:['label','description']},
+ {type:'dialog',label:'Dialog',status:'CANONICAL_STUDIO_PREVIEW_ONLY',properties:['label','description']},
+ {type:'navigation',label:'Navigation',status:'CANONICAL_STUDIO_PREVIEW_ONLY',properties:['label']},
+ {type:'mission-list',label:'Mission list',status:'CANONICAL_STUDIO_PREVIEW_ONLY',properties:['label','description']},
+ {type:'evidence-panel',label:'Evidence panel',status:'CANONICAL_STUDIO_PREVIEW_ONLY',properties:['label','description']},
+ {type:'status-panel',label:'Status panel',status:'CANONICAL_STUDIO_PREVIEW_ONLY',properties:['label','state','description']},
+ {type:'progress',label:'Progress',status:'CANONICAL_STUDIO_PREVIEW_ONLY',properties:['label','state']}
 ];
 const REQUIRED_CONTROLS=['identity','consent','authorization','eligibility','evidence','recovery'];
 const COMPONENT_TYPES=new Set(['header','footer','hero','section','card','button','badge','input','table','dialog','navigation','mission-list','evidence-panel','status-panel','progress']);
@@ -86,7 +86,7 @@ function auditStatement({actor,action,experienceId,requestId,revision,contentSha
  return {sql:`INSERT INTO admin_control_audit_events(event_id,actor_role,action,resource_type,resource_id,target_company_id,request_id,metadata) SELECT ?,?,?,?,?,?,?,? WHERE changes()=1`,args:[uid(),String(actor?.role||'platform_administrator'),action,'layout_studio_draft',experienceId,null,requestId,JSON.stringify({revision,contentSha256,reason})]};
 }
 export function registerLayoutStudioRoutes(router){
- router.get('/api/platform/admin/layout-studio/registry',async({request,env})=>{try{await requirePlatformAdministrator(request,env);return json({success:true,registryVersion:'16.10.43',source:'curated-source-route-map',experiences:EXPERIENCE_REGISTRY,components:COMPONENT_REGISTRY,contract:{editableProductionRoutes:0,previewOnlyComponentTypes:COMPONENT_REGISTRY.length,publicationEnabled:false,warning:'Inventory entries are source-confirmed route mappings; canonical renderer bindings and live route parity are not yet certified.'}})}catch(e){return fail(e)}});
+ router.get('/api/platform/admin/layout-studio/registry',async({request,env})=>{try{await requirePlatformAdministrator(request,env);return json({success:true,registryVersion:'16.10.45',rendererContractVersion:'16.10.45',source:'curated-source-route-map',experiences:EXPERIENCE_REGISTRY,components:COMPONENT_REGISTRY,contract:{editableProductionRoutes:0,productionRouteBindings:0,previewOnlyComponentTypes:COMPONENT_REGISTRY.length,publicationEnabled:false,rendererMode:'CANONICAL_STUDIO_PREVIEW_ONLY',warning:'Studio preview now uses a deterministic allowlisted renderer contract. Production route bindings and live route parity remain uncertified; publication stays disabled.'}})}catch(e){return fail(e)}});
  router.get('/api/platform/admin/layout-studio/draft',async({request,env})=>{try{await requirePlatformAdministrator(request,env);const row=await env.DB.prepare('SELECT experience_id,draft_json,revision,schema_version,created_by,updated_by,created_at,updated_at FROM platform_layout_drafts WHERE experience_id=?').bind(GLOBAL_EXPERIENCE_ID).first();if(!row)return json({success:true,exists:false,draft:null,revision:0});return json({success:true,exists:true,draft:parse(row.draft_json),revision:Number(row.revision),updatedAt:row.updated_at,updatedBy:row.updated_by});}catch(e){return fail(e)}});
  router.get('/api/platform/admin/layout-studio/versions',async({request,env})=>{try{await requirePlatformAdministrator(request,env);const rows=await env.DB.prepare('SELECT version_id,experience_id,revision,content_sha256,actor_id,change_reason,created_at FROM platform_layout_draft_versions WHERE experience_id=? ORDER BY revision DESC LIMIT 50').bind(GLOBAL_EXPERIENCE_ID).all();return json({success:true,versions:rows.results||[]});}catch(e){return fail(e)}});
  router.patch('/api/platform/admin/layout-studio/draft',async({request,env,requestId})=>{

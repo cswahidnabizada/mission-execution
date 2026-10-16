@@ -4,7 +4,7 @@ const routes=fs.readFileSync('src/worker/modules/admin-control/layout-studio.rou
 const schema=JSON.parse(fs.readFileSync('schemas/layout-composition-v1.schema.json','utf8'));
 const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
 const html=fs.readFileSync('public/layout-studio.html','utf8');
-assert.equal(pkg.version,'16.10.44');
+assert.equal(pkg.version,'16.10.45');
 assert.match(routes,/GLOBAL_EXPERIENCE_ID='onmission\.global\.experience'/);
 assert.match(routes,/EXPERIENCE_ID_NOT_SUPPORTED/);
 assert.match(routes,/PAGE_COUNT_INVALID/);
@@ -19,5 +19,5 @@ assert.match(routes,/activeProductionChanged:false/);
 assert.equal(schema.properties.components.maxItems,100);
 assert.equal(schema.properties.pages.maxItems,30);
 assert.equal(schema.properties.governance.properties.requiredControls.minItems,6);
-assert.match(html,/v=16\.10\.44/);
+assert.match(html,/v=16\.10\.45/);
 console.log('16.10.43 Layout Studio draft integrity contract: PASS');

@@ -1,36 +1,35 @@
-ON MISSION 16.10.44 — Layout Studio Experience Workspace + Super Admin Control Plane Convergence
-Release type: Source candidate; no database migration; publication remains disabled.
-Baseline: 16.10.43 source candidate (16.10.42 was user-confirmed deployed; do not infer deployment of 16.10.43 or 16.10.44).
+ON MISSION 16.10.45 — Canonical Studio Renderer + Experience Impact Foundation
+Release type: Source candidate; production certification pending.
+Base: ON MISSION 16.10.44 (user-confirmed deployed baseline per current conversation).
 
 WHAT CHANGED
-- Delivered the final Layout Studio workspace shell aligned to the approved target design: compact product header, breadcrumb, market/environment selectors, page/component/design-system/market/release tabs, three-column editor layout, responsive preview controls, properties inspector and explicit draft-only publication boundary.
-- Added page and component registry inspection with route/source mapping, editability and renderer status; currently marked INSPECT_ONLY / NOT_CONNECTED where canonical runtime renderers are not wired.
-- Added draft editing surfaces for approved component properties, design-token values, page composition and market variants; server draft save and version history use existing governed API endpoints.
-- Kept publication explicitly blocked. Preview remains representative and does not claim actual route/render parity.
-- Applied a visual convergence layer to Super Admin Control Plane: consistent spacing, navigation hierarchy, workspace headers, cards, focus states and responsive Layout Studio behavior. No new authority or parallel release lifecycle introduced.
-- Regenerated browser cache-busting references and runtime release identity to canonical version 16.10.44.
-- No database migration or production data mutation.
+- Added a deterministic allowlisted composition renderer for all 15 approved Layout Studio component types.
+- Connected the Studio canvas to the renderer module rather than the previous inline component-type switch.
+- Added semantic preview markup, escaped scalar properties, disabled preview interactions, and explicit unsupported/missing-reference states.
+- Added renderer contract version 16.10.45 and updated the registry API to distinguish Studio-preview rendering from production-route integration.
+- Registry still truthfully reports productionRouteBindings: 0. Real production routes have not been connected or certified.
+- Preserved server-owned drafts, revision protection, version history, step-up write boundary, Super Admin visual convergence, canonical mission authorities and Market Factory publication boundary.
+- Publication remains disabled. No database migration, production data mutation, route switch or deployment was performed.
 
 VERIFICATION
-- PASS: Layout Studio 16.10.44 focused contract test on Node.js 22.16.0.
-- PASS: 16.10.43 registry contract.
-- PASS: 16.10.42 draft-integrity contract.
-- PASS: 16.10.41 server-draft compatibility contract.
-- PASS: release integrity check.
-- BLOCKED: full cumulative release suite. It progressed through several current checks but stopped at an older runtime-certification test that expects a specific legacy phrase in RELEASE-REPORT.txt. This is a release-test compatibility failure, not a passed full suite; it must be reconciled without weakening the certification requirement.
-- BLOCKED: production build and CSS compilation. Required Node.js 24.18.0; available environment is Node.js 22.16.0.
-- NOT TESTED: live browser, responsive/a11y behavior, live D1 integration, route-render parity, authorization in deployed runtime, publish, activation, rollback, or production deployment.
+- PASS: JavaScript syntax checks for Studio renderer, Layout Studio client and Layout Studio routes.
+- PASS: focused 16.10.45 renderer contract (all 15 types, escaped markup, unsupported type, missing component reference).
+- PASS: Layout Studio historical contracts 16.10.40–16.10.44 and layout inventory/convergence checks.
+- PASS: release integrity and production cleanliness/version convergence checks.
+- BLOCKED: full cumulative npm run check:release. It passes the new renderer and several prior gates, then fails at tests/system/check-16-10-26-outcome-recovery-loop.mjs because the current RELEASE.md does not contain that historical release's expected heading. This is a legacy cumulative-documentation contract issue; it has not been bypassed.
+- BLOCKED: npm run build and CSS compilation. Environment is Node.js 22.16.0; project requires Node.js 24.18.0. Build stopped at the enforced environment gate before CSS compilation.
+- NOT TESTED: live browser, accessibility, deployed D1 integration, actual production route-render parity, authorization in deployed runtime, publication, activation, rollback or production deployment.
 
 REMAINING ROADMAP
-1. Run npm ci, npm run build, and npm run check:release under Node.js 24.18.0; reconcile the legacy release-report contract correctly.
-2. Connect the actual canonical page/component registries to the production renderers and prove preview/route parity.
-3. Integrate immutable publication through the existing release lifecycle and Market Factory; keep publication disabled until this is certified.
-4. Add dependency snapshots, step-up authorization, evidence, verified activation and rollback.
-5. Browser-certify responsive layout, keyboard navigation, accessibility, error/loading/empty states, D1 concurrency/failure recovery and the Germany logistics mission journey.
-6. Deploy only after all required gates pass; retain the last user-confirmed production baseline until then.
+1. Reconcile historical release-document tests by preserving/verifying immutable per-release records or repairing the cumulative test contract without weakening checks.
+2. Run npm ci, npm run build and full npm run check:release under Node.js 24.18.0 and supported npm 10.x/11.x.
+3. Bind actual production routes to canonical renderers one route at a time; verify preview/route parity with route-level browser tests and feature flags.
+4. Integrate immutable publication through the existing release lifecycle and Market Factory, with step-up authorization, dependency snapshot, evidence, verified activation and rollback.
+5. Certify responsive behavior, accessibility, D1 concurrency/failure recovery, authorization, audit persistence and the complete Germany logistics mission journey.
+6. Deploy only after all release gates pass; preserve the last user-confirmed production baseline until then.
 
 RELEASE DECISION
-16.10.44 is a source candidate, not approved for production deployment. No deployment was performed by this build process. Preserve the last user-confirmed production baseline and do not enable publication.
+16.10.45 is a source candidate, not approved for production deployment. No deployment was performed. Keep publication disabled.
 
 PERMANENT PRIORITIES
 Security -> Truth -> Liveness -> Stability -> Experience -> Scale.

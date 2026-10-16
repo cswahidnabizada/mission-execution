@@ -4,7 +4,7 @@ const routes=fs.readFileSync('src/worker/modules/admin-control/layout-studio.rou
 const client=fs.readFileSync('public/assets/js/frontend/admin/layout-studio.js','utf8');
 const html=fs.readFileSync('public/layout-studio.html','utf8');
 const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
-assert.equal(pkg.version,'16.10.44');
+assert.equal(pkg.version,'16.10.45');
 assert.match(routes,/\/api\/platform\/admin\/layout-studio\/registry/);
 assert.match(routes,/requirePlatformAdministrator\(request,env\)/);
 for(const route of ['public/index.html','public/register.html','public/driver/dashboard.html','public/missions.html','public/app/index.html'])assert.ok(routes.includes(route),`registry must map real source route ${route}`);
@@ -12,7 +12,7 @@ assert.match(routes,/rendererBinding:'NOT_CONNECTED'/,'must not claim live rende
 assert.match(routes,/publicationEnabled:false/);
 assert.match(client,/Page & component registry/);
 assert.match(client,/loadRegistry/);
-assert.match(client,/Production renderers connected/);
+assert.match(client,/Production routes bound/);
 assert.match(routes,/STUDIO_PREVIEW_ONLY/);
-assert.match(html,/v=16\.10\.44/);
+assert.match(html,/v=16\.10\.45/);
 console.log('16.10.43 Layout Studio registry contract: PASS');

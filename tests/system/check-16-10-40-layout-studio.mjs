@@ -1,7 +1,7 @@
 import fs from 'node:fs';import assert from 'node:assert/strict';
 const read=p=>fs.readFileSync(p,'utf8');
 const html=read('public/layout-studio.html'),js=read('public/assets/js/frontend/admin/layout-studio.js'),css=read('public/assets/css/layout-studio.css'),schema=JSON.parse(read('schemas/layout-composition-v1.schema.json')),pkg=JSON.parse(read('package.json'));
-assert.equal(read('VERSION').trim(),'16.10.44');assert.equal(pkg.version,'16.10.44');
+assert.equal(read('VERSION').trim(),'16.10.45');assert.equal(pkg.version,'16.10.45');
 assert.match(html,/layout-studio\.js/);assert.match(html,/noindex,nofollow/);assert.match(js,/api\/platform\/admin\/super-admin\/session/);assert.match(js,/ACCESS BLOCKED/);assert.match(js,/Publish \(blocked\)/);assert.match(js,/localStorage/);assert.match(js,/function validate/);assert.match(js,/No arbitrary HTML, JavaScript or CSS editor/);assert.match(js,/Market Factory remains the single publisher/);assert.match(css,/@media\(max-width:680px\)/);assert.equal(schema.properties.schemaVersion.const,1);assert.equal(schema.properties.components.items.properties.type.enum.includes('hero'),true);assert.equal(schema.properties.pages.items.properties.kind.enum.includes('mission-experience'),true);assert.equal(schema.properties.marketVariants.items.properties.marketCode.pattern,'^[A-Z]{2}(-[A-Z0-9]{2,8})?$');
 for(const file of ['public/layout-studio.html','public/assets/css/layout-studio.css','public/assets/js/frontend/admin/layout-studio.js','schemas/layout-composition-v1.schema.json'])assert.ok(fs.existsSync(file),`missing ${file}`);
 console.log('16.10.40 governed Layout Studio contract: PASS');
