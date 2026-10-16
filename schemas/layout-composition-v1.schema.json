@@ -219,6 +219,22 @@
         "reason": {
           "type": "string",
           "maxLength": 500
+        },
+        "requiredControls": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "identity",
+              "consent",
+              "authorization",
+              "eligibility",
+              "evidence",
+              "recovery"
+            ]
+          },
+          "minItems": 6,
+          "maxItems": 6
         }
       }
     }

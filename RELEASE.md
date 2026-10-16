@@ -1,6 +1,20 @@
-# Mission Execution 16.10.41 — Consolidated Layout Studio Roadmap Candidate
+# Mission Execution 16.10.42 — Layout Studio Draft Integrity Hardening
 
 Status: protected candidate
+
+
+## 16.10.42 — Draft integrity hardening
+
+- Restricts the current draft API to the single canonical global experience ID so read, save, and version-history endpoints share one consistent identity boundary.
+- Aligns server-side limits with the canonical composition schema: maximum 30 pages and 100 components, bounded market variants, strict token references, page-kind validation, unique IDs, and typed property values.
+- Makes the draft mutation, immutable version snapshot, draft event, and administrative audit insert one D1 batch. Conditional follow-up writes are gated on a successful optimistic insert/update; stale revisions produce a conflict instead of overwriting newer state.
+- Extends the canonical composition schema with the required governance-control contract.
+- Advances package, lockfile, generated runtime identity, and asset cache-busting to 16.10.42.
+- Does not enable publication or change active production. No new migration is introduced.
+
+## 16.10.42 verification boundary
+
+The source-level contract and local regression checks are run where the environment permits. This workspace has Node 22.16.0, while the project requires Node 24.18.0. Therefore the production build/CSS compilation cannot be certified here unless the required runtime is available. No live D1, browser, deployed-production, or rollback test is claimed unless explicitly recorded as passing in RELEASE-REPORT.txt.
 
 ## 16.10.39 — Layout inventory & ownership map
 

@@ -415,6 +415,14 @@ Version: 16.10.39 — Layout Inventory & Ownership Map. Product release workflow
 The session-gated draft workspace is available at `/layout-studio.html`. Draft state is browser-local and publication is intentionally disabled pending canonical release lifecycle integration. See `docs/16.10.40-layout-studio.md`.
 
 
+## 16.10.42 — Layout Studio Draft Integrity Hardening
+
+- Server-side draft validation now aligns with the canonical composition schema and limits.
+- Draft identity is constrained consistently to `onmission.global.experience`.
+- Draft mutation, immutable version snapshot, draft event, and administrative audit are issued in one conditional D1 batch.
+- Publication remains blocked; active production is not changed by draft saves.
+- Release status: source candidate; Node.js 24.18.0 build and live runtime/browser certification are still required. Preserve deployed baseline 16.10.40 until certification passes.
+
 ## 16.10.41 — Layout Studio Server-Owned Drafts
 
 Adds server-owned Layout Studio draft persistence, optimistic revision checks, immutable draft revision snapshots with SHA-256 digests, and audited draft events. Draft saving does not publish or change active production. Publication remains blocked until the canonical release lifecycle adapter and verification evidence are integrated.

@@ -1,39 +1,44 @@
-ON MISSION 16.10.41 — Layout Studio Server-Owned Drafts
-Release type: Source candidate; additive migration; publication remains blocked.
-Baseline: 16.10.40 (user-reported deployed)
+ON MISSION 16.10.42 — Layout Studio Draft Integrity Hardening
+Release type: Source candidate; additive application changes; no new database migration; publication remains blocked.
+Baseline: 16.10.40 (user-reported deployed); source input 16.10.41.
 
 WHAT CHANGED
-- Added migration 0160 with server-owned Layout Studio draft storage, revision snapshots, and draft audit events.
-- Added guarded API routes for reading the canonical global experience draft, reading revision history, and saving drafts with optimistic revision checks.
-- Draft writes require Super Admin step-up authorization. Reads require platform administrator authorization.
-- Added server-side schema/size/component/property/responsive/governance validation; arbitrary HTML/JS/CSS remains disallowed.
-- Stored draft revision snapshots include SHA-256 digests. Database triggers reject update/delete of historical draft snapshots.
-- Connected Layout Studio to load the server draft, save a new revision, and view server-side version history. Browser local storage remains a fallback if the server draft authority is unavailable; it is not treated as server truth.
-- Save responses explicitly state activeProductionChanged=false. Publishing remains disabled because canonical release adapter, immutable active release, post-publish verification and rollback are not integrated.
-- No existing migration was changed; migration 0160 is additive. No production data was accessed or changed by this build.
+- Restricted Layout Studio draft read/save/version history to the canonical global experience ID.
+- Aligned server validation with composition schema limits (30 pages, 100 components), unique page/component IDs, allowed page kinds, bounded typed component properties, token references, market/page/token references, and required governance controls.
+- Changed save persistence to a single D1 batch containing optimistic draft mutation, immutable version insertion, draft event insertion, and administrative audit insertion. History/event/audit writes are conditional on the preceding mutation succeeding.
+- Added the canonical requiredControls field to the JSON schema.
+- Added a 16.10.42 source contract test and updated package/version/cache-busting identities.
+- Kept publication disabled; active production is not changed by saving drafts.
 
-VERIFICATION
-PASS: full configured npm run check:release (including the cumulative release chain).
-PASS: new 16.10.41 Layout Studio server-draft contract.
-PASS: migration contract (160 ordered migrations; high-water 0160).
-PASS: schema gate (252 tables, 461 indexes).
-PASS: release engineering and production-cleanliness/version convergence.
-PASS: JavaScript syntax checks for new route and updated Studio module.
-PASS: migration 0160 SQLite smoke test created the three expected tables and trigger definitions.
-PASS: ZIP integrity check.
-BLOCKED: npm run build stopped at the required Node environment gate. Runtime available here is Node 22.16.0; project requires Node 24.18.0. CSS compilation did not run.
-NOT TESTED: live browser certification, visual/accessibility checks, end-to-end step-up/save conflict behavior against deployed D1, and actual production deployment.
+COMPLETED IN THIS CANDIDATE
+- Source-level identity boundary and validation consistency hardening.
+- Atomic D1 batch write protocol for draft + version + event + audit, with optimistic revision conflict handling.
+- Version identity convergence for VERSION, package.json, package-lock.json, runtime release identity, and Layout Studio asset URLs.
+- Added regression contract for the above.
 
-KNOWN LIMITATIONS / NEXT WORK
-1. Draft persistence is server-owned and versioned, but the active production layout is not switched by this release.
-2. Page/component registry and canonical renderers still need verified integration so approved layouts affect real pages.
-3. Publication must be wired into the existing release lifecycle and Market Factory boundaries; do not add a parallel publisher.
-4. Need runtime tests for unauthorized access, revision conflicts, event/audit integrity, version immutability, accessibility, responsive behavior and rollback.
-5. Build and CSS compilation must run in Node 24.18.0 before production certification.
+VERIFICATION STATUS
+- PASS: complete configured `npm run check:release` cumulative regression suite, including the new 16.10.42 draft-integrity contract and retained architecture, security, mission, market and historical compatibility gates.
+- PASS: focused 16.10.42, 16.10.41 and 16.10.40 Layout Studio contract checks.
+- PASS: release integrity, production cleanliness/version convergence, source syntax checks, migration contract (160 ordered migrations) and schema gate (252 tables, 461 indexes).
+- PASS: generated runtime release identity and cache-busting convergence for 16.10.42.
+- No live D1 or deployed browser tests were run.
+- Production build: BLOCKED unless run with Node.js 24.18.0. This workspace runtime is Node.js 22.16.0 and the build environment gate requires 24.18.0; CSS compilation must not be reported as passed.
+- Live browser, accessibility, authorization against deployed services, real D1 concurrent-write/failure-injection tests, publication, rollback, and production deployment: NOT TESTED.
+- This source package does not claim deployment or production certification.
 
-CANONICAL JOURNEY
-OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE
-This release does not claim new mission journey stages as certified. Layout Studio cannot bypass mission truth, assignment, authorization, evidence, recovery or lifecycle authorities.
+REMAINING ROADMAP
+1. Run npm ci, npm run build, and the full cumulative release suite under Node.js 24.18.0; resolve every failure rather than bypassing the gate.
+2. Add/execute D1 integration tests for simultaneous revisions, initial-create races, rollback on failed history/audit writes, immutable snapshots, and audit durability.
+3. Connect the real page/component registries and canonical renderers; prove preview versus actual-route parity.
+4. Integrate immutable publication through the existing release lifecycle and Market Factory; retain explicit authorization, dependency snapshots, verification, and rollback.
+5. Certify browser/responsive/accessibility/authorization flows and a controlled end-to-end reference mission.
+6. Preserve 16.10.40 as the production baseline until all required gates pass.
 
 RELEASE DECISION
-Source candidate is prepared for review/deployment pipeline testing, not certified as a complete production-ready Layout Studio. Preserve 16.10.40 as the production baseline until Node 24.18.0 build and browser/runtime gates pass.
+16.10.42 is a source candidate, not approved for production deployment. Draft saves remain separate from active production.
+
+CANONICAL MISSION JOURNEY
+OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE
+
+PERMANENT PRIORITIES
+Security → Truth → Liveness → Stability → Experience → Scale

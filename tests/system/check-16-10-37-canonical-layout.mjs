@@ -7,6 +7,6 @@ assert.match(css,/\.objective-plan-step:not\(:has\(> \.objective-step-number\)\)
 assert.match(css,/\.objective-plan-step:has\(> \.objective-step-number\)/,'numbered plan steps retain their own layout');
 assert.match(css,/\.objective-gap-panel \.objective-plan-steps\s*\{\s*grid-template-columns:\s*minmax\(0,\s*1fr\)/,'gap panel owns a full-width single-column list');
 assert.match(css,/@media \(max-width: 560px\)/,'mobile layout rules are present');
-assert.match(html,/canonical-layout\.css\?v=16\.10\.41/,'canonical layout stylesheet is loaded after existing admin styles');
+assert.match(html,/canonical-layout\.css\?v=16\.10\.42/,'canonical layout stylesheet is loaded after existing admin styles');
 assert.match(pkg.scripts['check:release'],/check-16-10-37-canonical-layout\.mjs/,'layout regression is part of release gate');
 console.log('16.10.37 canonical layout contract: PASS');
