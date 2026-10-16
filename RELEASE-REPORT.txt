@@ -1,44 +1,38 @@
-ON MISSION 16.10.46 — Layout Studio Experience Impact + Release Contract Repair
+ON MISSION 16.10.48 — Production Route Adapter Foundation
 Release type: Source candidate; production certification pending.
-Base: ON MISSION 16.10.45 source candidate; user-confirmed deployed baseline remains 16.10.44 unless newer deployment evidence is supplied.
+Base: ON MISSION 16.10.47 source candidate.
 
 PURPOSE
-Advance the final Layout Studio roadmap with a governed, read-only experience-impact analysis surface, and improve cumulative historical release-contract behavior without enabling publication or creating a second release authority.
+Connect real application entry points to an explicit Layout Studio route-adapter boundary while preserving each canonical renderer and all existing business/mission behavior. The adapter marks the route context and refuses to apply drafts or any unverified release.
 
 WHAT CHANGED
-- Added POST /api/platform/admin/layout-studio/impact, protected by the existing platform administrator boundary.
-- The endpoint validates the submitted composition against the same server-side draft contract before calculating a source-derived impact estimate.
-- It maps supported page kinds to the curated experience inventory and returns affected experiences, page/component/market counts, explicit blockers, and publicationAllowed:false.
-- The endpoint reports productionRouteBindings:0 and a clear warning that impact estimates do not prove live route parity or authorize publication.
-- Bumped canonical version, package/lockfile, asset cache keys, renderer contract, release manifest source version and tests to 16.10.46.
-- Made historical Layout Studio assertions cumulative/version-aware and moved selected historical release assertions to their immutable docs records.
-- Preserved the canonical mission journey, existing Mission Core authorities, Market Factory publication boundary, draft governance and publication-disabled state.
-- No database migration was added; no production data or infrastructure was changed.
+- Added a shared production-route adapter module with allowlisted route resolution for public homepage, registration, organization setup, mission workspace, executor workspace, and tenant workspace.
+- Wired the adapter into the actual homepage, registration, and canonical application workspace entry points. It only adds route metadata and observes navigation; it does not replace page content, form handlers, authentication, tenant context, mission state, or action behavior.
+- Added a strict activation boundary requiring an immutable VERIFIED release from the canonical release lifecycle and an explicitly certified route renderer. The current adapter intentionally refuses activation because route renderer parity is not yet certified.
+- Updated Layout Studio route certification to distinguish installed adapters from certified production renderers.
+- Updated Super Admin Layout Studio route panel metrics to show installed route adapters rather than mislabel them as connected renderers.
+- Added 16.10.48 focused contract test and updated release identity/cache references.
+- No database migration, production data change, deployment, or publication activation was performed.
 
 VERIFICATION
-- PASS: 16.10.46 Layout Studio impact-analysis contract.
-- PASS: canonical Studio renderer contract (15 approved preview component types, escaped scalar values, unsupported type and missing-reference behavior).
-- PASS: Layout Studio 16.10.44, 16.10.42 and 16.10.41 focused compatibility contracts.
-- PASS: release integrity check.
-- PASS: production cleanliness and version convergence check.
-- PASS: JavaScript syntax check for Layout Studio routes.
-- BLOCKED: full cumulative npm run check:release. It progresses through the new Studio gates and many prior platform gates, then fails at a historical assertion in tests/system/check-16-7-0-market-factory-safety.mjs which requires the current RELEASE.md to contain the historical line "Base: ON Mission 16.7.0". The current release has its own base and should not falsely claim to be based on 16.7.0. This historical documentation assertion must be migrated to an immutable release record; it has not been bypassed.
-- BLOCKED: npm run build. The environment runs Node.js 22.16.0 while the project requires Node.js 24.18.0. CSS compilation did not run.
-- NOT TESTED: live D1 integration for the new impact endpoint, live browser behavior, actual production-route parity, accessibility, publication, activation, rollback or production deployment.
+- PASS: 16.10.48 production route adapter contract.
+- PASS: complete configured `npm run check:release` under the available Node.js 22.16.0 runtime.
+- PASS: JavaScript syntax checks for all modified route entry points and adapter module.
+- BLOCKED: production build/CSS compilation because installed Node.js is 22.16.0 while project requires 24.18.0; the build environment gate stopped before CSS compilation.
+- NOT TESTED: live browser route parity, accessibility, tenant-isolation runtime, active-release retrieval, publication, activation, rollback, or production deployment.
 
-KNOWN BOUNDARY
-The impact endpoint is an advisory source-derived estimate. The registry still reports zero certified production-route bindings. It does not activate layouts, mutate active production, publish market packages, or replace the canonical release lifecycle.
+IMPORTANT BOUNDARY
+This release installs adapters at actual route entry points; it does NOT claim that production layouts are now dynamically controlled by Layout Studio. Drafts remain draft-only. The current renderer binding count remains zero and publication remains disabled until canonical route-specific renderer integration and evidence are complete.
 
-REMAINING ROADMAP
-1. Repair remaining historical release-contract tests so they validate immutable historical records rather than requiring the current RELEASE.md to pretend to be an older release.
-2. Run npm ci, npm run build and the full npm run check:release under Node.js 24.18.0 with supported npm 10.x/11.x.
-3. Connect actual production routes and canonical renderers one route at a time; prove preview/route parity with browser tests and feature flags.
-4. Integrate immutable publication through the existing release lifecycle and Market Factory, with step-up authorization, dependency snapshot, verification evidence, activation and rollback.
-5. Certify responsive behavior, accessibility, D1 concurrency/failure recovery, authorization, audit persistence and the complete Germany logistics mission journey.
-6. Deploy only after all release gates pass; preserve the last confirmed production baseline until then.
+NEXT
+1. Run npm ci, npm run build, and npm run check:release under Node.js 24.18.0.
+2. Browser-test the homepage, registration, organization setup, mission workspace, and executor workspace.
+3. Implement route-specific render adapters that consume only immutable, verified artifacts from the existing release lifecycle; prove parity on each route.
+4. Integrate publication through the canonical release lifecycle and Market Factory with step-up authorization, dependency snapshots, audit, verification and rollback.
+5. Certify the full Germany logistics mission journey before production rollout.
 
 RELEASE DECISION
-16.10.46 is a source candidate, not approved for production deployment. No deployment was performed. Keep publication disabled.
+16.10.48 is a source candidate, not approved for production deployment. Preserve the last confirmed production baseline.
 
 PERMANENT PRIORITIES
 Security -> Truth -> Liveness -> Stability -> Experience -> Scale.

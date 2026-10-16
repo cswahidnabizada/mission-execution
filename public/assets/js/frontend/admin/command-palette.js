@@ -2,9 +2,9 @@
  * Searches workspace capabilities locally and real platform resources through the read-only
  * Control Plane resource-search projection. Resource actions open their canonical workspace.
  */
-import {ADMIN_WORKSPACES} from './workspace-registry.js?v=16.10.47';
-import {api,esc} from './admin-runtime.js?v=16.10.47';
-import {openResourceExplorer} from './resource-explorer.js?v=16.10.47';
+import {ADMIN_WORKSPACES} from './workspace-registry.js?v=16.10.48';
+import {api,esc} from './admin-runtime.js?v=16.10.48';
+import {openResourceExplorer} from './resource-explorer.js?v=16.10.48';
 
 export function installCommandPalette({show,state}){
  if(document.querySelector('#adminCommandPalette'))return;

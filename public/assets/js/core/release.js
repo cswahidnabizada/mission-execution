@@ -1,3 +1,3 @@
 // GENERATED FILE — do not edit. Source: /VERSION
-export const RELEASE_VERSION="16.10.47";
+export const RELEASE_VERSION="16.10.48";
 export const RELEASE_CHANNEL='production';

@@ -1,3 +1,7 @@
+## 16.10.48 — Production Route Adapter Foundation
+
+Route adapters are wired into the public homepage, registration, and canonical application workspace entry points. They preserve existing route rendering and deny composition activation until a canonical immutable verified release and route renderer certification exist. Publication remains disabled.
+
 ## 16.10.47 — Production Route Certification Bridge
 
 This protected source candidate adds an administrator-protected Production Routes workspace and read-only route-certification endpoint. It shows the actual mapped routes, source files, renderer-binding state, parity status and required certification evidence. Source inventory is not treated as a renderer binding; production publication remains disabled until adapters, browser parity, accessibility, authorization, and recovery evidence are verified. The canonical preview renderer and server-owned drafts remain in place. Production build under Node.js 24.18.0 and live browser/runtime certification remain pending. Product releases continue through the existing **CREATE NEXT VERSION** lifecycle; Layout Studio does not replace the canonical publisher.

@@ -1,8 +1,20 @@
-# Mission Execution 16.10.47 — Production Route Certification Bridge
+# Mission Execution 16.10.48 — Production Route Adapter Foundation
+
+Release type: source candidate; production certification pending.
+
+- Added route adapters to the public homepage, registration, and canonical app workspace entry points.
+- Route adapters preserve existing canonical rendering and do not apply drafts.
+- Activation remains blocked until immutable canonical verified releases and route renderer parity are certified.
+- Full configured `npm run check:release`: PASS under Node.js 22.16.0.
+- Production build/CSS compilation: BLOCKED by the enforced Node.js 24.18.0 environment gate; not certified in the current Node.js 22.16.0 environment.
+- No deployment or database migration performed.
+
+--- Historical release evidence follows ---
+
 
 Status: protected candidate; production build and live runtime certification pending.
 
-Base: ON MISSION 16.10.46
+Base: ON MISSION 16.10.47
 
 ## Objective
 

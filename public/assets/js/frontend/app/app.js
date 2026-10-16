@@ -1,3 +1,4 @@
+import {attachLayoutStudioRouteAdapter,resolveLayoutStudioRoute} from '../admin/layout-studio-production-adapter.js?v=16.10.48';
 import {mountShell,syncNav} from '../shell/app-shell.js';
 import {canonicalizeAppHash} from '../navigation/registry.js';
 import {api,esc} from '../core/api.js';
@@ -12,8 +13,10 @@ import {renderContextWorkspace} from '../work/context-workspace.js';
 import {initActivationModule} from '../../core/activation-module.js';
 
 const root=document.getElementById('root');
+attachLayoutStudioRouteAdapter({root, getRouteId:()=>resolveLayoutStudioRoute({pathname:location.pathname,hash:location.hash,role:document.documentElement.dataset.onmRole||''})||'tenant-workspace'});
 
 async function render({root,s}){
+  document.documentElement.dataset.onmRole=String(s.session?.role||'');
   const canonical=canonicalizeAppHash(location.hash);
   if(canonical!==location.hash){history.replaceState({onMission:true,canonical},'',canonical);}
   const key=canonical.replace('#','').split('?')[0]||'home';

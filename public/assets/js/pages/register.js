@@ -1,6 +1,8 @@
+import {attachLayoutStudioRouteAdapter} from '../frontend/admin/layout-studio-production-adapter.js?v=16.10.48';
 import { api, jsonOptions } from "../core/api.js";
 import { saveAccessSession } from "../core/session.js";
 const $=s=>document.querySelector(s);
+attachLayoutStudioRouteAdapter({root:document.body,routeId:'registration'});
 const uxLabPreview=new URLSearchParams(location.search).get('uxlab')==='preview';
 if(uxLabPreview){const banner=document.createElement('div');banner.style.cssText='position:sticky;top:0;z-index:50;padding:12px 16px;background:#fff7ed;border-bottom:1px solid #f59e0b;color:#7c2d12;font:800 12px system-ui;letter-spacing:.04em;text-align:center';banner.textContent='SUPER ADMIN USER EXPERIENCE LAB · REGISTRATION PREVIEW · SUBMISSION DISABLED';document.body.prepend(banner);}
 
