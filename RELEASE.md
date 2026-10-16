@@ -1,3 +1,96 @@
+# Mission Execution 16.10.47 — Production Route Certification Bridge
+
+Status: protected candidate; production build and live runtime certification pending.
+
+Base: ON MISSION 16.10.46
+
+## Objective
+
+Advance Layout Studio toward real production-renderer integration by making production route certification visible, explicit, and release-gated. This release does not claim routes are bound merely because they are inventoried.
+
+## Implemented
+
+- Added an administrator-protected, read-only route certification endpoint.
+- Added a dedicated **Production routes** tab in Layout Studio for the Super Admin.
+- Exposed each mapped route, source page, renderer-binding status, parity status, and required evidence.
+- Explicitly reports zero certified routes and keeps publication disabled until actual adapters and live evidence exist.
+- Updated active asset cache versions, package/lockfile/release identity, and cumulative compatibility checks.
+- Added a focused route-certification contract test and included it in `check:release`.
+- Updated legacy asset-version assertions to compare against the current release rather than pinning a historical cache key.
+
+## Not completed
+
+- Production renderer adapters remain unconnected. The Studio preview renderer is not yet the live route renderer.
+- Browser parity, accessibility, authorization, tenant isolation, D1 runtime, release publication, activation, and rollback have not been certified.
+- No production deployment or live database mutation was performed.
+
+## Verification
+
+- Route certification contract: PASS.
+- Layout Studio 16.10.46 impact contract: PASS.
+- Canonical preview renderer contract: PASS.
+- Layout Studio workspace/draft compatibility contracts: PASS.
+- JavaScript syntax checks: PASS.
+- Cumulative `npm run check:release`: PASS on Node.js 22.16.0; the full configured source-contract and regression sequence completed. This does not substitute for production build or live runtime certification.
+- Production build/CSS: BLOCKED in this environment: Node.js 22.16.0 is installed; `.nvmrc` requires Node.js 24.18.0. Dependencies are not installed in this environment, so `npm ci`/CSS compilation was not run.
+
+## Release decision
+
+Do not deploy 16.10.47 yet. Preserve the last confirmed production baseline until the Node 24.18.0 production build, live route/browser certification, and release lifecycle integration pass.
+
+## Permanent priorities
+
+Security → Truth → Liveness → Stability → Experience → Scale.
+
+## Canonical mission journey
+
+OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+
+## Truthful Runtime Certification
+
+Runtime certification must distinguish expected authorization denials from unexpected application failures, must not treat conflict/locked/upstream failures as accepted execution, and must prove EFFECT whenever required runtime certification is enabled. Tests that cannot prove required runtime behavior must remain blocked rather than silently pass.
+
+## Preserved platform journey and historical acceptance vocabulary
+
+The broader platform remains governed by the existing canonical mission journey and historical acceptance contracts; these references preserve cumulative release compatibility and do not claim this Layout Studio release re-implemented or re-certified those capabilities.
+
+- Define
+- Observe & assess
+- Prepare
+- Continue safely
+- Verify & recover
+- Close honestly
+- Germany + Logistics
+- Full runtime adversarial matrix
+- one canonical authority per domain
+- Journey completion matrix
+- EXECUTE → EFFECT → VERIFY
+- Wave G — controlled failure, replay and reconciliation completion
+- Wave H — final platform rescan
+- Control Plane
+- Operations Plane
+- Mission Workspace
+- ONE Mission Truth
+- ONE Lifecycle Writer
+- ONE Action Registry
+- ONE Authorization Authority
+- ONE Policy Authority
+- ONE Organization Authority
+- ONE Capability Authority
+- ONE Subscription Authority
+- ONE Billing State Authority
+- Security, Privacy, Truth, Liveness, Compliance, Stability, Experience and Scale
+- No optimistic mutation
+- No mutation replay
+- last known context
+- No mutation authority
+- database migration status unchanged
+
+No competing workflow authority is introduced. The existing canonical mission core and release authorities remain authoritative for their domains.
+
+
+--- Historical 16.10.46 release evidence retained for compatibility ---
+
 # Mission Execution 16.10.46 — Layout Studio Experience Impact + Release Contract Repair
 
 Status: protected candidate; production build and runtime certification pending.
@@ -215,3 +308,9 @@ The following labels preserve cumulative historical test lineage; their presence
 ### Real End-to-End Mission — historical platform roadmap
 
 The platform roadmap retains the REAL END-TO-END MISSION certification objective, the 15.1+ mission certification line, and subsequent 16.x, 17.x, 18.x, 19.x and 20.x expansion horizons as roadmap references only. They are not represented as completed by this Layout Studio release.
+
+Historical release baseline retained for compatibility: Base: ON Mission 16.7.0.
+
+Historical migration lineage preserved: `0154_governed_intake_pipeline.sql`. No new database migration is introduced by 16.10.47.
+
+# ON Mission 16.10.0 — Regional Infrastructure Governance (historical release contract)

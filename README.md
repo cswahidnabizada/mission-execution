@@ -1,6 +1,10 @@
+## 16.10.47 — Production Route Certification Bridge
+
+This protected source candidate adds an administrator-protected Production Routes workspace and read-only route-certification endpoint. It shows the actual mapped routes, source files, renderer-binding state, parity status and required certification evidence. Source inventory is not treated as a renderer binding; production publication remains disabled until adapters, browser parity, accessibility, authorization, and recovery evidence are verified. The canonical preview renderer and server-owned drafts remain in place. Production build under Node.js 24.18.0 and live browser/runtime certification remain pending. Product releases continue through the existing **CREATE NEXT VERSION** lifecycle; Layout Studio does not replace the canonical publisher.
+
 ## 16.10.46 — Layout Studio Experience Impact + Release Contract Repair
 
-This source candidate adds an administrator-protected, read-only impact-analysis endpoint for Layout Studio drafts. It identifies potentially affected known experiences from page composition, reports unresolved production renderer bindings explicitly, and never authorizes publication. The release also repairs cumulative historical acceptance checks to use immutable release records where available, while preserving the complete release quality gates. Build certification under Node.js 24.18.0, production route parity, browser verification, publication and rollback remain pending. Product releases continue through the existing **CREATE NEXT VERSION** lifecycle; Layout Studio does not replace the canonical publisher.
+This source candidate adds an administrator-protected, read-only impact-analysis endpoint for Layout Studio drafts. It identifies potentially affected known experiences from page composition, reports unresolved production renderer bindings explicitly, and never authorizes publication. Build certification under Node.js 24.18.0, production route parity, browser verification, publication and rollback remain pending. Product releases continue through the existing **CREATE NEXT VERSION** lifecycle; Layout Studio does not replace the canonical publisher.
 
 This is a source candidate, not proof of deployment.
 
