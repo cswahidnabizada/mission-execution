@@ -9,8 +9,8 @@ assert.ok(versionParts[0]>16 || (versionParts[0]===16 && (versionParts[1]>10 || 
 assert.equal(pkg.version,version);
 assert.match(route,/step\.step_code==='confirm_market_scope'/,'scope validation remains an explicit allowlisted adapter');
 assert.match(route,/step\.step_code==='inspect_market_package'/,'package inspection remains an explicit allowlisted adapter');
-assert.match(route,/WHERE step_id=\? AND status IN \('APPROVED','READY','PROPOSED'\)/,'step claim must atomically reject blocked or stale steps');
-assert.doesNotMatch(route,/WHERE step_id=\? AND status IN \('APPROVED','READY','PROPOSED','BLOCKED'\)/,'blocked steps cannot be claimed during a race');
+assert.match(route,/WHERE step_id=\? AND \(status IN \('APPROVED','READY','PROPOSED'\) OR \(status='BLOCKED' AND step_code IN \('confirm_market_scope','inspect_market_package','inspect_market_readiness'\)\)\)/,'only explicitly read-only market inspection steps may be retried from BLOCKED');
+assert.doesNotMatch(route,/status IN \('APPROVED','READY','PROPOSED','BLOCKED'\)\)/,'blocked arbitrary or mutating steps cannot be claimed');
 assert.match(route,/expectedRevision/,'objective run uses optimistic revision checks');
 assert.match(route,/lease_token/,'objective execution uses a lease');
 assert.match(command,/id="objectiveCommandForm"/,'objective-first experience remains in active Command Center');

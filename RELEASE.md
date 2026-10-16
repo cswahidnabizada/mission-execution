@@ -1,3 +1,30 @@
+# Mission Execution 16.10.36 — Live Objective Journey & Germany Launch Blocker Resolution
+
+Status: protected candidate
+
+## Release intent
+
+Make the objective workspace report and resolve real remaining blockers using canonical records. No new dashboard, competing authority, or schema migration is introduced.
+
+## Changes
+
+- Expose the exact missing keys from the six required product configuration domains in the canonical Command Center projection and persist them into objective plans.
+- Confirm market scope against the active canonical country catalog and active sector policy; syntactically valid codes alone are not proof.
+- A missing market package is now reported as `NOT_FOUND` and blocked with the existing Market Factory as the next action, never as verified.
+- Add a read-only market readiness inspection that reads the latest immutable version, readiness/dependency snapshots, import report, and persisted launch-task evidence. Empty task evidence and unproven readiness cannot permit activation.
+- Recover interrupted read-only objective adapters after lease expiry and allow only those explicit read-only adapter steps to be retried from `BLOCKED`. Unknown or mutating actions remain behind canonical authorization.
+- Align active asset cache keys and release identity to 16.10.36. No database migration was added.
+
+## Verification boundary
+
+The release contract checks are source-level regression tests. Live Worker, production build, actual Germany data, legal review, and end-to-end customer mission certification must still be run in the deployed environment. Do not claim Germany is launch-ready until canonical evidence proves it.
+
+Canonical mission journey: `OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE`.
+
+Priority: Security → Truth → Liveness → Stability → Experience → Scale.
+
+---
+
 # Mission Execution 16.10.35 — Truthful Runtime Certification & Germany Launch Readiness
 
 ## 16.10.35 — Truthful runtime certification & Germany launch readiness

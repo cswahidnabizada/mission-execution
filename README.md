@@ -1,3 +1,11 @@
+## 16.10.36 — Live Objective Journey & Germany Launch Blocker Resolution
+
+The current source candidate makes objective plans name the exact missing canonical product configuration keys, validates market scope against the active country catalog and sector policy, and reports missing market packages as blocked rather than verified. It adds a read-only inspection of immutable market version readiness, dependency snapshots, import report, and persisted launch-task evidence; empty task evidence cannot prove launch readiness. Interrupted read-only objective steps can be resumed safely, while unknown and mutating actions remain behind existing authorization gates. No new schema migration or competing workflow authority was added.
+
+This is a source candidate, not proof of a live deployment. Build and certify with Node 24.18.0, then verify actual Germany data and the full customer mission journey against the deployed Worker.
+
+---
+
 ## 16.10.35 — Truthful Runtime Certification & Germany Launch Readiness
 
 The current release hardens runtime certification so expected authorization denials are correctly interpreted, execution failure statuses cannot be reported as success, and required production certification fails closed unless a disposable mission is explicitly created and its governed effect is verified. This release preserves canonical authorities, the one-screen Objective Workspace, the existing schema, and all 159 migrations. Live runtime certification and Germany launch blockers remain pending until tested with authorized production credentials.

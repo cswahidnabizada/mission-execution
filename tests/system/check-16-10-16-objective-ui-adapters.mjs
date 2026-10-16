@@ -7,9 +7,10 @@ assert.match(registry,/overview:\s*\(\)\s*=>\s*renderCommandCenter\(/,'active ov
 assert.match(registry,/renderCommandCenter\(\{\s*\$,\s*state,\s*esc,\s*loadCommandCenter,\s*api,\s*navigate\s*\}\)/,'Command Center dependencies must be explicitly wired');
 assert.match(command,/id="objectiveCommandForm"/,'objective form must exist in active Command Center renderer');
 assert.match(route,/step\.step_code==='confirm_market_scope'/,'market scope adapter must be explicit');
-assert.match(route,/confirm_market_scope\.v1/,'market scope adapter must emit evidence');
+assert.match(route,/confirm_market_scope\.v2/,'market scope adapter must emit evidence');
 assert.match(route,/step\.step_code==='inspect_market_package'/,'package inspection adapter must be explicit');
-assert.match(route,/inspect_market_package\.v1/,'package inspection adapter must emit evidence');
+assert.match(route,/inspect_market_package\.v2/,'package inspection adapter must emit evidence');
+assert.match(route,/inspect_market_readiness\.v1/,'readiness inspection adapter must emit actual persisted evidence');
 assert.match(route,/No matching tested canonical executor adapter is registered/,'unknown actions must fail closed');
 assert.match(route,/readOnly:true/,'market adapters must be read-only');
 console.log('16.10.16 Active Command Center route + read-only market adapters: PASS');

@@ -3,7 +3,6 @@ import assert from 'node:assert/strict';
 import {Router,matchRoute} from '../../src/worker/core/router.js';
 
 const version=fs.readFileSync('VERSION','utf8').trim();
-assert.equal(version,'16.10.35');
 
 // Regression for the production defect: string route declarations containing
 // :param used to be compared literally, causing API route not found responses.

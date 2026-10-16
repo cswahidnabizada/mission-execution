@@ -1,16 +1,16 @@
 /* ON Mission 10.82.0 — bounded Control Plane composition facade.
  * This file owns routing composition only. Domain logic belongs to bounded surface modules.
  */
-import { setAdminShow, navigate } from './oversight/context.js?v=16.10.35';
-import { refreshAdminData } from './oversight/data.js?v=16.10.35';
-import { buildSurface } from './surfaces/build.js?v=16.10.35';
-import { operateSurface } from './surfaces/monitor.js?v=16.10.35';
-import { controlSurface } from './surfaces/control.js?v=16.10.35';
-import { governanceSurface } from './surfaces/governance.js?v=16.10.35';
-import { operationsSurface } from './surfaces/operations.js?v=16.10.35';
-import { renderControlCenter } from './oversight/product-factory.js?v=16.10.35';
-import { renderCommandCenter } from './command-center.js?v=16.10.35';
-import { $, api, esc, state, ensureStepUp, loadCommandCenter } from './admin-runtime.js?v=16.10.35';
+import { setAdminShow, navigate } from './oversight/context.js?v=16.10.36';
+import { refreshAdminData } from './oversight/data.js?v=16.10.36';
+import { buildSurface } from './surfaces/build.js?v=16.10.36';
+import { operateSurface } from './surfaces/monitor.js?v=16.10.36';
+import { controlSurface } from './surfaces/control.js?v=16.10.36';
+import { governanceSurface } from './surfaces/governance.js?v=16.10.36';
+import { operationsSurface } from './surfaces/operations.js?v=16.10.36';
+import { renderControlCenter } from './oversight/product-factory.js?v=16.10.36';
+import { renderCommandCenter } from './command-center.js?v=16.10.36';
+import { $, api, esc, state, ensureStepUp, loadCommandCenter } from './admin-runtime.js?v=16.10.36';
 
 export { setAdminShow, refreshAdminData };
 

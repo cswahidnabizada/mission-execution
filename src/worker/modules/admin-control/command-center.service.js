@@ -48,7 +48,9 @@ export async function getPlatformCommandCenter(env,filters={}){
   const launchMap=countBy(launchRows);
   const activeConfigs=configs.status==='ready'?(configs.data?.results||[]).filter(x=>Number(x.active)===1):[];
   const required=['capabilities:catalog','roles:action_policy','rendering:product_experience','guidance:user_journey','policy:default','mission_rules:intake'];
-  const readyConfigs=required.filter(k=>activeConfigs.some(x=>`${x.domain_code}:${x.config_key}`===k)).length;
+  const activeConfigKeys=new Set(activeConfigs.map(x=>`${x.domain_code}:${x.config_key}`));
+  const missingConfigurations=required.filter(k=>!activeConfigKeys.has(k));
+  const readyConfigs=required.length-missingConfigurations.length;
   const readiness=Math.round((readyConfigs/required.length)*100);
   const activeCountries=await canonicalFirst(env,`SELECT COUNT(DISTINCT country_code) count FROM country_product_launches WHERE status='active' AND active=1`,[],'admin.command_center.active_countries');
   const activeCountrySectors=await canonicalFirst(env,`SELECT COUNT(*) count FROM country_product_launches WHERE status='active' AND active=1`,[],'admin.command_center.active_country_sectors');
@@ -150,7 +152,8 @@ export async function getPlatformCommandCenter(env,filters={}){
     queue,
     preview:{productStatus,activeCountries:Number(activeCountries?.count||0),activeProducts:activeProductCount,readinessPercent:readiness,pendingReviews,latestVerification,buildSummary,monitorSummary},
     scope:{countryCode:country||null,sectorCode:sector||null},
-    unavailableAuthorities:unavailable.map(x=>({authority:x.authority,code:x.code||'AUTHORITY_UNAVAILABLE'}))
+    unavailableAuthorities:unavailable.map(x=>({authority:x.authority,code:x.code||'AUTHORITY_UNAVAILABLE'})),
+    configurationGaps:{required:required.length,active:readyConfigs,missing:missingConfigurations}
   };
 
   let productLens={countryCode:country||null,sectorCode:sector||null,availability:'PLATFORM',launchStatus:'—',productState:'SELECT A SCOPE',organizationCount:0,compliantOrganizations:0,result:'Select a country and sector.',readiness:null};
@@ -168,6 +171,6 @@ export async function getPlatformCommandCenter(env,filters={}){
   }
 
   return {
-    surface,now:{productStatus,productReason:productStatus==='OPERATING'?'At least one country product is active.':'No active country product is currently exposed.',activeCountries:Number(activeCountries?.count||0),activeCountrySectors:activeProductCount,openWork,pendingReviews,draftLaunches,readinessPercent:readiness,activeConfigurations:activeConfigs.length,activePlans:plans.status==='ready'?Number(plans.data?.count||0):null,verificationSummary:verificationData,latestVerification,action:action.reason,actionKey:action.key,actionLabel:action.label,reason:action.reason,result:action.result},next:{action:next.label,actionKey:next.key,actionLabel:next.label,reason:next.reason,result:'Move one governed product state forward without bypassing canonical authorities.'},future:{result:'Expand product country by country and sector by sector with governed configuration and evidence.',reason:'Every expansion should create a measurable product result rather than another administrative screen.',expansion:'Platform capability → policy → country → sector → eligible users → operational result'},productVerification:verificationData,productLens,recentOperations,metadata:{workspaceGovernance:RELEASE_VERSION,activePolicyCount:Number(activePolicies?.data?.count||0),countryCount:Number(countries?.data?.count||0),openAdministrativeOperations:operationInFlight},authorities:{controlPlane:controlPlane.status,build:build.status,monitor:monitor.status,verification:verification.status}
+    surface,now:{productStatus,productReason:productStatus==='OPERATING'?'At least one country product is active.':'No active country product is currently exposed.',activeCountries:Number(activeCountries?.count||0),activeCountrySectors:activeProductCount,openWork,pendingReviews,draftLaunches,readinessPercent:readiness,activeConfigurations:activeConfigs.length,missingConfigurations,activePlans:plans.status==='ready'?Number(plans.data?.count||0):null,verificationSummary:verificationData,latestVerification,action:action.reason,actionKey:action.key,actionLabel:action.label,reason:action.reason,result:action.result},next:{action:next.label,actionKey:next.key,actionLabel:next.label,reason:next.reason,result:'Move one governed product state forward without bypassing canonical authorities.'},future:{result:'Expand product country by country and sector by sector with governed configuration and evidence.',reason:'Every expansion should create a measurable product result rather than another administrative screen.',expansion:'Platform capability → policy → country → sector → eligible users → operational result'},productVerification:verificationData,productLens,recentOperations,metadata:{workspaceGovernance:RELEASE_VERSION,activePolicyCount:Number(activePolicies?.data?.count||0),countryCount:Number(countries?.data?.count||0),openAdministrativeOperations:operationInFlight},authorities:{controlPlane:controlPlane.status,build:build.status,monitor:monitor.status,verification:verification.status}
   };
 }

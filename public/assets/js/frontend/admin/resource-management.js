@@ -2,9 +2,9 @@
  * Single Super Admin resource operating surface over canonical authorities.
  * The UI orchestrates; domain services own truth, lifecycle, authorization and mutation.
  */
-import {$,api,esc,state,ensureStepUp} from './admin-runtime.js?v=16.10.35';
-import {openResourceExplorer,runResourceAction,restoreResource} from './resource-explorer.js?v=16.10.35';
-import {renderDataStudio} from './data-studio.js?v=16.10.35';
+import {$,api,esc,state,ensureStepUp} from './admin-runtime.js?v=16.10.36';
+import {openResourceExplorer,runResourceAction,restoreResource} from './resource-explorer.js?v=16.10.36';
+import {renderDataStudio} from './data-studio.js?v=16.10.36';
 
 const LABELS={country_blueprint:'Country Blueprint',product_country:'Product Country',sector:'Sector',language:'Language',currency:'Currency',region:'Region',classification:'Classification',policy:'Policy',residency:'Residency Rule',retention:'Retention Rule',consent:'Consent',role:'Role',capability:'Capability',responsibility:'Responsibility Rule',storage:'Storage',provider:'Provider',component:'Component',page:'Page',feature:'Feature',configuration:'Configuration',guidance:'Guidance',plan:'Billing Plan',mission_plan:'Mission Plan',eligibility:'Eligibility Rule',pricing:'Pricing'};
 const OBJECT_FIELDS=new Set(['payload','configuration','rule']);

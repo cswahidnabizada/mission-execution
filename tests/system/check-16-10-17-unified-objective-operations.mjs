@@ -12,8 +12,8 @@ assert.match(command,/api\('\/api\/platform\/admin\/objectives\/approvals'\)/,'i
 assert.match(command,/api\('\/api\/platform\/admin\/objectives'\)/,'history must read persisted objective authority');
 assert.match(command,/objective-runs\/\$\{encodeURIComponent\(run\.run_id\)\}\/execute/,'objective UI must invoke the governed runner');
 assert.match(command,/expectedRevision:Number\(run\.revision\)/,'execution must include optimistic revision');
-assert.match(routes,/status IN \('APPROVED','READY','PROPOSED'\) AND \(requires_approval=0 OR status='APPROVED'\) ORDER BY ordinal LIMIT 1/,'runner must not select BLOCKED steps');
-assert.doesNotMatch(routes,/status IN \('APPROVED','READY','PROPOSED','BLOCKED'\) ORDER BY ordinal LIMIT 1/,'blocked steps must never be executable');
+assert.match(routes,/status='BLOCKED' AND step_code IN \('confirm_market_scope','inspect_market_package','inspect_market_readiness'\)/,'only explicit read-only inspection steps may be retried from BLOCKED');
+assert.doesNotMatch(routes,/status IN \('APPROVED','READY','PROPOSED','BLOCKED'\) ORDER BY ordinal LIMIT 1/,'arbitrary blocked steps must never be executable');
 assert.match(readiness,/No active residency policies configured; jurisdiction readiness is not proven/,'empty residency policy must not be reported ready');
 assert.match(readiness,/No active consent policies; configure and verify the required policy before launch/,'empty consent policy must not be reported ready');
 assert.match(readiness,/active.length>0&&approved.length===active.length/,'zero active providers must not be reported ready');
