@@ -1,3 +1,40 @@
+# Mission Execution 16.10.33 — Truthful Runtime Certification & Adversarial Proof
+
+Status: protected candidate; **not deployed or production-certified by this package build**. This release hardens the existing runtime certification harness so it cannot report idempotency or tenant-isolation proof without actually performing the relevant checks. No competing workflow authority is introduced.
+
+## Objective completion contract retained
+- Define
+- Observe & assess
+- Prepare
+- Continue safely
+- Verify & recover
+- Close honestly
+
+## Existing issues found and fixed
+- **False-positive idempotency evidence:** the previous runtime harness marked duplicate mission creation as validated without sending a duplicate request. For explicitly enabled controlled mission creation, the harness now replays the exact same request with the same idempotency key and requires the same canonical mission ID. When using a pre-existing mission, the create-idempotency check is explicitly `skipped`, not passed.
+- **Unproven tenant separation:** the previous adversarial check assumed the attack account belonged to another tenant. It now compares the canonical tenant IDs exposed by both login responses and fails closed if either ID is missing or both accounts resolve to the same tenant, before attempting cross-tenant reads.
+- **Incomplete phase evidence:** certification now rejects unnamed phases, phases without explicit statuses, and duplicate phase entries. Missing or ambiguous evidence cannot be silently represented as a successful canonical journey.
+- **Release identity convergence:** VERSION, package metadata, lockfile root metadata, manifest, generated runtime identity, and cache-busting references are synchronized at 16.10.33.
+- Added a new runtime-certification truth contract to `npm run check:release`; retained the prior router, organization-count, objective workspace, Market Factory, and historical regression gates.
+
+## Verification boundary
+- Focused runtime-certification truth contract, route/count regression, objective workspace compatibility, and unified objective completion checks pass locally.
+- **PASS:** full configured `npm run check:release` completed successfully after preserving historical release-ledger checks. It includes the new 16.10.33 certification contract, cumulative objective/Market Factory tests, security, data-integrity, architecture convergence, migration/schema, and release-engineering gates.
+- Production build and required live certification depend on Node 24.18.0 and configured production credentials. This packaging environment uses Node 22.16.0 and has no installed dependency tree; production CSS compilation, Cloudflare deployment, live API behavior, and customer mission E2E are **not claimed as passed**.
+- No production data, customer records, tenant resources, active market release, or database schema were changed. Migration high-water mark remains 0159.
+
+## Required next steps
+1. Apply the reviewed source diff to the canonical GitHub checkout without replacing workflows, secrets/configuration, or unrelated work.
+2. Under Node 24.18.0 run `npm ci`, `npm run build`, `npm run check:release`, and `npm run check:production-certification`.
+3. Use a dedicated controlled certification mission and two explicitly verified different tenants to exercise the runtime harness. Only enable mission creation or real execution with deliberate authorization and the existing safety flags.
+4. Verify the repaired parameterized objective routes and organization counts against the deployed Worker and canonical D1 records.
+5. Resolve the six reported inactive product configuration authorities through their existing governed owners; complete genuine Germany legal/content review and the controlled customer mission before launch.
+
+Permanent priority: Security → Truth → Liveness → Stability → Experience → Scale.
+Canonical journey: `OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE`.
+
+---
+
 # Mission Execution 16.10.32 — Adversarial End-to-End Certification & Existing Defect Repair
 
 Status: protected source candidate; **not deployed or production-certified by this package build**. This increment fixes a shared router defect that made Express-style `:parameter` string routes compare literally and return `API route not found`. It also reconciles organization counts against the same canonical active-organization definition and makes failed count reads unavailable rather than presenting a misleading zero.

@@ -8,7 +8,7 @@ const runtime=read('src/worker/extensions/execution-engine/execution-runtime-har
 const assignment=read('src/worker/extensions/mission-assignment/mission-assignment.capability.js');
 const execution=read('src/worker/extensions/agentic-layer/agent-governed-execution.service.js');
 const release=read('RELEASE.md');
-assert(['14.7.0','14.8.0','14.9.0','15.0.0','15.0.1','15.1.0','15.2.0','15.3.0','15.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10','16.10.11','16.10.12','16.10.13','16.10.14','16.10.15','16.10.16','16.10.17','16.10.18','16.10.19','16.10.20','16.10.21','16.10.22','16.10.23','16.10.24','16.10.25','16.10.26','16.10.27','16.10.28','16.10.29','16.10.30','16.10.31','16.10.32'].includes(version));
+assert(['14.7.0','14.8.0','14.9.0','15.0.0','15.0.1','15.1.0','15.2.0','15.3.0','15.5.0','16.0.0','16.2.0','16.4.0','16.5.0','16.6.0','16.7.0','16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10','16.10.11','16.10.12','16.10.13','16.10.14','16.10.15','16.10.16','16.10.17','16.10.18','16.10.19','16.10.20','16.10.21','16.10.22','16.10.23','16.10.24','16.10.25','16.10.26','16.10.27','16.10.28','16.10.29','16.10.30','16.10.31','16.10.32','16.10.33'].includes(version));
 assert(runtime.includes("EXECUTION_RUNTIME_HARDENING_VERSION='14.8.0'"));
 assert(runtime.includes("EXECUTION_SUBJECT_CONTRACT_VERSION='14.8.0'"));
 assert(runtime.includes("['human','executor','driver','device','robot','vehicle','drone','provider']"));

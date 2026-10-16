@@ -6,7 +6,7 @@ const manifest=JSON.parse(fs.readFileSync('RELEASE-MANIFEST.json','utf8'));
 const ui=fs.readFileSync('public/assets/js/frontend/admin/command-center.js','utf8');
 const css=fs.readFileSync('public/assets/css/admin-control.css','utf8');
 const release=fs.readFileSync('RELEASE.md','utf8');
-assert.equal(version,'16.10.32');
+assert.equal(version,'16.10.33');
 assert.equal(pkg.version,version);
 assert.equal(manifest.version,version);
 assert.match(ui,/OBJECTIVE WORKSPACE · ONE PLACE TO FINISH THE WORK/);
@@ -19,7 +19,7 @@ assert.match(ui,/objective-runs\/\$\{encodeURIComponent\(run\.run_id\)\}\/contin
 assert.match(ui,/objective-runs\/\$\{encodeURIComponent\(run\.run_id\)\}\/input/,'guided input uses existing canonical endpoint');
 assert.match(ui,/objective-runs\/\$\{encodeURIComponent\(run\.run_id\)\}\/outcome\/reconcile/,'outcome remains canonical');
 assert.match(ui,/objectiveConfirmCompletion/,'completion remains evidence-gated');
-assert.match(css,/16\.10\.32 — focused objective workspace/);
+assert.match(css,/16\.10\.33 — focused objective workspace/);
 assert.match(release,/No competing workflow authority is introduced/);
 assert.match(release,/Security → Truth → Liveness → Stability → Experience → Scale/);
 assert.match(release,/OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE/);

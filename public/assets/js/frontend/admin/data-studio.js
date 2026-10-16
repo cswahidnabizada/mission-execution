@@ -1,5 +1,5 @@
 /* ON Mission 10.72.0 — Data Studio: canonical inspect / edit / preview / govern workspace */
-import {$,api,esc,state,ensureStepUp} from './admin-runtime.js?v=16.10.32';
+import {$,api,esc,state,ensureStepUp} from './admin-runtime.js?v=16.10.33';
 
 const LABELS={country_blueprint:'Country Blueprint',product_country:'Product Country',sector:'Sector',language:'Language',currency:'Currency',region:'Region',classification:'Classification',policy:'Policy',residency:'Residency Rule',retention:'Retention Rule',consent:'Consent',role:'Role',capability:'Capability',responsibility:'Responsibility Rule',storage:'Storage',provider:'Provider',component:'Component',page:'Page',feature:'Feature',configuration:'Configuration',guidance:'Guidance',plan:'Plan',eligibility:'Eligibility Rule',pricing:'Pricing'};
 const OBJECT_FIELDS=new Set(['payload','configuration','rule']);

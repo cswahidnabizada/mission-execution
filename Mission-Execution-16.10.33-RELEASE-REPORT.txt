@@ -1,0 +1,48 @@
+ON MISSION — RELEASE 16.10.33
+Truthful Runtime Certification & Adversarial Proof
+
+STATUS
+Protected source candidate. NOT deployed by this package build. The full configured `npm run check:release` passed. Production build and live runtime/customer certification remain unverified because this environment is Node 22.16.0, the repository requires Node 24.18.0, dependencies are not installed, and no production credentials/runtime were supplied to this build.
+
+ISSUES FOUND AND FIXED
+1. False-positive mission-create idempotency certification. The runtime harness previously emitted a passing idempotency step without issuing a duplicate request. For explicitly enabled controlled mission creation, it now replays the exact same create request using the same idempotency key and requires the same canonical mission ID. For a pre-existing controlled mission, the create-idempotency test is recorded as skipped rather than passed.
+2. Unproven tenant isolation. The runtime harness now verifies the primary and attack login responses expose distinct, positive canonical tenant IDs before attempting cross-tenant reads. Missing tenant IDs or accounts in the same tenant fail closed.
+3. Ambiguous canonical journey evidence. The runtime harness rejects unnamed phases, missing explicit statuses, and duplicate phase entries. It no longer silently collapses ambiguous phase evidence into a passing projection.
+4. Historical release allowlists. Cumulative compatibility allowlists now recognize release 16.10.33 without deleting the historic checks or release ledger.
+5. Release identity convergence. VERSION, package.json, package-lock.json root metadata, RELEASE-MANIFEST.json, generated runtime identities, and cache-busting references are synchronized to 16.10.33.
+
+VERIFICATION
+PASS — full configured `npm run check:release` (entire command exited successfully).
+PASS — new 16.10.33 runtime certification truth contract.
+PASS — 16.10.32 adversarial route + canonical organization-count regression.
+PASS — 16.10.31 single-screen objective workspace compatibility.
+PASS — 16.10.27 unified objective completion compatibility.
+PASS — runtime certification harness JavaScript syntax.
+PASS — release integrity, current runtime integrity (21 checks), current architecture convergence, canonical convergence audit (64 canonical actions / 64 routes / 0 missing action routes / 1 lifecycle writer), 159 ordered migrations through 0159, schema contract (249 tables / 459 indexes), and cumulative historical gates.
+
+BLOCKED / NOT CLAIMED
+- `scripts/check-build-environment.mjs` failed as expected: runtime Node v22.16.0 does not match required `.node-version` 24.18.0 / engines Node 24.x. CSS build and production bundle were not run.
+- Live Cloudflare deployment and live API probes were not performed by this package build.
+- Runtime harness was not run against production; no mission was created and no mission execution was triggered by this packaging process.
+- Six product-configuration authorities from the supplied 16.10.30/16.10.31 snapshot still require inspection against the live canonical registry.
+- Germany logistics legal/content review, release authorization/publication/activation, and a real customer mission with independently verified outcome remain unproven.
+
+ARCHITECTURE / SAFETY
+- No new workflow authority.
+- No database migration or schema change; migration high-water mark remains 0159.
+- No production data, customer records, tenant resources, billing state, or active market release changed.
+- Canonical authorities remain responsible for mission truth, authorization, execution, effect, verification, recovery, and outcome.
+- The ZIP is a source candidate and does not include `.github/workflows`; apply a reviewed diff to the canonical repository. Do not replace the repository wholesale.
+
+NEXT REQUIRED STEPS
+1. Merge the reviewed source diff into the canonical GitHub checkout while preserving `.github/workflows`, secrets/configuration, and unrelated changes.
+2. Under Node 24.18.0 run `npm ci`, `npm run build`, `npm run check:release`, and `npm run check:production-certification`.
+3. Run the runtime harness only against a controlled environment with a dedicated mission and two explicitly verified, different tenants. Use mission-creation or execution flags only with deliberate authorization.
+4. Confirm objective route reads and organization counts against the deployed Worker and canonical D1.
+5. Resolve inactive configuration entries through their existing governed owners; finish Germany legal/content reviews, immutable release gates, and the controlled customer mission.
+
+PERMANENT PRIORITY
+Security → Truth → Liveness → Stability → Experience → Scale
+
+CANONICAL MISSION JOURNEY
+OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE

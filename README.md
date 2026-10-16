@@ -1,6 +1,6 @@
-# ON MISSION — Release 16.10.32
+# ON MISSION — Release 16.10.33
 
-The current source candidate is **16.10.32 — Adversarial End-to-End Certification & Existing Defect Repair**. It repairs the shared router’s colon-parameter matching so persisted objective runs and other parameterized worker routes resolve correctly, reconciles organization counts against canonical active organizations, and makes objectives without a persisted run explicit. The single-screen Objective Workspace remains the primary user path, with existing canonical authorities retaining all mutation, authorization, publication, and execution responsibilities. Immutable release changes continue through **CREATE NEXT VERSION**.
+The current source candidate is **16.10.33 — Truthful Runtime Certification & Adversarial Proof**. The existing runtime certification harness now actually replays the same controlled mission-create request to verify idempotency, proves the owner and attack accounts belong to different canonical tenants before cross-tenant probes, and rejects missing or duplicate canonical phase evidence. The shared router repair, canonical organization counts, and single-screen Objective Workspace from 16.10.31–16.10.32 remain intact. Immutable release changes continue through **CREATE NEXT VERSION**.
 
 This is a source candidate, not proof of production deployment or live Germany launch. Use Node 24.18.0 for the supported build and required runtime/recovery certification. The six inactive configuration entries and Germany legal/content/customer journey gates are not fabricated or bypassed.
 
