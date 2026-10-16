@@ -1,5 +1,5 @@
 /* Mission Execution — governed Product Identity Studio. */
-import {api,esc,$,ensureStepUp} from './admin-runtime.js?v=16.10.34';
+import {api,esc,$,ensureStepUp} from './admin-runtime.js?v=16.10.35';
 export async function renderProductIdentity(){
  const box=$('#view-product-identity');if(!box)return;
  box.innerHTML='<div class="workspace-loading">Loading canonical product identity…</div>';

@@ -4,5 +4,5 @@
  * Historical continuity markers retained for the 10.96 gate: Human Platform Control Center,
  * CREATE DRAFT, CONTROL BOUNDARY, Governed experience lifecycle.
  */
-import {renderHumanPlatformStudio} from './human-platform-studio.js?v=16.10.34';
+import {renderHumanPlatformStudio} from './human-platform-studio.js?v=16.10.35';
 export async function renderHumanPlatform(){return renderHumanPlatformStudio();}

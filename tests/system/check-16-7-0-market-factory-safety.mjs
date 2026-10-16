@@ -5,7 +5,7 @@ const route=fs.readFileSync('src/worker/modules/admin-control/admin-build-data.r
 const ui=fs.readFileSync('public/assets/js/frontend/admin/market-factory.js','utf8');
 const release=fs.readFileSync('RELEASE.md','utf8');
 const manifest=JSON.parse(fs.readFileSync('RELEASE-MANIFEST.json','utf8'));
-assert.ok(['16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10','16.10.11','16.10.12','16.10.13','16.10.14','16.10.15','16.10.16','16.10.17','16.10.18','16.10.19','16.10.20','16.10.21','16.10.22','16.10.23','16.10.24','16.10.25','16.10.26','16.10.27','16.10.28','16.10.29','16.10.30','16.10.31','16.10.32','16.10.33','16.10.34'].includes(fs.readFileSync('VERSION','utf8').trim()));
+assert.ok(['16.8.0','16.9.0','16.9.1','16.9.2','16.9.3','16.9.4','16.10.0','16.10.1','16.10.10','16.10.11','16.10.12','16.10.13','16.10.14','16.10.15','16.10.16','16.10.17','16.10.18','16.10.19','16.10.20','16.10.21','16.10.22','16.10.23','16.10.24','16.10.25','16.10.26','16.10.27','16.10.28','16.10.29','16.10.30','16.10.31','16.10.32','16.10.33','16.10.34','16.10.35'].includes(fs.readFileSync('VERSION','utf8').trim()));
 assert.match(service,/MARKET_FACTORY_VERSION=RELEASE_VERSION/);
 assert.match(service,/MARKET_\$\{String\(domain\)\.toUpperCase\(\)\}_CANONICAL_DRIFT/);
 assert.match(service,/Canonical reconciliation blocked by/);

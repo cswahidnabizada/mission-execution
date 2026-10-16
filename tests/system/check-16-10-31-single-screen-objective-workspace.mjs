@@ -6,7 +6,7 @@ const manifest=JSON.parse(fs.readFileSync('RELEASE-MANIFEST.json','utf8'));
 const ui=fs.readFileSync('public/assets/js/frontend/admin/command-center.js','utf8');
 const css=fs.readFileSync('public/assets/css/admin-control.css','utf8');
 const release=fs.readFileSync('RELEASE.md','utf8');
-assert.equal(version,'16.10.34');
+assert.equal(version,'16.10.35');
 assert.equal(pkg.version,version);
 assert.equal(manifest.version,version);
 assert.match(ui,/OBJECTIVE WORKSPACE · ONE PLACE TO FINISH THE WORK/);

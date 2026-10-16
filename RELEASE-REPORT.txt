@@ -1,14 +1,32 @@
-MISSION EXECUTION 16.10.34 — CLEAN PRODUCTION SOURCE
+MISSION EXECUTION 16.10.35 — TRUTHFUL RUNTIME CERTIFICATION & GERMANY LAUNCH READINESS
 
-Status: protected source candidate. Not deployed or production-certified by this package build.
+Status: protected source candidate. Static release suite passed; production build and live certification are not verified.
 
-Scope: clean production source packaging, canonical Node 24.18.0 pin convergence, local-artifact hygiene, and a regression gate that prevents stale release reports and obsolete build generators from re-entering the release archive.
+Changes
+- Fixed expected HTTP 403/404 authorization-denial probes so a JSON application failure envelope does not incorrectly fail the test harness itself. The probe still requires an expected denial HTTP status; HTTP 200 cannot pass the denial test.
+- Execution certification now accepts only HTTP 200. HTTP 409, 423, 502, and other non-200 responses fail the execution step instead of being described as accepted execution.
+- Required production certification fails closed unless the run explicitly creates a disposable mission, executes through the governed path, enables the certification fence, and requires a verified EFFECT result. A read-only or partially skipped run cannot be labelled production-certified.
+- Added `tests/system/check-16-10-35-runtime-certification-truth.mjs` to the release gate.
+- Updated canonical release identity to 16.10.35 and preserved existing canonical authorities and the one-screen Objective Workspace.
 
-Preserved: application source, public assets, Cloudflare Worker configuration, package manifest and lockfile, database schema and all 159 ordered migrations, operational scripts, test suites, permanent release documentation, and canonical VERSION. No production data was modified and no database migration was added.
+Validation actually performed
+- PASS: `npm run check:release` completed successfully under Node 22.16.0. This is the configured static/contract suite, not a live production exercise.
+- PASS: runtime harness JavaScript syntax check and focused 16.10.35 certification contract test.
+- PASS: schema and migration gates: 159 ordered migrations, high-water mark 0159, 249 tables, 459 indexes; no migration added.
+- BLOCKED: `npm run build` stopped at the intentional environment gate because this environment runs Node 22.16.0 and the repository requires Node 24.18.0. CSS compilation did not run.
+- NOT RUN: live Cloudflare Worker/API probes, real tenant-isolation execution, controlled mission execution, recovery under a real interruption, or Germany customer pilot.
 
-Removed from the root package: stale per-release report copies for 16.10.30–16.10.33 obsolete build15.py (a generator for a historical 15.0.0 candidate), stale BUILD-STATUS.md, and superseded NODE24-UPGRADE.md. Current release report remains in this file and RELEASE.md remains the canonical detailed release record.
+Safety boundary
+- No production data was changed by this source candidate. No market was activated.
+- Required runtime certification is intentionally strict: use an authorized disposable test tenant, separate tenant credentials, and explicit permission for controlled mission execution. Do not use a customer mission as a certification fixture.
+- The prior source ZIP omitted `.github/workflows`; this package does not fabricate replacement workflows. Merge reviewed changes into the canonical GitHub checkout and preserve existing workflows, secrets, environment configuration, and unrelated work. Do not replace the repository wholesale.
 
-Verification boundary: this environment uses Node 22.16.0, while the project requires Node 24.18.0. Source-level release checks may be run here; production build, CSS compilation, deployment, and live runtime certification remain unverified until run under the supported toolchain.
+Remaining blockers
+1. Run `npm ci`, `npm run build`, and `npm run check:release` under Node 24.18.0.
+2. Run `npm run check:production-certification` against the deployed Worker with all required authorization and disposable-fixture environment variables.
+3. Verify and remediate the six previously reported inactive product configuration authorities through their canonical owners.
+4. Complete genuine Germany legal/content reviews and prove consent, residency, identity, billing, provider and tenant-isolation gates.
+5. Complete a controlled customer mission and verify EXECUTE → EFFECT → VERIFY → OUTCOME with persisted evidence.
 
 Permanent priority: Security → Truth → Liveness → Stability → Experience → Scale.
 Canonical journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.

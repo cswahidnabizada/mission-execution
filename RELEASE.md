@@ -1,4 +1,28 @@
-# Mission Execution 16.10.34 — Clean Production Source & Toolchain Convergence
+# Mission Execution 16.10.35 — Truthful Runtime Certification & Germany Launch Readiness
+
+## 16.10.35 — Truthful runtime certification & Germany launch readiness
+
+**Status:** protected source candidate. Static release checks can be executed here; production runtime and live Germany customer certification require the configured Node 24.18.0 environment and controlled credentials.
+
+### Defects corrected
+- Authorization-denial probes now distinguish expected HTTP 403/404 responses with application error envelopes from unexpected request failures.
+- The runtime certification harness no longer accepts 409/423/502 execution outcomes as successful execution. Only HTTP 200 is recorded as accepted execution; other statuses fail the step.
+- Required production certification now fails closed unless an explicitly disposable mission is created, governed execution is enabled, and EFFECT verification is required. A read-only run with skipped execution cannot report production certification as passed.
+- The adversarial tenant-isolation test requires distinct tenant IDs and exercises mission and certification access under the separate account.
+- Release version identity is converged on 16.10.35 without changing schema or adding migrations.
+
+### Verification boundary
+- Static and deterministic release contracts are run with `npm run check:release`.
+- `npm run build`, live API checks, deployed Worker verification, six configuration-authority remediation, legal/content review, and a controlled Germany customer mission remain pending until executed against the production toolchain and authorized environment.
+- No production data was changed by this source candidate. No market was activated.
+
+### Permanent priorities and journey
+Security → Truth → Liveness → Stability → Experience → Scale.
+
+OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+
+---
+
 
 Status: protected source candidate; not deployed or production-certified by this package build.
 

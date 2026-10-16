@@ -27,15 +27,19 @@ if(!existingMissionId&&!createMission){
   if(requireRuntime){console.error(`RUNTIME CERTIFICATION: BLOCKED — ${message}`);process.exit(2)}
   console.log(`RUNTIME CERTIFICATION: NOT RUN — ${message}`);process.exit(0);
 }
+if(requireRuntime&&(!createMission||existingMissionId||!execute||!certificationEnabled||!requireEffect)){
+  const message='Required certification needs an explicitly created disposable mission (ON_MISSION_CERT_CREATE_MISSION=1, no ON_MISSION_CERT_MISSION_ID), governed execution (ON_MISSION_CERT_EXECUTE=1), ON_MISSION_CERTIFICATION_ENABLED=1, and ON_MISSION_CERT_REQUIRE_EFFECT=1. A read-only or partially skipped run is not production certification.';
+  console.error(`RUNTIME CERTIFICATION: BLOCKED — ${message}`);process.exit(2);
+}
 const cookieJar=new Map();
 function storeCookies(headers){const values=headers.getSetCookie?.()||[];for(const v of values){const pair=v.split(';',1)[0];const [k,val]=pair.split('=');if(k)cookieJar.set(k,val)}}
 function cookieHeader(){return [...cookieJar.entries()].map(([k,v])=>`${k}=${v}`).join('; ')}
-async function request(path,{method='GET',body,expected=[200]}={}){
+async function request(path,{method='GET',body,expected=[200],allowApplicationFailure=false}={}){
   const headers={'Accept':'application/json','Content-Type':'application/json'};const cookie=cookieHeader();if(cookie)headers.Cookie=cookie;
   const response=await fetch(`${base}${path}`,{method,headers,body:body===undefined?undefined:JSON.stringify(body),redirect:'manual'});storeCookies(response.headers);
   const data=await response.json().catch(()=>({}));
   if(!expected.includes(response.status))throw new Error(`${method} ${path} returned ${response.status}: ${data.error||data.code||'unknown error'}`);
-  if(data.success===false)throw new Error(`${method} ${path} returned application failure: ${data.error||data.code||'unknown error'}`);
+  if(data.success===false&&!allowApplicationFailure)throw new Error(`${method} ${path} returned application failure: ${data.error||data.code||'unknown error'}`);
   return data;
 }
 const evidence=[];
@@ -75,7 +79,7 @@ try{
     if(!actionCode)throw new Error('Execution requires a canonical recommended action from the accepted plan');
     const certificationRun=await step('controlled certification run lease',async()=>{const result=await request(`/api/mission-execution/missions/${missionId}/certification/run-token`,{method:'POST',body:{purpose:'14.4 controlled Germany logistics runtime certification',ttlSeconds:900},expected:[200]});return {runId:result.run?.jti||null,token:result.run?.token||null,expiresAt:result.run?.expiresAt||null,version:result.version||null};});
     const context=await step('fresh agent context fence',async()=>await request(`/api/agent/context/missions/${missionId}`,{expected:[200]}));
-    await step('governed mission execution',async()=>{const key=crypto.randomUUID();const result=await request(`/api/mission-execution/missions/${missionId}`,{method:'POST',body:{planId,actionCode,contextHash:context.contextHash,idempotencyKey:key,goal:'Controlled Germany logistics runtime certification',certificationMode:true,certificationRunToken:certificationRun.token},expected:[200,409,423,502]});return {status:result.success!==false?'returned':'failed',httpAccepted:true,coordinator:result.coordinator||null,execution:result.execution||null,recovery:result.recovery||null,idempotencyKey:key}});
+    await step('governed mission execution',async()=>{const key=crypto.randomUUID();const result=await request(`/api/mission-execution/missions/${missionId}`,{method:'POST',body:{planId,actionCode,contextHash:context.contextHash,idempotencyKey:key,goal:'Controlled Germany logistics runtime certification',certificationMode:true,certificationRunToken:certificationRun.token},expected:[200]});return {status:'accepted',httpAccepted:true,coordinator:result.coordinator||null,execution:result.execution||null,recovery:result.recovery||null,idempotencyKey:key}});
   }else{
     evidence.push({name:'governed mission execution',status:'skipped',reason:'Set ON_MISSION_CERT_EXECUTE=1 only when a controlled real execution is authorized.'});
   }
@@ -86,10 +90,10 @@ try{
   const required=['OBSERVE','UNDERSTAND','PLAN','EVALUATE','ACCEPT','AUTHORIZE','PREPARE','ASSIGN','EXECUTE','EFFECT','VERIFY','RECOVER','OUTCOME','LEARN','NEXT_SITUATION'];
   const missing=required.filter(p=>!byPhase.has(p));
   if(missing.length)throw new Error(`Certification projection missing canonical phases: ${missing.join(',')}`);
-  if(requireEffect&&!['COMPLETED','PASS'].includes(String(byPhase.get('EFFECT')||'')))throw new Error(`Canonical EFFECT is not proven: ${byPhase.get('EFFECT')||'UNKNOWN'}`);
+  if((requireEffect||requireRuntime)&&!['COMPLETED','PASS'].includes(String(byPhase.get('EFFECT')||'')))throw new Error(`Canonical EFFECT is not proven: ${byPhase.get('EFFECT')||'UNKNOWN'}`);
   evidence.push({name:'canonical journey completeness',status:'passed',evidence:{phases:Object.fromEntries(byPhase),missing}});
   if(missionId&&attackEmail&&attackPassword){
-    await step('adversarial tenant isolation',async()=>{const primary=[...cookieJar.entries()];const tenantOf=x=>Number(x?.tenantId||x?.session?.tenantId||x?.user?.tenantId||x?.companyId||x?.session?.companyId||0)||null;const primaryTenant=tenantOf(primaryIdentity);cookieJar.clear();let attack=null;try{attack=await request('/api/auth/login',{method:'POST',body:{email:attackEmail,password:attackPassword},expected:[200]});const attackTenant=tenantOf(attack);if(!primaryTenant||!attackTenant)throw new Error('Tenant isolation cannot be certified: login responses did not expose both canonical tenant IDs');if(primaryTenant===attackTenant)throw new Error('Tenant isolation cannot be certified: attack account resolves to the same tenant as the mission owner');await request(`/api/missions/${missionId}`,{expected:[403,404]});await request(`/api/mission-execution/missions/${missionId}/certification`,{expected:[403,404]});return {missionId,primaryTenant,attackTenant,blocked:true,attackRole:attack?.role||attack?.session?.role||null}}finally{cookieJar.clear();for(const [k,v] of primary)cookieJar.set(k,v);await request('/api/auth/login',{method:'POST',body:{email,password},expected:[200]});}});
+    await step('adversarial tenant isolation',async()=>{const primary=[...cookieJar.entries()];const tenantOf=x=>Number(x?.tenantId||x?.session?.tenantId||x?.user?.tenantId||x?.companyId||x?.session?.companyId||0)||null;const primaryTenant=tenantOf(primaryIdentity);cookieJar.clear();let attack=null;try{attack=await request('/api/auth/login',{method:'POST',body:{email:attackEmail,password:attackPassword},expected:[200]});const attackTenant=tenantOf(attack);if(!primaryTenant||!attackTenant)throw new Error('Tenant isolation cannot be certified: login responses did not expose both canonical tenant IDs');if(primaryTenant===attackTenant)throw new Error('Tenant isolation cannot be certified: attack account resolves to the same tenant as the mission owner');const missionDenied=await request(`/api/missions/${missionId}`,{expected:[403,404],allowApplicationFailure:true});const certificationDenied=await request(`/api/mission-execution/missions/${missionId}/certification`,{expected:[403,404],allowApplicationFailure:true});return {missionId,primaryTenant,attackTenant,blocked:true,missionApplicationSuccess:missionDenied.success===true,certificationApplicationSuccess:certificationDenied.success===true,attackRole:attack?.role||attack?.session?.role||null}}finally{cookieJar.clear();for(const [k,v] of primary)cookieJar.set(k,v);await request('/api/auth/login',{method:'POST',body:{email,password},expected:[200]});}});
   }
   console.log(JSON.stringify({status:'passed',version:releaseVersion,country,sector,missionId,planId,actionCode,evidence},null,2));
 }catch(error){console.error(JSON.stringify({status:'failed',version:releaseVersion,country,sector,missionId,planId,actionCode,error:String(error?.message||error),evidence},null,2));process.exit(1)}

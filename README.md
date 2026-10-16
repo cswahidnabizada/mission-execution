@@ -1,3 +1,7 @@
+## 16.10.35 — Truthful Runtime Certification & Germany Launch Readiness
+
+The current release hardens runtime certification so expected authorization denials are correctly interpreted, execution failure statuses cannot be reported as success, and required production certification fails closed unless a disposable mission is explicitly created and its governed effect is verified. This release preserves canonical authorities, the one-screen Objective Workspace, the existing schema, and all 159 migrations. Live runtime certification and Germany launch blockers remain pending until tested with authorized production credentials.
+
 # ON MISSION — Release 16.10.34
 
 The current source candidate is **16.10.34 — Clean Production Source & Toolchain Convergence**. This release removes stale root-level release report copies and the obsolete historical `build15.py` generator, preserves all application source, assets, deployment configuration, tests, and canonical documentation, aligns `.nvmrc` and `.node-version` on Node 24.18.0, and adds a production-cleanliness gate. The truthful runtime certification, adversarial route/count checks, single-screen Objective Workspace, Market Factory, Test Lab, and Release Integrity gates remain in the cumulative suite. Immutable release changes continue through **CREATE NEXT VERSION**.
