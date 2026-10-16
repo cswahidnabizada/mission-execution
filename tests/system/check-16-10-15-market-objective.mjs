@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 const route=fs.readFileSync('src/worker/modules/admin-control/objective-orchestrator.routes.js','utf8');
 const ui=fs.readFileSync('public/assets/js/frontend/admin/command-center.js','utf8');
 const css=fs.readFileSync('public/assets/css/frontend/admin.css','utf8');
-const release=fs.readFileSync('RELEASE.md','utf8');
+const release=fs.readFileSync('docs/16.10.15-market-objective.md','utf8');
 assert.match(route,/market_factory_canonical_registry/,'market objective must use the canonical Market Factory authority');
 assert.match(route,/platform_market_packages/,'planner must inspect the canonical market package registry');
 assert.match(route,/platform_market_launch_task_evidence/,'planner must inspect recorded launch evidence');

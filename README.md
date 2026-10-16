@@ -1,3 +1,11 @@
+## 16.10.46 — Layout Studio Experience Impact + Release Contract Repair
+
+This source candidate adds an administrator-protected, read-only impact-analysis endpoint for Layout Studio drafts. It identifies potentially affected known experiences from page composition, reports unresolved production renderer bindings explicitly, and never authorizes publication. The release also repairs cumulative historical acceptance checks to use immutable release records where available, while preserving the complete release quality gates. Build certification under Node.js 24.18.0, production route parity, browser verification, publication and rollback remain pending. Product releases continue through the existing **CREATE NEXT VERSION** lifecycle; Layout Studio does not replace the canonical publisher.
+
+This is a source candidate, not proof of deployment.
+
+---
+
 ## 16.10.36 — Live Objective Journey & Germany Launch Blocker Resolution
 
 The current source candidate makes objective plans name the exact missing canonical product configuration keys, validates market scope against the active country catalog and sector policy, and reports missing market packages as blocked rather than verified. It adds a read-only inspection of immutable market version readiness, dependency snapshots, import report, and persisted launch-task evidence; empty task evidence cannot prove launch readiness. Interrupted read-only objective steps can be resumed safely, while unknown and mutating actions remain behind existing authorization gates. No new schema migration or competing workflow authority was added.

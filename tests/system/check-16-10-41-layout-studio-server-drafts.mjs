@@ -8,5 +8,5 @@ assert.match(migration,/CREATE TABLE IF NOT EXISTS platform_layout_drafts/);
 assert.match(migration,/CREATE TABLE IF NOT EXISTS platform_layout_draft_versions/);
 assert.match(migration,/CREATE TABLE IF NOT EXISTS platform_layout_draft_events/);assert.match(migration,/LAYOUT_DRAFT_VERSIONS_IMMUTABLE/);
 assert.match(routes,/requirePlatformAdministrator/);assert.match(routes,/LAYOUT_DRAFT_REVISION_CONFLICT/);assert.match(routes,/content_sha256/);assert.match(routes,/activeProductionChanged:false/);assert.match(routes,/COMPONENT_TYPE_NOT_ALLOWED/);assert.match(routes,/MANDATORY_GOVERNANCE_CONTROLS_REQUIRED/);assert.match(routes,/requirePlatformSuperAdminStepUp/);
-assert.match(adminRoutes,/registerLayoutStudioRoutes\(router\)/);assert.match(ui,/\/api\/platform\/admin\/layout-studio\/draft/);assert.match(ui,/expectedRevision:serverRevision/);assert.match(ui,/Publish \(blocked\)/);assert.match(page,/v=16\.10\.45/);
+assert.match(adminRoutes,/registerLayoutStudioRoutes\(router\)/);assert.match(ui,/\/api\/platform\/admin\/layout-studio\/draft/);assert.match(ui,/expectedRevision:serverRevision/);assert.match(ui,/Publish \(blocked\)/);assert.match(page,/v=16\.10\.46/);
 console.log('16.10.41 server draft compatibility contract: PASS');

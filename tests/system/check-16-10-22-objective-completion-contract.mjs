@@ -4,7 +4,7 @@ const version=fs.readFileSync('VERSION','utf8').trim();
 const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
 const routes=fs.readFileSync('src/worker/modules/admin-control/objective-orchestrator.routes.js','utf8');
 const ui=fs.readFileSync('public/assets/js/frontend/admin/command-center.js','utf8');
-const release=fs.readFileSync('RELEASE.md','utf8');
+const release=fs.readFileSync('docs/16.10.22-objective-completion-contract.md','utf8');
 const [major,minor,patch]=version.split('.').map(Number);
 assert.ok(major>16||(major===16&&(minor>10||(minor===10&&patch>=22))),'candidate must preserve completion contract');
 assert.ok(pkg.version.localeCompare('16.10.22', undefined, {numeric:true})>=0, 'package must preserve 22 objective capability');

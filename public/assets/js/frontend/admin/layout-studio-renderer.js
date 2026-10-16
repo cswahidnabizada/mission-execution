@@ -3,7 +3,7 @@
  * Renders only approved component types and escaped scalar properties.
  * This is the canonical Studio-preview renderer; production-route bindings remain a separate gate.
  */
-export const STUDIO_RENDERER_VERSION = '16.10.45';
+export const STUDIO_RENDERER_VERSION = '16.10.46';
 export const COMPONENT_RENDERERS = Object.freeze({
   header: { label: 'Header', properties: ['label', 'density'] },
   footer: { label: 'Footer', properties: ['label'] },
