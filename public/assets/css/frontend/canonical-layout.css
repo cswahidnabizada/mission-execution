@@ -1,17 +1,42 @@
-/* ON MISSION canonical layout system — 16.10.37
-   One responsive layout contract shared by platform surfaces. Component styles own appearance;
-   this layer owns sizing, intrinsic-width safety, overflow, and responsive composition. */
-:root { --om-layout-gap: clamp(10px, 1.2vw, 18px); --om-content-max: 1480px; }
+/* ON MISSION canonical layout system — 16.10.38
+   Structural authority for responsive composition across platform, tenant, and market surfaces.
+   Feature styles may skin components; they must not redefine global sizing or overflow contracts. */
+:root {
+  --om-layout-gap: clamp(.75rem, 1.2vw, 1.125rem);
+  --om-layout-gap-tight: clamp(.5rem, .8vw, .75rem);
+  --om-content-max: 1480px;
+  --om-market-content-max: 1240px;
+  --om-layout-min: 0;
+  --om-layout-border: var(--border, #dbe3ef);
+}
 *, *::before, *::after { box-sizing: border-box; }
-html { min-width: 320px; }
+html { min-width: 320px; text-size-adjust: 100%; }
 body { min-width: 320px; }
-#app, .sa-shell, .sa-body, .sa-main, .view, .workspace-surface, .control-center, .objective-command,
-.objective-plan-results, .objective-plan-head, .objective-plan-steps, .objective-plan-step,
-.objective-step-copy, .objective-gap-panel, .objective-inbox-grid, .objective-global-row,
-.governance-readiness-grid, .control-work-grid, .control-metrics, .workspace-index-grid,
-.explorer-panels, .control-area, .card, .section { min-width: 0; max-width: 100%; }
-/* A gap row may have a copy block + status only, unlike numbered plan rows. Do not force its
-   first child into the 30px number column: that caused one-word-per-line collapse. */
+:where(#app, #root, .sa-shell, .sa-body, .sa-main, .view, .workspace-surface,
+  .control-center, .objective-command, .objective-plan-results, .objective-plan-head,
+  .objective-plan-steps, .objective-plan-step, .objective-step-copy, .objective-gap-panel,
+  .objective-inbox-grid, .objective-global-row, .governance-readiness-grid, .control-work-grid,
+  .control-metrics, .workspace-index-grid, .explorer-panels, .control-area, .card, .section,
+  .marketplace-workspace, .mf-market-grid, .mf-market-card, .product-factory-workspace,
+  .product-factory-catalog, .product-factory-catalog-grid, .publisher-workspace,
+  .publisher-release-panel, .publisher-release-evidence-grid, .resource-workspace-card,
+  .command-workspace-grid, .tenant-product-home, .human-platform-workspace, .cmw-plan-workspace) {
+  min-width: var(--om-layout-min); max-width: 100%;
+}
+:where(.sa-main, #root, #app) :where(img, video, canvas, iframe, svg) { max-width: 100%; }
+:where(.sa-main, #root, #app) :where(pre, code, .code-input, .data-studio-json, .url, .identifier) {
+  max-width: 100%; overflow-wrap: anywhere;
+}
+:where(.table-wrap, .table-responsive, .data-table-wrap, .responsive-table, .overflow-x-auto) {
+  max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain;
+}
+:where(.sa-main, #root, #app) :where(input, select, textarea, button) { max-width: 100%; }
+:where(.sa-main, #root, #app) :where(.grid, [class*="-grid"], [class*="-row"]) > * { min-width: 0; }
+:where(.sa-main, #root, #app) :where(p, h1, h2, h3, h4, small, label, .sub, .description, .meta) {
+  overflow-wrap: anywhere; word-break: normal;
+}
+.sa-main > .view { width: 100%; max-width: var(--om-content-max); margin-inline: auto; }
+/* Objective work: support both numbered plan steps and unnumbered dependency cards. */
 .objective-plan-step:not(:has(> .objective-step-number)) { grid-template-columns: minmax(0, 1fr) auto; }
 .objective-plan-step:has(> .objective-step-number) { grid-template-columns: 30px minmax(0, 1fr) auto; }
 .objective-plan-step > *, .objective-gap-panel > *, .objective-plan-head > *, .objective-global-row > * { min-width: 0; }
@@ -20,17 +45,25 @@ body { min-width: 320px; }
 .objective-plan-step .pill { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
 .objective-gap-panel .objective-plan-steps { grid-template-columns: minmax(0, 1fr); width: 100%; }
 .objective-gap-panel .objective-plan-step { width: 100%; align-items: start; }
-.control-center :where(.control-metrics, .control-work-grid, .governance-readiness-grid, .objective-inbox-grid) { min-width: 0; }
-.control-center :where(img, video, canvas, iframe) { max-width: 100%; }
-.control-center :where(pre, code, .code-input, .data-studio-json) { max-width: 100%; overflow-wrap: anywhere; }
-.sa-main > .view { width: 100%; max-width: var(--om-content-max); margin-inline: auto; }
-.sa-main .table-wrap, .sa-main .table-responsive { max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; }
+/* Governed Market Factory: predictable content width and reusable composition, without owning data or lifecycle. */
+.marketplace-workspace, .product-factory-workspace, .publisher-workspace { width: 100%; min-width: 0; }
+.marketplace-workspace :where(.mf-market-grid, .marketplace-market-grid, .product-factory-catalog-grid, .publisher-release-evidence-grid) {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); gap: var(--om-layout-gap);
+}
+:where(.mf-market-card, .marketplace-market-card, .product-factory-catalog-card, .publisher-release-panel) {
+  min-width: 0; max-width: 100%; overflow-wrap: anywhere;
+}
+:where(.mf-market-card, .marketplace-market-card, .product-factory-catalog-card, .publisher-release-panel) :where(header, footer, .actions, .meta-row) {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--om-layout-gap-tight); min-width: 0;
+}
+:where(.mf-market-stats, .marketplace-market-head, .publisher-release-state-track, .publisher-release-actions) { min-width: 0; max-width: 100%; }
 @media (max-width: 900px) {
-  .objective-inbox-grid, .governance-readiness-grid, .control-work-grid { grid-template-columns: minmax(0, 1fr) !important; }
-  .control-metrics { grid-template-columns: minmax(0, 1fr); }
+  .objective-inbox-grid, .governance-readiness-grid, .control-work-grid { grid-template-columns: minmax(0, 1fr); }
+  .control-metrics { grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); }
   .objective-plan-step:has(> .objective-step-number) { grid-template-columns: 28px minmax(0, 1fr); }
   .objective-plan-step:has(> .objective-step-number) > .pill { grid-column: 2; justify-self: start; }
   .objective-plan-step:not(:has(> .objective-step-number)) { grid-template-columns: minmax(0, 1fr) auto; }
+  .sa-primary-nav { overflow-x: auto; overscroll-behavior-inline: contain; }
 }
 @media (max-width: 560px) {
   .objective-plan-step:not(:has(> .objective-step-number)) { grid-template-columns: minmax(0, 1fr); }
@@ -38,4 +71,6 @@ body { min-width: 320px; }
   .objective-global-row { grid-template-columns: minmax(0, 1fr); }
   .objective-global-row > button { grid-column: 1; grid-row: auto; justify-self: start; }
   .sa-main { padding-inline: 12px; }
+  :where(.mf-market-stats, .publisher-release-state-track) { grid-template-columns: minmax(0, 1fr); }
+  :where(.marketplace-workspace, .product-factory-workspace, .publisher-workspace) :where(.actions, .publisher-release-actions) > * { flex: 1 1 auto; }
 }

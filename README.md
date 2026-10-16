@@ -400,3 +400,7 @@ Objective can reconcile recorded step evidence against fresh canonical context, 
 
 ## Current source candidate
 Release identity: 16.10.37. Product release lifecycle retains the governed **CREATE NEXT VERSION** workflow; see `RELEASE.md` for the current candidate scope.
+
+## 16.10.38 — Platform-wide layout convergence
+
+Release baseline: `16.10.38`. This release consolidates responsive structural layout across platform and tenant entry points, including the governed Market Factory, and preserves the canonical product release lifecycle including **CREATE NEXT VERSION**. It changes presentation contracts only; canonical authorities continue to own data, authorization, release state, and mission execution.

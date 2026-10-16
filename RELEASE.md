@@ -1,4 +1,30 @@
-# Mission Execution 16.10.37
+# Mission Execution 16.10.38
+
+Status: protected candidate
+
+## 16.10.38 — Platform-wide UI consistency & runtime defect elimination
+
+- Established `public/assets/css/frontend/canonical-layout.css` as the structural layout contract for canonical admin, app, tenant, and market/product/release surfaces.
+- Applied the shared stylesheet after component styles on primary entry points.
+- Added responsive intrinsic-width market/product/release grids, shared spacing tokens, long-text wrapping, media sizing, form bounds, and safe horizontal table scrolling.
+- Added release-gated coverage for canonical layout loading and Market Factory composition.
+- No mission lifecycle, domain authority, authorization, market activation, database schema, or migration changes.
+- CSS deduplication is evidence-driven: duplicate-looking declarations are not deleted until cascade consumers and browser behavior are proven.
+
+Verification boundary: source-level checks can pass independently; production build and real browser viewport checks require Node 24.18.0 and the deployed browser environment.
+
+Status: protected candidate
+
+## 16.10.38 — Platform-wide UI consistency & runtime defect elimination
+
+- Established `public/assets/css/frontend/canonical-layout.css` as the structural layout contract for canonical admin, app, tenant, and market/product/release surfaces.
+- Applied the shared stylesheet after component styles on primary entry points.
+- Added responsive intrinsic-width market/product/release grids, shared spacing tokens, long-text wrapping, media sizing, form bounds, and safe horizontal table scrolling.
+- Added release-gated coverage for canonical layout loading and Market Factory composition.
+- No mission lifecycle, domain authority, authorization, market activation, database schema, or migration changes.
+- CSS deduplication is deliberately evidence-driven: duplicate-looking declarations are not deleted until cascade consumers and browser behavior are proven, avoiding a cleanup that silently removes feature behavior.
+
+Verification boundary: source-level checks can pass independently; production build and real browser viewport checks require Node 24.18.0 and the deployed browser environment.
 
 Status: protected candidate
 
@@ -970,7 +996,7 @@ Targeted 16.10.29, 16.10.28 and cumulative objective-completion tests passed. `n
 
 Canonical mission journey remains: `OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE`. No stage is newly certified by this release.
 
-# Mission Execution 16.10.37
+# Mission Execution 16.10.38
 
 Status: hardening candidate
 
