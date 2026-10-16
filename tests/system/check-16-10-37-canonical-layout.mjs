@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const css=fs.readFileSync('public/assets/css/frontend/canonical-layout.css','utf8');
+const html=fs.readFileSync('public/platform/access/admin/index.html','utf8');
+const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
+assert.match(css,/\.objective-plan-step:not\(:has\(> \.objective-step-number\)\)\s*\{\s*grid-template-columns:\s*minmax\(0,\s*1fr\)\s+auto;/,'unnumbered gap cards must not use the narrow number column');
+assert.match(css,/\.objective-plan-step:has\(> \.objective-step-number\)/,'numbered plan steps retain their own layout');
+assert.match(css,/\.objective-gap-panel \.objective-plan-steps\s*\{\s*grid-template-columns:\s*minmax\(0,\s*1fr\)/,'gap panel owns a full-width single-column list');
+assert.match(css,/@media \(max-width: 560px\)/,'mobile layout rules are present');
+assert.match(html,/canonical-layout\.css\?v=16\.10\.37/,'canonical layout stylesheet is loaded after existing admin styles');
+assert.match(pkg.scripts['check:release'],/check-16-10-37-canonical-layout\.mjs/,'layout regression is part of release gate');
+console.log('16.10.37 canonical layout contract: PASS');

@@ -7,7 +7,7 @@ const lock=JSON.parse(fs.readFileSync('package-lock.json','utf8'));
 const manifest=JSON.parse(fs.readFileSync('RELEASE-MANIFEST.json','utf8'));
 const nodeVersion=fs.readFileSync('.node-version','utf8').trim();
 const nvmrc=fs.readFileSync('.nvmrc','utf8').trim();
-assert.equal(version,'16.10.36','canonical VERSION must be the intended release');
+assert.equal(version,'16.10.37','canonical VERSION must be the intended release');
 assert.equal(pkg.version,version,'package version must match VERSION');
 assert.equal(lock.version,version,'lockfile version must match VERSION');
 assert.equal(lock.packages[''].version,version,'lockfile root package version must match VERSION');
@@ -23,7 +23,8 @@ for(const stale of [
   'Mission-Execution-16.10.32-RELEASE-REPORT.txt',
   'Mission-Execution-16.10.33-RELEASE-REPORT.txt',
   'Mission-Execution-16.10.34-RELEASE-REPORT.txt',
-  'Mission-Execution-16.10.35-RELEASE-REPORT.txt'
+  'Mission-Execution-16.10.35-RELEASE-REPORT.txt',
+  'Mission-Execution-16.10.36-RELEASE-REPORT.txt'
 ]) assert.equal(fs.existsSync(stale),false,`obsolete root artifact remains: ${stale}`);
 for(const required of ['README.md','RELEASE.md','RELEASE-REPORT.txt','VERSION','package.json','package-lock.json','wrangler.jsonc','_worker.js','database/schema.current.sql','database/migrations','src/worker','public','scripts','tests'])
   assert.equal(fs.existsSync(required),true,`required production artifact missing: ${required}`);

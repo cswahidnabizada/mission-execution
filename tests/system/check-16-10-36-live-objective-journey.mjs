@@ -7,7 +7,7 @@ const manifest=JSON.parse(fs.readFileSync('RELEASE-MANIFEST.json','utf8'));
 const route=fs.readFileSync('src/worker/modules/admin-control/objective-orchestrator.routes.js','utf8');
 const command=fs.readFileSync('src/worker/modules/admin-control/command-center.service.js','utf8');
 const release=fs.readFileSync('RELEASE.md','utf8');
-assert.equal(version,'16.10.36');
+assert.match(version,/^16\.10\.\d+$/,'current release must remain in the 16.10 line');
 assert.equal(pkg.version,version);assert.equal(lock.version,version);assert.equal(lock.packages[''].version,version);assert.equal(manifest.version,version);
 assert.match(command,/const missingConfigurations=required\.filter\(k=>!activeConfigKeys\.has\(k\)\)/,'configuration gaps must name the exact missing canonical keys');
 assert.match(command,/configurationGaps:\{required:required\.length,active:readyConfigs,missing:missingConfigurations\}/,'command center must expose detailed readiness gaps');
@@ -22,7 +22,7 @@ assert.match(route,/READ_ONLY_STEP_RECOVERED/,'interrupted read-only objective s
 assert.match(route,/status='BLOCKED' AND step_code IN \('confirm_market_scope','inspect_market_package','inspect_market_readiness'\)/,'only retryable read-only adapter blockers may be replayed');
 assert.match(route,/requirePlatformSuperAdminStepUp/);
 assert.match(pkg.scripts['check:release'],/check-16-10-36-live-objective-journey\.mjs/);
-assert.match(release,/Live Objective Journey & Germany Launch Blocker Resolution/);
+assert.match(release,/Mission Execution 16\.10\.\d+/,'current release document must identify a release version');
 assert.match(release,/Security → Truth → Liveness → Stability → Experience → Scale/);
 assert.equal(fs.existsSync('database/migrations/0160_live_objective_journey.sql'),false,'no schema change required for this release');
 console.log('16.10.36 live objective journey and truthful Germany readiness contract: PASS');

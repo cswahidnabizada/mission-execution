@@ -1,4 +1,4 @@
-# Mission Execution 16.10.36 — Live Objective Journey & Germany Launch Blocker Resolution
+# Mission Execution 16.10.37
 
 Status: protected candidate
 
@@ -969,3 +969,19 @@ See `docs/16.10.12-CANONICAL-JOURNEY-CERTIFICATION.md` for the full journey matr
 Targeted 16.10.29, 16.10.28 and cumulative objective-completion tests passed. `npm run check:release` passed. Release integrity, release engineering, JavaScript syntax, data-integrity, migration contract, current schema, architecture boundaries, and duplicate-file-content checks passed. Architecture scan: 424 JavaScript files, 1,602 local imports, zero import cycles, one canonical mission lifecycle writer. Migration contract: 159 ordered migrations through 0159; schema snapshot: 249 tables and 459 indexes. `npm run build` remains blocked before CSS compilation because this package-generation runtime is Node 22.16.0 while the repository requires Node 24.18.0. Runtime certification and live production/customer journey verification are not claimed as passed.
 
 Canonical mission journey remains: `OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE`. No stage is newly certified by this release.
+
+# Mission Execution 16.10.37
+
+Status: hardening candidate
+
+## Canonical Responsive Layout & CSS Convergence
+
+- Added `public/assets/css/frontend/canonical-layout.css` after the existing admin stylesheets.
+- Fixed the objective gap-card grid mismatch: unnumbered cards use a content/status grid, while numbered steps retain the number/content/status grid.
+- Added shared intrinsic sizing, wrapping, overflow and responsive composition rules for admin grids, tables and long labels.
+- Added a regression contract to the cumulative release suite.
+- No database migrations, production data mutations, or new domain authorities.
+
+Permanent release priority: Security → Truth → Liveness → Stability → Experience → Scale.
+Canonical mission journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+No competing workflow authority is introduced. The canonical authorities remain the sole owners of domain truth and mutations.

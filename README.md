@@ -397,3 +397,6 @@ Objective now asks the continuation selector for one safe next step before execu
 ## Current source candidate: 16.10.26 — Outcome & Recovery Loop
 
 Objective can reconcile recorded step evidence against fresh canonical context, surface unverified criteria, identify failed/uncertain steps and provide a recovery plan. It never blindly retries and never treats the absence of tasks as completion. This increment deliberately does not mark objectives complete; domain-specific canonical verification and a separate completion gate are still required. This candidate is not deployed.
+
+## Current source candidate
+Release identity: 16.10.37. Product release lifecycle retains the governed **CREATE NEXT VERSION** workflow; see `RELEASE.md` for the current candidate scope.

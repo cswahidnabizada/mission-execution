@@ -1,44 +1,13 @@
-ON MISSION 16.10.36 — RELEASE REPORT
-Live Objective Journey & Germany Launch Blocker Resolution
+ON MISSION 16.10.37 — RELEASE REPORT
 
-BASELINE
-- Based on the user-reported deployed 16.10.35 baseline and supplied source candidate.
-- This is a source candidate until built and tested against the live Worker.
+Purpose: canonical responsive layout and CSS convergence.
 
-FIXES
-1. Command Center exposes the exact missing keys from the six required canonical product configuration domains, not only a count. Objective plans persist the same blocker list.
-2. Market scope confirmation checks the active canonical country catalog and active sector policy. Valid-looking codes alone are not proof that the canonical scope exists.
-3. A missing market package returns NOT_FOUND/BLOCKED evidence and points to the existing Market Factory. It is no longer represented as verified.
-4. Added a read-only inspection of the latest immutable market version, readiness snapshot, dependency snapshot, import report, and persisted launch-task evidence.
-5. Empty task evidence or unproven readiness cannot enable activation. Inspection does not publish or activate; existing step-up protected Market Factory lifecycle remains the only path.
-6. Expired interrupted read-only adapter attempts can be recovered and rerun. Only the three explicitly read-only adapter steps may be retried from BLOCKED. Unknown and mutating actions remain blocked behind canonical authorization.
-7. Updated active asset cache keys and canonical release identity to 16.10.36. Historical contract tests were corrected to test retained behavior without pinning the live project version to an older release.
-8. No new schema migration or competing workflow authority was introduced.
+Root cause addressed: objective gap cards render a copy block and status pill but reuse the numbered-step grid (30px number + content + status). Without a number element, the copy occupies the 30px column, producing one-word-per-line collapse. The canonical layout stylesheet assigns the correct two-column template to unnumbered cards and retains the three-column template for numbered steps.
 
-VERIFICATION
-- `npm run check:release`: PASS under Node 22.16.0; cumulative release gate passed, including security, architecture, data integrity, schema/migration, and historical compatibility checks.
-- New 16.10.36 source contract: PASS.
-- JavaScript syntax checks for modified Worker modules: PASS.
-- Database schema/migration baseline preserved: 159 ordered migrations through 0159; 249 tables and 459 indexes.
-- ZIP integrity and SHA-256: verified after packaging.
+Additional hardening: shared min-width:0 and max-width rules for grid/flex children; responsive single-column layouts for key admin grids; safe wrapping for long labels, IDs and code; horizontally scrollable tables; stylesheet is linked after existing admin styles so component colors and typography remain intact.
 
-BUILD LIMITATION
-- `npm run build`: BLOCKED by the required environment gate because this packaging environment runs Node 22.16.0 while `.node-version`, `.nvmrc`, and `engines.node` require Node 24.18.0 / Node 24.x.
-- CSS production compilation, live Worker deployment, live API probes, and production certification are NOT verified by this source build.
+Architecture: no new authority, no endpoint, no schema change, no migration, no production data mutation. Existing styles are not wholesale deleted because their ownership overlaps component-specific presentation and removing them without a browser inventory risks regressions. This release adds one explicit layout owner and narrows the known conflicting layout behavior.
 
-NOT VERIFIED / REMAINING
-- Actual live Germany package/version/task evidence and the exact current status of the six configuration domains.
-- Genuine legal and content review, active consent and residency policies, billing/provider configuration, identity and tenant isolation.
-- Real customer mission through assignment, execution, effect, verification, recovery, outcome, and next situation.
-- Deployment of 16.10.36.
+Verification: see attached checksums and execute npm run check:release and npm run build under Node 24.18.0. Production build/deployment/live viewport verification are not claimed unless separately performed in the target environment.
 
-SAFE APPLICATION
-- Merge the reviewed source changes into the canonical GitHub checkout. The source package does not include `.github/workflows`; preserve the repository's existing workflows, secrets, and unrelated changes. Do not replace the repository wholesale.
-- Under Node 24.18.0 run `npm ci`, `npm run build`, `npm run check:release`, and `npm run check:production-certification`.
-- Deploy through the existing production pipeline, then verify the objective APIs and inspect live Germany blockers. Do not activate the market until canonical release gates pass.
-
-PRIORITY ORDER
-Security → Truth → Liveness → Stability → Experience → Scale
-
-CANONICAL MISSION JOURNEY
-OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE
+Safe apply: merge reviewed diff into canonical repository; preserve .github/workflows, secrets and unrelated work; do not replace the repository wholesale with the ZIP.
