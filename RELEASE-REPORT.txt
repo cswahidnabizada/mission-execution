@@ -1,13 +1,58 @@
-ON MISSION 16.10.37 — RELEASE REPORT
+ON MISSION 16.10.39 — Layout Inventory & Ownership Map
+Status: protected source candidate; not deployed or production-certified
+Base: user-reported deployed and tested 16.10.38
 
-Purpose: canonical responsive layout and CSS convergence.
+PURPOSE
+Create the evidence base for the governed Layout Studio roadmap. This release inventories current HTML entry points, linked CSS/JS assets, relative JavaScript imports, repeated CSS selector declarations, and byte-identical CSS files before any risky retirement.
 
-Root cause addressed: objective gap cards render a copy block and status pill but reuse the numbered-step grid (30px number + content + status). Without a number element, the copy occupies the 30px column, producing one-word-per-line collapse. The canonical layout stylesheet assigns the correct two-column template to unnumbered cards and retains the three-column template for numbered steps.
+CHANGES
+- Added scripts/generate-layout-inventory.mjs and npm run inventory:layout.
+- Added docs/16.10.39-layout-inventory.json (machine-readable route/asset/import/selector inventory).
+- Added docs/16.10.39-layout-inventory.md (human-readable inventory and ownership map).
+- Added tests/system/check-16-10-39-layout-inventory.mjs and included it in npm run check:release.
+- Synchronized VERSION, package.json, package-lock.json, RELEASE-MANIFEST.json, generated runtime release identities, and versioned asset references to 16.10.39.
+- Updated historical release allowlists and the cleanliness gate for the new release identity.
+- Preserved canonical authorities, Market Factory publication ownership, mission behavior, route implementations, and database schema.
 
-Additional hardening: shared min-width:0 and max-width rules for grid/flex children; responsive single-column layouts for key admin grids; safe wrapping for long labels, IDs and code; horizontally scrollable tables; stylesheet is linked after existing admin styles so component colors and typography remain intact.
+STATIC INVENTORY RESULTS
+- 24 HTML pages
+- 43 CSS files
+- 137 JavaScript modules
+- 113 local page asset references
+- 223 relative JavaScript import edges
+- 0 missing local page assets
+- 0 missing relative imports
+- 763 repeated selector/file pairs flagged for review
+- 0 byte-identical CSS file groups
+- 159 ordered migrations; high-water mark 0159
+- 249 tables; 459 indexes
+- No new migration
 
-Architecture: no new authority, no endpoint, no schema change, no migration, no production data mutation. Existing styles are not wholesale deleted because their ownership overlaps component-specific presentation and removing them without a browser inventory risks regressions. This release adds one explicit layout owner and narrows the known conflicting layout behavior.
+IMPORTANT INTERPRETATION
+The 763 repeated selector/file pairs are an investigation queue, not a deletion list. Selector repetition may be intentional due to cascade order, media queries, state selectors, or specificity. The inventory is static and does not prove browser route reachability, dynamic imports, event ownership, computed styles, or safe retirement. No CSS or JavaScript implementation was deleted in this inventory release.
 
-Verification: see attached checksums and execute npm run check:release and npm run build under Node 24.18.0. Production build/deployment/live viewport verification are not claimed unless separately performed in the target environment.
+VERIFICATION
+- npm run check:release: PASS (full configured cumulative suite; final convergence gate reported 26 checks passed)
+- New 16.10.39 inventory contract: PASS
+- 16.10.38 platform layout convergence contract: PASS
+- Inventory generation and test syntax checks: PASS
+- npm run build: BLOCKED at environment gate. Current runtime is Node 22.16.0; project contract requires Node 24.18.0 (.node-version) and Node 24.x engines. CSS compilation did not run.
+- Live browser visual certification: NOT RUN
+- Deployment: NOT performed by this package build
 
-Safe apply: merge reviewed diff into canonical repository; preserve .github/workflows, secrets and unrelated work; do not replace the repository wholesale with the ZIP.
+NEXT STEPS
+1. Run npm ci, npm run build, and npm run check:release with Node 24.18.0.
+2. Review the generated route-to-asset map and classify each repeated selector by declaration, media query, specificity, and consumer.
+3. Trace component imports, dynamic imports, DOM event registrations, and route references before proposing retirements.
+4. Add browser visual/behavior checks before deleting or merging any competing implementation.
+5. Continue 16.10.40 — Canonical Design Tokens & Components, followed by 16.10.41 — Governed Layout Studio, 16.10.42 — Page/Journey Composition, 16.10.43 — Market Experience Governance, and 16.10.44 — Platform-Wide Visual Certification.
+
+GOVERNING INVARIANTS
+Security → Truth → Liveness → Stability → Experience → Scale
+
+OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE
+
+The Layout Studio remains a presentation authority only. It must not replace mission truth, authorization, lifecycle, tenant data, or Market Factory release authority. Draft previews never mutate active production experiences. Published versions are immutable and rollback must select a previously verified compatible version.
+
+SAFE APPLICATION
+Merge the reviewed changes into the canonical repository; do not replace the repository wholesale. Preserve existing .github/workflows, secrets, environment configuration, and unrelated work. This ZIP does not contain .github/workflows.

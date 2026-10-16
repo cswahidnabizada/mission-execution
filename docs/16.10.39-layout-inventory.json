@@ -1,0 +1,4763 @@
+{
+  "version": "16.10.39",
+  "generatedAt": "2026-10-16T02:07:40.048Z",
+  "scope": "static source inventory only; not proof of runtime reachability or computed browser styles",
+  "counts": {
+    "htmlPages": 24,
+    "cssFiles": 43,
+    "jsModules": 137,
+    "localPageAssetReferences": 113,
+    "relativeImportEdges": 223,
+    "missingPageAssets": 0,
+    "missingRelativeImports": 0,
+    "repeatedSelectorEntries": 763,
+    "byteIdenticalCssGroups": 0
+  },
+  "routes": [
+    {
+      "page": "public/accept-invitation.html",
+      "title": "Mission Execution | Accept invitation",
+      "stylesheets": [
+        "public/assets/css/tailwind.local.css",
+        "public/assets/css/base.css",
+        "public/assets/css/access.css"
+      ],
+      "scripts": [
+        "public/assets/js/pages/accept-invitation.js"
+      ],
+      "bytes": 1595,
+      "sha256": "582cf1a1d2d8129197791862bef6036e23cc759a377a362c72d79d9127eaad38"
+    },
+    {
+      "page": "public/access.html",
+      "title": "Mission Execution",
+      "stylesheets": [
+        "public/assets/css/tailwind.local.css"
+      ],
+      "scripts": [],
+      "bytes": 464,
+      "sha256": "d2187a73f2f92314110e1fa9335d2790de935d8ff35235eb93e2e4ead4313960"
+    },
+    {
+      "page": "public/admin-control.html",
+      "title": "Mission Execution",
+      "stylesheets": [
+        "public/assets/css/tailwind.local.css"
+      ],
+      "scripts": [],
+      "bytes": 423,
+      "sha256": "b2bbc620951d9dad3bef1f5bf936b1ff9ac02f1a659fcbdfca7c83e9f0dee310"
+    },
+    {
+      "page": "public/admin.html",
+      "title": "Mission Execution",
+      "stylesheets": [
+        "public/assets/css/tailwind.local.css"
+      ],
+      "scripts": [],
+      "bytes": 415,
+      "sha256": "94d8a83238d3a9c4c575d269e169d76d35cd335add82d275df4e9b3ef8feb962"
+    },
+    {
+      "page": "public/admin/index.html",
+      "title": "Mission Execution",
+      "stylesheets": [
+        "public/assets/css/tailwind.local.css"
+      ],
+      "scripts": [],
+      "bytes": 411,
+      "sha256": "6c068845c652975a1b537faa2880c91c5ef0a6501423ff85ed16b7f3012df9ff"
+    },
+    {
+      "page": "public/app/index.html",
+      "title": "Mission Execution | Today & Work",
+      "stylesheets": [
+        "public/assets/css/tailwind.local.css",
+        "public/assets/css/frontend/tokens.css",
+        "public/assets/css/frontend/experience.css",
+        "public/assets/css/frontend/foundation.css",
+        "public/assets/css/frontend/components.css",
+        "public/assets/css/frontend/layout.css",
+        "public/assets/css/frontend/navigation.css",
+        "public/assets/css/frontend/forms.css",
+        "public/assets/css/frontend/states.css",
+        "public/assets/css/frontend/tables.css",
+        "public/assets/css/frontend/app.css",
+        "public/assets/css/frontend/human-work.css",
+        "public/assets/ui/canonical-ui-system.css",
+        "public/assets/css/frontend/canonical-layout.css"
+      ],
+      "scripts": [
+        "public/assets/js/frontend/app/app.js"
+      ],
+      "bytes": 1253,
+      "sha256": "f9d58cf16b0ed20a96bee2c8628f50b31607439b242eb4c7895305b72cf84884"
+    },
+    {
+      "page": "public/developer/index.html",
+      "title": "Mission Execution | Developer",
+      "stylesheets": [
+        "public/assets/css/tailwind.local.css",
+        "public/assets/css/frontend/tokens.css",
+        "public/assets/css/frontend/foundation.css",
+        "public/assets/css/frontend/components.css",
+        "public/assets/css/frontend/layout.css",
+        "public/assets/css/frontend/navigation.css",
+        "public/assets/css/frontend/states.css",
+        "public/assets/css/frontend/developer.css"
+      ],
+      "scripts": [
+        "public/assets/js/frontend/developer/developer.js"
+      ],
+      "bytes": 856,
+      "sha256": "1bb8dd28c42be6936f2796921185ae96824fd056e1fd1e932a70b326ac82b74e"
+    },
+    {
+      "page": "public/driver/dashboard.html",
+      "title": "Mission Execution",
+      "stylesheets": [
+        "public/assets/css/tailwind.local.css"
+      ],
+      "scripts": [],
+      "bytes": 442,
+      "sha256": "927a8fd5d5e49fdbc6101a7fd855ce7a92917d02e74aa24da09724b77074a994"
+    },
+    {
+      "page": "public/driver/index.html",
+      "title": "Mission Execution | Independent Executor Registration",
+      "stylesheets": [
+        "public/assets/css/tailwind.local.css",
+        "public/assets/css/frontend/tokens.css",
+        "public/assets/css/frontend/foundation.css",
+        "public/assets/css/frontend/components.css",
+        "public/assets/css/frontend/forms.css",
+        "public/assets/css/frontend/states.css",
+        "public/assets/css/frontend/public.css",
+        "public/assets/css/executor-register.css",
+        "public/assets/css/frontend/canonical-layout.css"
+      ],
+      "scripts": [
+        "public/assets/js/pages/executor-register.js"
+      ],
+      "bytes": 4891,
+      "sha256": "91b8ab7269dcedf7b1566ff71dbdf92633eaa9373f2ca8a1bd0572c0f38cf001"
+    },
+    {
+      "page": "public/forgot-password.html",
+      "title": "Mission Execution | Recover password",
+      "stylesheets": [
+        "public/assets/css/tailwind.local.css",
+        "public/assets/css/base.css",
+        "public/assets/css/access.css",
+        "public/assets/css/global-nav.css"
+      ],
+      "scripts": [
+        "public/assets/js/pages/forgot-password.js",
+        "public/assets/js/core/global-nav.js"
+      ],
+      "bytes": 1494,
+      "sha256": "e744527069b8858567ea8322a6acac46553d6808310222b91d1df8d86bede5d7"
+    },
+    {
+      "page": "public/foryou/index.html",
+      "title": "Mission Execution | ForYou",
+      "stylesheets": [
+        "public/assets/css/tailwind.local.css",
+        "public/assets/css/base.css",
+        "public/assets/ui/canonical-ui-system.css",
+        "public/assets/css/global-nav.css"
+      ],
+      "scripts": [
+        "public/assets/js/pages/foryou.js",
+        "public/assets/js/core/live-notifications.js",
+        "public/assets/js/core/global-nav.js"
+      ],
+      "bytes": 3802,
+      "sha256": "08d7bf86b4b64891c373a41efaf56bce26fd9d08dbc8ed96ccaf161bf751c1f0"
+    },
+    {
+      "page": "public/index.html",
+      "title": "Mission Execution | Governed mission execution",
+      "stylesheets": [
+        "public/assets/css/tailwind.local.css",
+        "public/assets/css/frontend/tokens.css",
+        "public/assets/css/frontend/foundation.css",
+        "public/assets/css/frontend/components.css",
+        "public/assets/css/frontend/public.css",
+        "public/assets/css/frontend/experience.css",
+        "public/assets/css/frontend/canonical-layout.css"
+      ],
+      "scripts": [
+        "public/assets/js/frontend/public/landing.js"
+      ],
+      "bytes": 906,
+      "sha256": "b4c73c7403f272d09f9e039b6a5c713a7ae743d10b7d20ca6fe472174b0f31a4"
+    },
+    {
+      "page": "public/login.html",
+      "title": "Mission Execution | Sign in",
+      "stylesheets": [
+        "public/assets/css/tailwind.local.css",
+        "public/assets/css/frontend/tokens.css",
+        "public/assets/css/frontend/foundation.css",
+        "public/assets/css/frontend/components.css",
+        "public/assets/css/frontend/forms.css",
+        "public/assets/css/frontend/states.css",
+        "public/assets/css/frontend/public.css"
+      ],
+      "scripts": [
+        "public/assets/js/pages/access.js"
+      ],
+      "bytes": 2637,
+      "sha256": "783dd1c3100e6be3906f604957f468669402442c1b521b04ca9774ea41e21038"
+    },
+    {
+      "page": "public/marketplace/index.html",
+      "title": "Mission Execution",
+      "stylesheets": [
+        "public/assets/css/tailwind.local.css"
+      ],
+      "scripts": [],
+      "bytes": 383,
+      "sha256": "7200a0be11601e613ef072db00d8b17867aa7f57ed0ce0427c365f5c1db1de74"
+    },
+    {
+      "page": "public/missions.html",
+      "title": "Mission Execution",
+      "stylesheets": [
+        "public/assets/css/tailwind.local.css"
+      ],
+      "scripts": [],
+      "bytes": 434,
+      "sha256": "a44458e7c2441cef7f797c9616efb00d9893a10ad864a084345535ab7e10a0e2"
+    },
+    {
+      "page": "public/my-driver/index.html",
+      "title": "Mission Execution",
+      "stylesheets": [
+        "public/assets/css/tailwind.local.css"
+      ],
+      "scripts": [],
+      "bytes": 391,
+      "sha256": "fee02494708eb9f98f7ba3833dc38c832b25e31dcceac60daf9a06284d9ea6da"
+    },
+    {
+      "page": "public/platform/access/admin/index.html",
+      "title": "Mission Execution | Platform Access",
+      "stylesheets": [
+        "public/assets/css/tailwind.local.css",
+        "public/assets/css/admin-control.css",
+        "public/assets/css/frontend/tokens.css",
+        "public/assets/css/frontend/experience.css",
+        "public/assets/css/frontend/foundation.css",
+        "public/assets/css/frontend/components.css",
+        "public/assets/css/frontend/states.css",
+        "public/assets/css/frontend/admin.css",
+        "public/assets/css/frontend/canonical-layout.css"
+      ],
+      "scripts": [
+        "public/assets/js/frontend/admin/admin.js"
+      ],
+      "bytes": 1038,
+      "sha256": "7f5f3c9214b6181398413c142f8046af016c3c27ba89e917f91cb57dd049f078"
+    },
+    {
+      "page": "public/register.html",
+      "title": "Mission Execution | Company Registration",
+      "stylesheets": [
+        "public/assets/css/tailwind.local.css",
+        "public/assets/css/base.css",
+        "public/assets/css/auth.css",
+        "public/assets/css/global-nav.css",
+        "public/assets/css/product-completion.css"
+      ],
+      "scripts": [
+        "public/assets/js/pages/register.js",
+        "public/assets/js/core/global-nav.js"
+      ],
+      "bytes": 4719,
+      "sha256": "4e1ff8455415a72ece049b6148654ad04121509291275cbed602854cdc893a56"
+    },
+    {
+      "page": "public/reset-password.html",
+      "title": "Mission Execution | New password",
+      "stylesheets": [
+        "public/assets/css/tailwind.local.css",
+        "public/assets/css/base.css",
+        "public/assets/css/access.css",
+        "public/assets/css/global-nav.css"
+      ],
+      "scripts": [
+        "public/assets/js/pages/reset-password.js",
+        "public/assets/js/core/global-nav.js"
+      ],
+      "bytes": 1456,
+      "sha256": "9b2aa92d66d81cefae3d5e2fe1dd17a83166bdafce92dc2d040f5c5e03a77976"
+    },
+    {
+      "page": "public/role-workspace.html",
+      "title": "Mission Execution",
+      "stylesheets": [
+        "public/assets/css/tailwind.local.css"
+      ],
+      "scripts": [],
+      "bytes": 440,
+      "sha256": "9d4f2b61c1b4433593164d340b044d10cae314cdf8a18e0fb1d5763d3bced6c4"
+    },
+    {
+      "page": "public/status.html",
+      "title": "Mission Execution | Product Status",
+      "stylesheets": [
+        "public/assets/css/frontend/tokens.css",
+        "public/assets/css/frontend/experience.css"
+      ],
+      "scripts": [
+        "public/assets/js/frontend/public/status.js"
+      ],
+      "bytes": 588,
+      "sha256": "156cf581d384d2e742af19a2b5019a8e36f711355093ae001040ad7201d36aa7"
+    },
+    {
+      "page": "public/subscription.html",
+      "title": "Mission Execution",
+      "stylesheets": [
+        "public/assets/css/tailwind.local.css"
+      ],
+      "scripts": [],
+      "bytes": 470,
+      "sha256": "2571fe37b8ae2b5bf030c39fdeae3590d94a88b7896f321f1fc043443fbe7244"
+    },
+    {
+      "page": "public/support/index.html",
+      "title": "Mission Execution | Support",
+      "stylesheets": [
+        "public/assets/css/tailwind.local.css",
+        "public/assets/css/frontend/tokens.css",
+        "public/assets/css/frontend/foundation.css",
+        "public/assets/css/frontend/components.css",
+        "public/assets/css/frontend/layout.css",
+        "public/assets/css/frontend/navigation.css",
+        "public/assets/css/frontend/states.css",
+        "public/assets/css/frontend/support.css"
+      ],
+      "scripts": [
+        "public/assets/js/frontend/support/support.js"
+      ],
+      "bytes": 846,
+      "sha256": "07aee35d26a080b3ed0efa05c429327aeb9d9e1d083b40408e63d95da42f9495"
+    },
+    {
+      "page": "public/verification.html",
+      "title": "Mission Execution",
+      "stylesheets": [
+        "public/assets/css/tailwind.local.css"
+      ],
+      "scripts": [],
+      "bytes": 470,
+      "sha256": "e8c10ca0e5f28128df72c51b5851d4cab09a1aa651dc2c66b006b06f3619b00a"
+    }
+  ],
+  "relativeImports": [
+    {
+      "from": "public/assets/js/core/activation-module.js",
+      "specifier": "./api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/core/activation-module.js",
+      "specifier": "./release.js",
+      "to": "public/assets/js/core/release.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/core/api.js",
+      "specifier": "../extensions/runtime-resilience.js",
+      "to": "public/assets/js/extensions/runtime-resilience.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/core/attention-panel.js",
+      "specifier": "./api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/core/attention-panel.js",
+      "specifier": "./dom.js",
+      "to": "public/assets/js/core/dom.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/core/attention-panel.js",
+      "specifier": "./lifecycle-registry.js",
+      "to": "public/assets/js/core/lifecycle-registry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/core/attention-panel.js",
+      "specifier": "./mission-coordination.js",
+      "to": "public/assets/js/core/mission-coordination.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/core/attention-panel.js",
+      "specifier": "./mission-focus.js",
+      "to": "public/assets/js/core/mission-focus.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/core/attention-panel.js",
+      "specifier": "./mission-presentation.js",
+      "to": "public/assets/js/core/mission-presentation.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/core/attention-panel.js",
+      "specifier": "./operational-mission-route.js",
+      "to": "public/assets/js/core/operational-mission-route.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/core/canonical-action-client.js",
+      "specifier": "../extensions/runtime-resilience.js",
+      "to": "public/assets/js/extensions/runtime-resilience.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/core/canonical-action-client.js",
+      "specifier": "./action-registry.js",
+      "to": "public/assets/js/core/action-registry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/core/canonical-action-client.js",
+      "specifier": "./api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/core/canonical-workspace-actions.js",
+      "specifier": "./action-registry.js",
+      "to": "public/assets/js/core/action-registry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/core/country-picker.js",
+      "specifier": "./api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/core/global-nav.js",
+      "specifier": "./api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/core/global-nav.js",
+      "specifier": "./session.js",
+      "to": "public/assets/js/core/session.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/core/mission-coordination.js",
+      "specifier": "./api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/core/mission-focus.js",
+      "specifier": "./lifecycle-registry.js",
+      "to": "public/assets/js/core/lifecycle-registry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/core/mission-focus.js",
+      "specifier": "./mission-presentation.js",
+      "to": "public/assets/js/core/mission-presentation.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/core/mission-presentation.js",
+      "specifier": "./lifecycle-registry.js",
+      "to": "public/assets/js/core/lifecycle-registry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/core/operational-attention.js",
+      "specifier": "./api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/action-ui-adapter.js",
+      "specifier": "./actions-intelligence.js",
+      "to": "public/assets/js/extensions/actions-intelligence.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/actions-intelligence.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/adaptive-coordination-experience.js",
+      "specifier": "./coordination-convergence.js",
+      "to": "public/assets/js/extensions/coordination-convergence.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/adaptive-coordination-experience.js",
+      "specifier": "./coordination-situation-contract.js",
+      "to": "public/assets/js/extensions/coordination-situation-contract.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/adaptive-operational-model.js",
+      "specifier": "../core/lifecycle-registry.js",
+      "to": "public/assets/js/core/lifecycle-registry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/canonical-dashboard-runtime.js",
+      "specifier": "../../ui/index.js",
+      "to": "public/assets/ui/index.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/canonical-dashboard-runtime.js",
+      "specifier": "../../ui/index.js",
+      "to": "public/assets/ui/index.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/canonical-dashboard-runtime.js",
+      "specifier": "../../ui/index.js",
+      "to": "public/assets/ui/index.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/canonical-dashboard-runtime.js",
+      "specifier": "../core/action-registry.js",
+      "to": "public/assets/js/core/action-registry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/canonical-dashboard-runtime.js",
+      "specifier": "../core/action-registry.js",
+      "to": "public/assets/js/core/action-registry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/canonical-dashboard-runtime.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/canonical-dashboard-runtime.js",
+      "specifier": "../core/canonical-action-client.js",
+      "to": "public/assets/js/core/canonical-action-client.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/canonical-dashboard-runtime.js",
+      "specifier": "../core/canonical-workspace-actions.js",
+      "to": "public/assets/js/core/canonical-workspace-actions.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/canonical-dashboard-runtime.js",
+      "specifier": "../core/lifecycle-registry.js",
+      "to": "public/assets/js/core/lifecycle-registry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/canonical-dashboard-runtime.js",
+      "specifier": "../core/liveness-registry.js",
+      "to": "public/assets/js/core/liveness-registry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/canonical-dashboard-runtime.js",
+      "specifier": "../core/network-continuity.js",
+      "to": "public/assets/js/core/network-continuity.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/canonical-dashboard-runtime.js",
+      "specifier": "./operational-contexts.js",
+      "to": "public/assets/js/extensions/operational-contexts.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/canonical-dashboard-runtime.js",
+      "specifier": "./runtime-render-efficiency.js",
+      "to": "public/assets/js/extensions/runtime-render-efficiency.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/canonical-dashboard-runtime.js",
+      "specifier": "./runtime-resilience.js",
+      "to": "public/assets/js/extensions/runtime-resilience.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/canonical-dashboard-runtime.js",
+      "specifier": "./secured-action-execution.js",
+      "to": "public/assets/js/extensions/secured-action-execution.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/company-experience-model.js",
+      "specifier": "../core/lifecycle-registry.js",
+      "to": "public/assets/js/core/lifecycle-registry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/operations-action-execution.js",
+      "specifier": "./actions-intelligence.js?v=16.10.39-h3",
+      "to": "public/assets/js/extensions/actions-intelligence.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/operations-action-execution.js",
+      "specifier": "./operations-action-telemetry.js?v=16.10.39",
+      "to": "public/assets/js/extensions/operations-action-telemetry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/runtime-resilience.js",
+      "specifier": "../core/network-continuity.js",
+      "to": "public/assets/js/core/network-continuity.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/secured-action-execution.js",
+      "specifier": "./operations-action-telemetry.js?v=16.10.39",
+      "to": "public/assets/js/extensions/operations-action-telemetry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/extensions/unified-action.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/admin-runtime.js",
+      "specifier": "../core/experience-context.js?v=16.10.39",
+      "to": "public/assets/js/frontend/core/experience-context.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/admin-runtime.js",
+      "specifier": "./workspace-registry.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/workspace-registry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/admin.js",
+      "specifier": "../core/experience-context.js?v=16.10.39",
+      "to": "public/assets/js/frontend/core/experience-context.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/admin.js",
+      "specifier": "./admin-controller.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/admin-controller.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/admin.js",
+      "specifier": "./admin-runtime.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/admin-runtime.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/admin.js",
+      "specifier": "./oversight/context.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/oversight/context.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/admin.js",
+      "specifier": "./panel-registry.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/panel-registry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/admin.js",
+      "specifier": "./shell.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/shell.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/command-center.js",
+      "specifier": "./detail-drawer.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/detail-drawer.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/command-center.js",
+      "specifier": "./governance-readiness.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/governance-readiness.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/command-center.js",
+      "specifier": "./ui-system.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/ui-system.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/command-center.js",
+      "specifier": "./workspace-registry.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/workspace-registry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/command-center.js",
+      "specifier": "./workspace-registry.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/workspace-registry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/command-palette.js",
+      "specifier": "./admin-runtime.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/admin-runtime.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/command-palette.js",
+      "specifier": "./resource-explorer.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/resource-explorer.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/command-palette.js",
+      "specifier": "./workspace-registry.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/workspace-registry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/data-catalog.js",
+      "specifier": "./admin-runtime.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/admin-runtime.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/data-governance.js",
+      "specifier": "./admin-runtime.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/admin-runtime.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/data-studio.js",
+      "specifier": "./admin-runtime.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/admin-runtime.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/demo-product.js",
+      "specifier": "./admin-runtime.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/admin-runtime.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/detail-drawer.js",
+      "specifier": "./ui-system.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/ui-system.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/governance-readiness.js",
+      "specifier": "./ui-system.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/ui-system.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/human-platform-studio.js",
+      "specifier": "./admin-runtime.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/admin-runtime.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/human-platform.js",
+      "specifier": "./human-platform-studio.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/human-platform-studio.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/infrastructure-governance.js",
+      "specifier": "./admin-runtime.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/admin-runtime.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/monitor.js",
+      "specifier": "./admin-runtime.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/admin-runtime.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/monitor.js",
+      "specifier": "./detail-drawer.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/detail-drawer.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/operating-system.js",
+      "specifier": "./admin-runtime.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/admin-runtime.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/operating-system.js",
+      "specifier": "./detail-drawer.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/detail-drawer.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/operating-system.js",
+      "specifier": "./oversight/context.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/oversight/context.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/operating-system.js",
+      "specifier": "./ui-system.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/ui-system.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/operating-system.js",
+      "specifier": "./workspace-registry.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/workspace-registry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight-panels.js",
+      "specifier": "./admin-runtime.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/admin-runtime.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight-panels.js",
+      "specifier": "./command-center.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/command-center.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight-panels.js",
+      "specifier": "./oversight/context.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/oversight/context.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight-panels.js",
+      "specifier": "./oversight/data.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/oversight/data.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight-panels.js",
+      "specifier": "./oversight/product-factory.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/oversight/product-factory.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight-panels.js",
+      "specifier": "./surfaces/build.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/surfaces/build.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight-panels.js",
+      "specifier": "./surfaces/control.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/surfaces/control.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight-panels.js",
+      "specifier": "./surfaces/governance.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/surfaces/governance.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight-panels.js",
+      "specifier": "./surfaces/monitor.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/surfaces/monitor.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight-panels.js",
+      "specifier": "./surfaces/operations.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/surfaces/operations.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight/data.js",
+      "specifier": "./context.js",
+      "to": "public/assets/js/frontend/admin/oversight/context.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight/platform-governance.js",
+      "specifier": "../admin-runtime.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/admin-runtime.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight/platform-governance.js",
+      "specifier": "../command-center.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/command-center.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight/platform-governance.js",
+      "specifier": "./context.js",
+      "to": "public/assets/js/frontend/admin/oversight/context.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight/platform-governance.js",
+      "specifier": "./data.js",
+      "to": "public/assets/js/frontend/admin/oversight/data.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight/privacy-verification.js",
+      "specifier": "./context.js",
+      "to": "public/assets/js/frontend/admin/oversight/context.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight/privacy-verification.js",
+      "specifier": "./data.js",
+      "to": "public/assets/js/frontend/admin/oversight/data.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight/product-factory.js",
+      "specifier": "./context.js",
+      "to": "public/assets/js/frontend/admin/oversight/context.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight/product-factory.js",
+      "specifier": "./data.js",
+      "to": "public/assets/js/frontend/admin/oversight/data.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight/product-factory.js",
+      "specifier": "./privacy-verification.js",
+      "to": "public/assets/js/frontend/admin/oversight/privacy-verification.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight/product-factory.js",
+      "specifier": "./product-operations.js",
+      "to": "public/assets/js/frontend/admin/oversight/product-operations.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight/product-factory.js",
+      "specifier": "./product-studio.js",
+      "to": "public/assets/js/frontend/admin/oversight/product-studio.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight/product-operations.js",
+      "specifier": "./context.js",
+      "to": "public/assets/js/frontend/admin/oversight/context.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight/product-operations.js",
+      "specifier": "./data.js",
+      "to": "public/assets/js/frontend/admin/oversight/data.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight/product-studio.js",
+      "specifier": "../admin-runtime.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/admin-runtime.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight/product-studio.js",
+      "specifier": "./context.js",
+      "to": "public/assets/js/frontend/admin/oversight/context.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight/product-studio.js",
+      "specifier": "./data.js",
+      "to": "public/assets/js/frontend/admin/oversight/data.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight/product-studio.js",
+      "specifier": "./platform-governance.js",
+      "to": "public/assets/js/frontend/admin/oversight/platform-governance.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/oversight/product-studio.js",
+      "specifier": "./product-operations.js",
+      "to": "public/assets/js/frontend/admin/oversight/product-operations.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/panel-registry.js",
+      "specifier": "./data-governance.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/data-governance.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/panel-registry.js",
+      "specifier": "./demo-product.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/demo-product.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/panel-registry.js",
+      "specifier": "./infrastructure-governance.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/infrastructure-governance.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/panel-registry.js",
+      "specifier": "./operating-system.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/operating-system.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/panel-registry.js",
+      "specifier": "./oversight-panels.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/oversight-panels.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/panel-registry.js",
+      "specifier": "./product-experience.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/product-experience.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/panel-registry.js",
+      "specifier": "./product-identity.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/product-identity.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/panel-registry.js",
+      "specifier": "./resource-management.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/resource-management.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/panel-registry.js",
+      "specifier": "./user-experience-lab.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/user-experience-lab.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/product-experience.js",
+      "specifier": "./admin-runtime.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/admin-runtime.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/product-identity.js",
+      "specifier": "./admin-runtime.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/admin-runtime.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/product-publisher.js",
+      "specifier": "./market-factory.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/market-factory.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/resource-explorer.js",
+      "specifier": "./admin-runtime.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/admin-runtime.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/resource-management.js",
+      "specifier": "./admin-runtime.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/admin-runtime.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/resource-management.js",
+      "specifier": "./data-studio.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/data-studio.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/resource-management.js",
+      "specifier": "./resource-explorer.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/resource-explorer.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/shell.js",
+      "specifier": "../core/experience-context.js?v=16.10.39",
+      "to": "public/assets/js/frontend/core/experience-context.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/shell.js",
+      "specifier": "./admin-runtime.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/admin-runtime.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/shell.js",
+      "specifier": "./command-palette.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/command-palette.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/shell.js",
+      "specifier": "./workspace-registry.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/workspace-registry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/build.js",
+      "specifier": "../data-catalog.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/data-catalog.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/build.js",
+      "specifier": "../data-studio.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/data-studio.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/build.js",
+      "specifier": "../oversight/privacy-verification.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/oversight/privacy-verification.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/build.js",
+      "specifier": "../oversight/product-factory.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/oversight/product-factory.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/build.js",
+      "specifier": "../oversight/product-studio.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/oversight/product-studio.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/build.js",
+      "specifier": "../product-publisher.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/product-publisher.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/control.js",
+      "specifier": "../admin-runtime.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/admin-runtime.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/control.js",
+      "specifier": "../certification.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/certification.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/control.js",
+      "specifier": "../human-platform-studio.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/human-platform-studio.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/control.js",
+      "specifier": "../oversight/context.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/oversight/context.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/control.js",
+      "specifier": "../oversight/product-factory.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/oversight/product-factory.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/control.js",
+      "specifier": "../oversight/product-studio.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/oversight/product-studio.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/governance.js",
+      "specifier": "../data-governance.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/data-governance.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/governance.js",
+      "specifier": "../oversight/platform-governance.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/oversight/platform-governance.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/governance.js",
+      "specifier": "../oversight/privacy-verification.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/oversight/privacy-verification.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/governance.js",
+      "specifier": "../oversight/product-operations.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/oversight/product-operations.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/governance.js",
+      "specifier": "../oversight/product-studio.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/oversight/product-studio.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/monitor.js",
+      "specifier": "../monitor.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/monitor.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/monitor.js",
+      "specifier": "../oversight/platform-governance.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/oversight/platform-governance.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/monitor.js",
+      "specifier": "../oversight/product-factory.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/oversight/product-factory.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/monitor.js",
+      "specifier": "../oversight/product-operations.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/oversight/product-operations.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/operations.js",
+      "specifier": "../oversight/platform-governance.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/oversight/platform-governance.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/operations.js",
+      "specifier": "../oversight/product-factory.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/oversight/product-factory.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/surfaces/operations.js",
+      "specifier": "../oversight/product-operations.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/oversight/product-operations.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/admin/user-experience-lab.js",
+      "specifier": "./admin-runtime.js?v=16.10.39",
+      "to": "public/assets/js/frontend/admin/admin-runtime.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/app/app.js",
+      "specifier": "../../../ui/canonical-mission-workspace.js",
+      "to": "public/assets/ui/canonical-mission-workspace.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/app/app.js",
+      "specifier": "../../core/activation-module.js",
+      "to": "public/assets/js/core/activation-module.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/app/app.js",
+      "specifier": "../../core/canonical-action-client.js",
+      "to": "public/assets/js/core/canonical-action-client.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/app/app.js",
+      "specifier": "../components/ui.js",
+      "to": "public/assets/js/frontend/components/ui.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/app/app.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/frontend/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/app/app.js",
+      "specifier": "../navigation/registry.js",
+      "to": "public/assets/js/frontend/navigation/registry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/app/app.js",
+      "specifier": "../shell/app-shell.js",
+      "to": "public/assets/js/frontend/shell/app-shell.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/app/app.js",
+      "specifier": "../situation/store.js",
+      "to": "public/assets/js/frontend/situation/store.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/app/app.js",
+      "specifier": "../work/context-workspace.js",
+      "to": "public/assets/js/frontend/work/context-workspace.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/app/app.js",
+      "specifier": "../work/human-work-domain-model.js",
+      "to": "public/assets/js/frontend/work/human-work-domain-model.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/app/app.js",
+      "specifier": "../work/human-work-model.js",
+      "to": "public/assets/js/frontend/work/human-work-model.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/app/app.js",
+      "specifier": "../work/role-work-model.js",
+      "to": "public/assets/js/frontend/work/role-work-model.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/components/ui.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/frontend/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/developer/developer.js",
+      "specifier": "../../core/release.js",
+      "to": "public/assets/js/core/release.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/developer/developer.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/frontend/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/developer/developer.js",
+      "specifier": "../shell/app-shell.js",
+      "to": "public/assets/js/frontend/shell/app-shell.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/product-experience.js",
+      "specifier": "./core/api.js",
+      "to": "public/assets/js/frontend/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/public/landing.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/frontend/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/public/status.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/frontend/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/shell/app-shell.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/frontend/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/shell/app-shell.js",
+      "specifier": "../core/experience-context.js",
+      "to": "public/assets/js/frontend/core/experience-context.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/shell/app-shell.js",
+      "specifier": "../navigation/registry.js",
+      "to": "public/assets/js/frontend/navigation/registry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/shell/app-shell.js",
+      "specifier": "../product-experience.js",
+      "to": "public/assets/js/frontend/product-experience.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/shell/app-shell.js",
+      "specifier": "../situation/store.js",
+      "to": "public/assets/js/frontend/situation/store.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/situation/store.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/frontend/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/support/support.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/frontend/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/support/support.js",
+      "specifier": "../shell/app-shell.js",
+      "to": "public/assets/js/frontend/shell/app-shell.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/work/context-work-model.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/frontend/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/work/context-workspace.js",
+      "specifier": "../../../ui/canonical-mission-workspace.js",
+      "to": "public/assets/ui/canonical-mission-workspace.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/work/context-workspace.js",
+      "specifier": "../components/ui.js",
+      "to": "public/assets/js/frontend/components/ui.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/work/context-workspace.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/frontend/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/work/context-workspace.js",
+      "specifier": "./context-work-model.js",
+      "to": "public/assets/js/frontend/work/context-work-model.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/work/human-work-domain-model.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/frontend/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/work/human-work-domain-model.js",
+      "specifier": "./human-work-contract.js",
+      "to": "public/assets/js/frontend/work/human-work-contract.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/work/human-work-model.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/frontend/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/work/human-work-model.js",
+      "specifier": "./human-work-contract.js",
+      "to": "public/assets/js/frontend/work/human-work-contract.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/frontend/work/role-work-model.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/frontend/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/accept-invitation.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/access-workspace.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/access.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/access.js",
+      "specifier": "../core/session.js",
+      "to": "public/assets/js/core/session.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/analytics-dashboard-v1.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/executor-register.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/executor-register.js",
+      "specifier": "../core/session.js",
+      "to": "public/assets/js/core/session.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/forgot-password.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/foryou.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/foryou.js",
+      "specifier": "../core/dom.js",
+      "to": "public/assets/js/core/dom.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/foryou.js",
+      "specifier": "../core/operational-mission-route.js",
+      "to": "public/assets/js/core/operational-mission-route.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/foryou.js",
+      "specifier": "../core/session.js",
+      "to": "public/assets/js/core/session.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/landing.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/register.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/register.js",
+      "specifier": "../core/session.js",
+      "to": "public/assets/js/core/session.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/reset-password.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/subscription.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/subscription.js",
+      "specifier": "../core/dom.js",
+      "to": "public/assets/js/core/dom.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/subscription.js",
+      "specifier": "../core/session.js",
+      "to": "public/assets/js/core/session.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/support.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/support.js",
+      "specifier": "../core/dom.js",
+      "to": "public/assets/js/core/dom.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/support.js",
+      "specifier": "../core/session.js",
+      "to": "public/assets/js/core/session.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/tenant-product-experience.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/verification.js",
+      "specifier": "../core/api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/js/pages/verification.js",
+      "specifier": "../core/dom.js",
+      "to": "public/assets/js/core/dom.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/ui/canonical-mission-workspace.js",
+      "specifier": "../js/core/action-registry.js",
+      "to": "public/assets/js/core/action-registry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/ui/canonical-mission-workspace.js",
+      "specifier": "../js/core/api.js",
+      "to": "public/assets/js/core/api.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/ui/canonical-mission-workspace.js",
+      "specifier": "../js/core/lifecycle-registry.js",
+      "to": "public/assets/js/core/lifecycle-registry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/ui/canonical-mission-workspace.js",
+      "specifier": "../js/extensions/secured-action-execution.js?v=16.10.39",
+      "to": "public/assets/js/extensions/secured-action-execution.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/ui/canonical-mission-workspace.js",
+      "specifier": "./components.js",
+      "to": "public/assets/ui/components.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/ui/components.js",
+      "specifier": "../js/core/lifecycle-registry.js",
+      "to": "public/assets/js/core/lifecycle-registry.js",
+      "exists": true
+    },
+    {
+      "from": "public/assets/ui/components.js",
+      "specifier": "../js/core/liveness-registry.js",
+      "to": "public/assets/js/core/liveness-registry.js",
+      "exists": true
+    }
+  ],
+  "missingAssets": [],
+  "missingImports": [],
+  "repeatedSelectors": [
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-driver-actions",
+      "count": 6
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-modal-body",
+      "count": 6
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-modal-card",
+      "count": 6
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-situation",
+      "count": 6
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-semantic-note",
+      "count": 5
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-open",
+      "count": 5
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-modal-backdrop",
+      "count": 5
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-modal-head",
+      "count": 5
+    },
+    {
+      "key": "public/assets/css/frontend/canonical-layout.css :: :where(.sa-main",
+      "count": 5
+    },
+    {
+      "key": "public/assets/css/frontend/canonical-layout.css :: #root",
+      "count": 5
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-workbench",
+      "count": 5
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .ctx-split",
+      "count": 5
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .ctx-workspace",
+      "count": 5
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-route",
+      "count": 5
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .action-matrix-head",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .action-matrix-row",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .main",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .nav",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .nav button",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-factory-root",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .side",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .table th",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .top",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .workspace-data-warning",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-situation",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-switch-icon",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-modal-danger",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-modal-input",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-modal-primary",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-more-menu",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/frontend/experience.css :: .delegated-context-banner .onm-btn",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/subscription.css :: .om-center-head",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/subscription.css :: .om-center-track",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/tailwind.local.css :: ::file-selector-button",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-badge",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-btn",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-grid",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-next",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-track",
+      "count": 4
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-queue",
+      "count": 4
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .ctx-detail-card",
+      "count": 4
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .ctx-list",
+      "count": 4
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .ctx-workspace-head",
+      "count": 4
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .ctx-workspace-tools",
+      "count": 4
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-body",
+      "count": 4
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-grid",
+      "count": 4
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-head",
+      "count": 4
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-head-actions",
+      "count": 4
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-route>i",
+      "count": 4
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-share-grid",
+      "count": 4
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-tabs",
+      "count": 4
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .exp-create",
+      "count": 4
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .command-preview-grid",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .command-workspace-grid",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .context-grid",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .data-entry-type-grid",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .human-platform-destinations",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .journey-track",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .launch-check small",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .nav-surface-group",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .nav-surface-items",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .nav-surface-items button",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .nav-surface-items button.active",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .nav-surface-title",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .os-command-strip>article:first-child",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .os-grid.four",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .os-history",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .os-operation",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .product-control-hero",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .product-factory-catalog-grid",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .product-factory-summary-grid",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-contract-grid",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-governance-grid",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-journey-10",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-lifecycle-grid",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-sector-grid",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .px-scenario-cards",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .studio-actions",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .studio-input",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .studio-row",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .workspace-data-warning .btn",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .workspace-index-grid",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin.css :: .data-studio-governance-grid .facts",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin.css :: .data-studio-picker-toolbar",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin.css :: .data-studio-summary",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-actions",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-actions button",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-active-list button",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-card",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-cockpit",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-report-icon",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-situation button",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-situation button small",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-situation button span",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-times b",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-event-row",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-modal-choice",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-modal-choices",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-modal-input[type=\"file\"]",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-modal-input[type=\"file\"]::file-selector-button",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/base.css :: .user-ready-badge small",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/extensions/canonical-mission-workspace.css :: .cmw-grid",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/extensions/canonical-mission-workspace.css :: .cmw-root .cui-lifecycle-track",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/extensions/canonical-mission-workspace.css :: .cmw-summary-strip",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .driver-nav-button",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .driver-progress-foot",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .control-journey-bar button",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .mf-task-actions",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .sa-body",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .sa-main",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/frontend/public.css :: .public-main",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/global-nav.css :: .global-site-nav .global-account",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/operations-surface.css :: .operations-surface-sections",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/subscription.css :: .om-center-facts",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/subscription.css :: .om-center-section",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation h3",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-head",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-next p",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-ready",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-state",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-state small",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-state strong",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-center-head",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-center-head>strong",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/verification.css :: .verification-context",
+      "count": 3
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-main",
+      "count": 3
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-search",
+      "count": 3
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .ctx-detail",
+      "count": 3
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .ctx-facts",
+      "count": 3
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-action",
+      "count": 3
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-action small",
+      "count": 3
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-action-grid",
+      "count": 3
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-next-action",
+      "count": 3
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .home-situation",
+      "count": 3
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .network-stats",
+      "count": 3
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .role-main",
+      "count": 3
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .role-queue-context",
+      "count": 3
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .role-summary-grid",
+      "count": 3
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .tenant-account-menu",
+      "count": 3
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .topbar-action",
+      "count": 3
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .wb-grid",
+      "count": 3
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .wb-need-grid",
+      "count": 3
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .work-queue-pane",
+      "count": 3
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .workbench",
+      "count": 3
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: :root",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .action-matrix-row>span",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .actions.compact",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .activity-row",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .activity-row time",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .admin-detail-drawer",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .admin-detail-drawer footer",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .admin-drawer-backdrop",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .attention-actions",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .attention-row",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .authority-list",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .authority-state-icon",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .brand",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .brand small",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .brand-button small",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .btn",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .card",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .catalog-item",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .cert-command",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .cert-header",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .check-actions",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .check-actions .btn",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .checks",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .command-launcher-trigger kbd",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .command-lifecycle",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .command-palette-foot",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .command-queue-row",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .command-scope-actions",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .command-scope-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .command-stats-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .command-work-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .company-layout",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .context-result",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .control-center .objective-specialist-details>summary",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .control-center .objective-specialist-details>summary span",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .control-hero",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .control-metrics",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .control-plane-map-flow",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .control-plane-map-flow i",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .control-plane-map-head",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .control-plane-shell .command-main",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .control-plane-shell .command-side",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .control-plane-shell .control-journey-bar",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .control-plane-shell .control-plane-map",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .country-results",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .current-action-card .btn.primary",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .data-entry-basic-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .data-entry-bottom-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .data-entry-card-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .data-entry-category-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .data-entry-editor-actions",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .data-entry-review-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .facts",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .field.full",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .final-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .final-tabs",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .final-tabs button",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .form-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .form-grid.compact",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .human-platform-boundary",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .human-platform-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .human-platform-hero-actions",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .human-platform-status-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .infra-roadmap-controls",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .launch-check",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .launch-check span",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .launch-check strong",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .launch-check-group",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .launch-check-group h3",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .launch-check.blocked",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .launch-check.ready",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .layout",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .lifecycle-strip .stage:not(:last-child):after",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .loading-dot",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .logistics-domain-flow i",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .metric-group",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .metric-row",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .nav button:hover",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .nav button.active",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .nav-surface-items button:hover",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .nav-surface-items button>small",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .notice",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .os-command-strip .btn",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .os-grid.three",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .os-history b",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .os-history time",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .os-operation time",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .preview-form",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .product-control-hero .launch-contract article",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .product-factory-approval-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .product-factory-catalog-card",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .product-factory-human-work-meta",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .product-factory-stage-body",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .product-factory-stage-head",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .product-factory-stage-panel>summary",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .product-factory-stepper",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-action-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-command-status",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-factory-root span",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-factory-stage",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-impact-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-impact-summary",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-journey",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-list-row",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-preview",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-preview-panel",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-preview>div:last-child",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-release-evidence-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-release-history-row",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-release-panel",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-review-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-scope-card",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-scope-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-section-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-semantic-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-stat-row",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-status",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-step b",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-step span",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-step-index",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .publisher-workspace",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .px-cert-list>div",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .px-hero",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .px-hero-actions",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .px-safety b",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .px-tabs button",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .release-os-flow",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .release-os-flow i",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .release-rail",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .release-track",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .resource-add-editor .form-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .resource-add-editor .full",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .resource-command-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .resource-edit-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .resource-facts",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .resource-lifecycle-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .resource-quick-types",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .resource-quick-types-group",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .resource-result-meta",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .resource-result-row",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .resource-search-form",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .resource-summary",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .resource-workspace-card",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .resource-workspace-facts",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .review-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .section",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .shell",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .side-title",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .situation-state",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .stat",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .stat span",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .stat strong",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .stats",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .studio-attention-row",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .studio-hero",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .studio-lock",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .studio-metric",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .studio-overview-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .studio-role",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .studio-row-main",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .studio-tabs",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .studio-tabs button",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .studio-toggle",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .studio-two",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .sub",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .table",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .table td",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .test-row",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .three",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .title",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .two",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .uxlab-context-banner",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .uxlab-error",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .uxlab-form",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .uxlab-success",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .view",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .view.active",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .workspace-context-actions",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .workspace-context-bar",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .workspace-data-warning small",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .workspace-loading",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: .workspace-loading small",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: #adminCommandPalette.open .command-palette",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: #adminDrawerRoot.open .admin-drawer-backdrop",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin-control.css :: body",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin.css :: .data-studio-component",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin.css :: .data-studio-dependency-list",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin.css :: .data-studio-facts-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin.css :: .data-studio-form-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin.css :: .data-studio-impact-meta",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin.css :: .data-studio-json",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin.css :: .data-studio-picker-card",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin.css :: .data-studio-picker-card h3",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin.css :: .data-studio-picker-meta",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin.css :: .data-studio-preview-card",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin.css :: .data-studio-preview-stats",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin.css :: .data-studio-record",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin.css :: .data-studio-relation-items",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin.css :: .data-studio-tab",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin.css :: .data-studio-tabs",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin.css :: .data-studio-ui-page",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin.css :: .work-queue-item",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/admin.css :: .wqi-actions",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .attention-empty",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .attention-empty b",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .attention-empty small",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .attention-engine.attention-dark .attention-item",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .attention-engine.attention-dark .attention-list",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .attention-head",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .attention-item",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .attention-level",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .attention-mark",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .attention-open",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .attention-pill",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .attention-summary",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .attention-tenant .attention-head",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .attention-tenant .attention-list",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .attention-tenant .attention-summary",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .cmw-file-meta",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .cmw-file-open",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-active-list",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-active-list button b",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-active-list button.active",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-addresses",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-cockpit .mission-focus-more summary",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-copy b",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-driver-actions .mission-focus-more summary",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-identity>b",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-identity>strong",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-ignore",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-instruction",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-more",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-more>div",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-nav-icon",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-primary-large",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-route",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-situation-label",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-tenant",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-tenant-status b",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-time-head",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-time-head b",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-time-labels",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-time-progress",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-times",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-times small",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-focus-times>span",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .mission-tv-focus",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-awareness-calm",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-awareness-calm em",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-driver-choice",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-driver-open",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-event-icon",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-event-link",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-event-priority",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-event-ref",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-execution-choice small",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-execution-shortcut",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-execution-shortcuts",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-modal-choice b",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-modal-choice small",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-modal-head h3",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-modal-head p",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-modal-input[type=\"file\"]::-webkit-file-upload-button",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-modal-textarea",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-more-action",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/attention.css :: .tv-primary-action",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/base.css :: .network-continuity-note",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/base.css :: .onmission-network-continuity small",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/base.css :: .onmission-network-continuity strong",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/base.css :: .user-ready-badge",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/base.css :: .user-ready-badge span",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/canonical-mission-workspace.css :: .cmw-action",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/canonical-mission-workspace.css :: .cmw-action-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/canonical-mission-workspace.css :: .cmw-back",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/canonical-mission-workspace.css :: .cmw-choice",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/canonical-mission-workspace.css :: .cmw-choice-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/canonical-mission-workspace.css :: .cmw-context textarea",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/canonical-mission-workspace.css :: .cmw-execution-badges",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/canonical-mission-workspace.css :: .cmw-form-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/canonical-mission-workspace.css :: .cmw-head",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/canonical-mission-workspace.css :: .cmw-head-actions",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/canonical-mission-workspace.css :: .cmw-history article",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/canonical-mission-workspace.css :: .cmw-people-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/canonical-mission-workspace.css :: .cmw-person",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/canonical-mission-workspace.css :: .cmw-primary",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/canonical-mission-workspace.css :: .cmw-root .cui-lifecycle-track:before",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/canonical-mission-workspace.css :: .cmw-route",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/canonical-mission-workspace.css :: .cmw-route i",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/canonical-mission-workspace.css :: .cmw-tabs",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/dashboard-domain-contexts-103016.css :: .ctx16-domain-head",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/dashboard-domain-contexts-103016.css :: .ctx16-request",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/dashboard-domain-contexts-103016.css :: .ctx16-request-side",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/dashboard-domain-contexts-103016.css :: .nav-route-card i",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/dashboard-domain-contexts-103017.css :: .ctx16-domain-head",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/dashboard-domain-contexts-103017.css :: .ctx16-request",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/dashboard-domain-contexts-103017.css :: .ctx16-request-side",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/dashboard-domain-contexts-103017.css :: .nav-route-card i",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/dashboard-domain-contexts-103034.css :: .ctx16-domain-head",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/dashboard-domain-contexts-103034.css :: .ctx16-request",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/dashboard-domain-contexts-103034.css :: .ctx16-request-side",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/dashboard-domain-contexts-103034.css :: .nav-route-card i",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/dashboard-domain-contexts-103056.css :: .ctx16-domain-head",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/dashboard-domain-contexts-103056.css :: .ctx16-request",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/dashboard-domain-contexts-103056.css :: .ctx16-request-side",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/dashboard-domain-contexts-103056.css :: .nav-route-card i",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .cmw-proof-controls",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .cockpit-logo",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .driver-action-nav",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .driver-action-primary",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .driver-brief-list article",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .driver-brief-list b",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .driver-brief-list small",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .driver-camera-button",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .driver-cmw-progress",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .driver-progress-head",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .driver-progress-next",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .driver-progress-step",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .driver-progress-step i",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .driver-progress-step span",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .driver-progress-track",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .driver-progress-track:before",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .role-account-facts",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .role-account-next",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .role-account-next a",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .role-rail button small",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .role-workspace .cmw-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .role-workspace .cmw-head",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .role-workspace .cmw-head-actions",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .role-workspace .cmw-people-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .role-workspace .cmw-primary",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .role-workspace .cmw-summary-strip",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .role-workspace .cmw-tabs",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/extensions/driver-executor-operational-desk-103048.css :: .role-workspace .cmw-tabs button",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .admin-command-buttons",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .control-journey-bar",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .control-journey-bar i",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .mf-package textarea#mfPackageEditor",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .objective-command-controls .field",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .objective-global-row",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .objective-global-row>button",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .objective-market-summary",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .objective-operations .section-head",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .objective-plan-head",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .objective-plan-step",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .resource-action-bar",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .resource-action-bar .actions",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .sa-context-actions",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .sa-context-bar",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .sa-header",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .sa-header-context",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .sa-primary-nav",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .sa-primary-tab",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .sa-sidebar",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .sa-sidebar-foot",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .sa-workspace-header",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/admin.css :: .sa-workspace-list",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/canonical-layout.css :: :where(.mf-market-card",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/canonical-layout.css :: :where(.mf-market-stats",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/canonical-layout.css :: .marketplace-market-card",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/canonical-layout.css :: .objective-plan-step:has(> .objective-step-number)",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/canonical-layout.css :: .objective-plan-step:not(:has(> .objective-step-number))",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/canonical-layout.css :: .product-factory-catalog-card",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/canonical-layout.css :: .product-factory-workspace",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/experience.css :: .app-main",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/experience.css :: .delegated-context-banner",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/experience.css :: .delegated-context-banner .onm-btn:disabled",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/experience.css :: .delegated-context-banner b",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/experience.css :: .delegated-context-banner span",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/experience.css :: .delegated-context-banner>div",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/experience.css :: .experience-context",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/experience.css :: .nav-boundary",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/experience.css :: .nav-link",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/experience.css :: .nav-link-copy small",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/experience.css :: .nav-link-mark",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/experience.css :: .onm-context-bar",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/experience.css :: .onm-grid-2",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/experience.css :: .onm-grid-3",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/experience.css :: .onm-toolbar",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/experience.css :: .side-nav",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/experience.css :: .side-nav nav",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/experience.css :: button",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/foundation.css :: .table th",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/human-work.css :: .hwp-collab-actions",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/human-work.css :: .hwp-context-columns",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/human-work.css :: .hwp-context-detail-list",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/human-work.css :: .hwp-context-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/human-work.css :: .hwp-focus",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/human-work.css :: .hwp-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/human-work.css :: .hwp-hero",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/human-work.css :: .hwp-row",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/human-work.css :: .hwp-row-action",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/human-work.css :: .hwp-work",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/human-work.css :: .hwp-work-actions",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/human-work.css :: .hwp-workbench",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/layout.css :: .app-main",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/layout.css :: .nav-link",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/layout.css :: .side-nav",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/layout.css :: .side-nav nav",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/layout.css :: .top-mobile",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/public.css :: .brand-lockup",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/public.css :: .brand-mark",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/public.css :: .public-hero",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/public.css :: .signin-brand",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/public.css :: .signin-card",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/public.css :: .signin-flow",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/public.css :: .signin-shell",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/public.css :: .signin-story",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/public.css :: .signin-story p",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/frontend/tokens.css :: button",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/global-nav.css :: .global-site-nav .global-mark",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/global-nav.css :: .global-site-nav .global-status",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/global-nav.css :: .global-site-nav .global-wordmark",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/notifications.css :: .live-bell",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/notifications.css :: .live-panel",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/notifications.css :: .live-toast-stack",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/operations-resource-views.css :: .operations-network-detail-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/operations-resource-views.css :: .operations-resource-loading",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/operations-resource-views.css :: .operations-resource-row-meta",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/operations-resource-views.css :: .operations-section-detail-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/operations-resource-views.css :: .operations-section-nav button",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/operations-resource-views.css :: .operations-section-queue-row b",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/operations-resource-views.css :: .operations-section-queue-row small",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/operations-surface.css :: .operations-surface-controls",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/operations-surface.css :: .operations-surface-controls button",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/operations-surface.css :: .operations-surface-footer",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/operations-surface.css :: .operations-surface-main",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/operations-surface.css :: .operations-surface-queue",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/operations-surface.css :: .operations-surface-sections button",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/operations-surface.css :: .operations-surface-workbench-slot",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/product-completion.css :: .journey-rail",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/product-completion.css :: .launch-contract",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/product-completion.css :: .launch-gate",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/product-completion.css :: .tph-first-outcome",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/product-completion.css :: .tph-first-outcome button",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/subscription.css :: .om-capacity-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/subscription.css :: .om-center-alert",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/subscription.css :: .om-center-alerts",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/subscription.css :: .om-center-next",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/subscription.css :: .om-editor-actions",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/subscription.css :: .om-editor-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/subscription.css :: .om-email-confirm",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/subscription.css :: .subscription-back",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/subscription.css :: .subscription-gift-row",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/subscription.css :: .subscription-plans",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/subscription.css :: .subscription-usage",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/tailwind.local.css :: :where(select:is([multiple]",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/tailwind.local.css :: button",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/tailwind.local.css :: img",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/tailwind.local.css :: sub",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/tailwind.local.css :: sup",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/tailwind.local.css :: textarea",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/tailwind.local.css :: video",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/tenant-marketplace.css :: .marketplace-card-foot",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/tenant-marketplace.css :: .marketplace-market-head",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/tenant-marketplace.css :: .marketplace-route",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/tenant-marketplace.css :: .marketplace-search",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/tenant-marketplace.css :: .marketplace-workspace-btn",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/tenant-product-experience.css :: .tph-card-head",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/tenant-product-experience.css :: .tph-card-head button",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/tenant-product-experience.css :: .tph-columns",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/tenant-product-experience.css :: .tph-head",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/tenant-product-experience.css :: .tph-head button",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation p",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-error",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-kicker",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-loading",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-modal",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-modal-card",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-next span",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-next strong",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-panel",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-panel small",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-panel span",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-panel strong",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-step",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-step span",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-step.complete",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-activation-step.current",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-attention button",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-center-alert",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-center-facts",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-center-track",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-editor-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-email-confirm",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .om-email-confirm .input",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .trust-badge",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .verification-access-state",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .verification-context b",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .verification-context span",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .verification-flow",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .verification-level",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .verification-note",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .verification-row",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .verification-row .input",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .verification-step-card.active-step",
+      "count": 2
+    },
+    {
+      "key": "public/assets/css/verification.css :: .verification-unified-head h3",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .account-detail-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .action-center-strip",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-brand h1",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-card",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-filters button",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-form-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-form-grid label.full",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-header",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-logo",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-lower",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-map",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-message-row",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-message-row .cockpit-primary",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-mission",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-primary",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-shell",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-signout",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-status-bar",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-status-bar b",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-status-bar>div",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-tools",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-workbench .dmc-body",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-workbench .dmc-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-workbench .dmc-head",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-workbench .dmc-head-actions",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .cockpit-workbench .dmc-tabs",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .command-icon",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .compact-account-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .ctx-action-row",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .ctx-detail-card h3",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .ctx-detail-card p",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .ctx-detail-kicker",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .ctx-list-item",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .ctx-list-item small",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .ctx-list-item span",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .ctx-list-item strong",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .ctx-list-item:hover",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .ctx-list-item.active",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .ctx-management-hint",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .ctx-management-hint span",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .ctx-workspace-head h2",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .ctx-workspace-head p",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dashboard-experience",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dashboard-modal-card",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-action b",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-back",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-camera-drop",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-camera-drop input",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-feedback",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-form",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-form input",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-form label",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-form select",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-form textarea",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-grid b",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-grid span",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-grid>div",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-head h2",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-head p",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-intelligence-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-next-action b",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-next-action span",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-object",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-object-head",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-object-head span",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-primary",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-proof-file",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-route article",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-route p",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-route small",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-route strong",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-section-head",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-shell",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-situation p",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-situation span",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-situation strong",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-state-pill",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-tabs button",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .dmc-tabs button.active",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .executor-cockpit",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .exp-main",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .exp-nav",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .exp-nav button",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .exp-side",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .exp-tools",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .exp-top",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .experience-logo span",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .experience-topbar-inner",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .find-box",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .home-section",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .insight-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .network-body",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .network-layout",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .network-list",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .object-card .ctx-facts",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .pulse-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .role-action-list",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .role-current-card",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .role-hero",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .role-hero-status",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .role-profile-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .role-queue-layout",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .role-rail",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .role-rail button",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .role-rail nav",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .role-rail-bottom",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .role-rail-brand",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .role-section-head",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .role-summary-grid b",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .role-summary-grid>button",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .role-tabs",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .role-topbar",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .success-btn",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .today-grid",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .topbar-icon",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .wb-card",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .wb-context-head",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .wb-pane",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .work-queue-item",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: .work-shell",
+      "count": 2
+    },
+    {
+      "key": "public/assets/ui/canonical-ui-system.css :: button",
+      "count": 2
+    }
+  ],
+  "byteIdenticalCssFiles": [],
+  "canonicalLayoutReferences": [
+    "public/app/index.html",
+    "public/driver/index.html",
+    "public/index.html",
+    "public/platform/access/admin/index.html"
+  ]
+}

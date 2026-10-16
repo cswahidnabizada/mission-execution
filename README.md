@@ -404,3 +404,7 @@ Release identity: 16.10.37. Product release lifecycle retains the governed **CRE
 ## 16.10.38 — Platform-wide layout convergence
 
 Release baseline: `16.10.38`. This release consolidates responsive structural layout across platform and tenant entry points, including the governed Market Factory, and preserves the canonical product release lifecycle including **CREATE NEXT VERSION**. It changes presentation contracts only; canonical authorities continue to own data, authorization, release state, and mission execution.
+
+## Current release candidate
+
+Version: 16.10.39 — Layout Inventory & Ownership Map. Product release workflow retains the governed **CREATE NEXT VERSION** path; published releases are immutable and changes flow through authorization, publication, verification, and rollback governance.
