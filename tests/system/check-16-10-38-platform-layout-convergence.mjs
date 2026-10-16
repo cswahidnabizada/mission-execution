@@ -4,7 +4,7 @@ const css=fs.readFileSync('public/assets/css/frontend/canonical-layout.css','utf
 const htmlFiles=['public/platform/access/admin/index.html','public/app/index.html','public/index.html','public/foryou/index.html','public/role-workspace.html','public/missions.html','public/subscription.html','public/verification.html','public/driver/dashboard.html','public/my-driver/index.html','public/driver/index.html'];
 for(const file of htmlFiles){
  const html=fs.readFileSync(file,'utf8');
- if(/frontend\/(tokens|foundation|components|layout|admin)\.css|admin-control\.css/.test(html)) assert.match(html,/canonical-layout\.css\?v=16\.10\.42/,`${file} must load the canonical layout after its component styles`);
+ if(/frontend\/(tokens|foundation|components|layout|admin)\.css|admin-control\.css/.test(html)) assert.match(html,/canonical-layout\.css\?v=16\.10\.43/,`${file} must load the canonical layout after its component styles`);
 }
 assert.match(css,/--om-layout-gap:/,'shared spacing token exists');
 assert.match(css,/\.marketplace-workspace[\s\S]*\.product-factory-workspace[\s\S]*\.publisher-workspace/,'market and release workspaces share layout contract');

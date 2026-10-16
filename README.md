@@ -415,7 +415,7 @@ Version: 16.10.39 — Layout Inventory & Ownership Map. Product release workflow
 The session-gated draft workspace is available at `/layout-studio.html`. Draft state is browser-local and publication is intentionally disabled pending canonical release lifecycle integration. See `docs/16.10.40-layout-studio.md`.
 
 
-## 16.10.42 — Layout Studio Draft Integrity Hardening
+## 16.10.43 — Layout Studio Draft Integrity Hardening
 
 - Server-side draft validation now aligns with the canonical composition schema and limits.
 - Draft identity is constrained consistently to `onmission.global.experience`.
