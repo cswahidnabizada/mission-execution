@@ -1,3 +1,37 @@
+# Mission Execution 16.10.32 — Adversarial End-to-End Certification & Existing Defect Repair
+
+Status: protected source candidate; **not deployed or production-certified by this package build**. This increment fixes a shared router defect that made Express-style `:parameter` string routes compare literally and return `API route not found`. It also reconciles organization counts against the same canonical active-organization definition and makes failed count reads unavailable rather than presenting a misleading zero.
+
+## Changes
+- Updated the shared router to match colon-parameter path segments exactly, decode safe values, reject malformed encoding and encoded slashes, and preserve static route matching. This repairs parameterized routes across objective operations and other worker modules without duplicating route handlers.
+- Added adversarial regression coverage for objective run reads, input, outcome reconciliation, approval decisions, nested pilot routes, exact path matching, empty parameters, and encoded-slash rejection.
+- Aligned Command Center organization metrics with the canonical `companies` authority, counting active organizations and joining management profiles only for compliance attributes.
+- Replaced the Control Plane's capped 100-row organization-list length as its total with an independent canonical active-organization count. If the count authority fails, the overview reports unavailable rather than false zero.
+- Made objectives without a persisted run display a disabled `NO RUN` state rather than an inert `OPEN` button.
+- Preserved the single-screen objective workspace, canonical authorization and step-up gates, idempotency, recovery semantics, and the full existing specialist navigation. No new workflow authority or database migration was introduced.
+
+## Existing blockers intentionally not fabricated away
+- The six required product configuration entries reported inactive in the supplied snapshot still need live canonical inspection and legitimate governed configuration. This source package does not activate them or invent policy/configuration records.
+- Germany logistics legal review, localized content review, release authorization, activation, and a real customer mission outcome remain unverified.
+- Live worker route health, production database counts, runtime certification, and end-to-end customer behavior require execution against the deployed Node 24.18.0/Cloudflare environment. No live success is claimed here.
+
+## Verification boundary
+- The focused adversarial route/count regression test and complete configured release gate are run during packaging.
+- Build/deploy and live runtime certification are separate gates; the packaging environment uses Node 22.16.0 while the project requires Node 24.18.0.
+- No production data, customer records, tenant resources, active market release, or database schema were changed. Migration high-water mark remains 0159.
+
+## Next steps
+1. Review/apply this source diff in the canonical GitHub checkout; preserve `.github/workflows`, secrets/configuration, and unrelated work. Do not replace the repository wholesale with this archive.
+2. Under Node 24.18.0, run `npm ci`, `npm run build`, `npm run check:release`, `npm run check:production-certification`, and deploy through the existing pipeline.
+3. Verify objective run read and all dynamic objective routes in the live Worker; verify counts against a direct canonical active-organization query.
+4. Inspect each inactive required product configuration in the canonical registry and resolve only through the existing governed authority.
+5. Continue the Germany logistics release lifecycle and controlled mission pilot only after real legal/content evidence and all launch gates are satisfied.
+
+Security → Truth → Liveness → Stability → Experience → Scale.
+Canonical journey: `OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE`.
+
+---
+
 # Mission Execution 16.10.31 — Single-Screen Objective Completion Workspace
 
 Status: protected source candidate; **not deployed or production-certified by this package build**. This release converges the existing objective command, persisted run, approvals, guided input, gap assessment, continuation, outcome verification and recovery controls into one focused workspace. Specialist platform surfaces remain available on demand. No competing workflow authority is introduced.

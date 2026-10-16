@@ -1,8 +1,8 @@
-# ON MISSION — Release 16.10.31
+# ON MISSION — Release 16.10.32
 
-The current source candidate is **16.10.31 — Single-Screen Objective Completion Workspace**. Start with the objective workspace to define the desired outcome, inspect persisted plans, submit missing input, review pending approvals, continue governed work and verify evidence. The broader Control Center, Market Factory, Product Factory, governance and recovery surfaces remain available under **Platform status and specialist workspaces**. Existing canonical authorities remain the only mutation and release authorities; publishing still follows the governed lifecycle, including **CREATE NEXT VERSION** for immutable release changes.
+The current source candidate is **16.10.32 — Adversarial End-to-End Certification & Existing Defect Repair**. It repairs the shared router’s colon-parameter matching so persisted objective runs and other parameterized worker routes resolve correctly, reconciles organization counts against canonical active organizations, and makes objectives without a persisted run explicit. The single-screen Objective Workspace remains the primary user path, with existing canonical authorities retaining all mutation, authorization, publication, and execution responsibilities. Immutable release changes continue through **CREATE NEXT VERSION**.
 
-This is a source candidate, not proof of production deployment or live Germany launch. Use Node 24.18.0 for the supported build and required runtime/recovery certification.
+This is a source candidate, not proof of production deployment or live Germany launch. Use Node 24.18.0 for the supported build and required runtime/recovery certification. The six inactive configuration entries and Germany legal/content/customer journey gates are not fabricated or bypassed.
 
 ---
 

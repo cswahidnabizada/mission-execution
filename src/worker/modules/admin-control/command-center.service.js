@@ -29,7 +29,7 @@ export async function getPlatformCommandCenter(env,filters={}){
   const scoped=where.length?`WHERE ${where.join(' AND ')}`:'';
 
   const [companies,countries,launches,configs,plans,reviews,activePolicies,operations,verification,latestLaunches,controlPlane,build,monitor]=await Promise.all([
-    observe('company_management',()=>canonicalFirst(env,`SELECT COUNT(*) count, SUM(CASE WHEN cmp.compliance_status='compliant' THEN 1 ELSE 0 END) compliant FROM company_management_profiles cmp ${scoped}`,binds,'admin.command_center.company_summary')),
+    observe('company_management',()=>canonicalFirst(env,`SELECT COUNT(DISTINCT c.id) count, SUM(CASE WHEN cmp.compliance_status='compliant' THEN 1 ELSE 0 END) compliant FROM companies c LEFT JOIN company_management_profiles cmp ON cmp.company_id=c.id WHERE c.deletion_status='active'${country?' AND cmp.country_code=?':''}${sector?' AND cmp.sector_code=?':''}`,binds,'admin.command_center.company_summary')),
     observe('product_country_catalog',()=>canonicalFirst(env,`SELECT COUNT(*) count FROM platform_product_country_catalog WHERE active=1`,[],'admin.command_center.product_country_summary')),
     observe('country_product_launch',()=>canonicalAll(env,`SELECT status,COUNT(*) count FROM country_product_launches ${country?'WHERE country_code=?':''} GROUP BY status`,country?[country]:[],'admin.command_center.launch_summary')),
     observe('platform_configuration',()=>canonicalAll(env,`SELECT domain_code,config_key,active,status,version,updated_at FROM platform_configuration_versions WHERE active=1 ORDER BY domain_code,config_key,version DESC`,[],'admin.command_center.configuration_summary')),

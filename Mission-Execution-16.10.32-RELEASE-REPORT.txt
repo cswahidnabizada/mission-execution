@@ -1,0 +1,46 @@
+ON MISSION — RELEASE 16.10.32
+Adversarial End-to-End Certification & Existing Defect Repair
+
+STATUS
+Protected source candidate. NOT deployed by this package build. The configured source release checks pass after the fixes described below, but production build, Cloudflare deployment, live API behavior, and real customer journey remain uncertified here.
+
+DEFECTS FOUND AND FIXED
+1. Parameterized router declarations used string patterns such as /api/platform/admin/objective-runs/:runId. The shared router compared strings literally, so valid requests could return API route not found. Fixed centrally in src/worker/core/router.js. All existing string route declarations with :parameter segments now use exact segment matching, safely decoded parameters, and reject malformed encodings / encoded slashes. This repairs the underlying router instead of adding duplicate objective-specific routes.
+2. Organization count disagreement came from different populations and a capped listing: the Control Plane derived the total from at most 100 listed rows, while the Command Center counted management profiles (including a different deletion-state scope). Both projections now count canonical active companies, and compliance data is joined only as an attribute. Failed count reads return unavailable/null instead of an inferred zero.
+3. Objectives without a persisted run displayed an inert OPEN button. They now display a disabled NO RUN state.
+
+WHAT CHANGED
+- Added tests/system/check-16-10-32-adversarial-end-to-end.mjs covering dynamic route parameters, nested paths, exact path matching, malformed/empty parameter rejection, encoded slash rejection, and organization-count consistency contracts.
+- Added the new regression test to npm run check:release.
+- Updated release identity to 16.10.32 and regenerated cache-busting references from VERSION.
+- Preserved the 16.10.31 one-screen objective workspace, canonical services, step-up authorization, evidence-gated completion, recovery model, and specialist workspaces.
+- No new workflow authority and no database migration/schema change.
+
+VERIFICATION
+PASS — focused 16.10.32 adversarial route/count regression.
+PASS — focused 16.10.31 objective workspace compatibility test.
+PASS — syntax checks on modified router, organization projections, and Command Center frontend.
+PASS — ZIP/source integrity will be recorded in the accompanying SHA-256 file.
+PASS — full configured npm run check:release (including cumulative historical gates, security, data integrity, schema/migrations, architecture convergence and release engineering).
+NOT RUN / NOT CLAIMED — Node 24.18.0 production build, CSS compilation, Cloudflare deploy, production API probe, runtime certification, recovery certification, and customer mission E2E. Packaging environment is Node 22.16.0 while .node-version and engines require Node 24.x.
+
+EXISTING BLOCKERS NOT FABRICATED AWAY
+- The six required product configuration entries reported inactive in the supplied snapshot remain unverified against the live canonical registry. This package does not activate them or create placeholder records.
+- Germany logistics legal review, customer-facing content review, authorization/publication/activation, and verified customer mission outcome remain unproven.
+- Live canonical organization totals and route health must be confirmed after deployment against the actual Worker and D1 environment.
+
+SAFETY
+No production data, customer records, tenant resources, active market release, billing state, or database schema were changed. Migration high-water mark remains 0159. Do not replace the canonical repository wholesale with this archive; preserve .github/workflows, secrets/configuration, and unrelated work when applying the reviewed diff.
+
+REMAINING
+1. Run npm ci, npm run build, npm run check:release, and npm run check:production-certification under Node 24.18.0.
+2. Apply the reviewed diff to the canonical GitHub checkout, preserving workflows and unrelated changes; deploy only through the existing release pipeline.
+3. Verify objective run read and dynamic objective routes against the deployed Worker, then compare both organization counts with a direct canonical active-company query.
+4. Inspect the six inactive configuration entries and resolve them through their existing governed authority.
+5. Complete Germany legal/content review, release lifecycle gates, controlled pilot, and independently verified mission outcome.
+
+PERMANENT PRIORITY
+Security → Truth → Liveness → Stability → Experience → Scale
+
+CANONICAL JOURNEY
+OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE

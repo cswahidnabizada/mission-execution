@@ -76,8 +76,29 @@ export class Router {
   }
 }
 
-function matchRoute(pattern,pathname){
-  if(typeof pattern==="string")return {matched:pattern===pathname,params:{}};
+export function matchRoute(pattern,pathname){
+  if(typeof pattern==="string"){
+    // Route declarations throughout the worker use Express-style `:param`
+    // segments. Match those segments centrally so every module gets identical,
+    // exact-path behavior instead of silently returning API route not found.
+    if(!pattern.includes(':'))return {matched:pattern===pathname,params:{}};
+    const params={};
+    const parts=pattern.split('/');
+    const actual=String(pathname).split('/');
+    if(parts.length!==actual.length)return {matched:false,params:{}};
+    for(let i=0;i<parts.length;i++){
+      const part=parts[i],value=actual[i];
+      if(part.startsWith(':')){
+        const key=part.slice(1);
+        if(!/^[A-Za-z][A-Za-z0-9_]*$/.test(key)||!value)return {matched:false,params:{}};
+        let decoded;
+        try{decoded=decodeURIComponent(value);}catch{return {matched:false,params:{}};}
+        if(!decoded||decoded.includes('/'))return {matched:false,params:{}};
+        params[key]=decoded;
+      }else if(part!==value)return {matched:false,params:{}};
+    }
+    return {matched:true,params};
+  }
   const match=pathname.match(pattern);
   return match?{matched:true,params:match.groups||{}}:{matched:false,params:{}};
 }

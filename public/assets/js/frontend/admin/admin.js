@@ -1,10 +1,10 @@
 /* ON Mission 10.79.0 — Super Admin bootstrap */
-import {renderAdminShell} from './shell.js?v=16.10.31';
-import { $, api, esc, state, primarySections, supportingSections, sections, platformLogout, login } from './admin-runtime.js?v=16.10.31';
-import {createAdminController} from './admin-controller.js?v=16.10.31';
-import {readExperienceContext} from '../core/experience-context.js?v=16.10.31';
-import {adminPanelRenderers,configureAdminPanelShow,refreshAdminData} from './panel-registry.js?v=16.10.31';
-import {setAdminShow} from './oversight/context.js?v=16.10.31';
+import {renderAdminShell} from './shell.js?v=16.10.32';
+import { $, api, esc, state, primarySections, supportingSections, sections, platformLogout, login } from './admin-runtime.js?v=16.10.32';
+import {createAdminController} from './admin-controller.js?v=16.10.32';
+import {readExperienceContext} from '../core/experience-context.js?v=16.10.32';
+import {adminPanelRenderers,configureAdminPanelShow,refreshAdminData} from './panel-registry.js?v=16.10.32';
+import {setAdminShow} from './oversight/context.js?v=16.10.32';
 
 let show;
 let shellApi=null;

@@ -7,6 +7,7 @@ export async function getControlPlane(env){
   // independently and reports a non-sensitive warning code to the Studio.
   const results=await Promise.all([
     safeAll(()=>env.DB.prepare(`SELECT c.id,COALESCE(cmp.legal_name,c.name) legal_name,cmp.trading_name,cmp.country_code,cmp.region_code,cmp.sector_code,cmp.organization_type,cmp.organization_size,cmp.compliance_status,cmp.status management_status,c.deletion_status,c.created_at FROM companies c LEFT JOIN company_management_profiles cmp ON cmp.company_id=c.id ORDER BY c.id DESC LIMIT 100`),'companies'),
+    safeFirst(()=>env.DB.prepare(`SELECT COUNT(*) count FROM companies WHERE deletion_status='active'`).first(),'companyCount'),
     safeAll(()=>env.DB.prepare(`SELECT code,name,active,requires_review,default_subscription_class FROM country_catalog WHERE active=1 ORDER BY name`),'countries'),
     safeAll(()=>env.DB.prepare(`SELECT code,name,active,requires_review,default_subscription_class FROM platform_product_country_catalog WHERE active=1 ORDER BY name`),'productCountries'),
     safeAll(()=>env.DB.prepare(`SELECT code,country_code,region_code,framework_code,data_residency_mode,effective_version,status FROM jurisdiction_policies WHERE status='active' ORDER BY country_code,code`),'jurisdictions'),
@@ -22,11 +23,11 @@ export async function getControlPlane(env){
     safeAll(()=>env.DB.prepare(`SELECT id,code,name,active FROM plans WHERE active=1 ORDER BY id`),'plans'),
     (async()=>{try{return {data:await listPlatformConfigurations(env),warning:null};}catch(error){console.error('ADMIN_CONTROL_PLANE_QUERY_FAILED','configurations',String(error?.message||error).slice(0,240));return {data:[],warning:'configurations'};}})()
   ]);
-  const [companies,countries,productCountries,jurisdictions,sectors,purposes,retention,residency,roles,audit,reviews,consentPolicies,lifecycleCounts,plans,configurations]=results;
+  const [companies,countries,productCountries,jurisdictions,sectors,purposes,retention,residency,roles,audit,reviews,consentPolicies,lifecycleCounts,plans,configurations,companyCount]=results;
   const lifecycle={}; for(const r of lifecycleCounts.data||[]) lifecycle[r.status]=Number(r.count||0);
   const warnings=results.map(x=>x.warning).filter(Boolean);
   return {
-    overview:{companyCount:companies.data.length,countryCount:countries.data.length,productCountryCount:productCountries.data.length,pendingReviews:Number(reviews.data?.count||0),organizationLifecycle:lifecycle},
+    overview:{companyCount:companyCount.warning?null:Number(companyCount.data?.count||0),countryCount:countries.warning?null:countries.data.length,productCountryCount:productCountries.warning?null:productCountries.data.length,pendingReviews:reviews.warning?null:Number(reviews.data?.count||0),organizationLifecycle:lifecycle},
     companies:companies.data,countries:countries.data,productCountries:productCountries.data,jurisdictions:jurisdictions.data,sectors:sectors.data,purposes:purposes.data,retention:retention.data,residency:residency.data,roles:roles.data,audit:audit.data,
     configurations:configurations.data,
     plans:plans.data,
