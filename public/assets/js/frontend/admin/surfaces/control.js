@@ -1,10 +1,10 @@
 /* ON Mission 10.82.0 — CONTROL surface composition. Admin orchestrates; authorities own truth. */
-import { renderControlCenter } from '../oversight/product-factory.js?v=16.10.43';
-import { renderPlatformCenter } from '../oversight/product-studio.js?v=16.10.43';
-import { renderCertification } from '../certification.js?v=16.10.43';
-import { api, esc } from '../admin-runtime.js?v=16.10.43';
-import { navigate } from '../oversight/context.js?v=16.10.43';
-import { renderHumanPlatformStudio } from '../human-platform-studio.js?v=16.10.43';
+import { renderControlCenter } from '../oversight/product-factory.js?v=16.10.44';
+import { renderPlatformCenter } from '../oversight/product-studio.js?v=16.10.44';
+import { renderCertification } from '../certification.js?v=16.10.44';
+import { api, esc } from '../admin-runtime.js?v=16.10.44';
+import { navigate } from '../oversight/context.js?v=16.10.44';
+import { renderHumanPlatformStudio } from '../human-platform-studio.js?v=16.10.44';
 
 export const controlSurface = Object.freeze({
   overview: renderControlCenter,

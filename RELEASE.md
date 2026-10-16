@@ -1,53 +1,48 @@
-# Mission Execution 16.10.43 — Canonical Experience Registry Bridge
+# Mission Execution 16.10.44 — Layout Studio Experience Workspace + Control Plane Convergence
 
-Status: protected candidate; production certification pending.
+Status: protected candidate; production build and runtime certification pending.
 
-## Scope
+## Baseline
 
-16.10.43 adds a Super Admin-authorized Layout Studio registry endpoint and a registry workspace for explicit source-route inventory and approved Studio component types. It builds on the user-confirmed deployed 16.10.42 baseline.
+Built from the 16.10.43 Canonical Experience Registry candidate, which follows the user-confirmed deployment of 16.10.42. This release redesigns the Layout Studio shell toward the approved target concept and applies a visual convergence layer to the Super Admin control plane.
 
 ## What changed
 
-- Added `GET /api/platform/admin/layout-studio/registry`, protected by the platform administrator requirement.
-- Added a curated route map for the public homepage, registration, invitation acceptance, executor dashboard, missions, tenant app, and Layout Studio.
-- Added a typed Studio component catalogue with explicitly marked `STUDIO_PREVIEW_ONLY` status.
-- Added a Page & Component Registry tab showing source route, source file, editability status, renderer-binding status, and the remaining integration boundary.
-- Explicitly reports `rendererBinding: NOT_CONNECTED`, `editability: INSPECT_ONLY`, and `publicationEnabled: false`. It does not claim live route/render parity or enable publishing.
-- Refined responsive registry UI styles, cache-busting identities, release metadata, and cumulative release checks.
-- No database migration and no production state mutation are introduced.
+- Added a product-style Layout Studio header with breadcrumb, market selector and environment selector.
+- Reworked workspace sizing, navigation tabs, canvas, component tree, inspector, cards and responsive breakpoints to align with the approved final Layout Studio visual concept.
+- Added a consistent Super Admin control-plane visual convergence layer for navigation, cards, workspace headers and responsive behavior.
+- Added a focused release contract test and retained historical Layout Studio tests as cumulative gates.
+- Preserved server-owned drafts and revision protection from previous releases.
+- Preserved strict boundary: registry entries remain inspect-only until canonical renderers are actually connected and certified; publication remains disabled; Production selector is informational/read-only and does not switch runtime environment.
+- No database migration or production data mutation is included.
 
 ## Completed in this candidate
 
-- Source-confirmed route inventory is exposed through a Super Admin-authorized API.
-- Studio component type definitions and current preview-only status are visible in the workspace.
-- The registry API and UI are guarded by a release contract test.
-- Existing draft integrity, canonical architecture, security, mission lifecycle, Market Factory and historical compatibility checks remain in the cumulative release suite.
+- Layout Studio visual shell redesign and responsive styling.
+- Market/environment context controls are present in the UI; they do not independently change backend scope or deploy target.
+- Super Admin shared visual consistency layer.
+- Focused contract test for the new workspace shell and publication boundary.
 
-## Verification
+## Remaining
 
-- PASS: `npm run check:release` on Node.js 22.16.0; the full configured cumulative regression suite completed successfully.
-- PASS: focused Layout Studio registry, draft-integrity, server-draft compatibility and prior Layout Studio contracts.
-- PASS: JavaScript syntax checks for the modified Layout Studio client and route module.
-- PASS: generated runtime release identity and release cleanliness/version convergence.
-- BLOCKED: `npm run build`; the environment gate requires Node.js 24.18.0 (`.node-version` and `.nvmrc`), while this environment has Node.js 22.16.0. CSS compilation did not run.
-- NOT TESTED: live browser, live D1, deployed authorization, accessibility, real route/render parity, publication, rollback and production deployment.
+- Run build and CSS compilation under Node.js 24.18.0.
+- Browser test responsive layout, keyboard navigation, contrast, and all critical editor interactions.
+- Integrate actual canonical page/component renderers and prove real-route parity.
+- Connect immutable publication through the existing release lifecycle and Market Factory.
+- Complete real deployment verification, step-up authorization, market scope, activation, evidence and rollback certification.
+- Certify end-to-end Germany logistics mission journey and preserve all mission-core authority boundaries.
 
-## Remaining roadmap
+## Verification status
 
-1. Run `npm ci`, `npm run build`, and full release checks using Node.js 24.18.0; fix every failure without bypassing gates.
-2. Bind supported page compositions to actual canonical page renderers and real component definitions; prove preview/route parity.
-3. Integrate immutable publication through the existing canonical release lifecycle and Market Factory.
-4. Add dependency snapshots, step-up authorization, release evidence, verified activation, and compatible rollback.
-5. Certify browser behavior, responsive layouts, accessibility, authorization, concurrency, D1 failure recovery and a controlled end-to-end Germany logistics mission.
-
-## Release decision
-
-16.10.43 is a source candidate, not approved for production deployment. Keep publication disabled and preserve the deployed 16.10.42 baseline until required build, runtime, security and release gates pass.
-
-## Canonical mission journey
-
-OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE
+- Focused Layout Studio 16.10.44 contract: PASS on available Node.js 22.16.0.
+- Historical Layout Studio contract tests: individually revalidated where recorded in the release process.
+- Full cumulative release suite: not yet fully certified; legacy release inventory gate required a compatibility update and suite execution is being continued.
+- Production build/CSS compilation: BLOCKED by runtime requirement (Node.js 24.18.0; available runtime 22.16.0).
+- Live browser, accessibility, production integration and rollback: NOT TESTED.
+- Deployment: NOT PERFORMED.
 
 ## Permanent priorities
 
-Security → Truth → Liveness → Stability → Experience → Scale
+Security → Truth → Liveness → Stability → Experience → Scale.
+
+Canonical mission journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.

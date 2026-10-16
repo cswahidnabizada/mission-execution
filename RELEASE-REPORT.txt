@@ -1,37 +1,39 @@
-ON MISSION 16.10.43 — Canonical Experience Registry Bridge
-Release type: Source candidate; additive application changes; no database migration; publication remains disabled.
-Baseline: 16.10.42 (user-confirmed deployed); source input: 16.10.42.
+ON MISSION 16.10.44 — Layout Studio Experience Workspace + Super Admin Control Plane Convergence
+Release type: Source candidate; no database migration; publication remains disabled.
+Baseline: 16.10.43 source candidate (16.10.42 was user-confirmed deployed; do not infer deployment of 16.10.43 or 16.10.44).
 
 WHAT CHANGED
-- Added Super Admin-authorized GET /api/platform/admin/layout-studio/registry.
-- Added a curated source-route map for homepage, registration, invitation acceptance, executor dashboard, missions, tenant app, and Layout Studio.
-- Added a component catalogue with explicit STUDIO_PREVIEW_ONLY status.
-- Added Page & Component Registry tab, route/source mapping, editability and renderer status, registry refresh, and responsive registry UI styling.
-- Deliberately reports editability=INSPECT_ONLY, rendererBinding=NOT_CONNECTED, and publicationEnabled=false. The UI does not claim production renderer integration or enable publishing.
-- Updated release identity, cache-busting references, manifest and cumulative release checks.
+- Delivered the final Layout Studio workspace shell aligned to the approved target design: compact product header, breadcrumb, market/environment selectors, page/component/design-system/market/release tabs, three-column editor layout, responsive preview controls, properties inspector and explicit draft-only publication boundary.
+- Added page and component registry inspection with route/source mapping, editability and renderer status; currently marked INSPECT_ONLY / NOT_CONNECTED where canonical runtime renderers are not wired.
+- Added draft editing surfaces for approved component properties, design-token values, page composition and market variants; server draft save and version history use existing governed API endpoints.
+- Kept publication explicitly blocked. Preview remains representative and does not claim actual route/render parity.
+- Applied a visual convergence layer to Super Admin Control Plane: consistent spacing, navigation hierarchy, workspace headers, cards, focus states and responsive Layout Studio behavior. No new authority or parallel release lifecycle introduced.
+- Regenerated browser cache-busting references and runtime release identity to canonical version 16.10.44.
 - No database migration or production data mutation.
 
-VERIFICATION STATUS
-- PASS: full configured npm run check:release suite on Node.js 22.16.0.
+VERIFICATION
+- PASS: Layout Studio 16.10.44 focused contract test on Node.js 22.16.0.
 - PASS: 16.10.43 registry contract.
-- PASS: draft-integrity, server-draft compatibility, previous Layout Studio contracts.
-- PASS: modified client and server route JavaScript syntax checks.
-- PASS: generated runtime release identity and release cleanliness/version convergence.
-- BLOCKED: npm run build due to environment mismatch. Required Node.js 24.18.0; available Node.js 22.16.0. CSS compilation did not run.
-- NOT TESTED: live browser, live D1, deployed authorization, accessibility, route/render parity, publication, rollback, production deployment.
+- PASS: 16.10.42 draft-integrity contract.
+- PASS: 16.10.41 server-draft compatibility contract.
+- PASS: release integrity check.
+- BLOCKED: full cumulative release suite. It progressed through several current checks but stopped at an older runtime-certification test that expects a specific legacy phrase in RELEASE-REPORT.txt. This is a release-test compatibility failure, not a passed full suite; it must be reconciled without weakening the certification requirement.
+- BLOCKED: production build and CSS compilation. Required Node.js 24.18.0; available environment is Node.js 22.16.0.
+- NOT TESTED: live browser, responsive/a11y behavior, live D1 integration, route-render parity, authorization in deployed runtime, publish, activation, rollback, or production deployment.
 
 REMAINING ROADMAP
-1. Run npm ci, npm run build and cumulative checks on Node.js 24.18.0.
-2. Connect real page/component registries to canonical renderers and prove preview/route parity.
-3. Integrate immutable publication through existing release lifecycle and Market Factory.
+1. Run npm ci, npm run build, and npm run check:release under Node.js 24.18.0; reconcile the legacy release-report contract correctly.
+2. Connect the actual canonical page/component registries to the production renderers and prove preview/route parity.
+3. Integrate immutable publication through the existing release lifecycle and Market Factory; keep publication disabled until this is certified.
 4. Add dependency snapshots, step-up authorization, evidence, verified activation and rollback.
-5. Certify browser, responsive, accessibility, authorization, D1 concurrency/failure recovery and end-to-end Germany logistics mission.
+5. Browser-certify responsive layout, keyboard navigation, accessibility, error/loading/empty states, D1 concurrency/failure recovery and the Germany logistics mission journey.
+6. Deploy only after all required gates pass; retain the last user-confirmed production baseline until then.
 
 RELEASE DECISION
-16.10.43 is a source candidate, not approved for production deployment. Keep publication disabled and preserve 16.10.42 until all required gates pass.
-
-CANONICAL JOURNEY
-OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE
+16.10.44 is a source candidate, not approved for production deployment. No deployment was performed by this build process. Preserve the last user-confirmed production baseline and do not enable publication.
 
 PERMANENT PRIORITIES
-Security → Truth → Liveness → Stability → Experience → Scale
+Security -> Truth -> Liveness -> Stability -> Experience -> Scale.
+
+CANONICAL MISSION JOURNEY
+OBSERVE -> UNDERSTAND -> PLAN -> EVALUATE -> ACCEPT -> AUTHORIZE -> PREPARE -> ASSIGN -> EXECUTE -> EFFECT -> VERIFY -> RECOVER -> OUTCOME -> LEARN -> NEXT SITUATION -> OBSERVE.
