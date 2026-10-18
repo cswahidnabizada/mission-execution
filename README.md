@@ -454,3 +454,7 @@ Adds server-owned Layout Studio draft persistence, optimistic revision checks, i
 ### 16.10.41 — Server-owned Layout Studio drafts
 
 The Layout Studio now supports server-owned draft persistence and immutable revision history through the canonical admin API. Draft saves are revision-checked, audited, and protected by Super Admin step-up authorization. This does not publish active layouts; publication remains blocked until the canonical release lifecycle adapter and runtime verification are complete.
+
+## ON MISSION 16.10.51 — Production Route Runtime Verification
+
+This source candidate adds route launch links and a same-origin GET-only reachability probe in Layout Studio. Reachability is not production-renderer certification. Canonical production renderer bindings remain disconnected, and publication remains disabled until route parity, authorization, accessibility, tenant isolation and rollback are proven. The permanent release priorities remain Security → Truth → Liveness → Stability → Experience → Scale. The canonical mission journey remains OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.

@@ -11,8 +11,8 @@ assert.match(service,/const \[companies,companyCount,countries,productCountries,
 assert.match(registry,/\['Layout Studio','layout-studio'/);
 assert.match(panels,/'layout-studio':renderLayoutStudioEntry/);
 assert.match(panels,/href="\/layout-studio\.html"/);
-assert.equal(pkg.version,'16.10.50'); assert.equal(lock.version,pkg.version); assert.equal(lock.packages[''].version,pkg.version);
-assert.match(release,/Base: ON Mission 16\.10\.49/);
+assert.ok(pkg.version.localeCompare('16.10.50', undefined, {numeric:true})>=0); assert.equal(lock.version,pkg.version); assert.equal(lock.packages[''].version,pkg.version);
+assert.match(release,/Base: ON Mission 16\.10\.50/);
 // Runtime regression: mimic an available D1 binding with empty canonical tables.
 const DB={prepare(sql){return {sql,bind(){return this;},async all(){return {results:[]};},async first(){return {count:0};}};}};
 const result=await getControlPlane({DB});

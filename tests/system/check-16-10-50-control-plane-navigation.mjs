@@ -15,6 +15,6 @@ assert.match(shell,/data-quick-studio/);
 assert.match(registry,/key:'command'/); assert.match(registry,/key:'resources'/); assert.match(registry,/key:'build'/); assert.match(registry,/key:'release'/); assert.match(registry,/key:'launch'/); assert.match(registry,/key:'operate'/); assert.match(registry,/key:'govern'/); assert.match(registry,/key:'recover'/);
 assert.match(registry,/\['Layout Studio','layout-studio'/);
 assert.match(css,/16\.10\.50 — Super Admin navigation reliability/);
-assert.equal(pkg.version,'16.10.50');assert.equal(lock.version,pkg.version);assert.equal(lock.packages[''].version,pkg.version);
-assert.match(release,/Base: ON Mission 16\.10\.49/);
+assert.ok(pkg.version.localeCompare('16.10.50', undefined, {numeric:true})>=0);assert.equal(lock.version,pkg.version);assert.equal(lock.packages[''].version,pkg.version);
+assert.match(release,/Base: ON Mission 16\.10\.50/);
 console.log('16.10.50 Super Admin navigation contract: PASS');

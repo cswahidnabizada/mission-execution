@@ -1,4 +1,44 @@
-# Mission Execution 16.10.50 — Super Admin Navigation Reliability + Control Plane UX
+# Mission Execution 16.10.51 — Production Route Runtime Verification
+
+Status: protected candidate; production build and live browser certification required.
+
+Base: ON Mission 16.10.50
+
+## Objective
+
+Advance the final Layout Studio route-by-route with direct access to actual application routes and a safe same-origin response probe, while keeping production composition publication disabled until canonical renderer bindings and parity evidence are certified.
+
+## Findings and remediation
+
+1. **P1 — routes were difficult to inspect from Layout Studio:** added a direct “Open live route” action for each source-mapped route.
+2. **P1 — route reachability lacked a simple operator check:** added a same-origin, credentialed GET-only probe that reports HTTP status and content type. It never submits forms or mutates mission data; the UI explicitly warns that reachability is not renderer or security certification.
+3. **P1 — certification inventory omitted key journey routes:** added organization setup and mission workspace entries while retaining registration, homepage and executor workspace mapping.
+4. **P1 — active release identity:** updated package, lockfile, VERSION, manifest, renderer/adapter versions and active asset cache keys to 16.10.51.
+5. **P0 — production safety boundary preserved:** canonical production renderer bindings remain NOT_CONNECTED; drafts do not affect active production; publication remains disabled.
+
+## Verification status
+
+- Focused 16.10.51 route runtime verification contract: PASS.
+- Complete configured `npm run check:release`: must be recorded from this candidate's final run.
+- Production build and CSS compilation: pending required Node.js 24.x build environment.
+- Live route probes, browser rendering, authorization, tenant isolation, accessibility, preview parity and rollback: not tested by this source build.
+
+## Next acceptance gates
+
+- Run `npm run build` and the full release/certification pipeline in the deployment environment.
+- Open and verify homepage, registration, organization setup, mission workspace and executor workspace in a real browser.
+- Connect each page to a canonical renderer through a route-specific, explicitly authorized composition slot; do not replace canonical business behavior.
+- Prove responsive parity and critical interactions before publication.
+- Integrate immutable release activation and rollback through the existing canonical release lifecycle and Market Factory.
+
+Permanent release priorities: Security → Truth → Liveness → Stability → Experience → Scale.
+
+Canonical mission journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+
+---
+
+## Historical release record
+
 
 Status: protected candidate; production build and live browser certification required.
 
