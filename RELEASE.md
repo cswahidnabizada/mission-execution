@@ -1,3 +1,50 @@
+# Mission Execution 16.10.52 — Canonical Composition & Editor Convergence
+
+Status: protected candidate; production build and live browser certification required.
+
+Base: ON Mission 16.10.51
+
+## Objective
+
+Converge Layout Studio's page tree, selected component, properties inspector and draft preview on one page composition model. Improve safe local editing, undo/redo, visible draft state and server-owned save access while keeping production publication disabled.
+
+## Findings and remediation
+
+1. **P0 — page selection was not durable across rerenders:** added explicit active-page state and synchronized the page list, page selector, layer list and preview.
+2. **P1 — component inventory disagreed with page composition:** the editor now distinguishes components placed on the current page from unplaced reusable components; adding a component places it on the active page, and an unplaced component can be placed deliberately.
+3. **P1 — no global save and local history controls:** added an editor workbar with dirty-state/revision status, Undo, Redo and Save Draft across Studio tabs. Server saves use the existing step-up-protected API, expected revision and immutable version history.
+4. **P1 — selection was not visible in the canvas:** the preview renderer now marks the selected component so selection is synchronized between the tree and preview.
+5. **P1 — market selection did not affect the preview:** the selected market variant is applied to supported existing component properties for draft preview only; no production assets or live market release are mutated.
+6. **P2 — release identity was stale:** renderer, route metadata, package, lockfile, VERSION and manifest are converged to 16.10.52; the deterministic release generator refreshes asset cache keys.
+7. **P0 — production publication boundary preserved:** actual production route bindings and parity remain uncertified. Publication remains disabled.
+
+## Verification status
+
+- Focused 16.10.52 canonical composition/editor convergence contract: PASS.
+- Focused Layout Studio and Control Plane compatibility contracts: PASS.
+- Complete configured release suite: NOT COMPLETED within the available execution window; the cumulative command exceeded 300 seconds. Do not treat this as a PASS. The focused Layout Studio/Control Plane contracts and listed architecture/security/schema gates passed.
+- JavaScript syntax checks for the modified Layout Studio editor and renderer: PASS.
+- Production build/CSS compilation: requires pinned Node.js 24.18.0 environment; local environment uses Node.js 22.16.0 and is expected to stop at the enforced environment gate.
+- Live browser parity, authorization, tenant isolation, accessibility and rollback: not established by source-level tests; require deployed runtime evidence.
+
+## Acceptance gates
+
+- Switch among all pages and verify page state, layers, selected component and preview stay synchronized.
+- Add a component and confirm it is placed on the active page; verify unplaced components are explicit.
+- Edit properties and verify the selected preview component updates.
+- Verify Undo/Redo and unsaved status across tabs.
+- Save a draft with Super Admin step-up, reload it, and test revision conflict handling; active production must remain unchanged.
+- Verify DE/Global preview selection only changes the draft preview and does not publish market content.
+- Build and run the complete release/certification pipeline with Node.js 24.18.0 before deployment.
+
+Permanent priorities: Security → Truth → Liveness → Stability → Experience → Scale.
+
+Canonical mission journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+
+---
+
+## Historical release records
+
 # Mission Execution 16.10.51 — Production Route Runtime Verification
 
 Status: protected candidate; production build and live browser certification required.
@@ -127,7 +174,7 @@ Advance Layout Studio toward real production-renderer integration by making prod
 - Layout Studio 16.10.46 impact contract: PASS.
 - Canonical preview renderer contract: PASS.
 - Layout Studio workspace/draft compatibility contracts: PASS.
-- JavaScript syntax checks: PASS.
+- JavaScript syntax checks for the modified Layout Studio editor and renderer: PASS.
 - Cumulative `npm run check:release`: PASS on Node.js 22.16.0; the full configured source-contract and regression sequence completed. This does not substitute for production build or live runtime certification.
 - Production build/CSS: BLOCKED in this environment: Node.js 22.16.0 is installed; `.nvmrc` requires Node.js 24.18.0. Dependencies are not installed in this environment, so `npm ci`/CSS compilation was not run.
 

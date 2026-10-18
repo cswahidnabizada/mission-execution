@@ -1,3 +1,17 @@
+# ON MISSION — Release 16.10.52
+
+This source candidate converges Layout Studio's active page, placed component layers, inspector and draft preview on one composition model. It adds clear unplaced-component handling, selected-component highlighting, local Undo/Redo, dirty-state visibility, a persistent Save Draft action using the existing step-up protected server API, and draft-only market variant preview. It does not connect production renderers or enable publication; route parity, accessibility, authorization and rollback still require runtime certification. Product releases continue through the existing **CREATE NEXT VERSION** lifecycle.
+
+## 16.10.52 — Canonical Composition & Editor Convergence
+
+- Page selection persists across editor rerenders and drives the active page tree and preview.
+- The component tree distinguishes page layers from reusable but unplaced components.
+- Adding a component places it in the active page composition; selecting an unplaced component places it deliberately.
+- The editor workbar exposes local dirty state, server revision, Undo, Redo and Save Draft on all Studio tabs.
+- Save Draft continues to use the canonical Super Admin step-up API and optimistic expected-revision guard.
+- Selected component highlighting and market content overrides affect draft preview only.
+- Production publication remains disabled until canonical renderer parity and release verification are certified.
+
 # ON MISSION — Release 16.10.50
 
 This candidate fixes a Control Plane response assembly defect that caused the authenticated `/api/platform/admin/control-plane` endpoint to return HTTP 500. It also adds Layout Studio to the Super Admin GOVERN navigation and command-palette workspace index, with a direct entry panel to the full-screen Studio. The canonical release lifecycle remains authoritative; production publication remains disabled pending real renderer parity, build certification and runtime verification.

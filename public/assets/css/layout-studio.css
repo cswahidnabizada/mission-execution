@@ -17,3 +17,7 @@
 
 /* 16.10.51 route runtime verification controls */
 .ls-route-actions{display:flex;flex-wrap:wrap;gap:.4rem;margin:.55rem 0}.ls-route-actions .ls-btn{font-size:.72rem;padding:.45rem .6rem;text-decoration:none}.ls-route-probe{display:block;max-width:26rem;margin:.35rem 0;color:var(--ls-muted,#65718a);font-size:.72rem;line-height:1.45}.ls-route-probe[data-result=reachable]{color:#18794e}.ls-route-probe[data-result=failed]{color:#b42318}
+
+/* 16.10.52 — canonical composition editing and visible draft state */
+.ls-workbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 12px;margin:0 0 12px;background:#fff;border:1px solid #dce4ef;border-radius:10px;color:#52617a;font-size:11px}.ls-workbar [data-dirty=true]{color:#8a4b08;font-weight:800}.ls-workbar .ls-actions{margin:0}.ls-workbar button:disabled{opacity:.45;cursor:not-allowed}.ls-tree-group{margin-top:7px;padding:7px 4px 3px;color:#65718a;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border-top:1px solid #edf1f7}.ls-tree-group:first-child{border-top:0}.ls-selected-component{outline:2px solid #4f7df3!important;outline-offset:3px;border-radius:5px;position:relative}.ls-renderer-page{gap:14px}.ls-preview[data-size=mobile]{min-height:540px}.ls-preview[data-size=tablet]{min-height:580px}.ls-callout{line-height:1.55}
+@media(max-width:760px){.ls-workbar{align-items:flex-start;flex-direction:column}.ls-workbar .ls-actions{width:100%}.ls-workbar .ls-actions button{flex:1}}

@@ -1,5 +1,5 @@
 /* ON Mission 16.0.0 — Governed Demo Product workspace. */
-import {api,esc} from './admin-runtime.js?v=16.10.51';
+import {api,esc} from './admin-runtime.js?v=16.10.52';
 let state={product:null,tenants:[],selectedTenant:'',scenario:null};
 const $=s=>document.querySelector(s);
 async function load(){

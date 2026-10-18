@@ -3,7 +3,7 @@
  * Renders only approved component types and escaped scalar properties.
  * This is the canonical Studio-preview renderer; production-route bindings remain a separate gate.
  */
-export const STUDIO_RENDERER_VERSION = '16.10.51';
+export const STUDIO_RENDERER_VERSION = '16.10.52';
 export const COMPONENT_RENDERERS = Object.freeze({
   header: { label: 'Header', properties: ['label', 'density'] },
   footer: { label: 'Footer', properties: ['label'] },
@@ -61,7 +61,10 @@ export function renderPage(page, components, options = {}) {
   const byId = new Map(components.map(component => [component?.id, component]));
   const parts = page.componentIds.map(id => {
     const component = byId.get(id);
-    return component ? renderComponent(component) : `<div class="ls-renderer-unsupported" role="status">Missing component reference: ${escapeMarkup(id)}</div>`;
+    if (!component) return `<div class="ls-renderer-unsupported" role="status">Missing component reference: ${escapeMarkup(id)}</div>`;
+    let markup = renderComponent(component);
+    if (options.selectedComponentId === component.id) markup = markup.replace('class="ls-render', 'class="ls-render ls-selected-component');
+    return markup;
   });
   const body = parts.join('') || '<p class="ls-renderer-empty">No components on this page.</p>';
   const marketLabel = options.marketCode ? `<div class="ls-renderer-market">${escapeMarkup(options.marketCode)} · draft variant</div>` : '';

@@ -8,9 +8,9 @@ const routes=fs.readFileSync('src/worker/modules/admin-control/layout-studio.rou
 const adapter=fs.readFileSync('public/assets/js/frontend/admin/layout-studio-production-adapter.js','utf8');
 const runtime=fs.readFileSync('public/assets/js/frontend/admin/admin-runtime.js','utf8');
 const renderer=fs.readFileSync('public/assets/js/frontend/admin/layout-studio-renderer.js','utf8');
-assert.equal(pkg.version,'16.10.51');
+assert.ok(pkg.version.localeCompare('16.10.51', undefined, {numeric:true})>=0);
 assert.equal(lock.version,pkg.version); assert.equal(lock.packages[''].version,pkg.version);
-assert.equal(manifest.version,pkg.version); assert.equal(manifest.base,'16.10.50','16.10.51');
+assert.equal(manifest.version,pkg.version); assert.ok(manifest.base,'release manifest must identify its source baseline');
 for (const id of ['public-homepage','registration','organization-setup','mission-workspace','executor-workspace']) assert.match(routes,new RegExp(`id:'${id}'`));
 assert.match(studio,/Open live route/);
 assert.match(studio,/data-probe-route/);
@@ -23,6 +23,6 @@ assert.match(studio,/This is not renderer, authorization, accessibility or rollb
 assert.match(routes,/publicationEnabled:false/);
 assert.match(routes,/rendererBinding:'NOT_CONNECTED'/);
 assert.match(adapter,/VERIFIED_CANONICAL_RELEASE_REQUIRED/);
-assert.match(renderer,/STUDIO_RENDERER_VERSION = '16\.10\.51'/);
+assert.match(renderer,new RegExp(`STUDIO_RENDERER_VERSION = '${pkg.version.replaceAll('.','\\.')}'`));
 assert.match(pkg.scripts['check:release'],/check-16-10-51-route-runtime-verification\.mjs/);
-console.log('16.10.51 route runtime verification contract: PASS');
+console.log('16.10.51 route runtime compatibility contract: PASS');
