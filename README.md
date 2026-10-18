@@ -1,3 +1,7 @@
+# ON MISSION — Release 16.10.49
+
+This candidate fixes a Control Plane response assembly defect that caused the authenticated `/api/platform/admin/control-plane` endpoint to return HTTP 500. It also adds Layout Studio to the Super Admin GOVERN navigation and command-palette workspace index, with a direct entry panel to the full-screen Studio. The canonical release lifecycle remains authoritative; production publication remains disabled pending real renderer parity, build certification and runtime verification.
+
 ## 16.10.48 — Production Route Adapter Foundation
 
 Route adapters are wired into the public homepage, registration, and canonical application workspace entry points. They preserve existing route rendering and deny composition activation until a canonical immutable verified release and route renderer certification exist. Publication remains disabled.

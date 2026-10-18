@@ -1,41 +1,29 @@
-ON MISSION 16.10.48 — Production Route Adapter Foundation
-Release type: Source candidate; production certification pending.
-Base: ON MISSION 16.10.47 source candidate.
+ON MISSION 16.10.49 — Control Plane Recovery + Layout Studio Navigation
 
-PURPOSE
-Connect real application entry points to an explicit Layout Studio route-adapter boundary while preserving each canonical renderer and all existing business/mission behavior. The adapter marks the route context and refuses to apply drafts or any unverified release.
+Base: 16.10.48
+Status: source candidate; do not deploy until production build gate passes.
 
-WHAT CHANGED
-- Added a shared production-route adapter module with allowlisted route resolution for public homepage, registration, organization setup, mission workspace, executor workspace, and tenant workspace.
-- Wired the adapter into the actual homepage, registration, and canonical application workspace entry points. It only adds route metadata and observes navigation; it does not replace page content, form handlers, authentication, tenant context, mission state, or action behavior.
-- Added a strict activation boundary requiring an immutable VERIFIED release from the canonical release lifecycle and an explicitly certified route renderer. The current adapter intentionally refuses activation because route renderer parity is not yet certified.
-- Updated Layout Studio route certification to distinguish installed adapters from certified production renderers.
-- Updated Super Admin Layout Studio route panel metrics to show installed route adapters rather than mislabel them as connected renderers.
-- Added 16.10.48 focused contract test and updated release identity/cache references.
-- No database migration, production data change, deployment, or publication activation was performed.
+Implemented
+- Fixed a fatal result-order mismatch in getControlPlane(): the 16 Promise.all results are now destructured in the same order as the query definitions. The prior code left companyCount undefined during response assembly, explaining the reported HTTP 500.
+- Added a focused runtime regression test using a D1-compatible mock, asserting a stable response and array-shaped projections.
+- Registered Layout Studio under Super Admin → GOVERN so it appears in the sidebar workspace list and local command-palette search.
+- Added a Control Plane entry panel with direct links to /layout-studio.html and its production-route certification section.
+- Updated release version, active cache keys, renderer and route-certification identities to 16.10.49.
+- Preserved server authorization, canonical release lifecycle, tenant/mission authorities, and publication-disabled safety boundary. No database migration or production mutation was added.
 
-VERIFICATION
-- PASS: 16.10.48 production route adapter contract.
-- PASS: complete configured `npm run check:release` under the available Node.js 22.16.0 runtime.
-- PASS: JavaScript syntax checks for all modified route entry points and adapter module.
-- BLOCKED: production build/CSS compilation because installed Node.js is 22.16.0 while project requires 24.18.0; the build environment gate stopped before CSS compilation.
-- NOT TESTED: live browser route parity, accessibility, tenant-isolation runtime, active-release retrieval, publication, activation, rollback, or production deployment.
+Verification
+- New Control Plane + Layout Studio navigation/runtime regression contract: PASS.
+- Complete configured npm run check:release: PASS under Node.js 22.16.0 (all configured source-contract/regression checks completed).
+- Production npm run build: BLOCKED by enforced environment gate. Current local Node.js is 22.16.0; project requires Node.js 24.x and .node-version is 24.18.0. CSS compilation did not run.
+- Live Cloudflare/D1 endpoint, browser navigation, actual production route parity, publication and rollback: NOT TESTED from this source-build environment.
+- No production deployment or migration performed by this build step.
 
-IMPORTANT BOUNDARY
-This release installs adapters at actual route entry points; it does NOT claim that production layouts are now dynamically controlled by Layout Studio. Drafts remain draft-only. The current renderer binding count remains zero and publication remains disabled until canonical route-specific renderer integration and evidence are complete.
+Deployment acceptance after build environment correction
+1. Run npm ci, npm run build and npm run check:release under Node.js 24.18.0 with npm 10.x/11.x.
+2. Deploy through the governed deployment pipeline.
+3. Confirm GET /api/platform/admin/control-plane returns HTTP 200 and success:true for an authenticated Super Admin; verify degraded data sources are represented as warnings, not fatal errors.
+4. Confirm Layout Studio appears under GOVERN and in ⌘K search; open it and verify draft/version APIs and route certification.
+5. Keep publication disabled until real route renderer parity, authorization, immutable release lifecycle, verification and rollback have passed.
 
-NEXT
-1. Run npm ci, npm run build, and npm run check:release under Node.js 24.18.0.
-2. Browser-test the homepage, registration, organization setup, mission workspace, and executor workspace.
-3. Implement route-specific render adapters that consume only immutable, verified artifacts from the existing release lifecycle; prove parity on each route.
-4. Integrate publication through the canonical release lifecycle and Market Factory with step-up authorization, dependency snapshots, audit, verification and rollback.
-5. Certify the full Germany logistics mission journey before production rollout.
-
-RELEASE DECISION
-16.10.48 is a source candidate, not approved for production deployment. Preserve the last confirmed production baseline.
-
-PERMANENT PRIORITIES
-Security -> Truth -> Liveness -> Stability -> Experience -> Scale.
-
-CANONICAL MISSION JOURNEY
-OBSERVE -> UNDERSTAND -> PLAN -> EVALUATE -> ACCEPT -> AUTHORIZE -> PREPARE -> ASSIGN -> EXECUTE -> EFFECT -> VERIFY -> RECOVER -> OUTCOME -> LEARN -> NEXT SITUATION -> OBSERVE.
+Permanent priorities: Security → Truth → Liveness → Stability → Experience → Scale.
+Canonical mission journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.

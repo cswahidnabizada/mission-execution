@@ -1,3 +1,45 @@
+# Mission Execution 16.10.49 — Control Plane Recovery + Layout Studio Navigation
+
+Status: protected source candidate; production build and live runtime certification pending.
+
+Base: ON Mission 16.10.48
+
+## Objective
+
+Fix the reported Super Admin Control Plane 500 and make Layout Studio discoverable from the canonical Super Admin navigation and command palette, without bypassing existing authorization or release governance.
+
+## Findings and remediation
+
+1. **P0 — Control Plane API 500:** the `Promise.all` query results were destructured in a different order from the query definitions. `companyCount` was consequently undefined at response assembly, causing the authenticated GET `/api/platform/admin/control-plane` request to fail. Corrected the destructuring order to match all 16 queries.
+2. **P1 — Layout Studio undiscoverable:** the canonical workspace registry did not contain a `layout-studio` entry, so the Super Admin sidebar and command palette could not find it. Added it under GOVERN.
+3. **P1 — No in-Control-Plane launch surface:** added a Layout Studio entry panel with direct links to the full-screen workspace and route certification.
+4. **P1 — release identity convergence:** updated active asset cache keys, package version, lockfile version and route certification identity to 16.10.49.
+
+## Verification status
+
+- Source-level control-plane query-order contract: PASS.
+- Layout Studio navigation and command-palette registry contract: PASS.
+- Active release identity contract: PASS.
+- ZIP integrity and SHA-256: generated after packaging.
+- Full cumulative release suite: must be run and recorded in the build environment.
+- Production build/CSS: pending Node.js 24.18.0 environment.
+- Live Cloudflare/D1 request, browser navigation and production integration: not tested from this build environment.
+
+## Deployment decision
+
+This is a source candidate, not a claim of live remediation. Deploy only after required build and release checks pass. After deployment, verify the authenticated control-plane endpoint returns HTTP 200 with `success:true`, the Layout Studio appears under GOVERN and in ⌘K search, and the full Studio opens without weakening server-side authorization. Draft saves must not activate production; publication remains blocked until canonical release verification and rollback are certified.
+
+## Permanent priorities
+
+Security → Truth → Liveness → Stability → Experience → Scale.
+
+## Canonical mission journey
+
+OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+
+
+--- Historical release evidence retained below ---
+
 # Mission Execution 16.10.48 — Production Route Adapter Foundation
 
 Release type: source candidate; production certification pending.

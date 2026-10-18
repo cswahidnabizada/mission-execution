@@ -23,7 +23,7 @@ export async function getControlPlane(env){
     safeAll(()=>env.DB.prepare(`SELECT id,code,name,active FROM plans WHERE active=1 ORDER BY id`),'plans'),
     (async()=>{try{return {data:await listPlatformConfigurations(env),warning:null};}catch(error){console.error('ADMIN_CONTROL_PLANE_QUERY_FAILED','configurations',String(error?.message||error).slice(0,240));return {data:[],warning:'configurations'};}})()
   ]);
-  const [companies,countries,productCountries,jurisdictions,sectors,purposes,retention,residency,roles,audit,reviews,consentPolicies,lifecycleCounts,plans,configurations,companyCount]=results;
+  const [companies,companyCount,countries,productCountries,jurisdictions,sectors,purposes,retention,residency,roles,audit,reviews,consentPolicies,lifecycleCounts,plans,configurations]=results;
   const lifecycle={}; for(const r of lifecycleCounts.data||[]) lifecycle[r.status]=Number(r.count||0);
   const warnings=results.map(x=>x.warning).filter(Boolean);
   return {

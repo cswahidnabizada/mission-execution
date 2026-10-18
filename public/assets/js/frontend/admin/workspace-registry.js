@@ -41,6 +41,7 @@ export const ADMIN_WORKSPACE_GROUPS=Object.freeze([
   ]},
   {key:'govern',label:'GOVERN',description:'Protect platform policy, privacy, residency, providers, audit and human experience.',items:[
     ['Human Platform','human-platform','Configure, preview, simulate, test, release and inspect the human experience.','Human Platform Governance','WRITE','GOVERN'],
+    ['Layout Studio','layout-studio','Edit approved page compositions, inspect responsive previews, validate route impact and open the governed visual workspace.','Canonical Experience Composition · publication remains release-governed','WRITE','GOVERN'],
     ['Product Experience','product-experience','Build a disposable demo, enter the real customer experience, and certify the complete journey without creating a second product.','Product Experience Orchestration · Identity/Tenant/Demo authorities remain canonical','WRITE','GOVERN'],
     ['Policies','policies','Jurisdiction, retention and platform policies.','Jurisdiction Policy','WRITE','GOVERN'],
     ['Consent & Privacy','consent','Consent policy and privacy controls.','Consent & Privacy Authority','WRITE','GOVERN'],

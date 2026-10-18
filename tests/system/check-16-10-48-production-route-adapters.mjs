@@ -7,9 +7,9 @@ const landing=fs.readFileSync('public/assets/js/frontend/public/landing.js','utf
 const register=fs.readFileSync('public/assets/js/pages/register.js','utf8');
 const app=fs.readFileSync('public/assets/js/frontend/app/app.js','utf8');
 const routes=fs.readFileSync('src/worker/modules/admin-control/layout-studio.routes.js','utf8');
-assert.equal(pkg.version,'16.10.48'); assert.equal(manifest.version,pkg.version); assert.equal(manifest.base,'16.10.47');
+assert.equal(pkg.version,'16.10.49'); assert.equal(manifest.version,pkg.version); assert.equal(manifest.base,'16.10.48');
 assert.match(adapter,/CANONICAL_RELEASE_LIFECYCLE/); assert.match(adapter,/VERIFIED_CANONICAL_RELEASE_REQUIRED/); assert.match(adapter,/ROUTE_RENDERER_PARITY_NOT_CERTIFIED/);
 assert.match(landing,/attachLayoutStudioRouteAdapter/); assert.match(register,/attachLayoutStudioRouteAdapter/); assert.match(app,/attachLayoutStudioRouteAdapter/); assert.match(app,/resolveLayoutStudioRoute/);
-assert.match(routes,/certificationVersion:'16\.10\.48'/); assert.match(routes,/routeAdapter:/); assert.match(routes,/publicationEnabled:false/);
+assert.match(routes,/certificationVersion:'16\.10\.49'/); assert.match(routes,/routeAdapter:/); assert.match(routes,/publicationEnabled:false/);
 assert.match(pkg.scripts['check:release'],/check-16-10-48-production-route-adapters\.mjs/);
 console.log('16.10.48 production route adapter contract: PASS');

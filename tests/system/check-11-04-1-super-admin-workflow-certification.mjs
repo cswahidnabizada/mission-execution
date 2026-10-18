@@ -37,7 +37,7 @@ const rendererCoverage={
  'release-center':panel, 'product-verification':surfaces, verification:surfaces, certification:surfaces, 'product-dependency-impact':panel,
  'launch-center':panel, 'product-health':surfaces,
  companies:surfaces, roles:surfaces, subscriptions:surfaces, billing:surfaces, missions:surfaces, notifications:surfaces,
- 'human-platform':surfaces, 'product-experience':panel, 'user-experience':panel, 'demo-product':panel, policies:surfaces, consent:surfaces, 'privacy-rights':surfaces, residency:surfaces, providers:surfaces, 'analytics-governance':surfaces, security:surfaces, audit:surfaces,
+ 'human-platform':surfaces, 'layout-studio':panel, 'product-experience':panel, 'user-experience':panel, 'demo-product':panel, policies:surfaces, consent:surfaces, 'privacy-rights':surfaces, residency:surfaces, providers:surfaces, 'analytics-governance':surfaces, security:surfaces, audit:surfaces,
  'backup-recovery':surfaces, 'recovery-reconciliation':surfaces
 };
 for(const k of keys) assert(rendererCoverage[k]?.includes(`'${k}'`) || rendererCoverage[k]?.includes(` ${k}:`) || rendererCoverage[k]?.includes(`\n  ${k}:`) || rendererCoverage[k]?.includes(`'${k}':`),`renderer composition exists for ${k}`);
