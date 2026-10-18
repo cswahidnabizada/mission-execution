@@ -1,30 +1,31 @@
-ON MISSION 16.10.52 — Canonical Composition & Editor Convergence
-Base: 16.10.51 (confirmed deployed by user)
-Status: source candidate; deployment not performed.
+ON MISSION 16.10.53 — Composition Ordering & Editor Integrity
+Base: 16.10.52 (confirmed deployed by user)
+Status: protected source candidate; deployment not performed.
 
 Implemented
-- Active page state persists across editor rerenders and synchronizes page selector, layer list and preview.
-- The layer tree distinguishes components placed on the current page from unplaced reusable components.
-- Adding a component places it on the active page; an unplaced component can be placed deliberately.
-- Added a persistent workbar with local dirty-state and server revision, Undo, Redo and Save Draft across Studio tabs.
-- Server saves use the existing Super Admin step-up-protected API, expected revision, immutable server-side version history and active-production-unchanged boundary.
-- The preview visibly highlights the selected component.
-- DE/Global market selection affects draft preview only; market content overrides apply only to known component properties.
-- Added stricter client-side checks for component IDs/types and page IDs/kinds.
-- Updated active release identity to 16.10.52. Publication remains disabled because production renderer parity is not certified.
+- Added resolvePageComponents(page, components), a shared helper that resolves component instances in the exact order defined by page.componentIds.
+- The editor layer tree now follows the same canonical ordering as the preview renderer.
+- Added accessible move-up/move-down controls to reorder components on the active page.
+- Reordering updates the page's canonical componentIds array, preserves the selected component, records local undo/redo history and marks the draft dirty.
+- Added explicit client validation for duplicate component placements.
+- Updated runtime release identity, renderer contract, route metadata, cache-busting references, package/lock, manifest and docs to 16.10.53.
+- Preserved existing server-owned draft persistence, revision conflict protection and the production publication safety boundary.
+- Production route bindings remain NOT_CONNECTED; publication remains disabled.
 
 Verification
-- Focused 16.10.52 canonical composition contract: PASS.
-- Layout Studio/Control Plane compatibility contracts for 16.10.41–16.10.51: PASS.
+- Focused 16.10.53 composition-ordering contract: PASS.
+- Layout Studio regression contracts 16.10.52 through 16.10.44: PASS.
 - Security baseline: PASS.
-- Data-integrity checks: PASS.
-- Current architecture convergence audit: PASS.
-- Migration contract: PASS (160 migrations, high-water mark 0160).
-- Current schema gate: PASS (252 tables, 461 indexes).
-- Release engineering, release integrity and production cleanliness: PASS.
-- Modified JavaScript syntax checks: PASS.
-- Full cumulative npm run check:release: NOT COMPLETED within 300 seconds; do not treat as a pass.
-- npm run build: BLOCKED by local Node.js 22.16.0; repository pins Node.js 24.18.0. CSS compilation did not run.
-- Live browser tests, real production renderer parity, accessibility, authorization/tenant-isolation behavior in browser and rollback: NOT TESTED.
+- Data integrity: PASS.
+- Current architecture convergence audit: PASS (64 canonical actions, 0 missing routes, 1 lifecycle writer).
+- Migration contract: PASS (160 ordered migrations; high-water mark 0160).
+- Current schema: PASS (252 tables, 461 indexes).
+- Release engineering gate: PASS.
+- Release integrity and production cleanliness: PASS.
+- Dependency lock gate: PASS (lockfileVersion 3).
+- Full cumulative npm run check:release: INCOMPLETE; it exceeded the 300-second execution window while running deeper historical runtime contracts. Several historical allowlists were updated to accept the new current release identity; remaining full-suite execution is still required.
+- Production build/CSS compilation: BLOCKED locally by Node.js 22.16.0; .node-version and engines require Node.js 24.x (pinned 24.18.0).
+- Live browser tests, production renderer parity, accessibility, browser authorization/tenant isolation and rollback: NOT TESTED.
 
-Deployment recommendation: do not deploy until the complete release/certification suite and production build pass in the protected pipeline using Node.js 24.18.0. Then test page switching, layer selection, property changes, Undo/Redo, server save/reload/conflict handling, and verify active production is unchanged.
+Deployment recommendation
+Do not deploy yet. Run the complete release suite to completion and the protected production build under Node.js 24.18.0. Then browser-test reorder controls, preview ordering, selection, undo/redo, server save/reload/revision conflicts and prove active production remains unchanged. Production publication stays disabled.

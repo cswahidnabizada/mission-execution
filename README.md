@@ -472,3 +472,7 @@ The Layout Studio now supports server-owned draft persistence and immutable revi
 ## ON MISSION 16.10.51 — Production Route Runtime Verification
 
 This source candidate adds route launch links and a same-origin GET-only reachability probe in Layout Studio. Reachability is not production-renderer certification. Canonical production renderer bindings remain disconnected, and publication remains disabled until route parity, authorization, accessibility, tenant isolation and rollback are proven. The permanent release priorities remain Security → Truth → Liveness → Stability → Experience → Scale. The canonical mission journey remains OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+
+## ON MISSION 16.10.53 — Composition Ordering & Editor Integrity
+
+Current source candidate: page layer order now resolves from canonical `page.componentIds`, with accessible move-up/move-down controls and duplicate placement validation. The protected Product Publisher lifecycle retains **CREATE NEXT VERSION** as the canonical release workflow. Production renderer bindings remain unconnected and publication stays disabled pending browser parity and release verification.

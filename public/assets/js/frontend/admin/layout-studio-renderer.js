@@ -3,7 +3,7 @@
  * Renders only approved component types and escaped scalar properties.
  * This is the canonical Studio-preview renderer; production-route bindings remain a separate gate.
  */
-export const STUDIO_RENDERER_VERSION = '16.10.52';
+export const STUDIO_RENDERER_VERSION = '16.10.53';
 export const COMPONENT_RENDERERS = Object.freeze({
   header: { label: 'Header', properties: ['label', 'density'] },
   footer: { label: 'Footer', properties: ['label'] },
@@ -54,6 +54,12 @@ export function renderComponent(component) {
     case 'card': return `<section class="ls-render ls-render-card" data-component-id="${id}"><h3>${value(p, 'label', definition.label)}</h3><p>${value(p, 'description')}</p>${p.state !== undefined ? `<span class="ls-render-badge">${value(p, 'state')}</span>` : ''}</section>`;
     default: return `<div class="ls-renderer-unsupported" role="status">Renderer unavailable</div>`;
   }
+}
+
+export function resolvePageComponents(page, components) {
+  if (!page || !Array.isArray(page.componentIds) || !Array.isArray(components)) return [];
+  const byId = new Map(components.map(component => [component?.id, component]));
+  return page.componentIds.map(id => byId.get(id)).filter(Boolean);
 }
 
 export function renderPage(page, components, options = {}) {

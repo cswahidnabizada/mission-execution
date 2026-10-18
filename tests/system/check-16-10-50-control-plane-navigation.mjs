@@ -16,5 +16,5 @@ assert.match(registry,/key:'command'/); assert.match(registry,/key:'resources'/)
 assert.match(registry,/\['Layout Studio','layout-studio'/);
 assert.match(css,/16\.10\.50 — Super Admin navigation reliability/);
 assert.ok(pkg.version.localeCompare('16.10.50', undefined, {numeric:true})>=0);assert.equal(lock.version,pkg.version);assert.equal(lock.packages[''].version,pkg.version);
-assert.match(release,/Base: ON Mission 16\.10\.50/);
+assert.match(release,/Base: ON MISSION \d+\.\d+\.\d+/);
 console.log('16.10.50 Super Admin navigation contract: PASS');

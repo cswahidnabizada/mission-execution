@@ -10,6 +10,6 @@ const routes=fs.readFileSync('src/worker/modules/admin-control/layout-studio.rou
 assert.ok(pkg.version.localeCompare('16.10.50', undefined, {numeric:true})>=0); assert.equal(manifest.version,pkg.version); assert.ok(manifest.base,'release manifest must record a source baseline');
 assert.match(adapter,/CANONICAL_RELEASE_LIFECYCLE/); assert.match(adapter,/VERIFIED_CANONICAL_RELEASE_REQUIRED/); assert.match(adapter,/ROUTE_RENDERER_PARITY_NOT_CERTIFIED/);
 assert.match(landing,/attachLayoutStudioRouteAdapter/); assert.match(register,/attachLayoutStudioRouteAdapter/); assert.match(app,/attachLayoutStudioRouteAdapter/); assert.match(app,/resolveLayoutStudioRoute/);
-assert.match(routes,/certificationVersion:'16\.10\.(?:50|51|52)'/); assert.match(routes,/routeAdapter:/); assert.match(routes,/publicationEnabled:false/);
+assert.match(routes,new RegExp(`certificationVersion:'${pkg.version.replaceAll('.','\\.')}'`)); assert.match(routes,/routeAdapter:/); assert.match(routes,/publicationEnabled:false/);
 assert.match(pkg.scripts['check:release'],/check-16-10-48-production-route-adapters\.mjs/);
 console.log('16.10.48 production route adapter contract: PASS');

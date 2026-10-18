@@ -1,41 +1,34 @@
-# Mission Execution 16.10.52 — Canonical Composition & Editor Convergence
+# Mission Execution 16.10.53 — Composition Ordering & Editor Integrity
 
-Status: protected candidate; production build and live browser certification required.
+Status: protected candidate; complete release suite, Node.js 24.18.0 build, and live browser certification required.
 
-Base: ON Mission 16.10.51
+Base: ON Mission 16.10.52
 
 ## Objective
 
-Converge Layout Studio's page tree, selected component, properties inspector and draft preview on one page composition model. Improve safe local editing, undo/redo, visible draft state and server-owned save access while keeping production publication disabled.
+Make page composition order canonical and editable, so the layer tree and Studio preview represent the same ordered component list. Add accessible component reorder controls without changing production rendering or publishing authority.
 
 ## Findings and remediation
 
-1. **P0 — page selection was not durable across rerenders:** added explicit active-page state and synchronized the page list, page selector, layer list and preview.
-2. **P1 — component inventory disagreed with page composition:** the editor now distinguishes components placed on the current page from unplaced reusable components; adding a component places it on the active page, and an unplaced component can be placed deliberately.
-3. **P1 — no global save and local history controls:** added an editor workbar with dirty-state/revision status, Undo, Redo and Save Draft across Studio tabs. Server saves use the existing step-up-protected API, expected revision and immutable version history.
-4. **P1 — selection was not visible in the canvas:** the preview renderer now marks the selected component so selection is synchronized between the tree and preview.
-5. **P1 — market selection did not affect the preview:** the selected market variant is applied to supported existing component properties for draft preview only; no production assets or live market release are mutated.
-6. **P2 — release identity was stale:** renderer, route metadata, package, lockfile, VERSION and manifest are converged to 16.10.52; the deterministic release generator refreshes asset cache keys.
-7. **P0 — production publication boundary preserved:** actual production route bindings and parity remain uncertified. Publication remains disabled.
+1. **P1 — tree order could diverge from canvas order:** the tree derived from global component registry order while the renderer used each page's `componentIds`. The tree now resolves components in canonical page order.
+2. **P1 — component order was not editable:** added per-layer move-up/move-down controls that update the active page's ordered component IDs, preserve selection, record undo/redo history, mark the draft dirty, and rerender from the same model.
+3. **P1 — duplicate placement references were not explicitly reported:** validation now reports duplicate component placements before save.
+4. **P1 — ordered component resolution was not reusable:** exported `resolvePageComponents` and used it in the editor tree; renderer output continues to follow `page.componentIds`.
+5. **P0 — production boundary preserved:** route registry still marks production renderer bindings as not connected, and publication remains disabled. This release does not claim production parity.
+6. **P2 — release identity convergence:** version, package/lock, manifest, Studio renderer, route metadata and versioned asset URLs are updated to 16.10.53.
 
 ## Verification status
 
-- Focused 16.10.52 canonical composition/editor convergence contract: PASS.
-- Focused Layout Studio and Control Plane compatibility contracts: PASS.
-- Complete configured release suite: NOT COMPLETED within the available execution window; the cumulative command exceeded 300 seconds. Do not treat this as a PASS. The focused Layout Studio/Control Plane contracts and listed architecture/security/schema gates passed.
-- JavaScript syntax checks for the modified Layout Studio editor and renderer: PASS.
-- Production build/CSS compilation: requires pinned Node.js 24.18.0 environment; local environment uses Node.js 22.16.0 and is expected to stop at the enforced environment gate.
-- Live browser parity, authorization, tenant isolation, accessibility and rollback: not established by source-level tests; require deployed runtime evidence.
+- Focused composition ordering contract: PASS.
+- Focused Layout Studio and Control Plane regression contracts: PASS.
+- Complete cumulative release suite: incomplete; historical contracts still being reconciled and must pass before release.
+- JavaScript syntax, production cleanliness and dependency-lock checks: PASS.
+- Production build/CSS compilation: BLOCKED by local Node.js 22.16.0; repository requires Node.js 24.18.0.
+- Live browser parity, accessibility, authorization/tenant isolation and rollback: not tested here.
 
-## Acceptance gates
+## Deployment recommendation
 
-- Switch among all pages and verify page state, layers, selected component and preview stay synchronized.
-- Add a component and confirm it is placed on the active page; verify unplaced components are explicit.
-- Edit properties and verify the selected preview component updates.
-- Verify Undo/Redo and unsaved status across tabs.
-- Save a draft with Super Admin step-up, reload it, and test revision conflict handling; active production must remain unchanged.
-- Verify DE/Global preview selection only changes the draft preview and does not publish market content.
-- Build and run the complete release/certification pipeline with Node.js 24.18.0 before deployment.
+Do not deploy until the complete release/certification suite passes, the protected production build completes under Node.js 24.18.0, and browser testing confirms ordered tree/canvas parity, editing history, server save/reload/conflict handling and active production remaining unchanged.
 
 Permanent priorities: Security → Truth → Liveness → Stability → Experience → Scale.
 
