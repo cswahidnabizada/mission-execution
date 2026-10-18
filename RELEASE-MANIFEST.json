@@ -1,7 +1,7 @@
 {
-  "version": "16.10.57",
+  "version": "16.10.58",
   "release": "RELEASE.md",
-  "base": "16.10.56",
+  "base": "16.10.57",
   "migrationHighWaterMark": "0160",
   "migrationCount": 160,
   "schemaSnapshot": {

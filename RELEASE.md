@@ -1,3 +1,33 @@
+# Mission Execution 16.10.58 — Route Composition Preview & Mapping Integrity
+
+Status: protected source candidate — NOT production-certified; DO NOT DEPLOY.
+Base: ON MISSION 16.10.57.
+
+## Implemented
+
+- Added an explicit route-to-page-kind map for the Layout Studio preview.
+- Added a target-route selector so the same canonical draft can be inspected against homepage, registration, organization setup, mission list/workspace, executor workspace, and tenant product experience targets.
+- Preview resolution fails closed when a route is not allowlisted, has no matching draft page, or has ambiguous matching pages; it does not silently preview an unrelated page.
+- Route preview is isolated from production: no live route receives draft data, and publication remains disabled.
+- Updated renderer/adapter/release identity and cache-busted assets to 16.10.58.
+
+## Verification status
+
+- Focused route-composition preview contract: pending execution.
+- Existing release contracts: pending execution.
+- Required Node.js 24.18.0 build, full release suite, CSS build, real-browser parity, accessibility, tenant isolation, authorization, publication and rollback: NOT CERTIFIED.
+
+## Decision
+
+DO NOT DEPLOY. This release improves preview route mapping only; it does not connect draft compositions to production rendering. Production activation remains blocked until the canonical release lifecycle and Market Factory supply immutable verified releases and route-specific renderer parity evidence.
+
+Permanent priorities: Security → Truth → Liveness → Stability → Experience → Scale.
+Canonical journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+
+---
+
+## Historical release record
+
 # Mission Execution 16.10.57 — Mission & Executor Workspace Renderer Integration
 
 Status: protected source candidate; NOT production-certified

@@ -1,0 +1,37 @@
+ON MISSION 16.10.58 — Route Composition Preview & Mapping Integrity
+Base: 16.10.57
+Status: Protected source candidate — NOT production-certified; DO NOT DEPLOY.
+
+IMPLEMENTED
+- Added an explicit, allowlisted route-to-page-kind map to Layout Studio's draft preview.
+- Added a target-route selector for public homepage, registration, organization setup, mission list, mission workspace, executor workspace and tenant product experience.
+- Route preview now resolves a unique matching page composition. Unknown routes, missing page kinds and ambiguous page kinds fail closed with explicit status rather than silently rendering an unrelated page.
+- Preview selection is isolated from production. This does not activate drafts or mutate live route rendering.
+- Preserved canonical mission/executor authorities, server-owned revisioned draft save, optimistic revision guard, and disabled publication boundary.
+- Updated renderer/cache/release identity to 16.10.58 and added a focused release contract.
+
+PASSED
+- 16.10.58 route composition preview mapping contract
+- 16.10.57 mission/executor workspace integration contract
+- 16.10.56 organization setup renderer contract
+- 16.10.55 registration renderer contract
+- 16.10.54 homepage renderer contract
+- 16.10.53 composition ordering/editor integrity
+- 16.10.52 canonical composition/editor convergence
+- Route runtime, Control Plane navigation, route adapter, route certification and impact analysis contracts
+- Release integrity, production cleanliness, dependency-lock checks, architecture debt gate
+- Generated semantic release identity check
+- Broad `npm run check:release` progressed through current runtime integrity, security/data integrity, architecture/migration/schema/release engineering and mission/assignment/planning/execution/recovery checks; these passed through 15.1.0 in the latest run.
+
+INCOMPLETE / BLOCKED
+- Full `npm run check:release` did NOT complete within the 5-minute execution window. It must not be represented as a full-suite pass.
+- `npm run build` blocked at build environment gate: local Node.js 22.16.0; required `.node-version` 24.18.0 / `engines.node=24.x`. CSS compilation did not run.
+- Real browser visual/functional checks, route parity, responsive accessibility, keyboard navigation, authenticated sessions, tenant isolation, step-up authorization, failed publication and rollback remain untested.
+- Draft-to-production route composition binding remains unimplemented. The route selector is preview-only; canonical publication stays disabled.
+- Tenant product experience has no unique matching draft page kind in the current seed and correctly displays COMPOSITION_PAGE_MISSING. This must be resolved by governed composition definition, not fallback.
+
+DEPLOYMENT DECISION
+DO NOT DEPLOY. Use the protected Node.js 24.18.0 release environment; complete the full release suite and CSS build; then run real-browser route parity and adversarial security/recovery tests. Do not enable publication until the canonical release lifecycle/Market Factory can activate immutable verified artifacts and rollback to a previously verified release.
+
+Permanent priorities: Security → Truth → Liveness → Stability → Experience → Scale.
+Canonical journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.

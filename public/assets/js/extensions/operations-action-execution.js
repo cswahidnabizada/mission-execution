@@ -1,5 +1,5 @@
-import {executeActionTarget as executeSecuredActionTarget} from "./actions-intelligence.js?v=16.10.57-h3";
-import {recordActionExecutionTelemetry} from "./operations-action-telemetry.js?v=16.10.57";
+import {executeActionTarget as executeSecuredActionTarget} from "./actions-intelligence.js?v=16.10.58-h3";
+import {recordActionExecutionTelemetry} from "./operations-action-telemetry.js?v=16.10.58";
 
 export async function executeAction(action,handlers={},options={}){
   const startedAt=Date.now();
