@@ -10,12 +10,13 @@ const renderer=read('public/assets/js/frontend/admin/layout-studio-renderer.js')
 const adapter=read('public/assets/js/frontend/admin/layout-studio-production-adapter.js');
 const appHtml=read('public/app/index.html');
 const contextCss=read('public/assets/css/frontend/mission-executor-layout-context.css');
-assert.equal(pkg.version,'16.10.62');
+assert.match(pkg.version,/^16\.10\.\d+$/);
+assert.ok(Number(pkg.version.split('.')[2])>=57,'release version must not regress below mission/executor renderer baseline');
 assert.equal(lock.version,pkg.version);
 assert.equal(lock.packages[''].version,pkg.version);
 assert.equal(read('VERSION').trim(),pkg.version);
 assert.equal(manifest.version,pkg.version);
-assert.ok(['16.10.57','16.10.58','16.10.60','16.10.61','16.10.62','16.10.61','16.10.62'].includes(manifest.base));
+assert.ok(['16.10.57','16.10.58','16.10.60','16.10.65','16.10.66','16.10.61','16.10.62','16.10.63','16.10.64','16.10.65'].includes(manifest.base));
 assert.match(app,/canonicalLayoutContext\('mission-workspace'/);
 assert.match(app,/canonicalLayoutContext\('executor-workspace'/);
 assert.match(app,/renderComponent,STUDIO_RENDERER_VERSION/);

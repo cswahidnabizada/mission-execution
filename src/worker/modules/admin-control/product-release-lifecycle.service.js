@@ -92,7 +92,7 @@ export async function authorizeProductRelease(env,actor,launchId,requestId=''){
  if(launchManifest.layoutArtifactBinding!==undefined){
   const binding=launchManifest.layoutArtifactBinding;
   if(!binding||binding.schema!=='onmission.layout-artifact-binding.v1'||binding.experienceId!=='onmission.global.experience'||typeof binding.versionId!=='string'||typeof binding.contentSha256!=='string'||!/^[a-f0-9]{64}$/.test(binding.contentSha256))throw fail('Layout artifact binding is invalid.',409,'PRODUCT_RELEASE_LAYOUT_BINDING_INVALID');
-  const artifact=await env.DB.prepare('SELECT version_id,experience_id,revision,draft_json,content_sha256,created_at FROM platform_layout_draft_versions WHERE version_id=? AND experience_id=? LIMIT 1').bind(binding.versionId,binding.experienceId).first().catch(()=>null);
+  const artifact=await env.DB.prepare('SELECT version_id,experience_id,revision,draft_json,content_sha256,created_at FROM platform_layout_draft_versions WHERE version_id=? AND experience_id=? LIMIT 1').bind(binding.versionId,binding.experienceId).first().catch(error=>{throw authorityUnavailable('product_release_layout_artifact_lookup',error)});
   if(!artifact)throw fail('Bound immutable layout artifact was not found.',409,'PRODUCT_RELEASE_LAYOUT_ARTIFACT_MISSING');
   const actualContentHash=await sha256(String(artifact.draft_json));
   if(actualContentHash!==artifact.content_sha256||actualContentHash!==binding.contentSha256||Number(binding.revision)!==Number(artifact.revision))throw fail('Bound immutable layout artifact integrity check failed.',409,'PRODUCT_RELEASE_LAYOUT_ARTIFACT_INTEGRITY_FAILED');

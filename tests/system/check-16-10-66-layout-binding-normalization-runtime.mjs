@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {normalizePublisherManifest} from '../../src/worker/modules/admin-control/product-publisher-orchestrator.service.js';
+const binding={schema:'onmission.layout-artifact-binding.v1',experienceId:'onmission.global.experience',versionId:'layout-version-immutable-001',revision:7,contentSha256:'a'.repeat(64)};
+const normalized=normalizePublisherManifest({layoutArtifactBinding:binding,layoutArtifactBindingRequired:true,labels:{productName:'Germany Logistics'}},'Germany','Germany Logistics',['logistics']);
+assert.deepEqual(normalized.layoutArtifactBinding,binding,'publisher normalization preserves the exact immutable artifact binding for canonical release validation');
+assert.equal(normalized.layoutArtifactBindingRequired,true,'required binding policy survives normalization');
+const legacy=normalizePublisherManifest({},'Germany','Legacy Product',['general']);
+assert.equal(legacy.layoutArtifactBindingRequired,false,'legacy launches do not silently become binding-required');
+assert.equal(Object.hasOwn(legacy,'layoutArtifactBinding'),false,'legacy launches do not gain a fabricated artifact binding');
+const explicitFalse=normalizePublisherManifest({layoutArtifactBinding:binding,layoutArtifactBindingRequired:false},'Germany','Optional Layout',['general']);
+assert.deepEqual(explicitFalse.layoutArtifactBinding,binding);
+assert.equal(explicitFalse.layoutArtifactBindingRequired,false);
+console.log('16.10.66 Layout Studio binding normalization runtime: PASS');

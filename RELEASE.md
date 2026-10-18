@@ -1,3 +1,58 @@
+# Mission Execution 16.10.67 — Final Layout Studio Integration Foundation
+
+Base: ON MISSION 16.10.66 — Layout Studio Release Integrity Hardening
+Status: protected candidate; NOT production-certified
+
+## Implemented in 16.10.67
+- Prevented the structure and inspector panels from overlaying the central preview: explicit three-column grid, bounded sticky side panels on wide screens, and static full-width fallbacks on tablet/mobile.
+- Reduced horizontal overflow risks in canvas, preview, component tree and inspector controls.
+- Added a release contract covering panel layout, responsive breakpoints, seven allowlisted preview routes, fail-closed route mapping and disabled publication.
+- Preserved the canonical Product Publisher / Market Factory release authority; no parallel publishing endpoint or bypass.
+- Updated renderer, route adapter, registry and generated runtime identities to 16.10.67.
+
+## 16.10.67 Verification
+- Focused panel/route contract: PASS.
+- Full `npm run check:release`: see release report; current runtime is Node.js 22.16.0, while production build requires Node.js 24.18.0.
+- Protected build/CSS compilation and real-browser/security/publication/rollback certification remain NOT CERTIFIED.
+
+## Deployment decision
+**DO NOT DEPLOY** until the protected build, full suite, browser/security evidence and authorized canonical publication verification/rollback pass.
+
+---
+
+# Mission Execution 16.10.66 — Layout Studio Release Integrity Hardening
+
+Base: ON MISSION 16.10.65 — Product Publisher Layout Binding Flow
+Status: protected candidate; NOT production-certified
+
+## Implemented
+- Preserved `layoutArtifactBinding` and `layoutArtifactBindingRequired` through Product Publisher manifest normalization instead of silently dropping them.
+- Added an executable runtime contract proving the exact immutable binding and required-binding policy survive normalization; legacy launch manifests remain optional and do not receive fabricated bindings.
+- Kept the canonical Product Release Lifecycle as the only release authority. It validates immutable artifact ID, experience ID, revision and recomputed SHA-256 before capturing the binding in the dependency snapshot.
+- Changed immutable layout-version lookup and Product Publisher artifact lookup to surface canonical database-authority failures rather than converting DB failures into misleading “missing artifact” results.
+- Reconciled stale historical release assertions without removing route mapping, renderer parity, composition ordering, inventory or recovery checks.
+- Aligned shared Studio renderer, production route adapter and canonical registry identities to 16.10.66.
+- No parallel publication endpoint or release authority was introduced. Production composition remains disabled until route renderer parity is certified.
+
+## Verification status
+- `npm run check:release`: PASS in the current Node.js 22.16.0 environment.
+- Layout binding normalization runtime contract: PASS.
+- Product Publisher binding flow, canonical release binding, dependency snapshot and immutable artifact contracts: PASS.
+- Release integrity, production cleanliness/version convergence, dependency lock and canonical DB failure rescan: PASS.
+- Current architecture, security, schema/migration, mission/executor, Market Factory and historical compatibility checks included in the release suite: PASS.
+- `npm run build`: BLOCKED by the environment gate because runtime Node.js is 22.16.0 while `.node-version` and `engines.node` require Node.js 24.18.0 / 24.x. CSS compilation therefore did not run.
+- Browser route parity, keyboard/accessibility testing, authenticated tenant-isolation UI journeys, concurrency/conflict behavior in a real browser, an actual authorized launch with a persisted artifact, post-publication verification and rollback evidence: NOT TESTED / NOT CERTIFIED.
+
+## Deployment decision
+**DO NOT DEPLOY.** A passing automated release suite does not replace the protected Node.js 24.18.0 build, CSS compilation, browser/security certification, real authorized Product/Market launch, post-publish verification and rollback evidence.
+
+Permanent priorities: Security → Truth → Liveness → Stability → Experience → Scale.
+Canonical mission journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+
+---
+
+## Previous release record (16.10.64)
+
 # Mission Execution 16.10.64 — Canonical Layout Release Binding Preflight
 
 Status: protected source candidate; NOT production-certified.

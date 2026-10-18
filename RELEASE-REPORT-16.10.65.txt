@@ -1,0 +1,35 @@
+ON MISSION 16.10.65 — Product Publisher Layout Binding Flow
+Base: 16.10.64 — Canonical Layout Release Binding Preflight
+Status: protected source candidate; NOT production-certified
+
+IMPLEMENTED
+- Preserved `layoutArtifactBinding` and `layoutArtifactBindingRequired` through Product Publisher manifest normalization, allowing the canonical Product Publisher launch-draft flow to pass the selected immutable layout binding to the existing product release lifecycle.
+- Existing lifecycle remains the only release authority and verifies artifact ID, experience ID, immutable revision and content SHA-256; required-but-missing or invalid binding remains fail-closed.
+- Legacy launch manifests remain compatible unless they explicitly require a layout binding.
+- Added focused Product Publisher binding-flow contract and added it first in the release suite.
+- Updated the historical 16.10.64 release-binding contract to test the enduring lifecycle behavior while accepting the current release identity; updated 16.10.62 base compatibility and the 16.10.59 historical version allowlist.
+- Updated release version, manifest, generated worker/browser identity, and versioned asset cache references to 16.10.65.
+- No new publishing endpoint, no second release authority, no production activation enabled.
+
+CHECKS PASSED
+- `tests/system/check-16-10-65-publisher-layout-binding-flow.mjs`
+- `tests/system/check-16-10-64-layout-release-binding.mjs`
+- `tests/system/check-16-10-63-layout-dependency-snapshot.mjs`
+- `tests/system/check-16-10-62-immutable-layout-artifact.mjs`
+- `tests/system/check-16-10-61-release-readiness-bridge.mjs`
+- `tests/system/check-16-10-60-conflict-reconciliation.mjs`
+- `tests/system/check-16-10-59-tenant-composition-recovery.mjs`
+- JavaScript syntax checks for modified publisher, release lifecycle and Layout Studio route modules
+- Release integrity, production cleanliness/version convergence, dependency lock
+
+INCOMPLETE / BLOCKED
+- Full `npm run check:release` is NOT PASS. It progresses through the 16.10.59 checks and then fails at `tests/system/check-16-10-58-route-composition-preview.mjs:11`, which still asserts the historical package version 16.10.62. This stale assertion must be reconciled without weakening its route-mapping behavior, then the full suite rerun.
+- Local Node.js runtime is 22.16.0; repository pin is 24.18.0. Production build stops at the environment gate before CSS compilation.
+- No live-browser route parity, accessibility, tenant-isolation, step-up publication, post-publication verification, or rollback evidence has been produced.
+- The Product Publisher manifest now carries the binding, but no real authorized launch has been run end-to-end against a persisted Layout Studio artifact.
+
+DEPLOYMENT DECISION
+DO NOT DEPLOY. Require Node.js 24.18.0 protected build, full release suite pass, browser/security certification, actual authorized launch with a bound artifact, publication verification and rollback evidence.
+
+Permanent priorities: Security -> Truth -> Liveness -> Stability -> Experience -> Scale.
+Canonical mission journey: OBSERVE -> UNDERSTAND -> PLAN -> EVALUATE -> ACCEPT -> AUTHORIZE -> PREPARE -> ASSIGN -> EXECUTE -> EFFECT -> VERIFY -> RECOVER -> OUTCOME -> LEARN -> NEXT SITUATION -> OBSERVE.

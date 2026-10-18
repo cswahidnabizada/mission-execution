@@ -11,7 +11,7 @@ assert.ok(pkg.version.localeCompare('16.10.52', undefined, {numeric:true})>=0);
 assert.equal(lock.version,pkg.version); assert.equal(lock.packages[''].version,pkg.version);
 assert.equal(fs.readFileSync('VERSION','utf8').trim(),pkg.version);
 assert.equal(manifest.version,pkg.version); assert.ok(manifest.base,'release manifest identifies its source baseline');
-assert.match(studio,/let draft=seed,selected='hero-main',previewRoute='public-homepage',activePage='homepage'/);
+assert.match(studio,/let draft=seed,baseDraft=structuredClone\(seed\),selected='hero-main',previewRoute='public-homepage',activePage='homepage'/);
 assert.match(studio,/Composition preview/);
 assert.match(studio,/Layers on/);
 assert.match(studio,/Unplaced components/);

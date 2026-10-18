@@ -1,9 +1,10 @@
 import {json,publicErrorMessage} from '../../core/http.js';
 import {requirePlatformAdministrator} from '../../security/platform-administrator.js';
 import {requirePlatformSuperAdminStepUp} from '../../security/platform-super-administrator.js';
+import {authorityUnavailable} from '../../core/canonical-db.js';
 
 const GLOBAL_EXPERIENCE_ID='onmission.global.experience';
-const LAYOUT_STUDIO_RELEASE='16.10.64';
+const LAYOUT_STUDIO_RELEASE='16.10.67';
 // Registry is deliberately explicit about what is known from source and what is not yet wired to canonical renderers.
 const EXPERIENCE_REGISTRY=[
  {id:'public-homepage',title:'Public homepage',route:'/',sourcePage:'public/index.html',area:'Public',editability:'INSPECT_ONLY',rendererBinding:'BASELINE_RENDERER_CONNECTED_UNCERTIFIED'},
@@ -103,7 +104,7 @@ export function registerLayoutStudioRoutes(router){
    if(!row)blockers.push('SERVER_DRAFT_MISSING');
    else{
     validationError=validateDraft(parse(row.draft_json));if(validationError)blockers.push(validationError);contentSha256=await digest(String(row.draft_json));
-    const version=await env.DB.prepare('SELECT version_id,revision,content_sha256,created_at FROM platform_layout_draft_versions WHERE experience_id=? AND revision=? LIMIT 1').bind(GLOBAL_EXPERIENCE_ID,Number(row.revision)).first().catch(()=>null);
+    const version=await env.DB.prepare('SELECT version_id,revision,content_sha256,created_at FROM platform_layout_draft_versions WHERE experience_id=? AND revision=? LIMIT 1').bind(GLOBAL_EXPERIENCE_ID,Number(row.revision)).first().catch(error=>{throw authorityUnavailable('layout_studio_version_lookup',error)});
     if(version&&version.content_sha256===contentSha256){
      const artifactManifest={schema:'onmission.layout-artifact.v1',experienceId:GLOBAL_EXPERIENCE_ID,versionId:version.version_id,revision:Number(version.revision),contentSha256,rendererVersion:LAYOUT_STUDIO_RELEASE,compositionSchema:'layout-composition-v1',routeRegistryVersion:LAYOUT_STUDIO_RELEASE,createdAt:version.created_at};
      immutableArtifact={...artifactManifest,artifactSha256:await digest(JSON.stringify(artifactManifest)),immutable:true,source:'platform_layout_draft_versions'};
