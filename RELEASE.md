@@ -1,3 +1,53 @@
+# Mission Execution 16.10.64 — Canonical Layout Release Binding Preflight
+
+Status: protected source candidate; NOT production-certified.
+Base: 16.10.63 — Canonical Layout Dependency Snapshot.
+
+## Implemented
+- Extended the existing canonical product release authorization path to accept an explicit `layoutArtifactBinding` in the canonical launch manifest.
+- When a binding is supplied, authorization resolves the exact immutable `platform_layout_draft_versions` row and verifies its content SHA-256 and revision before including the artifact descriptor in the existing release dependency snapshot.
+- Added `layoutArtifactBindingRequired` for products that require a layout artifact; authorization fails closed if that requirement is set but the binding is missing.
+- No parallel release authority or new publication endpoint was introduced. Existing product release lifecycle and Market Factory remain authoritative.
+- Default behavior for launches without a layout binding is preserved; no existing release is automatically opted into the new requirement.
+- Publication remains uncertified: this does not activate Layout Studio drafts or prove live route parity.
+
+## Verification status
+- Focused binding contract: see `tests/system/check-16-10-64-layout-release-binding.mjs`.
+- Production build and full release suite must be run under Node.js 24.18.0 before deployment.
+- Real-browser parity, accessibility, tenant isolation, step-up approval for a layout-bound release, live verification and rollback remain unverified.
+
+## Deployment decision
+DO NOT DEPLOY until protected build, full release suite, route/security/browser certification, and rollback verification pass.
+
+Permanent priorities: Security → Truth → Liveness → Stability → Experience → Scale.
+Canonical journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+
+---
+
+# Mission Execution 16.10.63 — Canonical Layout Dependency Snapshot
+
+Status: protected source candidate; NOT production-certified.
+Base: 16.10.62.
+
+Implemented:
+- Release-readiness endpoint now produces a deterministic `onmission.layout-dependency-snapshot.v1` descriptor bound to the immutable layout artifact hash, canonical content hash, renderer/schema version, route registry, and component registry.
+- Snapshot includes a SHA-256 fingerprint and explicitly reports that it is not yet registered in the canonical release lifecycle.
+- Publication remains disabled; no Market Factory or live release state is mutated.
+- Runtime/cache identity advanced to 16.10.63 and a focused contract gate was added.
+
+Verification so far:
+- Focused dependency-snapshot contract: pending.
+- Full release suite: not completed.
+- Build/CSS/browser/accessibility/tenant-isolation/publication/rollback: not certified.
+- Local Node runtime is 22.16.0; required `.node-version` is 24.18.0.
+
+Decision: DO NOT DEPLOY until the protected Node 24.18.0 build, full release suite, real-browser parity/security checks, canonical release registration, and rollback evidence pass.
+
+Permanent priorities: Security → Truth → Liveness → Stability → Experience → Scale.
+Canonical journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+
+---
+
 # Mission Execution 16.10.62 — Immutable Layout Artifact Snapshot Contract
 
 Status: protected source candidate; NOT production-certified.

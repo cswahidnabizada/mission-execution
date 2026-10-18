@@ -3,7 +3,7 @@ import {requirePlatformAdministrator} from '../../security/platform-administrato
 import {requirePlatformSuperAdminStepUp} from '../../security/platform-super-administrator.js';
 
 const GLOBAL_EXPERIENCE_ID='onmission.global.experience';
-const LAYOUT_STUDIO_RELEASE='16.10.62';
+const LAYOUT_STUDIO_RELEASE='16.10.64';
 // Registry is deliberately explicit about what is known from source and what is not yet wired to canonical renderers.
 const EXPERIENCE_REGISTRY=[
  {id:'public-homepage',title:'Public homepage',route:'/',sourcePage:'public/index.html',area:'Public',editability:'INSPECT_ONLY',rendererBinding:'BASELINE_RENDERER_CONNECTED_UNCERTIFIED'},
@@ -118,8 +118,12 @@ export function registerLayoutStudioRoutes(router){
    }catch{blockers.push('CANONICAL_RELEASE_LIFECYCLE_UNAVAILABLE')}
    const routeBlockers=EXPERIENCE_REGISTRY.filter(e=>e.rendererBinding!=='CONNECTED').map(e=>({experienceId:e.id,code:'ROUTE_BINDING_NOT_CERTIFIED',binding:e.rendererBinding}));
    if(routeBlockers.length)blockers.push('PRODUCTION_ROUTE_BINDINGS_NOT_CERTIFIED');
+   // A deterministic dependency snapshot is evidence for a future canonical release contract,
+   // not a parallel release authority and not proof that these dependencies are production-certified.
+   const dependencyDescriptor={schema:'onmission.layout-dependency-snapshot.v1',artifactSha256:immutableArtifact?.artifactSha256||null,contentSha256:contentSha256||null,rendererVersion:LAYOUT_STUDIO_RELEASE,compositionSchema:'layout-composition-v1',routeRegistry:EXPERIENCE_REGISTRY.map(e=>({id:e.id,route:e.route,sourcePage:e.sourcePage,rendererBinding:e.rendererBinding})),componentRegistry:COMPONENT_REGISTRY.map(c=>({type:c.type,status:c.status,properties:c.properties})),publicationEnabled:false};
+   const dependencySnapshot={...dependencyDescriptor,snapshotSha256:await digest(JSON.stringify(dependencyDescriptor)),complete:Boolean(immutableArtifact)&&!validationError,registeredInCanonicalRelease:false,authority:'platform_product_release_lifecycles',notice:'Deterministic preflight snapshot only; canonical release registration and publication are not implemented by this endpoint.'};
    blockers.push('LAYOUT_STUDIO_NOT_REGISTERED_AS_CANONICAL_RELEASE_DEPENDENCY','PUBLICATION_DISABLED_PENDING_CANONICAL_INTEGRATION','BROWSER_PARITY_AND_ROLLBACK_EVIDENCE_MISSING');
-   return json({success:true,readOnly:true,publicationEnabled:false,releaseAuthority:'market_factory_and_platform_product_release_lifecycles',draft:row?{experienceId:row.experience_id,revision:Number(row.revision),updatedAt:row.updated_at,contentSha256,valid:!validationError}:null,immutableArtifact,lifecycle,routeBindings:{total:EXPERIENCE_REGISTRY.length,certified:EXPERIENCE_REGISTRY.filter(e=>e.rendererBinding==='CONNECTED').length,blockers:routeBlockers},blockers:[...new Set(blockers)],nextActions:['Register the immutable layout artifact as a dependency of the existing canonical release contract','Certify each real route and its authorization/tenant boundary','Require step-up approval through the existing release lifecycle','Verify the published result in a real browser and retain rollback evidence'],notice:'Read-only readiness inspection only. It does not create a release, authorize publication, mutate Market Factory state, or change active production.'});
+   return json({success:true,readOnly:true,publicationEnabled:false,releaseAuthority:'market_factory_and_platform_product_release_lifecycles',draft:row?{experienceId:row.experience_id,revision:Number(row.revision),updatedAt:row.updated_at,contentSha256,valid:!validationError}:null,immutableArtifact,dependencySnapshot,lifecycle,routeBindings:{total:EXPERIENCE_REGISTRY.length,certified:EXPERIENCE_REGISTRY.filter(e=>e.rendererBinding==='CONNECTED').length,blockers:routeBlockers},blockers:[...new Set(blockers)],nextActions:['Register this exact dependency snapshot in the existing canonical release contract','Certify each real route and its authorization/tenant boundary','Require step-up approval through the existing release lifecycle','Verify the published result in a real browser and retain rollback evidence'],notice:'Read-only readiness inspection only. It does not create a release, authorize publication, mutate Market Factory state, or change active production.'});
   }catch(e){return fail(e)}
  });
  router.patch('/api/platform/admin/layout-studio/draft',async({request,env,requestId})=>{

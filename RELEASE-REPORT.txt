@@ -1,41 +1,36 @@
-ON MISSION 16.10.54 — Canonical Homepage Renderer Integration
-Base: 16.10.53 source package
-Status: Protected source candidate; NOT deployed.
+ON MISSION 16.10.64 — Canonical Layout Release Binding Preflight
+Base: 16.10.63 — Canonical Layout Dependency Snapshot
+Status: protected source candidate; NOT production-certified
 
-Implemented
-- Public homepage uses the same allowlisted canonical component renderer module used by Layout Studio for its source-controlled baseline.
-- Preserved product availability authority, optional authentication session check, authenticated redirect to /app/, registration and executor navigation, closed-market messaging, and logout behavior.
-- Added production-mode safe-link rendering with a strict same-origin route allowlist; draft-preview actions remain disabled.
-- Added dedicated public styles for the shared renderer, responsive card layout and keyboard focus visibility.
-- Added explicit Organization setup page to the initial Layout Studio composition seed.
-- Added server-side component property allowlists and href validation so draft data cannot introduce arbitrary component properties or arbitrary destinations.
-- Added realistic desktop/tablet/mobile preview widths.
-- Updated route certification to distinguish the homepage's source-controlled baseline renderer from a certified draft-driven production binding.
-- Kept routes inspect-only and publication disabled until immutable release integration, authorization, browser parity, accessibility, verification and rollback are certified.
-- Updated version identity, cache-busting references, manifest, README and tests to 16.10.54.
+IMPLEMENTED
+- Extended the existing canonical product release authorization path with an optional `layoutArtifactBinding` supplied by the canonical country/product launch manifest.
+- If a binding is present, the existing lifecycle resolves the exact immutable `platform_layout_draft_versions` row by version ID and experience ID.
+- Recomputes SHA-256 from the immutable draft JSON and checks it against both the database hash and requested binding, and checks the immutable revision.
+- Includes the verified immutable layout artifact descriptor in the existing product release dependency snapshot and therefore in its dependency hash.
+- Added `layoutArtifactBindingRequired` support so a launch that explicitly requires a layout artifact fails closed if no valid binding is supplied.
+- No parallel release authority or publication endpoint created. Existing product release lifecycle and Market Factory remain authoritative.
+- Legacy launches without layout binding remain compatible and are not automatically opted into a new requirement.
+- Publication remains disabled for Layout Studio routes; this change does not prove real-route parity or activate any draft.
+- Added focused 16.10.64 contract and updated selected historical checks to avoid freezing current renderer version assertions.
 
-Verification
-- New 16.10.54 canonical homepage renderer contract: PASS.
-- Layout Studio regression contracts 16.10.53 through 16.10.44: PASS.
-- Control Plane navigation and recovery contracts: PASS.
-- JavaScript syntax checks: PASS.
-- Release integrity, production cleanliness and dependency-lock gates: PASS.
-- Complete configured `npm run check:release`: PASS (full suite completed).
-- Architecture convergence: PASS; 64 canonical actions, 0 missing action routes, 1 lifecycle writer.
-- Migration contract: PASS; 160 ordered migrations, high-water mark 0160.
-- Current schema: PASS; 252 tables, 461 indexes.
-- Production build and CSS compilation: NOT COMPLETED locally. The available environment is Node.js 22.16.0 and fails the required Node.js 24 build gate; dependency installation did not complete locally.
-- Live browser tests, homepage visual regression, accessibility, authorization/tenant isolation, remaining-route parity and rollback: NOT TESTED.
+CHECKS PASSED
+- 16.10.64 canonical layout release binding contract
+- 16.10.63 dependency snapshot contract
+- 16.10.62 immutable artifact contract
+- 16.10.61 readiness bridge contract
+- JavaScript syntax for modified lifecycle and Layout Studio route modules
+- Release integrity
+- Production cleanliness/version convergence
+- Dependency lock
 
-Deployment recommendation
-DO NOT DEPLOY from this local candidate yet. Run `npm run build` and the protected deployment workflow in the configured Node.js 24.x Cloudflare build environment (the project's declared pin is 24.18.0), then browser-test homepage availability/session branches and responsive rendering. The existing Cloudflare command `npx wrangler deploy` by itself bypasses the project's build gate; use the protected release pipeline that runs build and checks before deploy.
+NOT CERTIFIED / BLOCKERS
+- Full `npm run check:release` has not completed successfully for this candidate.
+- Local Node.js is 22.16.0; repository requires Node.js 24.18.0. Production build and CSS compilation are blocked at the environment gate.
+- No real-browser route parity, accessibility, authorization/tenant-isolation, step-up workflow, live publication, post-publication verification, or rollback evidence has been produced.
+- The optional binding must be populated by the canonical Product/Market release composition flow and tested against a real authorized launch before it can be considered end-to-end complete.
 
-Remaining roadmap
-1. Browser certify the homepage shared-renderer baseline.
-2. Connect registration and organization setup to the canonical renderer without replacing identity/onboarding behavior.
-3. Connect mission and executor workspaces with tenant and authorization boundaries intact.
-4. Prove preview-to-production parity route by route.
-5. Integrate immutable publication through the existing canonical release lifecycle and Market Factory, with step-up authorization, verification and rollback. Publication remains disabled.
+DEPLOYMENT DECISION
+DO NOT DEPLOY until the protected Node.js 24.18.0 build, full release suite, browser/security certification, and rollback verification pass.
 
 Permanent priorities: Security → Truth → Liveness → Stability → Experience → Scale.
 Canonical mission journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.

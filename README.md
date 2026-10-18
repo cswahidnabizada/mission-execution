@@ -1,3 +1,9 @@
+## Current candidate: ON MISSION 16.10.64 — Canonical Layout Release Binding Preflight
+
+Protected candidate only. Publication is disabled; see `RELEASE.md` for remaining gates.
+
+---
+
 ## Current candidate: ON MISSION 16.10.62 — Immutable Layout Artifact Snapshot Contract
 
 Protected source candidate; publication remains disabled pending canonical release integration and certification.

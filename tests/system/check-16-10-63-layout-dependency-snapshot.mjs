@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const route=fs.readFileSync('src/worker/modules/admin-control/layout-studio.routes.js','utf8');
+const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
+assert.match(route,/LAYOUT_STUDIO_RELEASE=\'16\.10\.\d+\'/);
+assert.match(route,/onmission\.layout-dependency-snapshot\.v1/);
+assert.match(route,/snapshotSha256:await digest\(JSON\.stringify\(dependencyDescriptor\)\)/);
+assert.match(route,/registeredInCanonicalRelease:false/);
+assert.match(route,/publicationEnabled:false/);
+assert.match(route,/platform_product_release_lifecycles/);
+assert.match(pkg.scripts['check:release'],/check-16-10-63-layout-dependency-snapshot\.mjs/);
+console.log('16.10.63 layout dependency snapshot contract: PASS');

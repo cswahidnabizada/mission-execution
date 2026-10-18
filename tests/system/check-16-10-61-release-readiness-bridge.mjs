@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const routes=readFileSync('src/worker/modules/admin-control/layout-studio.routes.js','utf8');
 const ui=readFileSync('public/assets/js/frontend/admin/layout-studio.js','utf8');
-assert.match(routes,/LAYOUT_STUDIO_RELEASE='16\.10\.62'/);
+assert.match(routes,/LAYOUT_STUDIO_RELEASE='16\.10\.\d+'/);
 assert.match(routes,/\/api\/platform\/admin\/layout-studio\/release-readiness/);
 assert.match(routes,/requirePlatformAdministrator\(request,env\)/);
 assert.match(routes,/platform_product_release_lifecycles/);

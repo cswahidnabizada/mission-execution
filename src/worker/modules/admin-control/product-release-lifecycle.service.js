@@ -85,7 +85,21 @@ export async function authorizeProductRelease(env,actor,launchId,requestId=''){
  if(!testLab.summary?.ready)throw fail('Product Test Lab is not ready for authorization.',409,'PRODUCT_TEST_LAB_NOT_READY');
  const release=await ensureProductReleaseRecord(env,id);
  const rollbackPath=release.previousLaunchId?{type:'previous_release',launchId:release.previousLaunchId,path:'Activate the previous verified/live product version after its release gate is satisfied.'}:{type:'none',path:'No previous live release exists for this country.'};
- const dependencySnapshot={version:PRODUCT_RELEASE_LIFECYCLE_VERSION,graph};
+ const launchManifest=json(launch.manifest_json,{});
+ let layoutArtifactBinding=null;
+ // Layout Studio is only a release dependency when the canonical launch manifest explicitly binds it.
+ // Validate the binding against the immutable draft-version row; never infer a market or tenant scope.
+ if(launchManifest.layoutArtifactBinding!==undefined){
+  const binding=launchManifest.layoutArtifactBinding;
+  if(!binding||binding.schema!=='onmission.layout-artifact-binding.v1'||binding.experienceId!=='onmission.global.experience'||typeof binding.versionId!=='string'||typeof binding.contentSha256!=='string'||!/^[a-f0-9]{64}$/.test(binding.contentSha256))throw fail('Layout artifact binding is invalid.',409,'PRODUCT_RELEASE_LAYOUT_BINDING_INVALID');
+  const artifact=await env.DB.prepare('SELECT version_id,experience_id,revision,draft_json,content_sha256,created_at FROM platform_layout_draft_versions WHERE version_id=? AND experience_id=? LIMIT 1').bind(binding.versionId,binding.experienceId).first().catch(()=>null);
+  if(!artifact)throw fail('Bound immutable layout artifact was not found.',409,'PRODUCT_RELEASE_LAYOUT_ARTIFACT_MISSING');
+  const actualContentHash=await sha256(String(artifact.draft_json));
+  if(actualContentHash!==artifact.content_sha256||actualContentHash!==binding.contentSha256||Number(binding.revision)!==Number(artifact.revision))throw fail('Bound immutable layout artifact integrity check failed.',409,'PRODUCT_RELEASE_LAYOUT_ARTIFACT_INTEGRITY_FAILED');
+  layoutArtifactBinding={schema:'onmission.layout-artifact-binding.v1',experienceId:artifact.experience_id,versionId:artifact.version_id,revision:Number(artifact.revision),contentSha256:actualContentHash,createdAt:artifact.created_at,verifiedAt:new Date().toISOString(),source:'platform_layout_draft_versions'};
+ }
+ const dependencySnapshot={version:PRODUCT_RELEASE_LIFECYCLE_VERSION,graph,...(layoutArtifactBinding?{layoutArtifact:layoutArtifactBinding}:{}),layoutArtifactBindingRequired:launchManifest.layoutArtifactBindingRequired===true};
+ if(dependencySnapshot.layoutArtifactBindingRequired&&!layoutArtifactBinding)throw fail('This product release requires a verified immutable Layout Studio artifact binding.',409,'PRODUCT_RELEASE_LAYOUT_BINDING_REQUIRED');
  const dependencySnapshotHash=await sha256(JSON.stringify(dependencySnapshot));
  await env.DB.prepare(`UPDATE platform_product_release_lifecycles SET state='authorized',contract_hash=?,contract_snapshot_json=?,dependency_snapshot_json=?,dependency_snapshot_hash=?,rollback_path_json=?,authorized_by_type=?,authorized_by_id=?,authorized_at=CURRENT_TIMESTAMP,updated_at=CURRENT_TIMESTAMP WHERE launch_id=?`).bind(contract.contractHash,contract.canonicalJson,JSON.stringify(dependencySnapshot),dependencySnapshotHash,JSON.stringify(rollbackPath),actor.role,actor.id||null,id).run();
  await auditAdminControl(env,{actor,action:'admin.product-release.authorized',resourceType:'country_product_launch',resourceId:id,requestId,metadata:{countryCode:launch.country_code,version:launch.version,contractHash:contract.contractHash,previousLaunchId:release.previousLaunchId}}).catch(error=>{throw authorityUnavailable('product_release_audit',error);});
