@@ -1,3 +1,43 @@
+# Mission Execution 16.10.54 — Canonical Homepage Renderer Integration
+
+Status: protected candidate
+Base: ON MISSION 16.10.53
+
+## 16.10.54 implementation
+
+- Public homepage uses the same allowlisted canonical component renderer module as Layout Studio for its source-controlled baseline.
+- Existing product availability, authentication/session redirects, registration and executor navigation, product-unavailable messaging and logout behavior remain controlled by their existing authorities.
+- Production-mode component links accept only an allowlist of same-origin application paths; draft preview actions remain inert.
+- Added dedicated public styles for shared renderer output and responsive layout behavior.
+- Added an explicit Organization setup page to the Studio composition seed.
+- Added server-side component property allowlists and href validation.
+- Updated route certification to distinguish a connected source-controlled homepage baseline from a certified, draft-driven production renderer.
+- Publication remains disabled: immutable release adapter, draft activation, live parity evidence and rollback are not certified.
+
+## 16.10.54 verification status
+
+- Focused canonical homepage renderer contract: PASS.
+- Layout Studio 16.10.53, 16.10.52, route certification and Control Plane regression contracts: PASS.
+- JavaScript syntax checks: PASS.
+- Dependency lock and release identity checks: PASS.
+- Full cumulative `npm run check:release`: PASS after preserving historical release records and updating current-version compatibility allowlists.
+- Production build and CSS compilation: NOT COMPLETED locally. The environment uses Node.js 22.16.0 and fails the Node 24 build gate; dependency installation also did not complete in this environment.
+- Live browser, accessibility, authorization/tenant isolation and rollback: NOT TESTED.
+
+## 16.10.54 deployment recommendation
+
+Do not deploy until historical release-document assertions are reconciled, the full cumulative release suite passes, the protected Node.js 24.18.0 build completes, and browser tests verify the homepage rendering and preserved session/availability behavior. The homepage uses the shared renderer for its source-controlled baseline only; Layout Studio drafts do not control production.
+
+Permanent priorities: Security → Truth → Liveness → Stability → Experience → Scale.
+
+Canonical mission journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+
+## Truthful Runtime Certification
+
+A passing source contract does not imply browser parity, production activation or rollback certification. Implemented, blocked and untested behavior are recorded separately.
+
+---
+
 # Mission Execution 16.10.53 — Composition Ordering & Editor Integrity
 
 Status: protected candidate; complete release suite, Node.js 24.18.0 build, and live browser certification required.

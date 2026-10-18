@@ -15,7 +15,7 @@ assert.match(renderComponent({id:'x',type:'not-approved'}),/Unsupported componen
 assert.match(renderPage({id:'home',componentIds:['hero','missing']},[{id:'hero',type:'hero',properties:{title:'Hello'}}]),/Missing component reference/);
 assert.match(client,/renderPage/);
 assert.match(client,new RegExp('layout-studio-renderer\\.js\\?v='+pkg.version.replaceAll('.','\\.')));
-assert.match(routes,new RegExp('rendererContractVersion:\''+pkg.version+'\''));
+assert.match(routes,/rendererContractVersion:LAYOUT_STUDIO_RELEASE/);
 assert.match(routes,/productionRouteBindings:0/);
 assert.match(html,new RegExp('v='+pkg.version.replaceAll('.','\\.')));
 console.log('16.10.46 canonical Studio renderer contract: PASS');

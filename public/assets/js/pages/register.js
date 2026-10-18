@@ -1,4 +1,4 @@
-import {attachLayoutStudioRouteAdapter} from '../frontend/admin/layout-studio-production-adapter.js?v=16.10.53';
+import {attachLayoutStudioRouteAdapter} from '../frontend/admin/layout-studio-production-adapter.js?v=16.10.54';
 import { api, jsonOptions } from "../core/api.js";
 import { saveAccessSession } from "../core/session.js";
 const $=s=>document.querySelector(s);

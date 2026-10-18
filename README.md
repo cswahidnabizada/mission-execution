@@ -1,6 +1,11 @@
-# ON MISSION — Release 16.10.52
+# ON MISSION — Release 16.10.54
 
 This source candidate converges Layout Studio's active page, placed component layers, inspector and draft preview on one composition model. It adds clear unplaced-component handling, selected-component highlighting, local Undo/Redo, dirty-state visibility, a persistent Save Draft action using the existing step-up protected server API, and draft-only market variant preview. It does not connect production renderers or enable publication; route parity, accessibility, authorization and rollback still require runtime certification. Product releases continue through the existing **CREATE NEXT VERSION** lifecycle.
+
+
+## 16.10.54 — Canonical Homepage Renderer Integration
+
+The public homepage now renders its source-controlled baseline through the same allowlisted component renderer used by Layout Studio. Product availability, optional session handling, redirects, registration/executor links and logout continue to use their existing canonical authorities. Production renderer mode only allows known same-origin links. The Studio draft does not drive production, and all layout publication remains disabled until immutable release integration, browser parity, accessibility, authorization and rollback evidence are certified. The composition seed now includes organization setup, the server validates component property allowlists and hrefs, and the Studio uses real responsive viewport widths.
 
 ## 16.10.52 — Canonical Composition & Editor Convergence
 

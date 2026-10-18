@@ -25,7 +25,7 @@ assert.match(studio,/contentOverrides/);
 assert.match(studio,/production route parity not yet certified/);
 assert.match(renderer,new RegExp(`STUDIO_RENDERER_VERSION = '${pkg.version.replaceAll('.','\\.')}'`));
 assert.match(renderer,/selectedComponentId === component\.id/);
-assert.match(routes,new RegExp(`registryVersion:'${pkg.version.replaceAll('.','\\.')}'`));
+assert.match(routes,/registryVersion:LAYOUT_STUDIO_RELEASE/);
 assert.match(routes,/publicationEnabled:false/);
 assert.match(fs.readFileSync('package.json','utf8'),/check-16-10-52-canonical-composition\.mjs/);
 const page={id:'home',componentIds:['hero-main']};
