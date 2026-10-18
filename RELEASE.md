@@ -1,16 +1,16 @@
-# Mission Execution 16.10.67 — Final Layout Studio Integration Foundation
+# Mission Execution 16.10.68 — Final Layout Studio Integration Foundation
 
 Base: ON MISSION 16.10.66 — Layout Studio Release Integrity Hardening
 Status: protected candidate; NOT production-certified
 
-## Implemented in 16.10.67
+## Implemented in 16.10.68
 - Prevented the structure and inspector panels from overlaying the central preview: explicit three-column grid, bounded sticky side panels on wide screens, and static full-width fallbacks on tablet/mobile.
 - Reduced horizontal overflow risks in canvas, preview, component tree and inspector controls.
 - Added a release contract covering panel layout, responsive breakpoints, seven allowlisted preview routes, fail-closed route mapping and disabled publication.
 - Preserved the canonical Product Publisher / Market Factory release authority; no parallel publishing endpoint or bypass.
-- Updated renderer, route adapter, registry and generated runtime identities to 16.10.67.
+- Updated renderer, route adapter, registry and generated runtime identities to 16.10.68.
 
-## 16.10.67 Verification
+## 16.10.68 Verification
 - Focused panel/route contract: PASS.
 - Full `npm run check:release`: see release report; current runtime is Node.js 22.16.0, while production build requires Node.js 24.18.0.
 - Protected build/CSS compilation and real-browser/security/publication/rollback certification remain NOT CERTIFIED.

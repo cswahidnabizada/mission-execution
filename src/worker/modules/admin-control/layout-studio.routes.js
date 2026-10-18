@@ -4,7 +4,7 @@ import {requirePlatformSuperAdminStepUp} from '../../security/platform-super-adm
 import {authorityUnavailable} from '../../core/canonical-db.js';
 
 const GLOBAL_EXPERIENCE_ID='onmission.global.experience';
-const LAYOUT_STUDIO_RELEASE='16.10.67';
+const LAYOUT_STUDIO_RELEASE='16.10.68';
 // Registry is deliberately explicit about what is known from source and what is not yet wired to canonical renderers.
 const EXPERIENCE_REGISTRY=[
  {id:'public-homepage',title:'Public homepage',route:'/',sourcePage:'public/index.html',area:'Public',editability:'INSPECT_ONLY',rendererBinding:'BASELINE_RENDERER_CONNECTED_UNCERTIFIED'},

@@ -7,7 +7,7 @@ const manifest=JSON.parse(read('RELEASE-MANIFEST.json'));
 const studio=read('public/assets/js/frontend/admin/layout-studio.js');
 const routes=read('src/worker/modules/admin-control/layout-studio.routes.js');
 const schema=read('schemas/layout-composition-v1.schema.json');
-assert.ok(pkg.version.localeCompare('16.10.59',undefined,{numeric:true})>=0); assert.equal(lock.version,pkg.version); assert.equal(lock.packages[''].version,pkg.version); assert.equal(read('VERSION').trim(),pkg.version); assert.equal(manifest.version,pkg.version); assert.ok(['16.10.58','16.10.60','16.10.65','16.10.66','16.10.61','16.10.62','16.10.63','16.10.64','16.10.65'].includes(manifest.base));
+assert.ok(pkg.version.localeCompare('16.10.59',undefined,{numeric:true})>=0); assert.equal(lock.version,pkg.version); assert.equal(lock.packages[''].version,pkg.version); assert.equal(read('VERSION').trim(),pkg.version); assert.equal(manifest.version,pkg.version); assert.ok(['16.10.58','16.10.60','16.10.65','16.10.66','16.10.61','16.10.62','16.10.63','16.10.64','16.10.65','16.10.67','16.10.68'].includes(manifest.base));
 assert.match(studio,/id:'tenant-product-experience',kind:'tenant-workspace',title:'Tenant product experience'/);
 assert.match(studio,/'tenant-product-experience':'tenant-workspace'/);
 assert.match(studio,/COMPOSITION_PAGE_MISSING/); assert.match(studio,/AMBIGUOUS_PAGE_KIND/);

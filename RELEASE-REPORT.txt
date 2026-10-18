@@ -1,36 +1,30 @@
-ON MISSION 16.10.64 — Canonical Layout Release Binding Preflight
-Base: 16.10.63 — Canonical Layout Dependency Snapshot
-Status: protected source candidate; NOT production-certified
+ON MISSION 16.10.68 — Layout Studio Integration and Compatibility Gates
+Base: 16.10.67 — Final Layout Studio Integration Foundation
+Status: source candidate; NOT production-certified
 
 IMPLEMENTED
-- Extended the existing canonical product release authorization path with an optional `layoutArtifactBinding` supplied by the canonical country/product launch manifest.
-- If a binding is present, the existing lifecycle resolves the exact immutable `platform_layout_draft_versions` row by version ID and experience ID.
-- Recomputes SHA-256 from the immutable draft JSON and checks it against both the database hash and requested binding, and checks the immutable revision.
-- Includes the verified immutable layout artifact descriptor in the existing product release dependency snapshot and therefore in its dependency hash.
-- Added `layoutArtifactBindingRequired` support so a launch that explicitly requires a layout artifact fails closed if no valid binding is supplied.
-- No parallel release authority or publication endpoint created. Existing product release lifecycle and Market Factory remain authoritative.
-- Legacy launches without layout binding remain compatible and are not automatically opted into a new requirement.
-- Publication remains disabled for Layout Studio routes; this change does not prove real-route parity or activate any draft.
-- Added focused 16.10.64 contract and updated selected historical checks to avoid freezing current renderer version assertions.
+- Advanced release identity to 16.10.68 and base manifest to 16.10.67.
+- Reconciled historical release compatibility assertions to accept the new candidate while preserving route mapping, renderer identity, composition, lifecycle, security, and canonical architecture assertions.
+- Updated current Layout Studio route adapter, production adapter, and renderer identities to 16.10.68.
+- Kept Product Publisher / Market Factory as the sole canonical publication authorities; Layout Studio publication remains disabled pending browser parity and rollback evidence.
+- Regenerated runtime release identity and versioned asset references.
 
 CHECKS PASSED
-- 16.10.64 canonical layout release binding contract
-- 16.10.63 dependency snapshot contract
-- 16.10.62 immutable artifact contract
-- 16.10.61 readiness bridge contract
-- JavaScript syntax for modified lifecycle and Layout Studio route modules
-- Release integrity
-- Production cleanliness/version convergence
-- Dependency lock
+- Full `npm run check:release` — PASS (all chained checks completed; exit code 0).
+- `node scripts/check-release-integrity.mjs` — PASS.
+- `node scripts/check-production-cleanliness.mjs` — PASS.
+- `node scripts/check-dependency-lock.mjs` — PASS.
+- Historical route composition, homepage, registration, organization setup, mission/executor renderer, composition, draft, immutable artifact, release binding, Market Factory, security, migration, and architecture contracts passed as part of the full suite.
 
-NOT CERTIFIED / BLOCKERS
-- Full `npm run check:release` has not completed successfully for this candidate.
-- Local Node.js is 22.16.0; repository requires Node.js 24.18.0. Production build and CSS compilation are blocked at the environment gate.
-- No real-browser route parity, accessibility, authorization/tenant-isolation, step-up workflow, live publication, post-publication verification, or rollback evidence has been produced.
-- The optional binding must be populated by the canonical Product/Market release composition flow and tested against a real authorized launch before it can be considered end-to-end complete.
+BLOCKED / NOT VERIFIED
+- `npm run build` stops at the protected environment gate: runtime Node.js 22.16.0, repository pin 24.18.0, engine contract 24.x. CSS compilation therefore did not run.
+- No real browser session was available to certify all seven production experiences, responsive behavior, accessibility, authenticated route parity, or tenant isolation.
+- Server-draft save/reload, concurrent conflict, undo/redo and recovery are covered by source contracts but have not been demonstrated end-to-end in a browser against the live application.
+- No actual authorized Product/Market launch using a persisted Layout Studio artifact was executed in this environment.
+- Live publication verification and rollback have not been demonstrated.
 
 DEPLOYMENT DECISION
-DO NOT DEPLOY until the protected Node.js 24.18.0 build, full release suite, browser/security certification, and rollback verification pass.
+DO NOT DEPLOY. The automated release suite is green, but the protected production build, CSS compilation, browser/security certification, actual authorized release, post-publication verification, and rollback evidence remain required.
 
-Permanent priorities: Security → Truth → Liveness → Stability → Experience → Scale.
-Canonical mission journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+Permanent priorities: Security -> Truth -> Liveness -> Stability -> Experience -> Scale.
+Canonical mission journey: OBSERVE -> UNDERSTAND -> PLAN -> EVALUATE -> ACCEPT -> AUTHORIZE -> PREPARE -> ASSIGN -> EXECUTE -> EFFECT -> VERIFY -> RECOVER -> OUTCOME -> LEARN -> NEXT SITUATION -> OBSERVE.
