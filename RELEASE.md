@@ -1,3 +1,30 @@
+# Mission Execution 16.10.55 — Registration Renderer Integration
+
+Status: protected candidate
+Base: ON MISSION 16.10.54
+
+## Implementation
+
+- Registration route now uses the shared allowlisted Layout Studio renderer for its brand/navigation header only.
+- Existing registration form, onboarding requirement loading, idempotency key, organization provisioning, login/session creation, and activation redirect remain owned by their existing canonical flow.
+- Registration renderer integration is explicitly marked `BASELINE_CHROME_RENDERER_CONNECTED_UNCERTIFIED`; this is not full page-composition integration and does not make drafts production-active.
+- Added dedicated responsive styles and cache-version convergence for the shared renderer assets.
+- Publication remains disabled pending canonical draft-to-release integration, browser parity, authorization and rollback evidence.
+
+## Verification
+
+- New registration renderer contract: to be run in this environment.
+- Prior homepage renderer and Layout Studio contracts: included in the cumulative release suite.
+- Production build/CSS compilation: not certified in this environment; repository requires Node.js 24.x, while the available local runtime is Node.js 22.x.
+- Live browser, accessibility, onboarding, authorization/tenant isolation and rollback: not tested.
+
+## Release decision
+
+Do not deploy until the protected Node.js 24.x build and complete release/certification pipeline pass, then verify registration and onboarding in a real browser.
+
+Permanent release priorities: Security → Truth → Liveness → Stability → Experience → Scale.
+
+Canonical mission journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
 # Mission Execution 16.10.54 — Canonical Homepage Renderer Integration
 
 Status: protected candidate

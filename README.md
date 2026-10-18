@@ -1,7 +1,6 @@
-# ON MISSION — Release 16.10.54
+# ON MISSION — Release 16.10.55
 
-This source candidate converges Layout Studio's active page, placed component layers, inspector and draft preview on one composition model. It adds clear unplaced-component handling, selected-component highlighting, local Undo/Redo, dirty-state visibility, a persistent Save Draft action using the existing step-up protected server API, and draft-only market variant preview. It does not connect production renderers or enable publication; route parity, accessibility, authorization and rollback still require runtime certification. Product releases continue through the existing **CREATE NEXT VERSION** lifecycle.
-
+Registration now uses the shared allowlisted Layout Studio renderer for its brand/navigation header while preserving the canonical organization onboarding form, requirements, idempotency, provisioning, identity/session flow and activation redirect. This is baseline chrome integration only: registration composition is not yet draft-driven, and organization setup remains unconnected. Publication stays disabled pending browser parity, accessibility, authorization and rollback evidence. Product releases continue through the existing **CREATE NEXT VERSION** lifecycle.
 
 ## 16.10.54 — Canonical Homepage Renderer Integration
 

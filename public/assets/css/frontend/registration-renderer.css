@@ -1,0 +1,10 @@
+/* ON MISSION 16.10.55 — registration route uses canonical renderer for shared brand header only. */
+.registration-canonical-header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid #dce4ef;color:#172033}
+.registration-canonical-header .ls-render-header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex:1;min-width:0}
+.registration-canonical-header .ls-render-header nav{display:flex;gap:14px;flex-wrap:wrap}
+.registration-canonical-header .ls-render-header a{color:#334155;text-decoration:none;font-size:12px}
+.registration-canonical-header .ls-render-brand{font-size:13px;font-weight:800;letter-spacing:.02em}
+.registration-canonical-header .registration-heading{flex-basis:100%;min-width:0}
+.registration-canonical-header .registration-heading h1{margin:.25rem 0 0;overflow-wrap:anywhere}
+.registration-canonical-header a:focus-visible{outline:3px solid #8eb1ff;outline-offset:3px}
+@media(max-width:560px){.registration-canonical-header{align-items:flex-start}.registration-canonical-header .ls-render-header{align-items:flex-start;flex-direction:column}.registration-canonical-header .ls-render-header nav{gap:10px}}

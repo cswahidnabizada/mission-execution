@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const read=p=>fs.readFileSync(p,'utf8');
+const pkg=JSON.parse(read('package.json')),lock=JSON.parse(read('package-lock.json')),manifest=JSON.parse(read('RELEASE-MANIFEST.json'));
+const reg=read('public/assets/js/pages/register.js'),html=read('public/register.html'),routes=read('src/worker/modules/admin-control/layout-studio.routes.js');
+assert.equal(pkg.version,'16.10.55');assert.equal(lock.version,pkg.version);assert.equal(lock.packages[''].version,pkg.version);assert.equal(read('VERSION').trim(),pkg.version);assert.equal(manifest.version,pkg.version);
+assert.match(reg,/renderComponent/);assert.match(reg,/STUDIO_RENDERER_VERSION/);assert.match(reg,/routeId:'registration'/);
+assert.match(reg,/api\("\/api\/organizations\/onboarding"/);assert.match(reg,/api\("\/api\/auth\/login"/);assert.match(reg,/activation=1/);
+assert.match(html,/canonical-experience-renderer\.css\?v=16\.10\.55/);assert.match(html,/registration-renderer\.css\?v=16\.10\.55/);
+assert.match(routes,/BASELINE_CHROME_RENDERER_CONNECTED_UNCERTIFIED/);assert.match(routes,/publicationEnabled:false/);
+console.log('16.10.55 registration renderer integration contract: PASS');

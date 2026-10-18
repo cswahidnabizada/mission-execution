@@ -1,8 +1,18 @@
-import {attachLayoutStudioRouteAdapter} from '../frontend/admin/layout-studio-production-adapter.js?v=16.10.54';
+import {attachLayoutStudioRouteAdapter} from '../frontend/admin/layout-studio-production-adapter.js?v=16.10.55';
+import {renderComponent, STUDIO_RENDERER_VERSION} from '../frontend/admin/layout-studio-renderer.js?v=16.10.55';
 import { api, jsonOptions } from "../core/api.js";
 import { saveAccessSession } from "../core/session.js";
 const $=s=>document.querySelector(s);
 attachLayoutStudioRouteAdapter({root:document.body,routeId:'registration'});
+// Shared canonical renderer owns the registration page's visual brand header only.
+// Form fields, onboarding requirements, idempotency, identity/session flow and submission remain canonical.
+const registrationHeader=document.querySelector('body > header');
+if(registrationHeader){
+ const headerMarkup=renderComponent({id:'registration-global-header',type:'header',properties:{label:'ON MISSION'}},{mode:'production'});
+ registrationHeader.classList.add('registration-canonical-header');
+ registrationHeader.innerHTML=headerMarkup+'<div class="registration-heading"><div class="step">ON MISSION // COUNTRY PRODUCT</div><h1 class="impact-text text-3xl font-black">ORGANIZATION REGISTRATION</h1></div>';
+ registrationHeader.dataset.rendererVersion=STUDIO_RENDERER_VERSION;
+}
 const uxLabPreview=new URLSearchParams(location.search).get('uxlab')==='preview';
 if(uxLabPreview){const banner=document.createElement('div');banner.style.cssText='position:sticky;top:0;z-index:50;padding:12px 16px;background:#fff7ed;border-bottom:1px solid #f59e0b;color:#7c2d12;font:800 12px system-ui;letter-spacing:.04em;text-align:center';banner.textContent='SUPER ADMIN USER EXPERIENCE LAB · REGISTRATION PREVIEW · SUBMISSION DISABLED';document.body.prepend(banner);}
 
