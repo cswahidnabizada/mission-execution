@@ -1,3 +1,13 @@
+## Current candidate: ON MISSION 16.10.62 — Immutable Layout Artifact Snapshot Contract
+
+Protected source candidate; publication remains disabled pending canonical release integration and certification.
+
+# ON MISSION — Release 16.10.61
+
+## 16.10.61 — Canonical Release Readiness Bridge
+
+Layout Studio now has a read-only readiness check against the existing canonical product release lifecycle. It fingerprints and validates the current server draft, inspects existing lifecycle state, and reports route binding, dependency-registration, browser evidence and rollback blockers. It does not create a second publisher and cannot publish or mutate production. This is a protected source candidate, not a certified deployment.
+
 # ON MISSION — Release 16.10.60
 
 ## 16.10.60 — Route Composition Preview & Mapping Integrity

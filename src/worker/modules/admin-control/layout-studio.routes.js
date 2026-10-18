@@ -3,7 +3,7 @@ import {requirePlatformAdministrator} from '../../security/platform-administrato
 import {requirePlatformSuperAdminStepUp} from '../../security/platform-super-administrator.js';
 
 const GLOBAL_EXPERIENCE_ID='onmission.global.experience';
-const LAYOUT_STUDIO_RELEASE='16.10.60';
+const LAYOUT_STUDIO_RELEASE='16.10.62';
 // Registry is deliberately explicit about what is known from source and what is not yet wired to canonical renderers.
 const EXPERIENCE_REGISTRY=[
  {id:'public-homepage',title:'Public homepage',route:'/',sourcePage:'public/index.html',area:'Public',editability:'INSPECT_ONLY',rendererBinding:'BASELINE_RENDERER_CONNECTED_UNCERTIFIED'},
@@ -95,6 +95,33 @@ export function registerLayoutStudioRoutes(router){
  router.post('/api/platform/admin/layout-studio/impact',async({request,env})=>{try{await requirePlatformAdministrator(request,env);let body;try{body=await request.json()}catch{throw invalid('REQUEST_JSON_INVALID')}const draft=body?.draft,problem=validateDraft(draft);if(problem)throw invalid(problem);const kinds=new Set(draft.pages.map(p=>p.kind));const mapping=[['public-homepage',['public-homepage']],['onboarding',['registration','organization-invitation']],['organization-setup',['tenant-product-experience']],['executor-workspace',['executor-dashboard']],['mission-experience',['mission-list','mission-workspace']],['tenant-workspace',['tenant-product-experience']],['shared-components',EXPERIENCE_REGISTRY.map(e=>e.id)]];const ids=new Set();for(const [kind,targets] of mapping)if(kinds.has(kind))for(const id of targets)ids.add(id);const affected=EXPERIENCE_REGISTRY.filter(e=>ids.has(e.id)).map(e=>({...e,impactReason:kinds.has('shared-components')?'Shared-component page may affect this experience':`Composition contains ${[...kinds].filter(k=>mapping.find(([mk])=>mk===k)?.[1].includes(e.id)).join(', ')}`,publicationBlocked:e.rendererBinding!=='CONNECTED'}));const blockers=[];if(affected.some(e=>e.publicationBlocked))blockers.push('CANONICAL_PRODUCTION_RENDERER_BINDING_MISSING');if(affected.length===0)blockers.push('NO_KNOWN_EXPERIENCE_TARGET');return json({success:true,analysisVersion:'16.10.47',experienceId:draft.experienceId,affectedExperienceCount:affected.length,affectedExperiences:affected,impact:{componentCount:draft.components.length,pageCount:draft.pages.length,marketVariantCount:draft.marketVariants.length,marketCodes:[...new Set(draft.marketVariants.map(m=>m.marketCode))].sort()},blockers,publicationAllowed:false,productionRouteBindings:0,notice:'This is a source-derived impact estimate. It does not prove live route parity and cannot authorize publication.'})}catch(e){return fail(e)}});
  router.get('/api/platform/admin/layout-studio/draft',async({request,env})=>{try{await requirePlatformAdministrator(request,env);const row=await env.DB.prepare('SELECT experience_id,draft_json,revision,schema_version,created_by,updated_by,created_at,updated_at FROM platform_layout_drafts WHERE experience_id=?').bind(GLOBAL_EXPERIENCE_ID).first();if(!row)return json({success:true,exists:false,draft:null,revision:0});return json({success:true,exists:true,draft:parse(row.draft_json),revision:Number(row.revision),updatedAt:row.updated_at,updatedBy:row.updated_by});}catch(e){return fail(e)}});
  router.get('/api/platform/admin/layout-studio/versions',async({request,env})=>{try{await requirePlatformAdministrator(request,env);const rows=await env.DB.prepare('SELECT version_id,experience_id,revision,content_sha256,actor_id,change_reason,created_at FROM platform_layout_draft_versions WHERE experience_id=? ORDER BY revision DESC LIMIT 50').bind(GLOBAL_EXPERIENCE_ID).all();return json({success:true,versions:rows.results||[]});}catch(e){return fail(e)}});
+ router.get('/api/platform/admin/layout-studio/release-readiness',async({request,env})=>{
+  try{
+   await requirePlatformAdministrator(request,env);
+   const row=await env.DB.prepare('SELECT experience_id,draft_json,revision,updated_at FROM platform_layout_drafts WHERE experience_id=?').bind(GLOBAL_EXPERIENCE_ID).first();
+   const blockers=[];let validationError=null,contentSha256=null,immutableArtifact=null;
+   if(!row)blockers.push('SERVER_DRAFT_MISSING');
+   else{
+    validationError=validateDraft(parse(row.draft_json));if(validationError)blockers.push(validationError);contentSha256=await digest(String(row.draft_json));
+    const version=await env.DB.prepare('SELECT version_id,revision,content_sha256,created_at FROM platform_layout_draft_versions WHERE experience_id=? AND revision=? LIMIT 1').bind(GLOBAL_EXPERIENCE_ID,Number(row.revision)).first().catch(()=>null);
+    if(version&&version.content_sha256===contentSha256){
+     const artifactManifest={schema:'onmission.layout-artifact.v1',experienceId:GLOBAL_EXPERIENCE_ID,versionId:version.version_id,revision:Number(version.revision),contentSha256,rendererVersion:LAYOUT_STUDIO_RELEASE,compositionSchema:'layout-composition-v1',routeRegistryVersion:LAYOUT_STUDIO_RELEASE,createdAt:version.created_at};
+     immutableArtifact={...artifactManifest,artifactSha256:await digest(JSON.stringify(artifactManifest)),immutable:true,source:'platform_layout_draft_versions'};
+    }else blockers.push('IMMUTABLE_LAYOUT_ARTIFACT_VERSION_MISSING_OR_MISMATCHED');
+   }
+   const lifecycle={authority:'platform_product_release_lifecycles',available:false,states:{},latest:[]};
+   try{
+    const result=await env.DB.prepare(`SELECT r.id,r.launch_id,r.state,r.contract_hash,r.dependency_snapshot_hash,r.authorized_at,r.published_at,r.verified_at,r.live_at,r.updated_at,l.country_code,l.version,l.status AS launch_status,l.active FROM platform_product_release_lifecycles r JOIN country_product_launches l ON l.id=r.launch_id ORDER BY r.updated_at DESC LIMIT 20`).all();
+    const rows=result.results||[];lifecycle.available=true;
+    lifecycle.latest=rows.map(x=>({id:Number(x.id),launchId:Number(x.launch_id),state:x.state,countryCode:x.country_code,version:x.version,launchStatus:x.launch_status,active:Boolean(x.active),hasContractHash:Boolean(x.contract_hash),hasDependencySnapshotHash:Boolean(x.dependency_snapshot_hash),authorized:Boolean(x.authorized_at),published:Boolean(x.published_at),verified:Boolean(x.verified_at),live:Boolean(x.live_at),updatedAt:x.updated_at}));
+    for(const x of rows)lifecycle.states[x.state]=(lifecycle.states[x.state]||0)+1;
+   }catch{blockers.push('CANONICAL_RELEASE_LIFECYCLE_UNAVAILABLE')}
+   const routeBlockers=EXPERIENCE_REGISTRY.filter(e=>e.rendererBinding!=='CONNECTED').map(e=>({experienceId:e.id,code:'ROUTE_BINDING_NOT_CERTIFIED',binding:e.rendererBinding}));
+   if(routeBlockers.length)blockers.push('PRODUCTION_ROUTE_BINDINGS_NOT_CERTIFIED');
+   blockers.push('LAYOUT_STUDIO_NOT_REGISTERED_AS_CANONICAL_RELEASE_DEPENDENCY','PUBLICATION_DISABLED_PENDING_CANONICAL_INTEGRATION','BROWSER_PARITY_AND_ROLLBACK_EVIDENCE_MISSING');
+   return json({success:true,readOnly:true,publicationEnabled:false,releaseAuthority:'market_factory_and_platform_product_release_lifecycles',draft:row?{experienceId:row.experience_id,revision:Number(row.revision),updatedAt:row.updated_at,contentSha256,valid:!validationError}:null,immutableArtifact,lifecycle,routeBindings:{total:EXPERIENCE_REGISTRY.length,certified:EXPERIENCE_REGISTRY.filter(e=>e.rendererBinding==='CONNECTED').length,blockers:routeBlockers},blockers:[...new Set(blockers)],nextActions:['Register the immutable layout artifact as a dependency of the existing canonical release contract','Certify each real route and its authorization/tenant boundary','Require step-up approval through the existing release lifecycle','Verify the published result in a real browser and retain rollback evidence'],notice:'Read-only readiness inspection only. It does not create a release, authorize publication, mutate Market Factory state, or change active production.'});
+  }catch(e){return fail(e)}
+ });
  router.patch('/api/platform/admin/layout-studio/draft',async({request,env,requestId})=>{
   try{
    const actor=await requirePlatformSuperAdminStepUp(request,env);let body;try{body=await request.json()}catch{throw invalid('REQUEST_JSON_INVALID')}

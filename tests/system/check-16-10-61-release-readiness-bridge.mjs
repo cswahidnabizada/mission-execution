@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+const routes=readFileSync('src/worker/modules/admin-control/layout-studio.routes.js','utf8');
+const ui=readFileSync('public/assets/js/frontend/admin/layout-studio.js','utf8');
+assert.match(routes,/LAYOUT_STUDIO_RELEASE='16\.10\.62'/);
+assert.match(routes,/\/api\/platform\/admin\/layout-studio\/release-readiness/);
+assert.match(routes,/requirePlatformAdministrator\(request,env\)/);
+assert.match(routes,/platform_product_release_lifecycles/);
+assert.match(routes,/readOnly:true/);
+assert.match(routes,/publicationEnabled:false/);
+assert.match(routes,/LAYOUT_STUDIO_NOT_REGISTERED_AS_CANONICAL_RELEASE_DEPENDENCY/);
+assert.match(routes,/does not create a release, authorize publication, mutate Market Factory state, or change active production/);
+assert.match(ui,/checkReleaseReadiness/);
+assert.match(ui,/\/api\/platform\/admin\/layout-studio\/release-readiness/);
+console.log('16.10.62 canonical release readiness bridge contract: PASS');

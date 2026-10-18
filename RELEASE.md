@@ -1,7 +1,63 @@
+# Mission Execution 16.10.62 — Immutable Layout Artifact Snapshot Contract
+
+Status: protected source candidate; NOT production-certified.
+Base: 16.10.61.
+
+## Implemented
+- Release readiness now resolves the exact current server draft revision to its immutable `platform_layout_draft_versions` record.
+- Emits a deterministic `onmission.layout-artifact.v1` descriptor with version ID, revision, content SHA-256, renderer/schema/route registry versions, creation time and artifact SHA-256.
+- Readiness fails closed if the immutable version record is missing or its content hash does not match the current draft.
+- Updated historical route inventory compatibility for 16.10.61/16.10.62 while retaining the baseline assertion.
+- Publication remains disabled; readiness does not claim the artifact is yet embedded in the canonical product release contract.
+
+## Verification status
+- Focused immutable artifact contract: pending execution.
+- Historical route inventory contract: pending execution.
+- Build/full suite/browser/security/rollback: not certified.
+- Local Node.js is 22.16.0; repository requires 24.18.0, so production build may stop at environment gate.
+
+## Remaining blockers
+- Register the immutable artifact manifest and its dependency hash in the existing canonical product release contract at the correct market/product scope.
+- Implement step-up-authorized publication using the existing Market Factory and lifecycle only.
+- Certify actual route parity, browser accessibility, tenant/authorization boundaries, failed verification and rollback.
+
+Permanent priority: Security → Truth → Liveness → Stability → Experience → Scale.
+Canonical journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+
+---
+
+# Mission Execution 16.10.61 — Canonical Release Readiness Bridge
+
+Status: protected source candidate; NOT production-certified.
+Base: ON Mission 16.10.60
+
+## Implemented
+- Added a Super Admin-only, read-only release-readiness endpoint for Layout Studio.
+- Computes a SHA-256 fingerprint of the current server draft and reports structural validation status.
+- Inspects the existing `platform_product_release_lifecycles` authority and summarizes known lifecycle states without creating a parallel release authority.
+- Reports route bindings that remain uncertified, missing canonical dependency registration, disabled publication, and missing browser/rollback evidence as explicit blockers.
+- Added a Layout Studio “Check canonical release readiness” action to display the blockers and next actions.
+- The endpoint does not create a release, authorize publication, mutate Market Factory state, or change active production. Publication remains disabled.
+
+## Verification status
+- Focused 16.10.61 release-readiness bridge contract: pending execution.
+- JavaScript syntax, release integrity, production cleanliness, dependency lock and architecture checks: pending execution.
+- Full release suite: not certified.
+- Node.js 24.18.0 production build/CSS: not run in this environment.
+- Browser parity, accessibility, authorization and tenant-isolation scenarios, production route activation, publication and rollback: not certified.
+
+## Deployment decision
+DO NOT DEPLOY until the protected Node.js 24.18.0 build, complete release suite, browser/security checks, route parity and rollback verification pass.
+
+Permanent priorities: Security → Truth → Liveness → Stability → Experience → Scale.
+Canonical mission journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+
+---
+
 # Mission Execution 16.10.60 — Tenant Composition & Editing Recovery
 
 Status: protected source candidate; NOT production-certified.
-Base: ON MISSION 16.10.58.
+Base: ON Mission 16.10.60
 
 ## Implemented
 - Added a unique `tenant-workspace` page kind and seeded the Tenant Product Experience composition, resolving the prior `COMPOSITION_PAGE_MISSING` for the default draft.
