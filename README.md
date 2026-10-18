@@ -1,4 +1,4 @@
-## Current candidate: ON MISSION 16.10.68 — Final Layout Studio Integration Foundation
+## Current candidate: ON MISSION 16.10.69 — Layout Studio Functional Integration and Route Parity
 
 The workspace grid now keeps structure and inspector panels in their own columns, with bounded side-panel scrolling on wide screens and non-sticky fallbacks for tablet/mobile. Added a regression contract for panel layout, responsive breakpoints, route mapping and the publication-disabled boundary. This remains a protected candidate, not production-certified; see `RELEASE.md`.
 
