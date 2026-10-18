@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+const studio=readFileSync('public/assets/js/frontend/admin/layout-studio.js','utf8');
+assert.match(studio,/function threeWayMerge\(base,local,remote/);
+assert.match(studio,/NON-CONFLICTING CHANGES RECONCILED/);
+assert.match(studio,/CONFLICTS REQUIRE HUMAN RESOLUTION/);
+assert.match(studio,/baseDraft=structuredClone\(remote\.draft\)/);
+assert.match(studio,/Draft revision conflict detected/);
+assert.match(studio,/Publish \(blocked\)/);
+console.log('16.10.60 conflict reconciliation contract: PASS');

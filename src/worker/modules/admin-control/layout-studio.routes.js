@@ -3,7 +3,7 @@ import {requirePlatformAdministrator} from '../../security/platform-administrato
 import {requirePlatformSuperAdminStepUp} from '../../security/platform-super-administrator.js';
 
 const GLOBAL_EXPERIENCE_ID='onmission.global.experience';
-const LAYOUT_STUDIO_RELEASE='16.10.59';
+const LAYOUT_STUDIO_RELEASE='16.10.60';
 // Registry is deliberately explicit about what is known from source and what is not yet wired to canonical renderers.
 const EXPERIENCE_REGISTRY=[
  {id:'public-homepage',title:'Public homepage',route:'/',sourcePage:'public/index.html',area:'Public',editability:'INSPECT_ONLY',rendererBinding:'BASELINE_RENDERER_CONNECTED_UNCERTIFIED'},

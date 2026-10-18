@@ -7,7 +7,7 @@ const manifest=JSON.parse(read('RELEASE-MANIFEST.json'));
 const studio=read('public/assets/js/frontend/admin/layout-studio.js');
 const routes=read('src/worker/modules/admin-control/layout-studio.routes.js');
 const schema=read('schemas/layout-composition-v1.schema.json');
-assert.equal(pkg.version,'16.10.59'); assert.equal(lock.version,pkg.version); assert.equal(lock.packages[''].version,pkg.version); assert.equal(read('VERSION').trim(),pkg.version); assert.equal(manifest.version,pkg.version); assert.equal(manifest.base,'16.10.58');
+assert.equal(pkg.version,'16.10.60'); assert.equal(lock.version,pkg.version); assert.equal(lock.packages[''].version,pkg.version); assert.equal(read('VERSION').trim(),pkg.version); assert.equal(manifest.version,pkg.version); assert.equal(manifest.base,'16.10.58');
 assert.match(studio,/id:'tenant-product-experience',kind:'tenant-workspace',title:'Tenant product experience'/);
 assert.match(studio,/'tenant-product-experience':'tenant-workspace'/);
 assert.match(studio,/COMPOSITION_PAGE_MISSING/); assert.match(studio,/AMBIGUOUS_PAGE_KIND/);
@@ -16,4 +16,4 @@ assert.match(routes,/tenant-workspace/); assert.match(routes,/\['tenant-workspac
 assert.match(schema,/tenant-workspace/);
 assert.match(read('public/layout-studio.html'),/layout-studio\.js\?v=16\.10\.59/);
 assert.match(read('RELEASE.md'),/DO NOT DEPLOY/);
-console.log('16.10.59 tenant composition and recovery contract: PASS');
+console.log('16.10.60 tenant composition and recovery contract: PASS');

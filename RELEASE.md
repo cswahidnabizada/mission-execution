@@ -1,4 +1,4 @@
-# Mission Execution 16.10.59 — Tenant Composition & Editing Recovery
+# Mission Execution 16.10.60 — Tenant Composition & Editing Recovery
 
 Status: protected source candidate; NOT production-certified.
 Base: ON MISSION 16.10.58.
@@ -10,7 +10,7 @@ Base: ON MISSION 16.10.58.
 - Kept previews draft-only and publication disabled.
 
 ## Verification status
-- Focused 16.10.59 tenant composition/recovery contract: to be run.
+- Focused 16.10.60 tenant composition/recovery contract: to be run.
 - Production build and full release suite: not certified in this environment until run under Node.js 24.18.0.
 - Browser, accessibility, authorization, tenant isolation, production route parity, publication and rollback: not certified.
 
@@ -22,7 +22,7 @@ Canonical mission journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCE
 
 ---
 
-# Mission Execution 16.10.59 — Route Composition Preview & Mapping Integrity
+# Mission Execution 16.10.60 — Route Composition Preview & Mapping Integrity
 
 Status: protected source candidate — NOT production-certified; DO NOT DEPLOY.
 Base: ON MISSION 16.10.57.
@@ -33,7 +33,7 @@ Base: ON MISSION 16.10.57.
 - Added a target-route selector so the same canonical draft can be inspected against homepage, registration, organization setup, mission list/workspace, executor workspace, and tenant product experience targets.
 - Preview resolution fails closed when a route is not allowlisted, has no matching draft page, or has ambiguous matching pages; it does not silently preview an unrelated page.
 - Route preview is isolated from production: no live route receives draft data, and publication remains disabled.
-- Updated renderer/adapter/release identity and cache-busted assets to 16.10.59.
+- Updated renderer/adapter/release identity and cache-busted assets to 16.10.60.
 
 ## Verification status
 

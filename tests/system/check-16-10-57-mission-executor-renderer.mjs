@@ -10,7 +10,7 @@ const renderer=read('public/assets/js/frontend/admin/layout-studio-renderer.js')
 const adapter=read('public/assets/js/frontend/admin/layout-studio-production-adapter.js');
 const appHtml=read('public/app/index.html');
 const contextCss=read('public/assets/css/frontend/mission-executor-layout-context.css');
-assert.equal(pkg.version,'16.10.59');
+assert.equal(pkg.version,'16.10.60');
 assert.equal(lock.version,pkg.version);
 assert.equal(lock.packages[''].version,pkg.version);
 assert.equal(read('VERSION').trim(),pkg.version);
