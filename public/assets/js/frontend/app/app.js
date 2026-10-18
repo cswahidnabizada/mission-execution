@@ -1,4 +1,5 @@
-import {attachLayoutStudioRouteAdapter,resolveLayoutStudioRoute} from '../admin/layout-studio-production-adapter.js?v=16.10.55';
+import {attachLayoutStudioRouteAdapter,resolveLayoutStudioRoute} from '../admin/layout-studio-production-adapter.js?v=16.10.56';
+import {renderComponent,STUDIO_RENDERER_VERSION} from '../admin/layout-studio-renderer.js?v=16.10.56';
 import {mountShell,syncNav} from '../shell/app-shell.js';
 import {canonicalizeAppHash} from '../navigation/registry.js';
 import {api,esc} from '../core/api.js';
@@ -244,7 +245,8 @@ async function people(el,s){
 }
 async function account(el,s){
   const shouldOpen=new URLSearchParams(location.hash.split('?')[1]||'').get('activation')==='1';
-  el.innerHTML=page('Account','Identity, organization, readiness, billing, privacy and security in one governed account context.')
+  const setupChrome=shouldOpen?`<div class="organization-setup-renderer" data-studio-renderer-version="${STUDIO_RENDERER_VERSION}">${renderComponent({id:'organization-setup-context',type:'section',properties:{label:'ON MISSION // ORGANIZATION SETUP',title:'Get your organization ready',description:'Review the next required trust, access and product-readiness steps. Activation state and required actions remain controlled by the canonical account authorities.'}})}</div>`:'';
+  el.innerHTML=setupChrome+page('Account','Identity, organization, readiness, billing, privacy and security in one governed account context.')
     +`<div class="onm-grid onm-grid-2">
       ${card(`<div class="onm-eyebrow">IDENTITY</div><h2>${esc(s.session?.name||s.session?.email||'Account')}</h2><p class="onm-muted">${esc(s.session?.email||'')}</p><span class="onm-chip">${esc(s.session?.role==='driver'?'executor':s.session?.role||'member')}</span>`)}
       ${card(`<div class="onm-eyebrow">ORGANIZATION</div><h2>${esc(s.situation?.organization?.name||'Personal workspace')}</h2><p class="onm-muted">${esc(s.situation?.responsibility||'Access is derived from your current situation.')}</p><a class="onm-btn" href="#context?type=organization&back=%23account">UNDERSTAND ORGANIZATION</a>`)}

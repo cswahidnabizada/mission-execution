@@ -1,4 +1,4 @@
-# ON MISSION — Release 16.10.55
+# ON MISSION — Release 16.10.56
 
 Registration now uses the shared allowlisted Layout Studio renderer for its brand/navigation header while preserving the canonical organization onboarding form, requirements, idempotency, provisioning, identity/session flow and activation redirect. This is baseline chrome integration only: registration composition is not yet draft-driven, and organization setup remains unconnected. Publication stays disabled pending browser parity, accessibility, authorization and rollback evidence. Product releases continue through the existing **CREATE NEXT VERSION** lifecycle.
 
