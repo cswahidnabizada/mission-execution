@@ -1,8 +1,8 @@
 /* ON Mission 10.82.0 — OPERATE surface composition. Observational only. */
-import { renderMonitor } from '../monitor.js?v=16.10.58';
-import { renderProductHealth, renderSubscriptions, renderBilling, renderExpansionWorkspace, loadSystemHealth } from '../oversight/product-operations.js?v=16.10.58';
-import { renderCompanies, renderRoles } from '../oversight/platform-governance.js?v=16.10.58';
-import { renderRuntime } from '../oversight/product-factory.js?v=16.10.58';
+import { renderMonitor } from '../monitor.js?v=16.10.59';
+import { renderProductHealth, renderSubscriptions, renderBilling, renderExpansionWorkspace, loadSystemHealth } from '../oversight/product-operations.js?v=16.10.59';
+import { renderCompanies, renderRoles } from '../oversight/platform-governance.js?v=16.10.59';
+import { renderRuntime } from '../oversight/product-factory.js?v=16.10.59';
 
 export const operateSurface = Object.freeze({
   'product-health': renderProductHealth,

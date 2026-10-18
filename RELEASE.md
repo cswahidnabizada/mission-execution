@@ -1,4 +1,28 @@
-# Mission Execution 16.10.58 — Route Composition Preview & Mapping Integrity
+# Mission Execution 16.10.59 — Tenant Composition & Editing Recovery
+
+Status: protected source candidate; NOT production-certified.
+Base: ON MISSION 16.10.58.
+
+## Implemented
+- Added a unique `tenant-workspace` page kind and seeded the Tenant Product Experience composition, resolving the prior `COMPOSITION_PAGE_MISSING` for the default draft.
+- Updated client and server allowlists, schema, and impact mapping so tenant product experience has a dedicated composition instead of overlapping the mission experience.
+- Added an explicit “Reload server draft” recovery action. It warns before discarding unsaved local changes, validates the fetched server draft, updates the revision, and preserves local work if reload fails.
+- Kept previews draft-only and publication disabled.
+
+## Verification status
+- Focused 16.10.59 tenant composition/recovery contract: to be run.
+- Production build and full release suite: not certified in this environment until run under Node.js 24.18.0.
+- Browser, accessibility, authorization, tenant isolation, production route parity, publication and rollback: not certified.
+
+## Deployment decision
+DO NOT DEPLOY until the protected Node.js 24.18.0 build, complete release suite, browser and security checks, and rollback verification pass.
+
+Permanent priorities: Security → Truth → Liveness → Stability → Experience → Scale.
+Canonical mission journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+
+---
+
+# Mission Execution 16.10.59 — Route Composition Preview & Mapping Integrity
 
 Status: protected source candidate — NOT production-certified; DO NOT DEPLOY.
 Base: ON MISSION 16.10.57.
@@ -9,7 +33,7 @@ Base: ON MISSION 16.10.57.
 - Added a target-route selector so the same canonical draft can be inspected against homepage, registration, organization setup, mission list/workspace, executor workspace, and tenant product experience targets.
 - Preview resolution fails closed when a route is not allowlisted, has no matching draft page, or has ambiguous matching pages; it does not silently preview an unrelated page.
 - Route preview is isolated from production: no live route receives draft data, and publication remains disabled.
-- Updated renderer/adapter/release identity and cache-busted assets to 16.10.58.
+- Updated renderer/adapter/release identity and cache-busted assets to 16.10.59.
 
 ## Verification status
 

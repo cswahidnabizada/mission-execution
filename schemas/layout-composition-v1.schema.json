@@ -120,6 +120,7 @@
               "organization-setup",
               "executor-workspace",
               "mission-experience",
+              "tenant-workspace",
               "shared-components"
             ]
           },

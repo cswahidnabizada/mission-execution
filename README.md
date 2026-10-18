@@ -1,6 +1,6 @@
-# ON MISSION — Release 16.10.58
+# ON MISSION — Release 16.10.59
 
-## 16.10.58 — Route Composition Preview & Mapping Integrity
+## 16.10.59 — Route Composition Preview & Mapping Integrity
 
 Layout Studio now lets an administrator preview a single canonical draft against an explicit allowlisted production-route target. Missing or ambiguous page-kind mappings fail closed instead of silently showing an unrelated page. This is a preview mapping improvement only; it does not connect drafts to production. Route parity remains uncertified and publication disabled pending Node.js 24.18.0 build, full release checks, browser/accessibility and security/rollback certification.
 

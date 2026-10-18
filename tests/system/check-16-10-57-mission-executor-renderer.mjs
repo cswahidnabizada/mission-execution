@@ -10,17 +10,17 @@ const renderer=read('public/assets/js/frontend/admin/layout-studio-renderer.js')
 const adapter=read('public/assets/js/frontend/admin/layout-studio-production-adapter.js');
 const appHtml=read('public/app/index.html');
 const contextCss=read('public/assets/css/frontend/mission-executor-layout-context.css');
-assert.equal(pkg.version,'16.10.58');
+assert.equal(pkg.version,'16.10.59');
 assert.equal(lock.version,pkg.version);
 assert.equal(lock.packages[''].version,pkg.version);
 assert.equal(read('VERSION').trim(),pkg.version);
 assert.equal(manifest.version,pkg.version);
-assert.equal(manifest.base,'16.10.57');
+assert.ok(['16.10.57','16.10.58'].includes(manifest.base));
 assert.match(app,/canonicalLayoutContext\('mission-workspace'/);
 assert.match(app,/canonicalLayoutContext\('executor-workspace'/);
-assert.match(app,/renderComponent,STUDIO_RENDERER_VERSION.*16\.10\.58/);
+assert.match(app,/renderComponent,STUDIO_RENDERER_VERSION.*16\.10\.59/);
 assert.match(app,/await renderMissionWorkbench\(workspace,id,action\)/);
-assert.match(appHtml,/mission-executor-layout-context\.css\?v=16\.10\.58/);
+assert.match(appHtml,/mission-executor-layout-context\.css\?v=16\.10\.59/);
 assert.match(contextCss,/max-width:600px/);
 assert.match(app,/api\(path,\{method:'PATCH',body:\{situation:select\.value\}\}\)/);
 for(const id of ['mission-list','mission-workspace','executor-workspace']) {
@@ -28,8 +28,8 @@ for(const id of ['mission-list','mission-workspace','executor-workspace']) {
 }
 assert.match(registry,/publicationEnabled:false/);
 assert.match(registry,/publicationAllowed:false/);
-assert.match(renderer,/export const STUDIO_RENDERER_VERSION = '16\.10\.58'/);
-assert.match(adapter,/const ADAPTER_VERSION = '16\.10\.58'/);
+assert.match(renderer,/export const STUDIO_RENDERER_VERSION = '16\.10\.59'/);
+assert.match(adapter,/const ADAPTER_VERSION = '16\.10\.59'/);
 assert.match(adapter,/ROUTE_RENDERER_PARITY_NOT_CERTIFIED/);
 assert.match(read('RELEASE.md'),/DO NOT DEPLOY/);
 console.log('16.10.57 mission and executor workspace renderer contract: PASS');
