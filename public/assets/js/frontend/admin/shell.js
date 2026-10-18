@@ -2,11 +2,11 @@
  * Old Control Plane navigation is retired. This shell exposes the eight human jobs while
  * keeping every workspace implementation and canonical authority intact.
  */
-import {workspaceGroups,state} from './admin-runtime.js?v=16.10.49';
-import {workspaceFor} from './workspace-registry.js?v=16.10.49';
-import {installCommandPalette} from './command-palette.js?v=16.10.49';
+import {workspaceGroups,state} from './admin-runtime.js?v=16.10.50';
+import {workspaceFor} from './workspace-registry.js?v=16.10.50';
+import {installCommandPalette} from './command-palette.js?v=16.10.50';
 /* Compatibility evidence for the historical architecture contract: CURRENT SITUATION · NEEDS ATTENTION · RELEASE JOURNEY · RECENT ACTIVITY · PLATFORM · SECURE. These are projections/labels only; the live navigation remains the eight-job operating model. */
-import {readExperienceContext,writeExperienceContext,contextLabel} from '../core/experience-context.js?v=16.10.49';
+import {readExperienceContext,writeExperienceContext,contextLabel} from '../core/experience-context.js?v=16.10.50';
 
 // Canonical navigation inventory remains workspaceGroups.map(renderGroup) in the retired shell contract; the live shell renders the same inventory through the new eight-job layout.
 const primary=workspaceGroups.map(g=>g.key);
@@ -15,7 +15,7 @@ const groupFor=key=>workspaceGroups.find(g=>g.key===key)||workspaceGroups[0];
 export function renderAdminShell({sections,platformLogout,show,state}){
   const initialContext=readExperienceContext();
   const resourceAliases=new Set(['data-entry','data-catalog','data-studio','data-control','trash']);
-  const renderPrimary=g=>`<button type="button" class="sa-primary-tab" data-primary-group="${g.key}" aria-label="${g.label}"><span class="sa-primary-number">${String(primary.indexOf(g.key)+1).padStart(2,'0')}</span><b>${g.label}</b></button>`;
+  const renderPrimary=g=>`<button type="button" class="sa-primary-tab" data-primary-group="${g.key}" aria-label="Open ${g.label}" aria-pressed="false"><span class="sa-primary-number">${String(primary.indexOf(g.key)+1).padStart(2,'0')}</span><b>${g.label}</b><span class="sa-primary-count">${g.items.length}</span></button>`;
   const renderWorkspace=(item)=>`<button type="button" class="sa-workspace-item" data-view="${item[1]}" title="${item[2]||item[0]}"><span class="sa-workspace-icon">${String(item[0]).slice(0,1)}</span><span class="sa-workspace-copy"><b>${item[0]}</b><small>${item[3]||'Platform'} · ${item[4]||'READ'}</small></span></button>`;
   document.body.innerHTML=`<div class="sa-shell">
     <header class="sa-header">
@@ -28,7 +28,7 @@ export function renderAdminShell({sections,platformLogout,show,state}){
     <div class="sa-body">
       <aside class="sa-sidebar">
         <div class="sa-sidebar-head"><span class="eyebrow">OPERATING AREA</span><h2 id="saGroupTitle">COMMAND</h2><p id="saGroupDescription">${groupFor('command').description}</p></div>
-        <div id="saWorkspaceList" class="sa-workspace-list"></div>
+        <div class="sa-sidebar-tools"><label class="sa-workspace-filter"><span aria-hidden="true">⌕</span><input id="saWorkspaceFilter" type="search" placeholder="Filter this area…" aria-label="Filter workspaces in this area"></label><button type="button" class="sa-quick-studio" data-quick-studio><span>✳</span><span><b>Layout Studio</b><small>Experience workspace</small></span><span aria-hidden="true">↗</span></button></div><div id="saWorkspaceList" class="sa-workspace-list" aria-label="Workspaces"></div>
         <div class="sa-sidebar-foot"><div><span class="eyebrow">AUTHORITY BOUNDARY</span><b>Admin orchestrates. Domain authorities own truth.</b></div><small>Read-only mode blocks Control Plane mutations in this browser. Server authorization remains authoritative.</small></div>
       </aside>
       <main class="sa-main">
@@ -44,8 +44,13 @@ export function renderAdminShell({sections,platformLogout,show,state}){
     document.querySelector('#saGroupTitle').textContent=g.label;document.querySelector('#saGroupDescription').textContent=g.description||'';
     list.innerHTML=g.items.map(renderWorkspace).join('');
     list.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>show(b.dataset.view));
+    const filter=document.querySelector('#saWorkspaceFilter');if(filter)filter.value='';
+    list.querySelectorAll('[data-view]').forEach(b=>b.hidden=false);
+    document.querySelectorAll('[data-primary-group]').forEach(b=>{const active=b.dataset.primaryGroup===key;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});
   };
-  document.querySelectorAll('[data-primary-group]').forEach(b=>b.addEventListener('click',()=>{renderGroup(b.dataset.primaryGroup);const first=groupFor(b.dataset.primaryGroup).items[0]?.[1];if(first)show(first[1]);}));
+  document.querySelectorAll('[data-primary-group]').forEach(b=>b.addEventListener('click',()=>{const key=b.dataset.primaryGroup;const first=groupFor(key).items[0]?.[1];if(first)show(first);else renderGroup(key);}));
+  document.querySelector('#saWorkspaceFilter')?.addEventListener('input',event=>{const q=String(event.target.value||'').trim().toLowerCase();document.querySelectorAll('#saWorkspaceList [data-view]').forEach(b=>{b.hidden=!b.textContent.toLowerCase().includes(q);});});
+  document.querySelector('[data-quick-studio]')?.addEventListener('click',()=>show('layout-studio'));
   document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>show(b.dataset.view));
   document.getElementById('logout').onclick=platformLogout;
   document.getElementById('safeModeToggle')?.addEventListener('click',()=>{state.safeMode=!Boolean(state.safeMode);localStorage.setItem('onmission_super_admin_safe_mode',state.safeMode?'1':'0');const b=document.getElementById('safeModeToggle');if(b)b.textContent=state.safeMode?'READ-ONLY':'NORMAL';});
@@ -61,7 +66,7 @@ export function renderAdminShell({sections,platformLogout,show,state}){
     if(scope)scope.textContent=[next.countryCode,next.sectorCode,next.productId?`Product #${next.productId}`:'',next.version?`v${next.version}`:''].filter(Boolean).join(' · ')||'Platform scope';
     if(badge)badge.textContent=meta?.groupLabel||'COMMAND';
     renderGroup(group.key);
-    document.querySelectorAll('.sa-primary-tab').forEach(el=>el.classList.toggle('active',el.dataset.primaryGroup===group.key));
+    document.querySelectorAll('.sa-primary-tab').forEach(el=>{const active=el.dataset.primaryGroup===group.key;el.classList.toggle('active',active);el.setAttribute('aria-pressed',String(active));});
     document.querySelectorAll('.sa-workspace-item').forEach(el=>el.classList.toggle('active',el.dataset.view===key));
     const header=document.querySelector('#saWorkspaceHeader');
     if(header){header.innerHTML=`<div><span class="eyebrow">${group.label} · WORKSPACE</span><h1>${key==='overview'?'Command Center':(meta?.label||'Workspace')}</h1><p>${key==='overview'?'Platform situation, attention and next actions.':(meta?.description||'Canonical workspace projection.')}</p></div><div class="sa-header-context"><span class="pill neutral">${meta?.access||'READ'}</span><small>${meta?.authority||'Platform authority'}</small></div>`;}

@@ -1,10 +1,10 @@
 /* ON Mission 10.82.0 — BUILD surface composition. No business authority lives here. */
-import { renderProductEcosystem, renderProductBuild, renderProductPublisherWorkspace } from '../oversight/product-factory.js?v=16.10.49';
-import { renderProductPublisher } from '../product-publisher.js?v=16.10.49';
-import { renderDataCatalog } from '../data-catalog.js?v=16.10.49';
-import { renderDataStudio } from '../data-studio.js?v=16.10.49';
-import { renderProductStudio } from '../oversight/product-studio.js?v=16.10.49';
-import { renderProductVerification } from '../oversight/privacy-verification.js?v=16.10.49';
+import { renderProductEcosystem, renderProductBuild, renderProductPublisherWorkspace } from '../oversight/product-factory.js?v=16.10.50';
+import { renderProductPublisher } from '../product-publisher.js?v=16.10.50';
+import { renderDataCatalog } from '../data-catalog.js?v=16.10.50';
+import { renderDataStudio } from '../data-studio.js?v=16.10.50';
+import { renderProductStudio } from '../oversight/product-studio.js?v=16.10.50';
+import { renderProductVerification } from '../oversight/privacy-verification.js?v=16.10.50';
 
 export const buildSurface = Object.freeze({
   'product-publisher': renderProductPublisher,

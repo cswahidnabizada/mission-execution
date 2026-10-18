@@ -1,29 +1,32 @@
-ON MISSION 16.10.49 — Control Plane Recovery + Layout Studio Navigation
+ON MISSION 16.10.50 — Super Admin Navigation Reliability + Control Plane UX
 
-Base: 16.10.48
-Status: source candidate; do not deploy until production build gate passes.
+Base: 16.10.49 (deployed successfully by user)
+Status: source candidate; cumulative configured release suite PASS; production build blocked by local Node.js environment; live browser verification pending.
 
-Implemented
-- Fixed a fatal result-order mismatch in getControlPlane(): the 16 Promise.all results are now destructured in the same order as the query definitions. The prior code left companyCount undefined during response assembly, explaining the reported HTTP 500.
-- Added a focused runtime regression test using a D1-compatible mock, asserting a stable response and array-shaped projections.
-- Registered Layout Studio under Super Admin → GOVERN so it appears in the sidebar workspace list and local command-palette search.
-- Added a Control Plane entry panel with direct links to /layout-studio.html and its production-route certification section.
-- Updated release version, active cache keys, renderer and route-certification identities to 16.10.49.
-- Preserved server authorization, canonical release lifecycle, tenant/mission authorities, and publication-disabled safety boundary. No database migration or production mutation was added.
+Changes
+- Fixed primary navigation handler: it previously selected the first workspace key and passed first[1], i.e. one character, to the canonical navigation controller. It now passes the complete workspace key.
+- Added accessible active/pressed state synchronization for all eight operating areas: COMMAND, RESOURCES, BUILD, RELEASE, LAUNCH, OPERATE, GOVERN, RECOVER.
+- Added workspace counts and a filter scoped to the selected operating area.
+- Added persistent Layout Studio quick access without bypassing the canonical workspace controller or Super Admin authentication.
+- Improved responsive navigation sizing, focus visibility, and reduced-motion support.
+- Updated current release identity and frontend cache-busting references to 16.10.50.
+- No database migration or new domain authority.
 
 Verification
-- New Control Plane + Layout Studio navigation/runtime regression contract: PASS.
-- Complete configured npm run check:release: PASS under Node.js 22.16.0 (all configured source-contract/regression checks completed).
-- Production npm run build: BLOCKED by enforced environment gate. Current local Node.js is 22.16.0; project requires Node.js 24.x and .node-version is 24.18.0. CSS compilation did not run.
-- Live Cloudflare/D1 endpoint, browser navigation, actual production route parity, publication and rollback: NOT TESTED from this source-build environment.
-- No production deployment or migration performed by this build step.
+- New 16.10.50 navigation regression contract: PASS.
+- Historical 16.10.49 Control Plane recovery + Layout Studio navigation contract: PASS.
+- Complete configured npm run check:release: PASS (run completed, exit code 0).
+- Architecture convergence, migration contract (160 migrations), schema gate (252 tables / 461 indexes), release engineering and historical regression contracts: PASS.
+- Modified JavaScript syntax checks: PASS.
+- npm run build: BLOCKED by local environment gate. Local Node.js 22.16.0; repository requires Node.js 24.x and pins .node-version to 24.18.0. CSS compilation did not run.
+- Live browser test across all eight areas: NOT TESTED in this environment.
+- Cloudflare deployment: NOT PERFORMED by this package-generation step.
 
-Deployment acceptance after build environment correction
-1. Run npm ci, npm run build and npm run check:release under Node.js 24.18.0 with npm 10.x/11.x.
-2. Deploy through the governed deployment pipeline.
-3. Confirm GET /api/platform/admin/control-plane returns HTTP 200 and success:true for an authenticated Super Admin; verify degraded data sources are represented as warnings, not fatal errors.
-4. Confirm Layout Studio appears under GOVERN and in ⌘K search; open it and verify draft/version APIs and route certification.
-5. Keep publication disabled until real route renderer parity, authorization, immutable release lifecycle, verification and rollback have passed.
+Deployment acceptance
+Deploy only through the protected build/release pipeline with Node.js 24.18.0. After deployment, click all eight operating-area tabs and verify the first workspace opens; verify active state, local workspace filtering, Layout Studio quick access and command-palette navigation. Preserve authentication, tenant context, canonical authorities and publication-disabled safety boundaries.
 
-Permanent priorities: Security → Truth → Liveness → Stability → Experience → Scale.
-Canonical mission journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+Permanent priorities
+Security → Truth → Liveness → Stability → Experience → Scale
+
+Canonical mission journey
+OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE

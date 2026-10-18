@@ -1,6 +1,10 @@
-# ON MISSION — Release 16.10.49
+# ON MISSION — Release 16.10.50
 
 This candidate fixes a Control Plane response assembly defect that caused the authenticated `/api/platform/admin/control-plane` endpoint to return HTTP 500. It also adds Layout Studio to the Super Admin GOVERN navigation and command-palette workspace index, with a direct entry panel to the full-screen Studio. The canonical release lifecycle remains authoritative; production publication remains disabled pending real renderer parity, build certification and runtime verification.
+
+## 16.10.50 — Super Admin Navigation Reliability + Control Plane UX
+
+Fixes the primary navigation defect that passed a single character instead of the selected operating area's complete workspace key. The eight operating areas now synchronize their active/pressed state with canonical workspace context, show workspace counts, support a local workspace filter, and provide persistent Layout Studio quick access. This is navigation-only composition: domain authorities remain canonical, and Layout Studio publication stays blocked until production renderer parity and release certification are proven. The cumulative Test Lab and Release Integrity checks remain part of the release gate.
 
 ## 16.10.48 — Production Route Adapter Foundation
 

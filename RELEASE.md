@@ -1,8 +1,8 @@
-# Mission Execution 16.10.49 — Control Plane Recovery + Layout Studio Navigation
+# Mission Execution 16.10.50 — Super Admin Navigation Reliability + Control Plane UX
 
-Status: protected source candidate; production build and live runtime certification pending.
+Status: protected candidate; production build and live browser certification required.
 
-Base: ON Mission 16.10.48
+Base: ON Mission 16.10.49
 
 ## Objective
 
@@ -13,7 +13,10 @@ Fix the reported Super Admin Control Plane 500 and make Layout Studio discoverab
 1. **P0 — Control Plane API 500:** the `Promise.all` query results were destructured in a different order from the query definitions. `companyCount` was consequently undefined at response assembly, causing the authenticated GET `/api/platform/admin/control-plane` request to fail. Corrected the destructuring order to match all 16 queries.
 2. **P1 — Layout Studio undiscoverable:** the canonical workspace registry did not contain a `layout-studio` entry, so the Super Admin sidebar and command palette could not find it. Added it under GOVERN.
 3. **P1 — No in-Control-Plane launch surface:** added a Layout Studio entry panel with direct links to the full-screen workspace and route certification.
-4. **P1 — release identity convergence:** updated active asset cache keys, package version, lockfile version and route certification identity to 16.10.49.
+4. **P1 — release identity convergence:** updated active asset cache keys, package version, lockfile version and route certification identity to 16.10.50.
+5. **P0 — eight-area navigation failure:** the primary tab handler took the first workspace key (for example `operations`) and then passed `first[1]`, which navigated using only the second character. The handler now passes the complete workspace key to the canonical `show()` controller.
+6. **P1 — workspace discovery:** added accessible pressed/active state, workspace counts, a per-area filter and persistent Layout Studio quick access.
+7. **P1 — responsive navigation:** improved keyboard focus, narrow-screen tab sizing and reduced-motion support. No business authority or mutation path was added.
 
 ## Verification status
 
@@ -27,7 +30,7 @@ Fix the reported Super Admin Control Plane 500 and make Layout Studio discoverab
 
 ## Deployment decision
 
-This is a source candidate, not a claim of live remediation. Deploy only after required build and release checks pass. After deployment, verify the authenticated control-plane endpoint returns HTTP 200 with `success:true`, the Layout Studio appears under GOVERN and in ⌘K search, and the full Studio opens without weakening server-side authorization. Draft saves must not activate production; publication remains blocked until canonical release verification and rollback are certified.
+This is a source candidate, not a claim of live remediation. The configured cumulative release suite has passed in the available Node.js 22.16.0 environment. The production build was not run because the environment gate requires Node.js 24.x. Deploy only after the production build and release checks pass. After deployment, verify all eight primary areas navigate to their first workspace, active state follows the selected workspace, the area filter works, and Layout Studio opens from quick access and ⌘K. Draft saves must not activate production; publication remains blocked until canonical release verification and rollback are certified.
 
 ## Permanent priorities
 
@@ -368,3 +371,11 @@ Historical release baseline retained for compatibility: Base: ON Mission 16.7.0.
 Historical migration lineage preserved: `0154_governed_intake_pipeline.sql`. No new database migration is introduced by 16.10.47.
 
 # ON Mission 16.10.0 — Regional Infrastructure Governance (historical release contract)
+
+## Release 16.10.50 navigation acceptance
+
+- Primary navigation calls the canonical controller with the complete workspace key.
+- Active primary tab follows the selected workspace group.
+- Workspace filter is scoped to the visible operating area.
+- Layout Studio quick access is a navigation shortcut only; it does not bypass Super Admin session checks.
+- No database migration is included.
