@@ -1,0 +1,6 @@
+/* Shared Layout Studio renderer context panels for canonical mission/executor workspaces. */
+#surface .ls-render-status{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px 14px;margin:0 0 16px;padding:14px 16px;border:1px solid var(--border,#dbe3ef);border-radius:14px;background:var(--surface,#fff);color:var(--text,#172033)}
+#surface .ls-render-status h3{margin:0;font-size:11px;font-weight:800;letter-spacing:.09em}
+#surface .ls-render-status .ls-render-badge{justify-self:end;padding:4px 8px;border:1px solid var(--border,#dbe3ef);border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.06em}
+#surface .ls-render-status p{grid-column:1/-1;margin:0;color:var(--muted,#667085);font-size:12px;line-height:1.6;max-width:90ch}
+@media(max-width:600px){#surface .ls-render-status{padding:12px;border-radius:12px;gap:8px}#surface .ls-render-status p{font-size:12px}}

@@ -1,4 +1,9 @@
-# ON MISSION — Release 16.10.56
+# ON MISSION — Release 16.10.57
+
+## 16.10.57 — Mission & Executor Workspace Renderer Integration
+
+The canonical mission and executor workspaces now use the shared allowlisted Layout Studio renderer for non-interactive context panels. Mission truth, executor operational state, authorization and canonical actions remain owned by their existing authorities. Route integration is explicitly uncertified; draft activation and publication remain disabled pending Node.js 24.18.0 build, full release checks, browser/accessibility and security/rollback certification.
+
 
 Registration now uses the shared allowlisted Layout Studio renderer for its brand/navigation header while preserving the canonical organization onboarding form, requirements, idempotency, provisioning, identity/session flow and activation redirect. This is baseline chrome integration only: registration composition is not yet draft-driven, and organization setup remains unconnected. Publication stays disabled pending browser parity, accessibility, authorization and rollback evidence. Product releases continue through the existing **CREATE NEXT VERSION** lifecycle.
 

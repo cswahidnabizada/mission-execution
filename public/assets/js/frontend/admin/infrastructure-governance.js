@@ -1,5 +1,5 @@
 /* Mission Execution 16.10.11 — Infrastructure & Data Location Studio. Provider observations are explicitly qualified. */
-import {api,esc,$,ensureStepUp} from './admin-runtime.js?v=16.10.56';
+import {api,esc,$,ensureStepUp} from './admin-runtime.js?v=16.10.57';
 const tone=s=>({REACHABLE:'ok',ACTIVE:'ok',VERIFIED:'ok',IN_PROGRESS:'warn',BLOCKED:'danger',UNAVAILABLE:'danger',PROPOSED:'neutral',NOT_STARTED:'neutral',CONFIGURED_UNVERIFIED:'warn',UNVERIFIED:'warn',NOT_CONFIGURED:'danger'}[String(s||'').toUpperCase()]||'neutral');
 const pretty=s=>String(s||'UNKNOWN').replaceAll('_',' ');
 const pill=s=>`<span class="pill ${tone(s)}">${esc(pretty(s))}</span>`;

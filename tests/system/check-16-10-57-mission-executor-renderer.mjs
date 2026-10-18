@@ -1,0 +1,35 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const read=p=>fs.readFileSync(p,'utf8');
+const pkg=JSON.parse(read('package.json'));
+const lock=JSON.parse(read('package-lock.json'));
+const manifest=JSON.parse(read('RELEASE-MANIFEST.json'));
+const app=read('public/assets/js/frontend/app/app.js');
+const registry=read('src/worker/modules/admin-control/layout-studio.routes.js');
+const renderer=read('public/assets/js/frontend/admin/layout-studio-renderer.js');
+const adapter=read('public/assets/js/frontend/admin/layout-studio-production-adapter.js');
+const appHtml=read('public/app/index.html');
+const contextCss=read('public/assets/css/frontend/mission-executor-layout-context.css');
+assert.equal(pkg.version,'16.10.57');
+assert.equal(lock.version,pkg.version);
+assert.equal(lock.packages[''].version,pkg.version);
+assert.equal(read('VERSION').trim(),pkg.version);
+assert.equal(manifest.version,pkg.version);
+assert.equal(manifest.base,'16.10.56');
+assert.match(app,/canonicalLayoutContext\('mission-workspace'/);
+assert.match(app,/canonicalLayoutContext\('executor-workspace'/);
+assert.match(app,/renderComponent,STUDIO_RENDERER_VERSION.*16\.10\.57/);
+assert.match(app,/await renderMissionWorkbench\(workspace,id,action\)/);
+assert.match(appHtml,/mission-executor-layout-context\.css\?v=16\.10\.57/);
+assert.match(contextCss,/max-width:600px/);
+assert.match(app,/api\(path,\{method:'PATCH',body:\{situation:select\.value\}\}\)/);
+for(const id of ['mission-list','mission-workspace','executor-workspace']) {
+  assert.match(registry,new RegExp(`id:'${id}'[^\\n]*CANONICAL_CONTEXT_PANEL_CONNECTED_UNCERTIFIED`));
+}
+assert.match(registry,/publicationEnabled:false/);
+assert.match(registry,/publicationAllowed:false/);
+assert.match(renderer,/export const STUDIO_RENDERER_VERSION = '16\.10\.57'/);
+assert.match(adapter,/const ADAPTER_VERSION = '16\.10\.57'/);
+assert.match(adapter,/ROUTE_RENDERER_PARITY_NOT_CERTIFIED/);
+assert.match(read('RELEASE.md'),/DO NOT DEPLOY/);
+console.log('16.10.57 mission and executor workspace renderer contract: PASS');

@@ -1,5 +1,5 @@
-import {attachLayoutStudioRouteAdapter,resolveLayoutStudioRoute} from '../admin/layout-studio-production-adapter.js?v=16.10.56';
-import {renderComponent,STUDIO_RENDERER_VERSION} from '../admin/layout-studio-renderer.js?v=16.10.56';
+import {attachLayoutStudioRouteAdapter,resolveLayoutStudioRoute} from '../admin/layout-studio-production-adapter.js?v=16.10.57';
+import {renderComponent,STUDIO_RENDERER_VERSION} from '../admin/layout-studio-renderer.js?v=16.10.57';
 import {mountShell,syncNav} from '../shell/app-shell.js';
 import {canonicalizeAppHash} from '../navigation/registry.js';
 import {api,esc} from '../core/api.js';
@@ -15,6 +15,11 @@ import {initActivationModule} from '../../core/activation-module.js';
 
 const root=document.getElementById('root');
 attachLayoutStudioRouteAdapter({root, getRouteId:()=>resolveLayoutStudioRoute({pathname:location.pathname,hash:location.hash,role:document.documentElement.dataset.onmRole||''})||'tenant-workspace'});
+
+// Shared renderer is used for route context only; canonical workspace behavior remains authoritative.
+function canonicalLayoutContext(routeId, title, description){
+  return renderComponent({id:`layout-context-${routeId}`,type:'status-panel',properties:{label:title,state:'CANONICAL',description:`${description} Layout Studio provides governed presentation; mission state, permissions and actions remain owned by canonical services.`}},{mode:'production'});
+}
 
 async function render({root,s}){
   document.documentElement.dataset.onmRole=String(s.session?.role||'');
@@ -79,7 +84,7 @@ async function renderExecutorContext(el,s){
   const executor=o.executor||o.driver||{};
   const invitationCount=Number(context.invitationCount||0);
   const situation=profile.situation||'Available';
-  el.insertAdjacentHTML('afterbegin',`<section class="hwp-role-panel executor-work-panel"><div><span class="hwp-kicker">EXECUTOR WORK</span><h2>${esc(executor.name||s.session?.name||'Your work')}</h2><p>Stay ready, see the next mission that needs you, and keep your operational status current.</p></div><div class="hwp-role-actions"><label class="hwp-status-control"><span>STATUS</span><select id="executorSituation" class="onm-input"><option ${situation==='Available'?'selected':''}>Available</option><option ${situation==='Driving'?'selected':''}>Driving</option><option ${situation==='Traffic'?'selected':''}>Traffic</option><option ${situation==='Break'?'selected':''}>Break</option><option ${situation==='Unavailable'?'selected':''}>Unavailable</option></select></label>${invitationCount?`<a class="onm-btn onm-btn-primary" href="#network">${invitationCount} invitation${invitationCount===1?'':'s'} waiting</a>`:'<span class="hwp-role-note">No network invitation is waiting.</span>'}</div></section>`);
+  el.insertAdjacentHTML('afterbegin',`${canonicalLayoutContext('executor-workspace','EXECUTOR WORKSPACE','Your operational view is connected to the shared Layout Studio renderer.') }<section class="hwp-role-panel executor-work-panel"><div><span class="hwp-kicker">EXECUTOR WORK</span><h2>${esc(executor.name||s.session?.name||'Your work')}</h2><p>Stay ready, see the next mission that needs you, and keep your operational status current.</p></div><div class="hwp-role-actions"><label class="hwp-status-control"><span>STATUS</span><select id="executorSituation" class="onm-input"><option ${situation==='Available'?'selected':''}>Available</option><option ${situation==='Driving'?'selected':''}>Driving</option><option ${situation==='Traffic'?'selected':''}>Traffic</option><option ${situation==='Break'?'selected':''}>Break</option><option ${situation==='Unavailable'?'selected':''}>Unavailable</option></select></label>${invitationCount?`<a class="onm-btn onm-btn-primary" href="#network">${invitationCount} invitation${invitationCount===1?'':'s'} waiting</a>`:'<span class="hwp-role-note">No network invitation is waiting.</span>'}</div></section>`);
   el.querySelector('#executorSituation')?.addEventListener('change',async e=>{const select=e.currentTarget;select.disabled=true;try{const path=s.session.role==='driver'?'/api/driver/me/operational':'/api/executor/me/operational';await api(path,{method:'PATCH',body:{situation:select.value}});}catch(error){alert(error.message||'Executor status could not be updated.');select.value=situation;}finally{select.disabled=false;}});
 }
 async function renderCompanyOperations(el,s,model){
@@ -166,7 +171,7 @@ function renderDomainWorkDetail(el,item,s,refresh){
   el.querySelector('#hwpDomainReject')?.addEventListener('click',e=>run(isInvitation?'reject_network':isTrust?'reject_trust':'decline_foryou_request',e.currentTarget));
 }
 async function work(el,s){
-  el.innerHTML=`<div class="hwp"><section class="hwp-hero"><div><span class="hwp-kicker">WORK</span><h1>Your operational work</h1><p>One place to see what needs you, what is waiting, and what requires a decision. Canonical domain work stays behind the surface.</p><small class="onm-muted">Mission Workspace owns mission truth; Network authority owns collaboration truth; the secured Action Registry owns mutation execution underneath.</small></div><button id="refreshWork" class="onm-btn">REFRESH</button></section><div id="workModel" class="hwp-work"><aside class="hwp-queue"><input id="workSearch" class="hwp-search" placeholder="Find work…" autocomplete="off"><div id="workFilters" class="hwp-filters"></div><div id="workQueue" class="hwp-queue-list">${loading('Reading current work…')}</div></aside><section id="workspace" class="hwp-workbench">${empty('Select work to open its canonical context.')}</section></div></div>`;
+  el.innerHTML=`<div class="hwp"><section class="hwp-hero"><div><span class="hwp-kicker">WORK</span><h1>Your operational work</h1><p>One place to see what needs you, what is waiting, and what requires a decision. Canonical domain work stays behind the surface.</p><small class="onm-muted">Mission Workspace owns mission truth; Network authority owns collaboration truth; the secured Action Registry owns mutation execution underneath.</small></div><button id="refreshWork" class="onm-btn">REFRESH</button></section>${canonicalLayoutContext('mission-workspace','MISSION WORKSPACE','The mission workbench uses the shared Layout Studio renderer for governed context presentation.')}<div id="workModel" class="hwp-work"><aside class="hwp-queue"><input id="workSearch" class="hwp-search" placeholder="Find work…" autocomplete="off"><div id="workFilters" class="hwp-filters"></div><div id="workQueue" class="hwp-queue-list">${loading('Reading current work…')}</div></aside><section id="workspace" class="hwp-workbench">${empty('Select work to open its canonical context.')}</section></div></div>`;
   let model=null,domain=null,selected='',filter='attention',query='';
   if(['executor','driver'].includes(String(s.session?.role||''))){try{await renderExecutorContext(el.querySelector('.hwp-work'),s);}catch{}}
   const queue=el.querySelector('#workQueue'),filters=el.querySelector('#workFilters'),search=el.querySelector('#workSearch'),workspace=el.querySelector('#workspace');

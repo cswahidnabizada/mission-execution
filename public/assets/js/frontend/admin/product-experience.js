@@ -1,5 +1,5 @@
 /* ON Mission 15.4.0 — Unified Product Experience cockpit. */
-import {api,esc,$} from './admin-runtime.js?v=16.10.56';
+import {api,esc,$} from './admin-runtime.js?v=16.10.57';
 
 const state={data:null,mode:'demo',tenantId:'',userId:'',scenarioId:'',scenario:null,certification:null,analytics:null,users:[],certUserId:'',certPasswords:{}};
 const PERSONA_LABELS={admin:'Demo Admin',manager:'Operations Manager',operator:'Operations User'};
