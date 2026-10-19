@@ -1,3 +1,35 @@
+# Mission Execution 16.10.73 — Tenant-Scoped Simulation
+
+Base: 16.10.72 — Super Admin Simulation Navigation
+Status: PROTECTED SOURCE CANDIDATE — NOT PRODUCTION CERTIFIED
+
+## Implemented
+- Added tenant simulation list/save/load APIs scoped exclusively from the authenticated tenant administrator session. Caller-supplied tenant IDs are not accepted.
+- Reused the immutable simulation-run store and safety invariants; platform and tenant records remain separated by owner scope.
+- Added `/tenant-simulator.html`, reusing the existing deterministic simulation engine and UI, with tenant-specific authentication and API scope.
+- Reconciled the historical recovery-reconciliation version allowlist and advanced the release identity to 16.10.73.
+
+## Certification status
+- Tenant simulation contract and existing simulation contracts: pending full run below.
+- Cloudflare log supplied by the user confirms a successful deploy using Node.js 24.21.0 and upload of 67 modified assets for the preceding deployment. It does not certify this candidate or authenticated browser behavior.
+- Local environment is Node.js 22.16.0; local production build/CSS compilation cannot be certified here without Node.js 24.x.
+- No production deployment of 16.10.73 was performed.
+
+## Safety boundary
+Simulation runs are not canonical mission truth. No physical device commands, production mutation, live authorization or real-world outcome claims are enabled by this release.
+
+## Next gates
+1. Run the complete release suite and reconcile every legitimate version-compatibility gate without weakening assertions.
+2. Build under Node.js 24.x and compile CSS.
+3. Browser-test Super Admin and tenant save/history/reload, denied cross-tenant reads, invalid run rejection and failure handling.
+4. Integrate canonical planner contracts and deterministic replay before vendor/device simulation.
+5. Complete Germany logistics scenario certification before resuming the main platform roadmap.
+
+Permanent priorities: Security → Truth → Liveness → Stability → Experience → Scale.
+Canonical journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+
+---
+
 # Mission Execution 16.10.72 — Governed Simulation Records
 
 Base: ON MISSION 16.10.71 — Governed Simulation Records

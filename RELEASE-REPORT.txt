@@ -1,38 +1,30 @@
-ON MISSION 16.10.71 — Governed Simulation Records
-Base: 16.10.70
-Status: protected candidate; not yet deployed or production-certified
+ON MISSION 16.10.73 — Tenant-Scoped Simulation
+Base: 16.10.72
+Status: PROTECTED SOURCE CANDIDATE — NOT PRODUCTION CERTIFIED
 
-IMPLEMENTED
-- New append-only D1 migration 0161_simulation_run_records.sql.
-- Server-owned platform simulation run records with immutable update/delete triggers.
-- Authenticated Super Admin endpoints to save, list, and retrieve simulation runs.
-- Hash of the exact serialized run payload for integrity checks.
-- Explicit validation that persisted records are simulation-only and cannot claim real-world effects, production mutation, or device commands.
-- Simulation Lab history list, refresh, save feedback, and load saved run.
-- Preserved existing deterministic virtual scenarios and canonical mission journey trace.
+Implemented:
+- Tenant-scoped simulation list/save/load APIs use the authenticated tenant administrator's session as the only scope authority.
+- No caller-provided tenant ID is accepted. Tenant read queries filter by owner_scope='tenant' and authenticated tenant_id.
+- Added /tenant-simulator.html reusing the deterministic simulation engine with tenant-specific authentication and API routing.
+- Platform Super Admin APIs remain separately platform-scoped. Existing immutable records and simulation safety invariants are reused.
+- Historical release compatibility allowlist reconciled; release identity and asset cache-busters synchronized to 16.10.73.
 
-VALIDATION PERFORMED
-- JavaScript syntax checks for changed route and UI files: PASS.
-- Focused simulation persistence contract: PASS.
-- Existing simulation foundation contract: PASS.
-- Layout Studio route reconciliation contract: PASS.
-- Migration contract: PASS (161 ordered migrations, high-water mark 0161).
-- Dependency lock integrity: PASS.
-- SQLite migration smoke test: PASS; immutable update/delete triggers rejected both mutations.
-- Release integrity and production cleanliness/version convergence: PASS.
-- Full npm run check:release: PASS (cumulative release suite).
-- npm run build: BLOCKED in this environment because Node is 22.16.0 while repository requires Node 24.18.0 (Node 24.x).
-- Browser/accessibility verification and Cloudflare deployment: NOT PERFORMED.
+Verification:
+- Full npm run check:release: PASS.
+- Tenant simulation API/UI scope contract: PASS.
+- SQLite tenant separation and immutable UPDATE/DELETE smoke test: PASS.
+- Simulation foundation, persistence and Super Admin navigation contracts: PASS.
+- Release integrity, production cleanliness/version convergence and dependency lock checks: PASS.
+- Updated worker route and simulation UI syntax checks: PASS.
 
-SAFETY / SCOPE
-- No physical device command integration.
-- No tenant-facing simulation API yet; tenant scope is represented in schema only and is not exposed.
-- No promotion of simulated outcomes to production mission truth.
-- Existing real mission authority remains unchanged.
+Build limitation:
+- Local npm run build is blocked because this environment has Node.js 22.16.0 while the project requires Node.js 24.18.0 / 24.x.
+- CSS build is not available locally because tailwindcss is not installed in this environment.
+- User-provided Cloudflare logs confirm the previous deployment ran on Node.js 24.21.0 and uploaded 67 changed assets. They do not certify this candidate.
 
-NEXT ROADMAP STEP
-1. Build under the pinned Node.js 24.18.0 environment; the current environment is blocked at the Node version gate.
-2. Verify CSS/runtime asset identity and browser behavior after the pinned build.
-3. Browser-certify authenticated save/history/load flows.
-4. Implement tenant-scoped simulation access with explicit tenant ownership checks and adversarial isolation tests.
-5. Add canonical planner integration and deterministic replay before vendor/device simulator work.
+Not certified: authenticated browser tests, cross-tenant HTTP denial, production D1 runtime, accessibility, canonical planner/replay, vendor simulator, software/hardware-in-the-loop and Germany logistics end-to-end.
+
+Deployment decision: DO NOT DEPLOY until the candidate is built in Cloudflare and browser/security/runtime gates are completed. No 16.10.73 deployment was performed by this workflow.
+
+Permanent priorities: Security → Truth → Liveness → Stability → Experience → Scale.
+Canonical journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.

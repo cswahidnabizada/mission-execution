@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const read=p=>fs.readFileSync(p,'utf8');
+const routes=read('src/worker/modules/admin-control/admin-launch-config.routes.js');
+const ui=read('public/assets/js/frontend/admin/simulation-lab.js');
+const page=read('public/tenant-simulator.html');
+assert.match(routes,/router\.get\('\/api\/tenant\/simulation\/runs'/);
+assert.match(routes,/router\.post\('\/api\/tenant\/simulation\/runs'/);
+assert.match(routes,/requireRole\(request,env,\['admin'\]\)/);
+assert.match(routes,/owner_scope='tenant' AND tenant_id=\?/);
+assert.match(routes,/TENANT_CONTEXT_REQUIRED/);
+assert.match(routes,/SIMULATION_SAFETY_INVARIANTS_FAILED/);
+assert.match(ui,/TENANT_MODE=location\.pathname==='\/tenant-simulator\.html'/);
+assert.match(ui,/\/api\/auth\/session\?optional=1/);
+assert.match(page,/Tenant Simulation Lab/);
+assert.match(page,/v=16\.10\.73/);
+console.log('16.10.73 tenant simulation scope contract: PASS');

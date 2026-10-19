@@ -34,7 +34,7 @@ assert(keys.every(k=>registry.includes(`'${k}'`)),'all workspace keys have regis
 const rendererCoverage={
  operations:panel, 'action-matrix':panel, 'agentic-control':panel, 'system-health':surfaces, 'infrastructure-governance':panel, 'product-identity':panel,
  'resource-management':panel, 'product-publisher':surfaces, countries:surfaces,
- 'release-center':panel, 'product-verification':surfaces, verification:surfaces, certification:surfaces, 'product-dependency-impact':panel,
+ 'release-center':panel, 'simulation-lab':panel, 'product-verification':surfaces, verification:surfaces, certification:surfaces, 'product-dependency-impact':panel,
  'launch-center':panel, 'product-health':surfaces,
  companies:surfaces, roles:surfaces, subscriptions:surfaces, billing:surfaces, missions:surfaces, notifications:surfaces,
  'human-platform':surfaces, 'layout-studio':panel, 'product-experience':panel, 'user-experience':panel, 'demo-product':panel, policies:surfaces, consent:surfaces, 'privacy-rights':surfaces, residency:surfaces, providers:surfaces, 'analytics-governance':surfaces, security:surfaces, audit:surfaces,
