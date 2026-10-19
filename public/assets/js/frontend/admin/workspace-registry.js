@@ -9,6 +9,7 @@ export const ADMIN_WORKSPACE_GROUPS=Object.freeze([
     ['Administrative Operations','operations','Track governed administrative operations and their evidence.','Platform Administrative Operations','READ','COMMAND'],
     ['Action Matrix','action-matrix','See every canonical action, its owner, route and execution boundary.','Canonical Action Registry','READ','COMMAND'],
     ['System Health','system-health','See authoritative runtime and platform health without substituting empty state.','System Health','READ','COMMAND'],
+    ['Platform Results & Certification','platform-results','Inspect evidence-backed results across platform domains, distinguish source availability from certification, and trace the canonical mission journey.','Platform Results & Certification Evidence','READ','COMMAND'],
     ['Product Identity Studio','product-identity','Govern product name, short name and tagline through versioned, audited publication.','Canonical Product Identity Registry','WRITE','COMMAND'],
     ['Infrastructure Command Center','infrastructure-governance','Inspect runtime bindings, govern proposed regions, and track the target infrastructure roadmap with evidence.','Regional Infrastructure Governance','WRITE','COMMAND'],
     ['Agentic Control','agentic-control','Audit agent decisions and outcomes, inspect autonomy posture, and safely control agent execution.','Agentic Governance Authority','WRITE','COMMAND']

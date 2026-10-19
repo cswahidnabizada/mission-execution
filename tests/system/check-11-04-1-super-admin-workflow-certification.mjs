@@ -32,7 +32,7 @@ assert(keys.every(k=>registry.includes(`'${k}'`)),'all workspace keys have regis
 
 // Composition coverage: every primary workspace must be represented by a renderer composition.
 const rendererCoverage={
- operations:panel, 'action-matrix':panel, 'agentic-control':panel, 'system-health':surfaces, 'infrastructure-governance':panel, 'product-identity':panel,
+ operations:panel, 'action-matrix':panel, 'agentic-control':panel, 'system-health':surfaces, 'platform-results':panel, 'infrastructure-governance':panel, 'product-identity':panel,
  'resource-management':panel, 'product-publisher':surfaces, countries:surfaces,
  'release-center':panel, 'simulation-lab':panel, 'product-verification':surfaces, verification:surfaces, certification:surfaces, 'product-dependency-impact':panel,
  'launch-center':panel, 'product-health':surfaces,

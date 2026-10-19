@@ -1,6 +1,6 @@
-## Current candidate: ON MISSION 16.10.78 — Simulation Integration Certification
+## Current candidate: ON MISSION 16.10.79 — Platform Results & Certification Center
 
-Adds canonical planner contract tests, deterministic vendor simulation, software-in-the-loop fault fixtures, a fail-closed hardware-in-the-loop interlock, and Germany logistics scenario certification contracts. External, deployed-runtime, and physical-device certification remain pending. See `docs/roadmap/ON-MISSION-ROADMAP.md` and `RELEASE.md`.
+Adds the Super Admin Platform Results & Certification Center: read-only aggregation of six existing authorized evidence endpoints plus explicit UNVERIFIED entries for AI/planner, integration/device, data/content and mission-lifecycle evidence that is not yet connected. Successful reads are not functional certification; the complete mission journey remains unverified until authoritative per-mission evidence is connected. Runtime/browser certification remains pending. See `docs/roadmap/ON-MISSION-ROADMAP.md` and `RELEASE.md`.
 
 ## Previous candidate: ON MISSION 16.10.74 — Canonical Planning Adapter + Deterministic Replay
 

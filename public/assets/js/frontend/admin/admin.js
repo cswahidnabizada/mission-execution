@@ -1,16 +1,17 @@
 /* ON Mission 10.79.0 — Super Admin bootstrap */
-import {renderAdminShell} from './shell.js?v=16.10.78';
-import { $, api, esc, state, primarySections, supportingSections, sections, platformLogout, login } from './admin-runtime.js?v=16.10.78';
-import {createAdminController} from './admin-controller.js?v=16.10.78';
-import {readExperienceContext} from '../core/experience-context.js?v=16.10.78';
-import {adminPanelRenderers,configureAdminPanelShow,refreshAdminData} from './panel-registry.js?v=16.10.78';
-import {setAdminShow} from './oversight/context.js?v=16.10.78';
+import {renderAdminShell} from './shell.js?v=16.10.79';
+import { $, api, esc, state, primarySections, supportingSections, sections, platformLogout, login } from './admin-runtime.js?v=16.10.79';
+import {createAdminController} from './admin-controller.js?v=16.10.79';
+import {readExperienceContext} from '../core/experience-context.js?v=16.10.79';
+import {adminPanelRenderers,configureAdminPanelShow,refreshAdminData} from './panel-registry.js?v=16.10.79';
+import {setAdminShow} from './oversight/context.js?v=16.10.79';
 
 let show;
 let shellApi=null;
 const shell=()=>{shellApi=renderAdminShell({sections,platformLogout,show,state});};
 const adminController=createAdminController({state,renderers:adminPanelRenderers,platformLogout,setEcosystemSubview:()=>{},updateContext:key=>shellApi?.updateContext?.(key)});
 show=adminController.show;
+window.__onMissionAdminShow=show;
 // Bind the canonical controller directly at bootstrap. The Control Plane must never render
 // with an unbound navigation dependency, even if registry composition changes.
 setAdminShow(show);

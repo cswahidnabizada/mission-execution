@@ -1,7 +1,7 @@
 {
-  "version": "16.10.78",
+  "version": "16.10.79",
   "release": "RELEASE.md",
-  "base": "16.10.77",
+  "base": "16.10.78",
   "migrationHighWaterMark": "0161",
   "migrationCount": 161,
   "schemaSnapshot": {
@@ -9,6 +9,6 @@
     "sha256": "e816aad94295dad3d5a051bf6522be676c54c3dbc493316a707fbb02b89ce537"
   },
   "generatedFrom": "deterministic-release-pipeline",
-  "releaseName": "Simulation Integration Certification",
-  "certificationControl": "config/certification/simulation-integration-certification.json"
+  "releaseName": "Platform Results & Certification Center",
+  "certificationControl": "config/certification/platform-results-center.json"
 }

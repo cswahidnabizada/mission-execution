@@ -6,8 +6,8 @@ import {replaySimulation} from '../../public/assets/js/frontend/admin/simulation
 const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
 const lock=JSON.parse(fs.readFileSync('package-lock.json','utf8'));
 const manifest=JSON.parse(fs.readFileSync('RELEASE-MANIFEST.json','utf8'));
-assert.equal(pkg.version,'16.10.78'); assert.equal(lock.version,pkg.version); assert.equal(lock.packages[''].version,pkg.version);
-assert.equal(fs.readFileSync('VERSION','utf8').trim(),pkg.version); assert.equal(manifest.version,pkg.version); assert.equal(manifest.base,'16.10.77','16.10.78');
+assert.equal(pkg.version,'16.10.79'); assert.equal(lock.version,pkg.version); assert.equal(lock.packages[''].version,pkg.version);
+assert.equal(fs.readFileSync('VERSION','utf8').trim(),pkg.version); assert.equal(manifest.version,pkg.version); assert.equal(manifest.base,'16.10.78','16.10.79');
 assert.equal(listVirtualDeviceProfiles().length,3);
 for(const id of ['virtual-van','virtual-robot','virtual-drone']) {
  const p=resolveVirtualDeviceProfile(id); assert.equal(p.safetyEnvelope.simulationOnly,true); assert.equal(p.safetyEnvelope.physicalConnectionAllowed,false); assert.equal(p.safetyEnvelope.actuationEnabled,false); assert.equal(p.safetyEnvelope.productionMutation,false); assert.equal(p.safetyEnvelope.deviceCommandSent,false); assert.equal(assertVirtualDeviceSafety(p).allowed,true);

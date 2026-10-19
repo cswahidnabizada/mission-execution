@@ -1,0 +1,27 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const read=p=>fs.readFileSync(p,'utf8');
+const pkg=JSON.parse(read('package.json'));
+const lock=JSON.parse(read('package-lock.json'));
+const manifest=JSON.parse(read('RELEASE-MANIFEST.json'));
+const roadmap=JSON.parse(read('config/roadmap/mission-execution-roadmap.json'));
+const contract=JSON.parse(read('config/certification/platform-results-center.json'));
+const ui=read('public/assets/js/frontend/admin/platform-results-center.js');
+const registry=read('public/assets/js/frontend/admin/workspace-registry.js');
+const panels=read('public/assets/js/frontend/admin/panel-registry.js');
+assert.equal(pkg.version,'16.10.79'); assert.equal(lock.version,pkg.version); assert.equal(lock.packages[''].version,pkg.version);
+assert.equal(manifest.version,pkg.version); assert.equal(manifest.base,'16.10.78'); assert.equal(roadmap.version,pkg.version); assert.equal(roadmap.baseline,'16.10.78');
+assert.equal(contract.mode,'READ_ONLY_AGGREGATION'); assert.equal(contract.authorityPolicy,'REUSE_EXISTING_AUTHORITIES_ONLY');
+assert.equal(contract.certificationPolicy.sourceReadDoesNotEqualFunctionalCertification,true);
+assert.equal(contract.certificationPolicy.missingEvidenceStatus,'UNVERIFIED'); assert.equal(contract.certificationPolicy.failedReadStatus,'UNAVAILABLE');
+assert.equal(contract.certificationPolicy.mutationEnabled,false); assert.equal(contract.certificationPolicy.simulationCannotProvePhysicalEffect,true);
+for(const source of contract.sources){assert.match(ui,new RegExp(source.id));if(source.endpoint)assert.ok(ui.includes(source.endpoint),`source endpoint included: ${source.endpoint}`);}
+assert.match(registry,/Platform Results & Certification/); assert.match(registry,/platform-results/); assert.match(panels,/renderPlatformResults/);
+assert.match(ui,/READ OK · NOT CERTIFIED/); assert.match(ui,/UNVERIFIED/); assert.match(ui,/UNAVAILABLE/); assert.match(ui,/OBSERVE/); assert.match(ui,/NEXT SITUATION/);
+assert.match(ui,/simulation|physical/i); assert.match(ui,/READ ONLY/);
+assert.equal(roadmap.rules.oneCanonicalAuthorityPerDomain,true); assert.deepEqual(roadmap.permanentPriority,['Security','Truth','Liveness','Stability','Experience','Scale']);
+assert.deepEqual(roadmap.canonicalJourney,['OBSERVE','UNDERSTAND','PLAN','EVALUATE','ACCEPT','AUTHORIZE','PREPARE','ASSIGN','EXECUTE','EFFECT','VERIFY','RECOVER','OUTCOME','LEARN','NEXT SITUATION','OBSERVE']);
+assert.ok(roadmap.controlCenters.some(c=>c.id==='MISSION-OPERATIONS'));
+assert.ok(contract.sources.some(s=>s.id==='ai-planner'&&!s.endpoint)); assert.ok(contract.sources.some(s=>s.id==='mission-operations'&&!s.endpoint)); assert.ok(roadmap.controlCenters.some(c=>c.id==='SIMULATION-DIGITAL-TWIN'));
+assert.ok(roadmap.phases.some(p=>p.id==='PLATFORM-RESULTS-CENTER'&&p.status==='SOURCE_IMPLEMENTED_RUNTIME_PENDING'));
+console.log('16.10.79 Platform Results & Certification Center contract: PASS');

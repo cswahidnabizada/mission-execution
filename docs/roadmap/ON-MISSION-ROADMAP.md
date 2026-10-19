@@ -1,62 +1,35 @@
-# ON MISSION — Canonical Roadmap and Release Continuity
+# ON Mission Roadmap — Release 16.10.79
 
-This document is a durable handoff between releases. The machine-readable source of truth for roadmap sequencing is `config/roadmap/mission-execution-roadmap.json`; update both only when a release changes a milestone, dependency, or exit criterion.
+## Current release checkpoint
+- Latest user-confirmed deployment before this candidate: 16.10.78, Worker version `fdcee9b6-01a6-43e5-a76d-7ef8fa28ce67`.
+- Current source candidate: 16.10.79 — Platform Results & Certification Center. Not yet deployed or browser-certified.
+- Strategic direction: human-executor-first Germany logistics pilot; operational proof of the full canonical journey.
 
-## Permanent engineering priorities
+## Completed in 16.10.79 source candidate
+- Read-only Super Admin Platform Results & Certification workspace is composed into the existing workspace registry.
+- Aggregates existing authorized health, command-center, certification-environment, administrative-operations, product-health and layout-certification read endpoints.
+- Shows endpoint read failures rather than substituting empty/healthy state; a successful read is explicitly not functional certification.
+- Adds search/domain filters, inspectable payload summaries, related workspace navigation and full canonical journey map.
+- Adds machine-readable source and control-center roadmap inventories.
 
-**Security → Truth → Liveness → Stability → Experience → Scale**
+## Still remaining
+1. Deploy 16.10.79 and verify the new workspace in authenticated browser.
+2. Run authenticated runtime/security tests for all connected read endpoints and verify Super Admin role enforcement.
+3. Connect canonical per-mission lifecycle events and evidence drilldown; this release lists stages but does not claim stage-level pass.
+4. Add immutable unified certification history only after choosing/reusing the canonical evidence authority.
+5. Complete 16.10.80 canonical journey certification; then 16.10.81 governed human execution; 16.10.82 Germany logistics pilot contract; 16.10.83 end-to-end operational proof; 16.10.84 controlled pilot readiness.
+6. Continue control-center development in dependency order: Data & Infrastructure, Experience & UI, AI & Capabilities, Integration & Devices, Data & Content, Market Factory, Tenant & Access, Mission Operations, Simulation & Digital Twin. Reuse existing authorities and services.
+7. Vendor sandbox, SIL, device-specific HIL and physical-device actuation remain separately gated.
 
-Canonical journey:
+## Permanent rules
+- Priority: Security → Truth → Liveness → Stability → Experience → Scale.
+- Canonical journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+- One authority per domain; no duplicate mission truth, lifecycle writer, assignment or authorization authority.
+- Source reads, static tests, simulation, vendor sandbox, SIL, HIL and physical outcomes are different evidence classes.
+- Missing evidence is UNVERIFIED; unavailable evidence is UNAVAILABLE; neither is a pass.
+- No production publishing or physical actuation from a simulation result alone.
 
-`OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE`
-
-## Current checkpoint: 16.10.77
-
-- 16.10.70: simulation foundation.
-- 16.10.71: append-only simulation records and content hashes.
-- 16.10.72: Super Admin simulator navigation.
-- 16.10.73: tenant-scoped simulator endpoints and workspace.
-- 16.10.74: simulation planning adapter, constraints and deterministic replay.
-- 16.10.75: virtual device safety profiles.
-- 16.10.77: roadmap continuity and explicit certification gates.
-
-Cloudflare logs supplied for 16.10.75 confirm a successful asset upload and Worker deployment. They do **not** establish authenticated browser certification, adversarial cross-tenant HTTP denial, vendor/device integration, or physical effect certification. Keep these gates open until evidence is captured.
-
-## Simulator completion sequence
-
-1. Authenticated browser certification: Super Admin and tenant save/history/reload/replay, failure handling and accessibility.
-2. Adversarial tenant/role verification over HTTP, including foreign run IDs, forged tenant context, replay conflicts and unauthenticated requests.
-3. Canonical planner integration through read-only contracts; compare expected and observed outcomes without creating another planner authority.
-4. Vendor simulator sandbox, then software-in-the-loop. Hardware-in-the-loop requires separate device-specific safety approval and remains disabled until approved.
-5. Germany logistics end-to-end: normal delivery, blocked assignment, failed delivery, recovery, evidence verification, outcome and next situation.
-
-## Broader platform roadmap after simulator certification
-
-1. Governed action orchestration.
-2. Unified Platform Control and shared work queue/resource visibility.
-3. Infrastructure, data, experience and content centers.
-4. Integration and AI capability centers.
-5. Market Factory and tenant activation.
-6. Controlled, certified real-world mission execution, beginning with Germany logistics.
-
-## Architecture guardrails
-
-- One canonical authority per domain; the orchestrator coordinates but does not become a second mission, authorization, capability, resource, or release authority.
-- Prefer extending existing services and registries over creating a new service/backend for each control center.
-- Simulation runs, replay fingerprints, caches, and learned weights are derived evidence, never canonical mission truth.
-- Simulation success never grants live authorization or proves a physical effect.
-- Production changes follow the existing immutable release lifecycle, authorization, verification and rollback gates.
-- Every release updates the checkpoint and records what is implemented, runtime-verified, blocked, and still pending.
-
-
-## 16.10.78 — Simulation Integration Certification
-
-This release adds deterministic certification contracts for the existing canonical planning adapter, a local vendor-simulator contract harness, software-in-the-loop (SIL) fault fixtures, a fail-closed hardware-in-the-loop (HIL) interlock, and Germany logistics end-to-end scenario contracts. These are test harnesses and readiness controls, not proof of deployed browser behavior, third-party vendor compatibility, physical device safety, or real delivery.
-
-### Certification boundaries
-- Canonical planning remains read-only from the simulation harness; it does not create, accept, or mutate live mission plans.
-- Vendor simulation is local and deterministic. No production network connection, API key, or physical-device transport is introduced.
-- SIL fixtures test normal response, timeout, malformed output, safety-envelope violation, and heartbeat loss.
-- HIL stays disabled by default and rejects actuation without an explicit device-specific certification record; this release does not provide that approval.
-- Germany logistics scenarios cover normal delivery, blocked assignment, failed delivery with recovery, and independent evidence verification. All evidence is marked simulated.
-- External vendor, browser, authenticated HTTP, physical hardware, and real-world Germany pilot gates remain pending until independently evidenced.
+Historical certification constraints retained:
+- Preserve one canonical authority per domain.
+- Hardware-in-the-loop requires separate device-specific safety approval and supervised evidence; approval metadata alone never enables actuation.
+- The prior deployment logs do **not** establish authenticated browser certification for a later candidate.

@@ -12,7 +12,7 @@ assert.equal(lock.version,pkg.version);
 assert.equal(lock.packages[''].version,pkg.version);
 assert.equal(read('VERSION').trim(),pkg.version);
 assert.equal(manifest.version,pkg.version);
-assert.ok(['16.10.66','16.10.67','16.10.68','16.10.69','16.10.70','16.10.71','16.10.72','16.10.73','16.10.74','16.10.75','16.10.76','16.10.77','16.10.78'].includes(manifest.base));
+assert.ok(['16.10.66','16.10.67','16.10.68','16.10.69','16.10.70','16.10.71','16.10.72','16.10.73','16.10.74','16.10.75','16.10.76','16.10.77','16.10.78','16.10.79'].includes(manifest.base));
 assert.match(css,/\.ls-grid\{align-items:stretch;grid-template-columns:minmax\(220px,\.72fr\) minmax\(0,2fr\) minmax\(240px,\.82fr\)/);
 assert.match(css,/\.ls-grid>\.ls-panel:first-child,\.ls-grid>\.ls-inspector\{position:sticky/);
 assert.match(css,/@media\(max-width:1180px\)/);

@@ -1,7 +1,7 @@
 {
   "schema": "onmission.roadmap.v1",
-  "version": "16.10.78",
-  "baseline": "16.10.77",
+  "version": "16.10.79",
+  "baseline": "16.10.78",
   "permanentPriority": [
     "Security",
     "Truth",
@@ -69,6 +69,23 @@
     }
   ],
   "phases": [
+    {
+      "id": "PLATFORM-RESULTS-CENTER",
+      "title": "Super Admin Platform Results & Certification Center",
+      "status": "SOURCE_IMPLEMENTED_RUNTIME_PENDING",
+      "versions": [
+        "16.10.79"
+      ],
+      "dependsOn": [],
+      "exitCriteria": [
+        "Read-only results center composes existing authorized evidence sources",
+        "Source availability is clearly distinct from functional and production certification",
+        "Unavailable and stale evidence remain visible as unavailable or unverified",
+        "Complete canonical mission journey is represented without inferred pass states",
+        "Per-mission event evidence and immutable cross-source certification history remain explicitly pending",
+        "No new domain authority, backend, mutation route or device actuation is introduced"
+      ]
+    },
     {
       "id": "SIM-FOUNDATION",
       "title": "Simulation foundation and governed records",
@@ -279,6 +296,62 @@
       "exitCriteria": [
         "Controlled Germany logistics pilot passes safety, authorization, evidence and recovery gates"
       ]
+    }
+  ],
+  "controlCenters": [
+    {
+      "id": "DATA-INFRASTRUCTURE",
+      "title": "Data & Infrastructure Center",
+      "status": "PARTIAL_EXISTING_SURFACES",
+      "scope": "Runtime bindings, health, migrations, persistence, residency and dependencies"
+    },
+    {
+      "id": "EXPERIENCE-UI",
+      "title": "Experience & UI Center",
+      "status": "PARTIAL_EXISTING_SURFACES",
+      "scope": "Route mapping, renderer parity, accessibility, user journey and release readiness"
+    },
+    {
+      "id": "AI-CAPABILITIES",
+      "title": "AI & Capabilities Center",
+      "status": "PENDING_EVIDENCE_UNIFICATION",
+      "scope": "Planner decisions, capability contracts, confidence, rejected plans and outcomes"
+    },
+    {
+      "id": "INTEGRATIONS-DEVICES",
+      "title": "Integration & Devices Center",
+      "status": "SIMULATION_FOUNDATION_ONLY",
+      "scope": "Vendor sandbox, connectivity, SIL, HIL and device-specific safety"
+    },
+    {
+      "id": "DATA-CONTENT",
+      "title": "Data & Content Center",
+      "status": "PARTIAL_EXISTING_SURFACES",
+      "scope": "Canonical reusable data, content, policies, validation and provenance"
+    },
+    {
+      "id": "MARKET-FACTORY",
+      "title": "Market Factory Center",
+      "status": "EXISTING_GOVERNED_SURFACE_RUNTIME_PROOF_PENDING",
+      "scope": "Market packages, release lifecycle, readiness, authorization and verification"
+    },
+    {
+      "id": "TENANT-ACCESS",
+      "title": "Tenant & Access Center",
+      "status": "EXISTING_GOVERNED_SURFACES_RUNTIME_PROOF_PENDING",
+      "scope": "Tenant onboarding, roles, authorization and isolation"
+    },
+    {
+      "id": "MISSION-OPERATIONS",
+      "title": "Mission Operations Center",
+      "status": "JOURNEY_RUNTIME_PROOF_PENDING",
+      "scope": "Canonical mission journey, queues, assignments, execution, evidence and recovery"
+    },
+    {
+      "id": "SIMULATION-DIGITAL-TWIN",
+      "title": "Simulation & Digital Twin Center",
+      "status": "SIMULATION_FOUNDATION_IMPLEMENTED_EXTERNAL_RUNTIME_PROOF_PENDING",
+      "scope": "Deterministic simulation, replay, vendor fixtures, SIL fixtures and disabled HIL interlock"
     }
   ]
 }

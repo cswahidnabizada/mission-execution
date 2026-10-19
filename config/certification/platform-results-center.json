@@ -1,0 +1,85 @@
+{
+  "schema": "onmission.platform-results-center.v1",
+  "version": "16.10.79",
+  "mode": "READ_ONLY_AGGREGATION",
+  "authorityPolicy": "REUSE_EXISTING_AUTHORITIES_ONLY",
+  "certificationPolicy": {
+    "sourceReadDoesNotEqualFunctionalCertification": true,
+    "missingEvidenceStatus": "UNVERIFIED",
+    "failedReadStatus": "UNAVAILABLE",
+    "simulationCannotProvePhysicalEffect": true,
+    "tenantScopeMustRemainServerDerived": true,
+    "mutationEnabled": false
+  },
+  "sources": [
+    {
+      "id": "platform-health",
+      "domain": "data-infrastructure",
+      "endpoint": "/api/platform/admin/system-health",
+      "workspace": "system-health"
+    },
+    {
+      "id": "command-center",
+      "domain": "platform-operations",
+      "endpoint": "/api/platform/admin/command-center",
+      "workspace": "overview"
+    },
+    {
+      "id": "certification-environment",
+      "domain": "simulation-certification",
+      "endpoint": "/api/platform/admin/certification/environment",
+      "workspace": "certification"
+    },
+    {
+      "id": "admin-operations",
+      "domain": "platform-operations",
+      "endpoint": "/api/platform/admin/operations?limit=50",
+      "workspace": "operations"
+    },
+    {
+      "id": "product-health",
+      "domain": "tenant-market-factory",
+      "endpoint": "/api/platform/admin/product-health",
+      "workspace": "product-health"
+    },
+    {
+      "id": "layout-certification",
+      "domain": "experience-ui",
+      "endpoint": "/api/platform/admin/layout-studio/certification",
+      "workspace": "layout-studio"
+    },
+    {
+      "id": "ai-planner",
+      "domain": "ai-capabilities",
+      "endpoint": null,
+      "workspace": "agentic-control"
+    },
+    {
+      "id": "integrations-devices",
+      "domain": "integrations-devices",
+      "endpoint": null,
+      "workspace": "infrastructure-governance"
+    },
+    {
+      "id": "data-content",
+      "domain": "data-content",
+      "endpoint": null,
+      "workspace": "resource-management"
+    },
+    {
+      "id": "mission-operations",
+      "domain": "mission-operations",
+      "endpoint": null,
+      "workspace": "missions"
+    }
+  ],
+  "notYetConnected": [
+    "authoritative per-mission lifecycle event drilldown",
+    "AI decision and planner execution result registry",
+    "vendor sandbox run evidence",
+    "software-in-the-loop execution evidence",
+    "device-specific hardware-in-the-loop evidence",
+    "independently verified physical delivery outcomes",
+    "immutable unified certification history across all sources"
+  ]
+}
