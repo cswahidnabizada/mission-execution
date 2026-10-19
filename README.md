@@ -18,7 +18,7 @@ Protected candidate only. Publication is disabled; see `RELEASE.md` for remainin
 
 Protected source candidate; publication remains disabled pending canonical release integration and certification.
 
-# ON MISSION — Release 16.10.61
+# ON MISSION 16.10.75 — Virtual Device Safety Profiles
 
 ## 16.10.61 — Canonical Release Readiness Bridge
 

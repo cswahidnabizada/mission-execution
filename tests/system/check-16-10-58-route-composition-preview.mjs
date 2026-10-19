@@ -14,7 +14,7 @@ assert.equal(lock.version,pkg.version);
 assert.equal(lock.packages[''].version,pkg.version);
 assert.equal(read('VERSION').trim(),pkg.version);
 assert.equal(manifest.version,pkg.version);
-assert.ok(['16.10.57','16.10.58','16.10.60','16.10.65','16.10.66','16.10.61','16.10.62','16.10.63','16.10.64','16.10.65','16.10.67','16.10.68','16.10.69','16.10.70','16.10.71','16.10.72','16.10.73','16.10.74'].includes(manifest.base));
+assert.ok(['16.10.57','16.10.58','16.10.60','16.10.65','16.10.66','16.10.61','16.10.62','16.10.63','16.10.64','16.10.65','16.10.67','16.10.68','16.10.69','16.10.70','16.10.71','16.10.72','16.10.73','16.10.74','16.10.75'].includes(manifest.base));
 assert.match(studio,/PREVIEW_ROUTE_KINDS=Object\.freeze/);
 for (const route of ['public-homepage','registration','organization-setup','mission-list','mission-workspace','executor-workspace','tenant-product-experience']) assert.match(studio,new RegExp(`'${route}':`));
 assert.match(studio,/matches\.length!==1/);

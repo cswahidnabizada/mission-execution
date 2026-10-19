@@ -1,30 +1,37 @@
-ON MISSION 16.10.73 — Tenant-Scoped Simulation
-Base: 16.10.72
-Status: PROTECTED SOURCE CANDIDATE — NOT PRODUCTION CERTIFIED
+ON MISSION 16.10.75 — VIRTUAL DEVICE SAFETY PROFILES
+Base: 16.10.74 — Canonical Planning Adapter + Deterministic Replay
+Status: protected source candidate; automated release suite passes; NOT production-certified.
 
-Implemented:
-- Tenant-scoped simulation list/save/load APIs use the authenticated tenant administrator's session as the only scope authority.
-- No caller-provided tenant ID is accepted. Tenant read queries filter by owner_scope='tenant' and authenticated tenant_id.
-- Added /tenant-simulator.html reusing the deterministic simulation engine with tenant-specific authentication and API routing.
-- Platform Super Admin APIs remain separately platform-scoped. Existing immutable records and simulation safety invariants are reused.
-- Historical release compatibility allowlist reconciled; release identity and asset cache-busters synchronized to 16.10.73.
+IMPLEMENTED
+- Versioned virtual profiles for virtual-van, virtual-robot and virtual-drone.
+- Explicit per-profile speed/payload limits and allowed simulated stages.
+- Safety envelope fails closed: simulationOnly=true, physicalConnectionAllowed=false, actuationEnabled=false, productionMutation=false, deviceCommandSent=false, geofenceEnforced=true and emergencyStopMode=SIMULATED_ONLY.
+- Drone remains planning-only; attempts to simulate later execution stages are rejected by profile validation.
+- Device profile and safety envelope are included in simulation outcomes and replay fingerprints; safety-envelope tampering causes replay mismatch.
+- Both Super Admin and tenant simulator pages describe the safety boundary. Existing mission truth, authorization, tenant scope, append-only record storage and canonical journey remain unchanged.
+- No migration, vendor connection, physical device command or live mission mutation added.
 
-Verification:
-- Full npm run check:release: PASS.
-- Tenant simulation API/UI scope contract: PASS.
-- SQLite tenant separation and immutable UPDATE/DELETE smoke test: PASS.
-- Simulation foundation, persistence and Super Admin navigation contracts: PASS.
-- Release integrity, production cleanliness/version convergence and dependency lock checks: PASS.
-- Updated worker route and simulation UI syntax checks: PASS.
+VERIFICATION
+- `npm run check:release`: PASS (full cumulative suite).
+- Focused virtual-device safety contract: PASS.
+- Deterministic replay, tamper detection, tenant-scope SQLite smoke test, persistence, navigation and foundation contracts: PASS.
+- Dependency lock gate: PASS.
+- Release integrity and production cleanliness/version convergence: PASS.
+- JavaScript syntax checks for simulation profile/engine/fingerprint/replay modules: PASS.
+- Local `npm run build`: BLOCKED by environment gate (current Node.js 22.16.0; project requires Node.js 24.18.0 / 24.x). CSS compilation did not run locally.
+- User-provided Cloudflare logs certify successful deployment of 16.10.74 only; they do not certify this 16.10.75 candidate.
+- Authenticated browser workflows, production D1 checks, adversarial cross-tenant HTTP denial, vendor simulation, software-in-the-loop, hardware-in-the-loop and Germany logistics end-to-end certification remain NOT CERTIFIED.
 
-Build limitation:
-- Local npm run build is blocked because this environment has Node.js 22.16.0 while the project requires Node.js 24.18.0 / 24.x.
-- CSS build is not available locally because tailwindcss is not installed in this environment.
-- User-provided Cloudflare logs confirm the previous deployment ran on Node.js 24.21.0 and uploaded 67 changed assets. They do not certify this candidate.
+DEPLOYMENT DECISION
+Do not claim production certification. Run the normal Cloudflare release pipeline for this candidate, then verify authenticated browser save/history/replay and cross-tenant denial before proceeding to vendor simulation. Hardware-in-the-loop remains disabled pending device-specific certification.
 
-Not certified: authenticated browser tests, cross-tenant HTTP denial, production D1 runtime, accessibility, canonical planner/replay, vendor simulator, software/hardware-in-the-loop and Germany logistics end-to-end.
-
-Deployment decision: DO NOT DEPLOY until the candidate is built in Cloudflare and browser/security/runtime gates are completed. No 16.10.73 deployment was performed by this workflow.
+NEXT ROADMAP
+1. Cloudflare build/deploy verification and browser runtime certification.
+2. Adversarial tenant isolation and role-based access verification.
+3. Canonical plan/evaluation runtime integration through read-only governed contracts.
+4. Vendor simulator adapters, then software-in-the-loop; hardware-in-the-loop only after safety review.
+5. Germany logistics end-to-end: normal delivery, blocked assignment, failed delivery, recovery and evidence verification.
+6. Return to governed action orchestration, unified Platform Control, infrastructure/data/content centers, integrations/AI capabilities, Market Factory, tenant activation and certified real-world execution.
 
 Permanent priorities: Security → Truth → Liveness → Stability → Experience → Scale.
 Canonical journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.

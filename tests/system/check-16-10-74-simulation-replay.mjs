@@ -33,4 +33,4 @@ assert.match(page,/id="replaySimulation"/);
 assert.match(page,/id="replaySeed"/);
 assert.match(page,/id="availableCapacity"/);
 assert.equal(SIMULATION_PLANNER_CONTRACT.executionAllowed,false);
-console.log('16.10.74 canonical planning adapter + deterministic replay: PASS');
+console.log('16.10.75 canonical planning adapter + deterministic replay: PASS');

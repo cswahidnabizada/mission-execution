@@ -1,3 +1,36 @@
+# Mission Execution 16.10.75 — Virtual Device Safety Profiles
+
+Base: 16.10.74 — Canonical Planning Adapter + Deterministic Replay
+Status: protected source candidate — automated release suite PASS; NOT production-certified until build and runtime/browser gates pass.
+
+## Implemented
+- Added versioned virtual profiles for delivery van, warehouse robot and aerial drone.
+- Each profile carries explicit speed/payload bounds, allowed simulated stages and a safety envelope that forbids physical connections, actuation, production mutation and device commands.
+- Integrated profile metadata into simulation run records and deterministic outcome fingerprints, so tampering with safety claims causes replay mismatch.
+- Added fail-closed checks for unsupported profiles, speed/payload limit violations and attempts to use a planning-only drone beyond PLAN/EVALUATE.
+- Updated Super Admin and tenant simulator guidance; existing canonical mission truth, authorization and run persistence remain unchanged.
+- No vendor SDK, network connection, physical device command, or hardware-in-the-loop execution was added. No database migration required.
+
+## Verification status
+- Virtual-device profile contract, limits, fail-closed behavior, replay fingerprint and simulation-only invariants: PASS (focused test).
+- Cumulative `npm run check:release`: PASS (full suite, including security, schema, architecture, migration, tenant-scope, replay and legacy regression checks).
+- Dependency-lock, release-integrity, production-cleanliness and JavaScript syntax checks: PASS.
+- Local `npm run build`: BLOCKED at the environment gate because this runner is Node.js 22.16.0 while `.node-version` requires 24.18.0 / Node 24.x; CSS compilation therefore did not run locally.
+- Cloudflare deployment and authenticated browser testing of this candidate: NOT YET VERIFIED. The supplied 16.10.74 logs establish successful deployment of that prior release only.
+- Vendor simulator, software-in-the-loop, hardware-in-the-loop and Germany logistics end-to-end certification: NOT CERTIFIED.
+
+## Next gates
+1. Run the full release suite and build under Node.js 24.x; verify CSS compilation.
+2. Browser-test Super Admin and tenant simulation, saved history/replay and failure handling.
+3. Perform adversarial cross-tenant HTTP tests against deployed tenant endpoints.
+4. Connect simulation to canonical plan/evaluation outputs through a read-only governed boundary.
+5. Add vendor simulation adapters only after profile-level safety certification; hardware-in-the-loop remains disabled until device-specific review.
+
+Permanent priorities: Security → Truth → Liveness → Stability → Experience → Scale.
+Canonical journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+
+---
+
 # Mission Execution 16.10.74 — Canonical Planning Adapter + Deterministic Replay
 
 Base: 16.10.73 — Tenant-Scoped Simulation
