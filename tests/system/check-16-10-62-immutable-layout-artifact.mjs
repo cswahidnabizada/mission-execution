@@ -6,7 +6,7 @@ const routes=fs.readFileSync('src/worker/modules/admin-control/layout-studio.rou
 const schema=fs.readFileSync('database/migrations/0160_layout_studio_server_drafts.sql','utf8');
 assert.equal(pkg.version,fs.readFileSync('VERSION','utf8').trim());
 assert.equal(manifest.version,pkg.version);
-assert.ok(['16.10.65','16.10.66','16.10.67','16.10.68','16.10.69'].includes(manifest.base));
+assert.ok(['16.10.65','16.10.66','16.10.67','16.10.68','16.10.69','16.10.70'].includes(manifest.base));
 assert.match(routes,/platform_layout_draft_versions WHERE experience_id=\? AND revision=\?/);
 assert.match(routes,/onmission\.layout-artifact\.v1/);
 assert.match(routes,/artifactSha256/);

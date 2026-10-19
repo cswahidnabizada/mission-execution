@@ -1,22 +1,28 @@
-# Mission Execution 16.10.69 — Layout Studio Functional Integration and Route Parity
+# Mission Execution 16.10.70 — Simulation Foundation
 
-Base: ON MISSION 16.10.66 — Layout Studio Release Integrity Hardening
-Status: protected candidate; NOT production-certified
+Base: ON MISSION 16.10.69 — Layout Studio Functional Integration and Route Parity
+Status: source candidate; NOT production-certified
 
-## Implemented in 16.10.69
-- Prevented the structure and inspector panels from overlaying the central preview: explicit three-column grid, bounded sticky side panels on wide screens, and static full-width fallbacks on tablet/mobile.
-- Reduced horizontal overflow risks in canvas, preview, component tree and inspector controls.
-- Added a release contract covering panel layout, responsive breakpoints, seven allowlisted preview routes, fail-closed route mapping and disabled publication.
-- Preserved the canonical Product Publisher / Market Factory release authority; no parallel publishing endpoint or bypass.
-- Updated renderer, route adapter, registry and generated runtime identities to 16.10.69.
+## Implemented in 16.10.70
+- Added a Super Admin-gated Simulation Lab entry point linked from Layout Studio.
+- Added a deterministic virtual mission simulation engine covering successful delivery, unavailable executor, blocked route, delivery failure/recovery, and virtual device disconnect.
+- Preserved the canonical journey trace and explicitly classified all run evidence as SIMULATED.
+- Added run JSON export and journey-trace copy, with bounded mission ID/deadline validation.
+- Explicitly prevented physical device commands, production mutations and real-world success claims; virtual drone remains planning-only.
+- Added a focused simulation contract test and release identity 16.10.70.
+- No new domain authority, production mission writer, database table, provider credential or publishing path was added.
 
-## 16.10.69 Verification
-- Focused panel/route contract: PASS.
-- Full `npm run check:release`: see release report; current runtime is Node.js 22.16.0, while production build requires Node.js 24.18.0.
-- Protected build/CSS compilation and real-browser/security/publication/rollback certification remain NOT CERTIFIED.
+## Verification status
+- Simulation Foundation contract: PASS.
+- Existing Layout Studio route reconciliation contract: PASS.
+- Full `npm run check:release`: PASS, including architecture convergence, tenant isolation, recovery, release lifecycle, schema/migration and prior mission journey regression gates.
+- Protected build requires Node.js 24.x; available runtime is Node.js 22.16.0, so CSS build and full deployment pipeline are blocked until the pinned runtime is used.
+- Browser accessibility, authenticated live-route behavior, server-persisted run history, tenant-scoped simulation, vendor simulator and hardware-in-the-loop are NOT IMPLEMENTED / NOT CERTIFIED.
 
 ## Deployment decision
-**DO NOT DEPLOY** until the protected build, full suite, browser/security evidence and authorized canonical publication verification/rollback pass.
+**DO NOT DEPLOY** until the pinned build, full release suite, browser/security checks and production route verification pass. Simulation remains a local virtual preview only.
+
+---
 
 ---
 

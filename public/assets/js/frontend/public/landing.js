@@ -1,5 +1,5 @@
-import {attachLayoutStudioRouteAdapter} from '../admin/layout-studio-production-adapter.js?v=16.10.69';
-import {renderPage} from '../admin/layout-studio-renderer.js?v=16.10.69';
+import {attachLayoutStudioRouteAdapter} from '../admin/layout-studio-production-adapter.js?v=16.10.70';
+import {renderPage} from '../admin/layout-studio-renderer.js?v=16.10.70';
 import {api,esc} from '../core/api.js';
 const root=document.getElementById('root');
 attachLayoutStudioRouteAdapter({root,routeId:'public-homepage'});

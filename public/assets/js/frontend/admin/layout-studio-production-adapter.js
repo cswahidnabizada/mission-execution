@@ -7,7 +7,7 @@ const ROUTES = new Set([
   'public-homepage', 'registration', 'organization-setup',
   'mission-workspace', 'executor-workspace', 'tenant-workspace'
 ]);
-const ADAPTER_VERSION = '16.10.69';
+const ADAPTER_VERSION = '16.10.70';
 
 export function resolveLayoutStudioRoute({ pathname = location.pathname, hash = location.hash, role = '' } = {}) {
   if (pathname === '/' || pathname === '/index.html') return 'public-homepage';

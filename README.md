@@ -1,6 +1,10 @@
-## Current candidate: ON MISSION 16.10.69 — Layout Studio Functional Integration and Route Parity
+## Current candidate: ON MISSION 16.10.70 — Simulation Foundation
 
-The workspace grid now keeps structure and inspector panels in their own columns, with bounded side-panel scrolling on wide screens and non-sticky fallbacks for tablet/mobile. Added a regression contract for panel layout, responsive breakpoints, route mapping and the publication-disabled boundary. This remains a protected candidate, not production-certified; see `RELEASE.md`.
+Adds a Super Admin-gated virtual Simulation Lab with deterministic delivery, failure-injection and recovery scenarios, a canonical journey trace, simulated-only evidence and export. No physical device command, production mutation, or real-world success claim is possible in this first slice. It remains a source candidate, not production-certified; see `RELEASE.md`.
+
+## Previous candidate: ON MISSION 16.10.69 — Layout Studio Functional Integration and Route Parity
+
+The workspace grid keeps structure and inspector panels in their own columns, with responsive fallbacks and route-mapping regression checks. It remains a protected candidate, not production-certified; see `RELEASE.md`.
 
 ## Previous candidate: ON MISSION 16.10.66 — Layout Studio Release Integrity Hardening
 
