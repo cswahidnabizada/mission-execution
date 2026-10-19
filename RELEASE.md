@@ -1,3 +1,34 @@
+# Mission Execution 16.10.74 — Canonical Planning Adapter + Deterministic Replay
+
+Base: 16.10.73 — Tenant-Scoped Simulation
+Status: protected candidate — NOT production-certified; deploy through the normal Cloudflare pipeline and verify runtime behavior before relying on it.
+
+## Implemented in 16.10.74
+- Added a simulation-only adapter that references the existing canonical mission-planning and plan-evaluation authority versions; it does not create a second planner, call live mission mutation, or authorize execution.
+- Added explicit simulated resource-capacity and deadline constraints. Unsatisfied constraints block the simulated plan before assignment/effect stages.
+- Captures scenario version, replay seed, inputs, expected versus observed outcome, constraint findings and a deterministic outcome fingerprint in each saved run.
+- Added replay of the original versioned input and comparison of the reproduced outcome fingerprint; tampered traces are detected as mismatches.
+- Added seed/capacity controls and a Replay Saved Inputs action to both Super Admin and tenant simulator pages.
+- Preserved append-only persisted run records, authenticated tenant scoping, platform/tenant separation, canonical mission truth and all no-real-world-effect invariants.
+- No new migration is required.
+
+## Verification
+- Focused deterministic replay, expected/observed comparison, resource-blocking, tamper detection and simulation safety contract: PASS.
+- Full cumulative release suite: run before release packaging; result recorded in the companion release report.
+- Cloudflare Node 24.21.0 build/deploy logs from 16.10.73 are evidence for that deployment only; they do not certify 16.10.74.
+- Browser, production D1, tenant cross-account HTTP denial and device-in-the-loop tests remain deployment/runtime gates.
+
+## Next gates
+1. Deploy 16.10.74 through the existing Cloudflare workflow and review the resulting logs.
+2. Verify authenticated browser replay, tenant separation, tamper mismatch and blocked-resource scenarios.
+3. Extend the adapter to consume canonical plan/evaluation outputs through a read-only, tenant-authorized boundary after runtime contracts are established.
+4. Continue vendor simulation, software-in-the-loop, hardware-in-the-loop and Germany logistics certification only after those gates pass.
+
+Permanent priorities: Security → Truth → Liveness → Stability → Experience → Scale.
+Canonical journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+
+---
+
 # Mission Execution 16.10.73 — Tenant-Scoped Simulation
 
 Base: 16.10.72 — Super Admin Simulation Navigation

@@ -6,7 +6,7 @@ const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
 const manifest=JSON.parse(fs.readFileSync('RELEASE-MANIFEST.json','utf8'));
 assert.ok(pkg.version.localeCompare('16.10.65',undefined,{numeric:true})>=0);
 assert.equal(manifest.version,pkg.version);
-assert.ok(['16.10.64','16.10.65','16.10.66','16.10.67','16.10.68','16.10.69','16.10.70','16.10.71','16.10.72','16.10.73'].includes(manifest.base));
+assert.ok(['16.10.64','16.10.65','16.10.66','16.10.67','16.10.68','16.10.69','16.10.70','16.10.71','16.10.72','16.10.73','16.10.74'].includes(manifest.base));
 assert.match(publisher,/m\.layoutArtifactBinding!==undefined\?\{layoutArtifactBinding:m\.layoutArtifactBinding\}:\{\}/);
 assert.match(publisher,/layoutArtifactBindingRequired:m\.layoutArtifactBindingRequired===true/);
 assert.match(lifecycle,/PRODUCT_RELEASE_LAYOUT_BINDING_REQUIRED/);

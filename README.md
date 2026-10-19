@@ -1,6 +1,6 @@
-## Current candidate: ON MISSION 16.10.73 — Tenant-Scoped Simulation
+## Current candidate: ON MISSION 16.10.74 — Canonical Planning Adapter + Deterministic Replay
 
-Adds authenticated, append-only server-side run history to the Super Admin Simulation Lab, including saved run integrity hashes and a history list that can reopen prior simulations. The 16.10.70 deterministic virtual scenarios remain isolated from production mission truth. Tenant-scoped simulation and physical device commands are not included. This is a protected source candidate, not production-certified; see `RELEASE.md`.
+Adds a simulation-only adapter aligned to the existing canonical planning/evaluation contracts, versioned replay inputs, resource/deadline constraints, expected-versus-observed outcomes, and deterministic outcome fingerprints. Replay detects outcome drift or trace tampering. Tenant/platform separation and no-real-world-effect invariants remain enforced. Protected candidate only; not production-certified. See `RELEASE.md` and the companion release report.
 
 ## Previous candidate: ON MISSION 16.10.69 — Layout Studio Functional Integration and Route Parity
 
