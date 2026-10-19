@@ -1,6 +1,6 @@
 {
-  "schema": "onmission.platform-results-center.v1",
-  "version": "16.10.79",
+  "schema": "onmission.platform-results-center.v2",
+  "version": "16.10.80",
   "mode": "READ_ONLY_AGGREGATION",
   "authorityPolicy": "REUSE_EXISTING_AUTHORITIES_ONLY",
   "certificationPolicy": {
@@ -81,5 +81,6 @@
     "device-specific hardware-in-the-loop evidence",
     "independently verified physical delivery outcomes",
     "immutable unified certification history across all sources"
-  ]
+  ],
+  "journeyContract": "config/certification/canonical-mission-journey.json"
 }

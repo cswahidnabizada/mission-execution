@@ -13,5 +13,5 @@ assert.match(routes,/SIMULATION_SAFETY_INVARIANTS_FAILED/);
 assert.match(ui,/TENANT_MODE=location\.pathname==='\/tenant-simulator\.html'/);
 assert.match(ui,/\/api\/auth\/session\?optional=1/);
 assert.match(page,/Tenant Simulation Lab/);
-assert.match(page,/v=16\.10\.79/);
+assert.match(page,/v=16\.10\.80/);
 console.log('16.10.73 tenant simulation scope contract: PASS');

@@ -1,7 +1,7 @@
 {
   "schema": "onmission.roadmap.v1",
-  "version": "16.10.79",
-  "baseline": "16.10.78",
+  "version": "16.10.80",
+  "baseline": "16.10.79",
   "permanentPriority": [
     "Security",
     "Truth",
@@ -74,7 +74,8 @@
       "title": "Super Admin Platform Results & Certification Center",
       "status": "SOURCE_IMPLEMENTED_RUNTIME_PENDING",
       "versions": [
-        "16.10.79"
+        "16.10.79",
+        "16.10.80"
       ],
       "dependsOn": [],
       "exitCriteria": [
@@ -83,7 +84,26 @@
         "Unavailable and stale evidence remain visible as unavailable or unverified",
         "Complete canonical mission journey is represented without inferred pass states",
         "Per-mission event evidence and immutable cross-source certification history remain explicitly pending",
-        "No new domain authority, backend, mutation route or device actuation is introduced"
+        "No new domain authority, backend, mutation route or device actuation is introduced",
+        "Journey stage contracts identify existing authority, required evidence and acceptance invariants",
+        "Runtime stage status is never inferred from a display template or endpoint reachability"
+      ]
+    },
+    {
+      "id": "CANONICAL-JOURNEY-CERTIFICATION",
+      "title": "Canonical mission journey certification contract",
+      "status": "CONTRACT_IMPLEMENTED_RUNTIME_EVIDENCE_PENDING",
+      "versions": [
+        "16.10.80"
+      ],
+      "dependsOn": [
+        "PLATFORM-RESULTS-CENTER"
+      ],
+      "exitCriteria": [
+        "All 16 canonical journey positions map to an existing authority and evidence contract",
+        "Predecessor ordering, idempotency, stale-write rejection, tenant scope and recovery are explicit test gates",
+        "Per-mission runtime status remains UNVERIFIED until authoritative events/evidence are linked",
+        "No duplicate mission state authority or lifecycle writer is introduced"
       ]
     },
     {
@@ -353,5 +373,14 @@
       "status": "SIMULATION_FOUNDATION_IMPLEMENTED_EXTERNAL_RUNTIME_PROOF_PENDING",
       "scope": "Deterministic simulation, replay, vendor fixtures, SIL fixtures and disabled HIL interlock"
     }
-  ]
+  ],
+  "nextRelease": {
+    "version": "16.10.81",
+    "title": "Governed Human Execution Orchestration",
+    "focus": "Connect existing Mission Execution Coordinator, action/capability contracts, authorization, assignment, verification and recovery through the canonical journey.",
+    "blockedUntil": [
+      "16.10.79 deployed Results Center runtime verification",
+      "16.10.80 deployed journey contract inspection and authenticated runtime certification"
+    ]
+  }
 }

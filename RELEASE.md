@@ -1,3 +1,25 @@
+# Mission Execution 16.10.80 — Canonical Mission Journey Certification
+
+## 16.10.80 — Canonical Mission Journey Certification
+
+Status: SOURCE CANDIDATE — NOT DEPLOYED / NOT BROWSER-CERTIFIED.
+
+### Delivered
+- Added a machine-readable contract for all 16 positions of the canonical mission journey.
+- Every stage names its existing authority expectation, required evidence, acceptance invariant, and explicit UNVERIFIED status until linked to runtime evidence.
+- Expanded the Platform Results & Certification Center journey drill-down so Super Admin can inspect each stage contract and see the missing runtime evidence linkage.
+- Added regression gates for journey ordering, permanent priorities, authority reuse, tenant scope, idempotency, stale writes, recovery, evidence provenance, and physical-effect separation.
+- Updated the machine-readable roadmap and next-release dependencies for governed human execution.
+- No new backend, database migration, event store, mission authority, lifecycle writer, authorization authority, vendor connection or physical actuation path.
+
+### Validation intent and limitations
+- Contract/static checks can prove definitions and source wiring, not deployed runtime behavior.
+- Stage results remain UNVERIFIED until authoritative mission events and evidence are connected.
+- Human-executor-first Germany logistics pilot remains the target operational proof.
+- Vendor sandbox, SIL, device-specific HIL, emergency-stop proof and independently verified physical delivery remain pending.
+
+---
+
 # Mission Execution 16.10.79 — Platform Results & Certification Center
 
 ## 16.10.79 — Platform Results & Certification Center

@@ -1,9 +1,9 @@
 /* ON Mission 11.03.0 — Super Admin Operating System projection surfaces. */
-import {api,esc,state,$} from './admin-runtime.js?v=16.10.79';
-import {navigate} from './oversight/context.js?v=16.10.79';
-import {escapeHtml,statusTone} from './ui-system.js?v=16.10.79';
-import {openAdminDrawer} from './detail-drawer.js?v=16.10.79';
-import {ADMIN_WORKSPACES} from './workspace-registry.js?v=16.10.79';
+import {api,esc,state,$} from './admin-runtime.js?v=16.10.80';
+import {navigate} from './oversight/context.js?v=16.10.80';
+import {escapeHtml,statusTone} from './ui-system.js?v=16.10.80';
+import {openAdminDrawer} from './detail-drawer.js?v=16.10.80';
+import {ADMIN_WORKSPACES} from './workspace-registry.js?v=16.10.80';
 
 const tone=s=>statusTone(s);
 export async function loadOperatingSystem(){const d=await api('/api/platform/admin/operating-system');return d.operatingSystem||{};}

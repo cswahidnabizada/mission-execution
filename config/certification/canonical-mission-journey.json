@@ -1,0 +1,242 @@
+{
+  "schema": "onmission.canonical-mission-journey-certification.v1",
+  "version": "16.10.80",
+  "baseline": "16.10.79",
+  "mode": "CONTRACT_AND_EVIDENCE_REQUIREMENTS_ONLY",
+  "runtimeCertificationStatus": "UNVERIFIED_UNTIL_DEPLOYED_EVIDENCE_LINKED",
+  "authorityPolicy": "REUSE_EXISTING_AUTHORITIES_ONLY",
+  "journeyLength": 16,
+  "permanentPriority": [
+    "Security",
+    "Truth",
+    "Liveness",
+    "Stability",
+    "Experience",
+    "Scale"
+  ],
+  "canonicalJourney": [
+    "OBSERVE",
+    "UNDERSTAND",
+    "PLAN",
+    "EVALUATE",
+    "ACCEPT",
+    "AUTHORIZE",
+    "PREPARE",
+    "ASSIGN",
+    "EXECUTE",
+    "EFFECT",
+    "VERIFY",
+    "RECOVER",
+    "OUTCOME",
+    "LEARN",
+    "NEXT SITUATION",
+    "OBSERVE"
+  ],
+  "rules": {
+    "oneCanonicalAuthorityPerDomain": true,
+    "sourceReadDoesNotEqualCertification": true,
+    "missingEvidenceStatus": "UNVERIFIED",
+    "failedEvidenceSourceStatus": "UNAVAILABLE",
+    "simulationCannotProvePhysicalEffect": true,
+    "tenantScopeServerDerived": true,
+    "staleTransitionsRejected": true,
+    "idempotencyRequiredForCommands": true,
+    "mutationEnabled": false,
+    "physicalActuationEnabled": false
+  },
+  "stages": [
+    {
+      "index": 1,
+      "id": "OBSERVE",
+      "name": "OBSERVE",
+      "purpose": "Situation and source evidence",
+      "authority": "Situation/context observation authority",
+      "requiredEvidence": "Source identity, observed-at time, provenance, tenant scope",
+      "acceptanceInvariant": "A source-backed observation exists and is attributable; stale or missing input is explicit.",
+      "status": "UNVERIFIED",
+      "evidenceSource": null
+    },
+    {
+      "index": 2,
+      "id": "UNDERSTAND",
+      "name": "UNDERSTAND",
+      "purpose": "Context and constraints",
+      "authority": "Canonical context and mission understanding services",
+      "requiredEvidence": "Normalized context, constraints, uncertainty and source references",
+      "acceptanceInvariant": "Unknowns remain explicit; inferred facts are not presented as verified facts.",
+      "status": "UNVERIFIED",
+      "evidenceSource": null
+    },
+    {
+      "index": 3,
+      "id": "PLAN",
+      "name": "PLAN",
+      "purpose": "Candidate plan and resource feasibility",
+      "authority": "Canonical mission planner and capability/resource contracts",
+      "requiredEvidence": "Plan version, required capabilities/resources, constraints, feasibility result",
+      "acceptanceInvariant": "Plan is reproducible and respects policy, time, capacity and resource constraints.",
+      "status": "UNVERIFIED",
+      "evidenceSource": null
+    },
+    {
+      "index": 4,
+      "id": "EVALUATE",
+      "name": "EVALUATE",
+      "purpose": "Risk and policy evaluation",
+      "authority": "Existing policy/risk evaluation authorities",
+      "requiredEvidence": "Evaluation version, risk findings, policy decisions and blockers",
+      "acceptanceInvariant": "Rejected or blocked plans cannot advance as accepted plans.",
+      "status": "UNVERIFIED",
+      "evidenceSource": null
+    },
+    {
+      "index": 5,
+      "id": "ACCEPT",
+      "name": "ACCEPT",
+      "purpose": "Explicit acceptance decision",
+      "authority": "Existing acceptance/decision authority",
+      "requiredEvidence": "Decision, actor or governed policy, timestamp, referenced plan",
+      "acceptanceInvariant": "Acceptance is explicit and bound to the exact plan version.",
+      "status": "UNVERIFIED",
+      "evidenceSource": null
+    },
+    {
+      "index": 6,
+      "id": "AUTHORIZE",
+      "name": "AUTHORIZE",
+      "purpose": "Actor, scope and permission proof",
+      "authority": "Existing authorization/session and step-up controls",
+      "requiredEvidence": "Actor, tenant scope, capability, target resource, decision and audit reference",
+      "acceptanceInvariant": "Authorization is checked server-side for the exact action and current scope.",
+      "status": "UNVERIFIED",
+      "evidenceSource": null
+    },
+    {
+      "index": 7,
+      "id": "PREPARE",
+      "name": "PREPARE",
+      "purpose": "Readiness and preconditions",
+      "authority": "Existing preparation/readiness contracts",
+      "requiredEvidence": "Preflight checks, resource readiness, dependencies and blockers",
+      "acceptanceInvariant": "Execution cannot begin with unmet required preconditions.",
+      "status": "UNVERIFIED",
+      "evidenceSource": null
+    },
+    {
+      "index": 8,
+      "id": "ASSIGN",
+      "name": "ASSIGN",
+      "purpose": "Canonical assignment",
+      "authority": "Existing canonical assignment authority",
+      "requiredEvidence": "Executor/resource identity, assignment version, acceptance and scope",
+      "acceptanceInvariant": "Only one authoritative assignment applies; stale/conflicting assignments are rejected.",
+      "status": "UNVERIFIED",
+      "evidenceSource": null
+    },
+    {
+      "index": 9,
+      "id": "EXECUTE",
+      "name": "EXECUTE",
+      "purpose": "Governed command and execution events",
+      "authority": "Mission Execution Coordinator and canonical action registry",
+      "requiredEvidence": "Command/action ID, idempotency key, actor, timestamps and execution status",
+      "acceptanceInvariant": "Commands use governed contracts; retries do not create duplicate effects.",
+      "status": "UNVERIFIED",
+      "evidenceSource": null
+    },
+    {
+      "index": 10,
+      "id": "EFFECT",
+      "name": "EFFECT",
+      "purpose": "Observed real-world effect",
+      "authority": "Existing provider/effect reconciliation boundary",
+      "requiredEvidence": "Effect reference, source type, observation time and provenance",
+      "acceptanceInvariant": "Simulation, sandbox, SIL, HIL and physical effect are never conflated.",
+      "status": "UNVERIFIED",
+      "evidenceSource": null
+    },
+    {
+      "index": 11,
+      "id": "VERIFY",
+      "name": "VERIFY",
+      "purpose": "Independent evidence and verification",
+      "authority": "Existing effect verification/evidence authority",
+      "requiredEvidence": "Evidence references, verifier, criteria, result and timestamp",
+      "acceptanceInvariant": "Success requires evidence meeting the mission-specific verification criteria.",
+      "status": "UNVERIFIED",
+      "evidenceSource": null
+    },
+    {
+      "index": 12,
+      "id": "RECOVER",
+      "name": "RECOVER",
+      "purpose": "Failure handling and reconciliation",
+      "authority": "Existing execution recovery and reconciliation authorities",
+      "requiredEvidence": "Failure classification, recovery action, owner, attempts and reconciliation state",
+      "acceptanceInvariant": "Unknown execution outcomes enter explicit reconciliation/waiting, not assumed success.",
+      "status": "UNVERIFIED",
+      "evidenceSource": null
+    },
+    {
+      "index": 13,
+      "id": "OUTCOME",
+      "name": "OUTCOME",
+      "purpose": "Canonical outcome record",
+      "authority": "Existing mission outcome authority",
+      "requiredEvidence": "Outcome, evidence references, reason codes and mission version",
+      "acceptanceInvariant": "Outcome follows verified/reconciled truth and cannot overwrite newer truth.",
+      "status": "UNVERIFIED",
+      "evidenceSource": null
+    },
+    {
+      "index": 14,
+      "id": "LEARN",
+      "name": "LEARN",
+      "purpose": "Calibrated learning from verified outcomes",
+      "authority": "Existing recalibration and outcome-learning services",
+      "requiredEvidence": "Verified outcome reference, model/weight version, confidence and deferral decision",
+      "acceptanceInvariant": "Learning uses verified outcomes only and cannot override canonical truth or authorization.",
+      "status": "UNVERIFIED",
+      "evidenceSource": null
+    },
+    {
+      "index": 15,
+      "id": "NEXT_SITUATION",
+      "name": "NEXT SITUATION",
+      "purpose": "Valid next action or waiting condition",
+      "authority": "Existing Next Situation Engine and liveness guard",
+      "requiredEvidence": "Next-action/waiting state, owner, due time or escalation and source mission",
+      "acceptanceInvariant": "Every non-terminal mission has a valid next action or explicit waiting condition.",
+      "status": "UNVERIFIED",
+      "evidenceSource": null
+    },
+    {
+      "index": 16,
+      "id": "OBSERVE",
+      "name": "OBSERVE \u2014 NEXT CYCLE",
+      "purpose": "Next observation begins a new cycle",
+      "authority": "Existing observation/context entry path",
+      "requiredEvidence": "Predecessor outcome, new observation reference and cycle correlation",
+      "acceptanceInvariant": "New cycle links to predecessor without erasing mission history or prior evidence.",
+      "status": "UNVERIFIED",
+      "evidenceSource": null
+    }
+  ],
+  "globalGates": [
+    "Authenticated tenant/role boundary tests",
+    "Predecessor-state and transition ordering",
+    "Idempotency and concurrent write protection",
+    "Stale event/write rejection",
+    "Evidence provenance and integrity",
+    "Explicit failure/waiting/recovery behavior",
+    "Release and contract version binding"
+  ],
+  "notCertified": [
+    "Deployed browser journey",
+    "Authenticated per-mission event/evidence drilldown",
+    "Cross-tenant adversarial runtime behavior",
+    "Vendor sandbox and vendor SIL",
+    "Device-specific supervised HIL and emergency-stop proof",
+    "Independently verified physical delivery outcome"
+  ]
+}

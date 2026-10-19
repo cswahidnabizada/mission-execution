@@ -9,8 +9,8 @@ const contract=JSON.parse(read('config/certification/platform-results-center.jso
 const ui=read('public/assets/js/frontend/admin/platform-results-center.js');
 const registry=read('public/assets/js/frontend/admin/workspace-registry.js');
 const panels=read('public/assets/js/frontend/admin/panel-registry.js');
-assert.equal(pkg.version,'16.10.79'); assert.equal(lock.version,pkg.version); assert.equal(lock.packages[''].version,pkg.version);
-assert.equal(manifest.version,pkg.version); assert.equal(manifest.base,'16.10.78'); assert.equal(roadmap.version,pkg.version); assert.equal(roadmap.baseline,'16.10.78');
+assert.equal(pkg.version,'16.10.80'); assert.equal(lock.version,pkg.version); assert.equal(lock.packages[''].version,pkg.version);
+assert.equal(manifest.version,pkg.version); assert.equal(manifest.base,'16.10.79'); assert.equal(roadmap.version,pkg.version); assert.equal(roadmap.baseline,'16.10.79');
 assert.equal(contract.mode,'READ_ONLY_AGGREGATION'); assert.equal(contract.authorityPolicy,'REUSE_EXISTING_AUTHORITIES_ONLY');
 assert.equal(contract.certificationPolicy.sourceReadDoesNotEqualFunctionalCertification,true);
 assert.equal(contract.certificationPolicy.missingEvidenceStatus,'UNVERIFIED'); assert.equal(contract.certificationPolicy.failedReadStatus,'UNAVAILABLE');

@@ -1,9 +1,9 @@
 /* ON Mission 10.79.0 — unified operational Command Center */
-import {workspaceFor} from './workspace-registry.js?v=16.10.79';
-import {statusTone,displayValue,escapeHtml} from './ui-system.js?v=16.10.79';
-import {ADMIN_WORKSPACE_GROUPS} from './workspace-registry.js?v=16.10.79';
-import {openAdminDrawer} from './detail-drawer.js?v=16.10.79';
-import {governanceReadiness,renderGovernanceReadiness} from './governance-readiness.js?v=16.10.79';
+import {workspaceFor} from './workspace-registry.js?v=16.10.80';
+import {statusTone,displayValue,escapeHtml} from './ui-system.js?v=16.10.80';
+import {ADMIN_WORKSPACE_GROUPS} from './workspace-registry.js?v=16.10.80';
+import {openAdminDrawer} from './detail-drawer.js?v=16.10.80';
+import {governanceReadiness,renderGovernanceReadiness} from './governance-readiness.js?v=16.10.80';
 
 export async function renderCommandCenter({$,state,esc,loadCommandCenter,api,navigate}){
  const box=$('#view-overview');

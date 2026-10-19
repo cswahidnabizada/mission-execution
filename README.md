@@ -1,4 +1,8 @@
-## Current candidate: ON MISSION 16.10.79 — Platform Results & Certification Center
+## Current candidate: ON MISSION 16.10.80 — Canonical Mission Journey Certification
+
+Adds an explicit machine-readable contract for all 16 positions of the canonical mission journey, including existing authority expectations, required evidence and acceptance invariants. The Super Admin Platform Results & Certification Center now exposes each stage contract while keeping runtime status UNVERIFIED until authoritative mission events/evidence are connected. No duplicate lifecycle authority, backend, migration or physical actuation path is introduced. Deployment and browser/runtime certification remain pending. See `docs/roadmap/ON-MISSION-ROADMAP.md`, `RELEASE.md` and the release report.
+
+## Previous candidate: ON MISSION 16.10.79 — Platform Results & Certification Center
 
 Adds the Super Admin Platform Results & Certification Center: read-only aggregation of six existing authorized evidence endpoints plus explicit UNVERIFIED entries for AI/planner, integration/device, data/content and mission-lifecycle evidence that is not yet connected. Successful reads are not functional certification; the complete mission journey remains unverified until authoritative per-mission evidence is connected. Runtime/browser certification remains pending. See `docs/roadmap/ON-MISSION-ROADMAP.md` and `RELEASE.md`.
 

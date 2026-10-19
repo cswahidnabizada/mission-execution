@@ -1,0 +1,33 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const read=p=>fs.readFileSync(p,'utf8');
+const pkg=JSON.parse(read('package.json')), lock=JSON.parse(read('package-lock.json'));
+const manifest=JSON.parse(read('RELEASE-MANIFEST.json'));
+const roadmap=JSON.parse(read('config/roadmap/mission-execution-roadmap.json'));
+const contract=JSON.parse(read('config/certification/canonical-mission-journey.json'));
+const ui=read('public/assets/js/frontend/admin/platform-results-center.js');
+const resultsContract=JSON.parse(read('config/certification/platform-results-center.json'));
+assert.equal(pkg.version,'16.10.80'); assert.equal(lock.version,pkg.version); assert.equal(lock.packages[''].version,pkg.version);
+assert.equal(manifest.version,pkg.version); assert.equal(manifest.base,'16.10.79');
+assert.equal(contract.version,pkg.version); assert.equal(contract.baseline,'16.10.79');
+assert.equal(contract.mode,'CONTRACT_AND_EVIDENCE_REQUIREMENTS_ONLY');
+assert.equal(contract.runtimeCertificationStatus,'UNVERIFIED_UNTIL_DEPLOYED_EVIDENCE_LINKED');
+assert.equal(contract.stages.length,16); assert.equal(contract.journeyLength,16);
+assert.deepEqual(contract.permanentPriority,['Security','Truth','Liveness','Stability','Experience','Scale']);
+assert.deepEqual(contract.canonicalJourney,['OBSERVE','UNDERSTAND','PLAN','EVALUATE','ACCEPT','AUTHORIZE','PREPARE','ASSIGN','EXECUTE','EFFECT','VERIFY','RECOVER','OUTCOME','LEARN','NEXT SITUATION','OBSERVE']);
+assert.equal(new Set(contract.stages.map(s=>s.index)).size,16);
+for (const [i,stage] of contract.stages.entries()) {
+ assert.equal(stage.index,i+1); assert.ok(stage.name && stage.purpose && stage.authority && stage.requiredEvidence && stage.acceptanceInvariant);
+ assert.equal(stage.status,'UNVERIFIED'); assert.equal(stage.evidenceSource,null);
+ assert.ok(ui.includes(JSON.stringify(stage.name)) || ui.includes(JSON.stringify(stage.name).replace('—','\\u2014')),`UI journey label present: ${stage.name}`);
+}
+for(const [k,v] of Object.entries({oneCanonicalAuthorityPerDomain:true,sourceReadDoesNotEqualCertification:true,simulationCannotProvePhysicalEffect:true,tenantScopeServerDerived:true,staleTransitionsRejected:true,idempotencyRequiredForCommands:true,mutationEnabled:false,physicalActuationEnabled:false})) assert.equal(contract.rules[k],v,k);
+assert.ok(contract.globalGates.includes('Predecessor-state and transition ordering'));
+assert.ok(contract.globalGates.includes('Stale event/write rejection'));
+assert.ok(contract.notCertified.includes('Deployed browser journey'));
+assert.equal(resultsContract.certificationPolicy.mutationEnabled,false);
+assert.equal(roadmap.version,pkg.version); assert.equal(roadmap.baseline,'16.10.79');
+assert.ok(roadmap.phases.some(p=>p.id==='CANONICAL-JOURNEY-CERTIFICATION'&&p.status==='CONTRACT_IMPLEMENTED_RUNTIME_EVIDENCE_PENDING'));
+assert.equal(roadmap.rules.oneCanonicalAuthorityPerDomain,true);
+assert.match(ui,/NOT CONNECTED · UNVERIFIED/); assert.match(ui,/not a second lifecycle authority/i);
+console.log('16.10.80 Canonical Mission Journey Certification contract: PASS');

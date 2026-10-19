@@ -1,52 +1,43 @@
-ON MISSION 16.10.79 — PLATFORM RESULTS & CERTIFICATION CENTER
-Baseline: 16.10.78
+ON MISSION 16.10.80 — CANONICAL MISSION JOURNEY CERTIFICATION
+Baseline: 16.10.79
 Status: SOURCE CANDIDATE — NOT DEPLOYED / NOT BROWSER-CERTIFIED
 
 PURPOSE
-Give Super Admin one read-only place to inspect current platform result sources, understand unavailable evidence, and see the complete canonical mission journey without creating another authority or implying unearned certification. Advance the agreed broader roadmap toward the control centers while prioritizing operational proof and a human-executor-first Germany logistics pilot.
+Advance the Platform Results & Certification Center from a journey stage list to an explicit certification contract. Preserve the existing mission authorities and make evidence requirements inspectable by Super Admin without claiming that untested runtime stages are complete.
 
 IMPLEMENTED
-- Added the Platform Results & Certification Center to the existing Super Admin workspace registry and command group.
-- Added read-only source aggregation for six existing authenticated endpoints: system health, command center, certification environment, administrative operations, product health, and Layout Studio certification. The UI also lists AI/planner, integrations/devices, data/content and mission lifecycle as explicit UNVERIFIED domains because no unified authoritative result endpoint is connected for them yet.
-- Added search and domain filtering, refresh, inspectable returned payload summaries, source error details, timestamps, and navigation to related existing workspaces.
-- Explicitly labels successful endpoint reads as READ OK · NOT CERTIFIED. Failed reads remain UNAVAILABLE. Mission lifecycle stages remain UNVERIFIED without authoritative event/evidence linkage.
-- Preserved the complete canonical journey in the results view and roadmap.
-- Added machine-readable source contract and control-center roadmap inventory, including Data & Infrastructure, Experience & UI, AI & Capabilities, Integration & Devices, Data & Content, Market Factory, Tenant & Access, Mission Operations, and Simulation & Digital Twin.
-- Reused existing authorized APIs and workspace registry. No new backend, database migration, persistent result authority, mutation path, vendor network client, hardware transport, or device actuation was added.
-- Updated release identity, package/lock metadata, manifest, release notes, cache-busting versions, continuity documentation and regression tests to 16.10.79.
+- Added config/certification/canonical-mission-journey.json, mapping all 16 canonical journey positions to existing authority expectations, required evidence, acceptance invariants and explicit UNVERIFIED state.
+- Added global gates for authenticated role/tenant boundaries, predecessor-state ordering, idempotency, concurrent writes, stale-write rejection, evidence provenance and recovery.
+- Expanded the Results Center stage drill-down to expose authority expectation, required evidence, acceptance invariant and the fact that runtime evidence is not connected.
+- Updated Results Center contract, roadmap, continuity document, release manifest, version metadata and cache-busting references.
+- Added check-16-10-80-canonical-mission-journey.mjs to cumulative release suite.
+- No database migration, new backend, second lifecycle authority, persistent certification authority, vendor network client or device actuation.
 
 VALIDATION
-- npm run check:release: PASS (full cumulative suite; final output includes legacy/regression checks through 16.10.44).
-- Focused Platform Results & Certification contract: PASS.
-- JavaScript syntax check for new results center: PASS.
+- Focused canonical journey contract: PASS.
+- Full cumulative npm run check:release: PASS.
 - Dependency-lock gate: PASS (lockfileVersion 3).
-- Release integrity and production cleanliness/version convergence: PASS.
-- Schema gate: PASS (253 tables, 463 indexes).
+- Release-integrity check: PASS.
+- Production cleanliness/version convergence: PASS.
+- Current schema gate: PASS (253 tables, 463 indexes).
 - Migration contract: PASS (161 ordered migrations, high-water mark 0161).
-- ZIP integrity: checked after packaging.
-- npm run build: BLOCKED before CSS compilation because local runtime is Node.js 22.16.0, while repository requires Node.js 24.x and pins 24.18.0. User-provided Cloudflare logs previously showed Node.js 24.21.0, but 16.10.79 has not been deployed yet.
+- JavaScript syntax check for the updated Results Center: PASS.
+- ZIP integrity: verified after packaging.
+- npm run build: BLOCKED before CSS compilation by the environment gate: local Node.js 22.16.0; repository requires Node.js 24.x and pins 24.18.0. User-provided Cloudflare logs previously showed Node.js 24.21.0, but this candidate has not been deployed.
 
-NOT CERTIFIED YET
-- Deployed authenticated browser behavior for the new center.
-- Live authenticated HTTP authorization/role enforcement and failure behavior of all aggregated sources for this candidate.
-- Per-mission authoritative lifecycle event/evidence drilldown and immutable unified certification history.
-- Real vendor sandbox compatibility, vendor SIL, device-specific supervised HIL, emergency-stop verification, and hardware safety approval.
-- Germany logistics live end-to-end execution and independently verified physical delivery/effect evidence.
+NOT CERTIFIED
+- Deployed 16.10.79 or 16.10.80 browser/runtime behavior.
+- Authenticated per-mission event/evidence drilldown.
+- Cross-tenant adversarial runtime behavior and concurrent stale-write behavior on deployed services.
+- Vendor sandbox, vendor SIL, device-specific supervised HIL, emergency-stop proof and physical delivery outcomes.
 
-NEXT ROADMAP
-1. Deploy 16.10.79; verify Super Admin navigation, endpoint results, filtering, refresh, detail payloads, and error states in browser.
-2. Complete authenticated runtime/security certification.
-3. 16.10.80: canonical mission journey certification and authoritative transition evidence.
-4. 16.10.81: governed human execution orchestration using existing authorities.
-5. 16.10.82: bounded Germany logistics pilot contract.
-6. 16.10.83: controlled end-to-end operational proof, including failure/recovery.
-7. 16.10.84: controlled pilot readiness and explicit organizational approval.
-8. Continue control-center implementation in dependency order, prioritizing pilot-discovered blockers.
+NEXT
+1. Deploy 16.10.79 and 16.10.80 via existing Cloudflare workflow and verify Super Admin Results Center and stage contract inspection.
+2. 16.10.81: governed human execution orchestration using existing canonical authorities.
+3. 16.10.82: Germany logistics pilot contract.
+4. 16.10.83: end-to-end human-executor operational proof, including failure/recovery.
+5. 16.10.84: controlled pilot readiness and explicit approval.
+6. Continue the agreed control centers, prioritizing evidence from the human pilot.
 
 PERMANENT GUARDRAILS
-- Security → Truth → Liveness → Stability → Experience → Scale.
-- One canonical authority per domain; no duplicate mission truth, lifecycle writer, assignment or authorization authority.
-- Full journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
-- Missing evidence is UNVERIFIED; a failed read is UNAVAILABLE; neither is a pass.
-- A successful endpoint read is not functional certification.
-- Simulation cannot prove physical effect or authorize production publishing/device actuation.
+Security -> Truth -> Liveness -> Stability -> Experience -> Scale. Full canonical journey preserved. Missing evidence is UNVERIFIED; failed reads are UNAVAILABLE. Simulation never proves physical effect. Production publishing and device actuation remain gated by separate authorization and safety evidence.
