@@ -23,6 +23,7 @@ export const ADMIN_WORKSPACE_GROUPS=Object.freeze([
   {key:'release',label:'RELEASE',description:'Prove, authorize, publish, verify and promote governed versions.',items:[
     ['Release Center','release-center','Unified projection of the governed product release lifecycle.','Product Release Lifecycle','READ','RELEASE'],
     ['Test Lab & Verification','product-verification','Run controlled product scenarios and collect verification evidence.','Product Verification Evidence','WRITE','RELEASE'],
+    ['Simulation Lab','simulation-lab','Run isolated mission simulations, inject failures, inspect the canonical journey and reopen immutable simulation records. Simulation never proves a real-world effect.','Governed Simulation Records · simulation-only boundary','WRITE','RELEASE'],
     ['Verification & Trust','verification','Organization and identity verification evidence.','Verification Authority','WRITE','RELEASE'],
     ['Certification','certification','Inspect release proof and platform certification evidence.','Certification Evidence','READ','RELEASE'],
     ['Dependency Impact','product-dependency-impact','Inspect canonical release dependencies and promotion impact.','Product Dependency Impact','READ','RELEASE']

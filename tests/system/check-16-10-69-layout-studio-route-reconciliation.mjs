@@ -4,12 +4,12 @@ const studio=fs.readFileSync('public/assets/js/frontend/admin/layout-studio.js',
 const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
 const lock=JSON.parse(fs.readFileSync('package-lock.json','utf8'));
 const manifest=JSON.parse(fs.readFileSync('RELEASE-MANIFEST.json','utf8'));
-assert.equal(pkg.version,'16.10.71');
+assert.equal(pkg.version,'16.10.72');
 assert.equal(lock.version,pkg.version);
 assert.equal(lock.packages[''].version,pkg.version);
 assert.equal(fs.readFileSync('VERSION','utf8').trim(),pkg.version);
 assert.equal(manifest.version,pkg.version);
-assert.equal(manifest.base,'16.10.70');
+assert.equal(manifest.base,'16.10.71');
 assert.match(studio,/function reconcileRouteCompositions\(source\)/);
 assert.match(studio,/Missing route compositions added to local draft; review and save to persist/);
 assert.match(studio,/REQUIRED_ROUTE_PAGES/);

@@ -1,9 +1,9 @@
-# Mission Execution 16.10.71 — Governed Simulation Records
+# Mission Execution 16.10.72 — Governed Simulation Records
 
-Base: ON MISSION 16.10.70 — Simulation Foundation
+Base: ON MISSION 16.10.71 — Governed Simulation Records
 Status: protected candidate; NOT production-certified — DO NOT DEPLOY until required build, browser and release gates pass
 
-## Implemented in 16.10.71
+## Implemented in 16.10.72
 - Added governed, authenticated server-side simulation run history for the Super Admin Simulation Lab.
 - Added additive migration 0161 for append-only simulation records with immutable update/delete triggers, scope metadata, payload hash and indexed history queries.
 - Added Super Admin-authorized API routes to save, list and retrieve persisted simulation runs. Payload validation rejects records that do not assert simulation-only invariants.
@@ -12,7 +12,7 @@ Status: protected candidate; NOT production-certified — DO NOT DEPLOY until re
 - No production mission writer, real-device command path, tenant simulation endpoint or new mission authority was added.
 
 ## Verification status
-- 16.10.71 simulation persistence contract: PASS.
+- 16.10.72 simulation persistence contract: PASS.
 - 16.10.70 simulation foundation contract: PASS.
 - Layout Studio route reconciliation contract: PASS.
 - Migration contract: PASS (161 ordered migrations; high-water mark 0161).

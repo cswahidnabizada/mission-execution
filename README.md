@@ -1,4 +1,4 @@
-## Current candidate: ON MISSION 16.10.71 — Governed Simulation Records
+## Current candidate: ON MISSION 16.10.72 — Governed Simulation Records
 
 Adds authenticated, append-only server-side run history to the Super Admin Simulation Lab, including saved run integrity hashes and a history list that can reopen prior simulations. The 16.10.70 deterministic virtual scenarios remain isolated from production mission truth. Tenant-scoped simulation and physical device commands are not included. This is a protected source candidate, not production-certified; see `RELEASE.md`.
 

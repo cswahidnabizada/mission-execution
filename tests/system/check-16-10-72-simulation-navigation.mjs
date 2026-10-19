@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const registry=fs.readFileSync('public/assets/js/frontend/admin/workspace-registry.js','utf8');
+const panels=fs.readFileSync('public/assets/js/frontend/admin/panel-registry.js','utf8');
+const route=fs.readFileSync('public/simulator.html','utf8');
+assert.match(registry, /\['Simulation Lab','simulation-lab'/, 'Simulation Lab must be in canonical Super Admin navigation');
+assert.match(panels, /function renderSimulationLabEntry\(\)/, 'Super Admin entry panel must exist');
+assert.match(panels, /'simulation-lab':renderSimulationLabEntry/, 'entry panel must be wired to canonical panel registry');
+assert.match(panels, /href="\/simulator\.html"/, 'entry panel must navigate to the simulator route');
+assert.match(route, /simulation-lab\.js\?v=16\.10\.72/, 'simulator page must use current cache-busting release version');
+console.log('16.10.72 simulation navigation contract: PASS');

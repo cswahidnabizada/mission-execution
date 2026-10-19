@@ -1,15 +1,15 @@
 /* ON Mission 10.79.0 — Canonical Admin Panel Registry
  * Single composition point. Workspaces own their implementation; this registry owns only routing composition.
  */
-import { setAdminShow, adminPanelRenderers as oversightRenderers, refreshAdminData } from './oversight-panels.js?v=16.10.71';
-import { setGovernanceShow, renderDataControl, renderDataEntry, renderTrash } from './data-governance.js?v=16.10.71';
-import {renderOperations,renderActionMatrix,renderReleaseCenter,renderLaunchCenter,renderDependencyImpact,renderAgenticControl} from './operating-system.js?v=16.10.71';
-import {renderResourceManagement} from './resource-management.js?v=16.10.71';
-import {renderUserExperienceLab} from './user-experience-lab.js?v=16.10.71';
-import {renderDemoProduct} from './demo-product.js?v=16.10.71';
-import {renderProductExperience} from './product-experience.js?v=16.10.71';
-import {renderInfrastructureGovernance} from './infrastructure-governance.js?v=16.10.71';
-import {renderProductIdentity} from './product-identity.js?v=16.10.71';
+import { setAdminShow, adminPanelRenderers as oversightRenderers, refreshAdminData } from './oversight-panels.js?v=16.10.72';
+import { setGovernanceShow, renderDataControl, renderDataEntry, renderTrash } from './data-governance.js?v=16.10.72';
+import {renderOperations,renderActionMatrix,renderReleaseCenter,renderLaunchCenter,renderDependencyImpact,renderAgenticControl} from './operating-system.js?v=16.10.72';
+import {renderResourceManagement} from './resource-management.js?v=16.10.72';
+import {renderUserExperienceLab} from './user-experience-lab.js?v=16.10.72';
+import {renderDemoProduct} from './demo-product.js?v=16.10.72';
+import {renderProductExperience} from './product-experience.js?v=16.10.72';
+import {renderInfrastructureGovernance} from './infrastructure-governance.js?v=16.10.72';
+import {renderProductIdentity} from './product-identity.js?v=16.10.72';
 
 let show=null;
 export function configureAdminPanelShow(fn){
@@ -20,6 +20,19 @@ export function configureAdminPanelShow(fn){
 }
 
 export { refreshAdminData };
+function renderSimulationLabEntry(){
+  const host=document.querySelector('#view-simulation-lab');
+  if(!host)return;
+  host.innerHTML=`<div class="eyebrow">RELEASE · SIMULATION & DIGITAL TWIN</div>
+    <h1 class="title">Simulation Lab</h1>
+    <p class="sub">Rehearse mission scenarios, inject failures, inspect recovery and review saved simulation records before any real-world execution.</p>
+    <section class="card section"><div class="eyebrow">GOVERNED SIMULATION WORKSPACE</div>
+      <h2>Test the mission journey without changing live truth</h2>
+      <p class="sub">Runs are explicitly simulation-only. They do not authorize production actions, mutate canonical missions or send device commands. Live promotion must use the normal authorization and execution path.</p>
+      <div class="actions"><a class="btn primary" href="/simulator.html">OPEN SIMULATION LAB</a><a class="btn muted" href="/layout-studio.html">OPEN LAYOUT STUDIO</a></div>
+      <div class="notice">Certification status: software simulation foundation and governed records are implemented; tenant isolation, canonical planner/replay, vendor/device simulation and end-to-end browser certification remain separate gates.</div>
+    </section>`;
+}
 function renderLayoutStudioEntry(){
   const host=document.querySelector('#view-layout-studio');
   if(!host)return;
@@ -35,6 +48,7 @@ function renderLayoutStudioEntry(){
 }
 export const adminPanelRenderers={...oversightRenderers,
   'layout-studio':renderLayoutStudioEntry,
+  'simulation-lab':renderSimulationLabEntry,
   'resource-management':()=>renderResourceManagement({show}),
   'data-entry':renderDataEntry,
   trash:renderTrash,
