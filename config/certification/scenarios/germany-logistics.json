@@ -1,0 +1,16 @@
+{
+  "schema": "onmission.scenario-suite.v1",
+  "suiteId": "DE-LOGISTICS-CERTIFICATION-V1",
+  "jurisdiction": "DE",
+  "sector": "LOGISTICS",
+  "classification": "SIMULATION_ONLY",
+  "scenarios": [
+    { "id": "DE-LOG-001", "scenarioId": "normal", "executor": "virtual-van", "expected": "DELIVERY_VERIFIED", "expectedRecovery": "NOT_REQUIRED" },
+    { "id": "DE-LOG-002", "scenarioId": "executor-unavailable", "executor": "virtual-van", "expected": "SAFE_BLOCK_AND_REPLAN", "expectedRecovery": "REPLAN_REQUIRED" },
+    { "id": "DE-LOG-003", "scenarioId": "failed-delivery", "executor": "virtual-van", "expected": "RECOVERY_VERIFIED", "expectedRecovery": "SIMULATED_RECOVERY_VERIFIED" },
+    { "id": "DE-LOG-004", "scenarioId": "device-disconnect", "executor": "virtual-robot", "expected": "SAFE_STOP_AND_RECONCILE", "expectedRecovery": "SIMULATED_SAFE_STOP" }
+  ],
+  "journey": ["OBSERVE", "UNDERSTAND", "PLAN", "EVALUATE", "ACCEPT", "AUTHORIZE", "PREPARE", "ASSIGN", "EXECUTE", "EFFECT", "VERIFY", "RECOVER", "OUTCOME", "LEARN", "NEXT SITUATION", "OBSERVE"],
+  "physicalDeliveryProven": false,
+  "realWorldCertified": false
+}

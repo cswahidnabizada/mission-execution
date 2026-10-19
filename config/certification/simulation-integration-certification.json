@@ -1,0 +1,27 @@
+{
+  "schema": "onmission.simulation-integration-certification.v1",
+  "release": "16.10.78",
+  "baseline": "16.10.77",
+  "classification": "DETERMINISTIC_CONTRACT_AND_FIXTURE_COVERAGE_NOT_EXTERNAL_CERTIFICATION",
+  "productionExecutionEnabled": false,
+  "vendorTransportEnabled": false,
+  "hardwareTransportEnabled": false,
+  "hilActuationEnabled": false,
+  "liveMissionMutationEnabled": false,
+  "canonicalAuthorities": {
+    "missionTruth": "Existing canonical mission authority",
+    "planning": "Existing mission_planning_authority and mission_plan_evaluation_authority",
+    "capabilityResources": "Existing capability/resource contract registries",
+    "simulationEvidence": "Append-only platform_simulation_runs; not mission truth"
+  },
+  "gates": [
+    { "id": "CANONICAL-PLANNER-CONTRACT", "status": "CONTRACT_TESTED", "boundary": "Simulation adapter is deterministic and does not create or accept live mission plans.", "runtimeEvidenceRequired": true },
+    { "id": "VENDOR-SIMULATOR", "status": "LOCAL_FIXTURE_IMPLEMENTED", "boundary": "Local deterministic response fixtures only; no vendor SDK, network, or credentials.", "runtimeEvidenceRequired": true },
+    { "id": "SOFTWARE-IN-THE-LOOP", "status": "LOCAL_FAULT_FIXTURES_IMPLEMENTED", "boundary": "Success, timeout, malformed response, safety violation, heartbeat loss and profile limits fail closed.", "runtimeEvidenceRequired": true },
+    { "id": "HARDWARE-IN-THE-LOOP", "status": "BLOCKED_BY_DESIGN", "boundary": "No hardware transport or actuation exists in this release. Approval metadata alone cannot enable it.", "deviceSpecificApprovalRequired": true },
+    { "id": "GERMANY-LOGISTICS", "status": "SCENARIO_CONTRACT_TESTED", "boundary": "Normal delivery, blocked assignment, failed delivery/recovery and device disconnect are simulation-only.", "runtimeEvidenceRequired": true },
+    { "id": "DEPLOYED-BROWSER-HTTP", "status": "PENDING_DEPLOYED_EVIDENCE", "boundary": "Authenticated browser journeys, tenant isolation, deployed replay and persistence faults remain pending.", "runtimeEvidenceRequired": true },
+    { "id": "VENDOR-AND-HARDWARE-CERTIFICATION", "status": "PENDING_EXTERNAL_EVIDENCE", "boundary": "Vendor sandbox, SIL against vendor software, supervised device-specific HIL and safety approval remain pending.", "runtimeEvidenceRequired": true }
+  ],
+  "releaseDecision": "NO_REAL_WORLD_PILOT_UNTIL_DEPLOYED_RUNTIME_AND_DEVICE_SPECIFIC_GATES_ARE_INDEPENDENTLY_PASSED"
+}

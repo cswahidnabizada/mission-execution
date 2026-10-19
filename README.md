@@ -1,8 +1,8 @@
-## Current candidate: ON MISSION 16.10.77 — Simulator Certification Gates + Roadmap Continuity
+## Current candidate: ON MISSION 16.10.78 — Simulation Integration Certification
 
-Adds a machine-readable roadmap/dependency register and regression contract so releases retain simulator gates, canonical authorities, the complete mission journey, and the broader platform roadmap. This release does not claim browser or production certification. See `docs/roadmap/ON-MISSION-ROADMAP.md` and `RELEASE.md`.
+Adds canonical planner contract tests, deterministic vendor simulation, software-in-the-loop fault fixtures, a fail-closed hardware-in-the-loop interlock, and Germany logistics scenario certification contracts. External, deployed-runtime, and physical-device certification remain pending. See `docs/roadmap/ON-MISSION-ROADMAP.md` and `RELEASE.md`.
 
-## Current candidate: ON MISSION 16.10.74 — Canonical Planning Adapter + Deterministic Replay
+## Previous candidate: ON MISSION 16.10.74 — Canonical Planning Adapter + Deterministic Replay
 
 Adds a simulation-only adapter aligned to the existing canonical planning/evaluation contracts, versioned replay inputs, resource/deadline constraints, expected-versus-observed outcomes, and deterministic outcome fingerprints. Replay detects outcome drift or trace tampering. Tenant/platform separation and no-real-world-effect invariants remain enforced. Protected candidate only; not production-certified. See `RELEASE.md` and the companion release report.
 

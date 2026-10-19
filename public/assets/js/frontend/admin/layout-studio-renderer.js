@@ -3,7 +3,7 @@
  * Renders only approved component types and escaped scalar properties.
  * This is the canonical Studio-preview renderer; production-route bindings remain a separate gate.
  */
-export const STUDIO_RENDERER_VERSION = '16.10.77';
+export const STUDIO_RENDERER_VERSION = '16.10.78';
 
 const SAFE_INTERNAL_ROUTES = new Set(['/','/register.html','/driver/','/login.html','/status.html','/app/','/missions.html']);
 export function isSafeInternalRoute(href) { return typeof href === 'string' && SAFE_INTERNAL_ROUTES.has(href); }

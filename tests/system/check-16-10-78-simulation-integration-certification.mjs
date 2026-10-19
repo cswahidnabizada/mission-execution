@@ -1,0 +1,54 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { simulate, SCENARIOS } from '../../public/assets/js/frontend/admin/simulation-engine.js';
+import { buildSimulationPlan, SIMULATION_PLANNER_CONTRACT } from '../../public/assets/js/frontend/admin/simulation-planner-adapter.js';
+import { replaySimulation } from '../../public/assets/js/frontend/admin/simulation-replay.js';
+import { resolveVirtualDeviceProfile, assertVirtualDeviceSafety } from '../../public/assets/js/frontend/admin/simulation-device-profiles.js';
+import { SIMULATION_INTEGRATION_VERSION, HIL_ACTUATION_ENABLED, VENDOR_TRANSPORT_ENABLED, LIVE_MISSION_MUTATION_ENABLED, VENDOR_SIMULATOR_CONTRACT, simulateVendorResponse, runSoftwareInLoop, evaluateHardwareInLoopRequest, GERMANY_LOGISTICS_SCENARIOS, certifyGermanyLogisticsRun } from '../../public/assets/js/frontend/admin/simulation-integration-certification.js';
+const read=p=>fs.readFileSync(p,'utf8');
+const pkg=JSON.parse(read('package.json'));
+const lock=JSON.parse(read('package-lock.json'));
+const manifest=JSON.parse(read('RELEASE-MANIFEST.json'));
+const roadmap=JSON.parse(read('config/roadmap/mission-execution-roadmap.json'));
+const integration=JSON.parse(read('config/certification/simulation-integration-certification.json'));
+const germany=JSON.parse(read('config/certification/scenarios/germany-logistics.json'));
+assert.equal(pkg.version,'16.10.78'); assert.equal(lock.version,pkg.version); assert.equal(lock.packages[''].version,pkg.version);
+assert.equal(read('VERSION').trim(),pkg.version); assert.equal(manifest.version,pkg.version); assert.equal(manifest.base,'16.10.77');
+assert.equal(roadmap.version,pkg.version); assert.equal(roadmap.baseline,'16.10.77');
+assert.equal(SIMULATION_INTEGRATION_VERSION,pkg.version);
+assert.equal(SIMULATION_PLANNER_CONTRACT.mode,'SIMULATION_ONLY'); assert.equal(SIMULATION_PLANNER_CONTRACT.executionAllowed,false);
+assert.equal(HIL_ACTUATION_ENABLED,false); assert.equal(VENDOR_TRANSPORT_ENABLED,false); assert.equal(LIVE_MISSION_MUTATION_ENABLED,false);
+assert.equal(VENDOR_SIMULATOR_CONTRACT.networkAllowed,false); assert.equal(VENDOR_SIMULATOR_CONTRACT.credentialsRequired,false);
+for (const mode of VENDOR_SIMULATOR_CONTRACT.responseModes) {
+ const result=simulateVendorResponse({mode,seed:'repeatable'}); assert.equal(result.mode,mode); assert.equal(result.networkUsed,false); assert.equal(result.physicalEffects,false);
+ assert.deepEqual(result,simulateVendorResponse({mode,seed:'repeatable'}),'Vendor fixture must be deterministic');
+}
+assert.equal(simulateVendorResponse({mode:'TIMEOUT'}).result.retryAllowedAutomatically,false);
+assert.throws(()=>simulateVendorResponse({mode:'ACTUATE'}),/VENDOR_SIMULATION_MODE_UNSUPPORTED/);
+for (const [deviceProfile,speed,payload] of [['virtual-van',60,500],['virtual-robot',3,20]]) assert.equal(runSoftwareInLoop({mode:'SUCCESS',deviceProfile,speedKph:speed,payloadKg:payload}).status,'PASS');
+for (const args of [{mode:'TIMEOUT',deviceProfile:'virtual-van'},{mode:'MALFORMED',deviceProfile:'virtual-van'},{mode:'SAFETY_LIMIT_VIOLATION',deviceProfile:'virtual-van'},{mode:'HEARTBEAT_LOST',deviceProfile:'virtual-van'},{deviceProfile:'virtual-van',speedKph:200},{deviceProfile:'virtual-van',payloadKg:1300},{deviceProfile:'virtual-drone'}]) assert.equal(runSoftwareInLoop(args).status,'BLOCKED');
+const fakeApproval={status:'APPROVED',deviceId:'robot-01',scope:'HIL_TEST_ONLY',expiresAt:new Date(Date.now()+60000).toISOString()};
+assert.equal(evaluateHardwareInLoopRequest({deviceId:'robot-01',safetyApproval:fakeApproval,supervisedTestId:'supervised-1',emergencyStopVerified:true}).allowed,false,'Approval metadata cannot enable unimplemented HIL transport');
+assert.equal(evaluateHardwareInLoopRequest({deviceId:'robot-01'}).actuationEnabled,false);
+assert.equal(germany.jurisdiction,'DE'); assert.equal(germany.sector,'LOGISTICS'); assert.equal(germany.realWorldCertified,false);
+assert.deepEqual(germany.scenarios.map(s=>s.id),GERMANY_LOGISTICS_SCENARIOS.map(s=>s.id));
+for (const scenario of GERMANY_LOGISTICS_SCENARIOS) {
+ assert.ok(SCENARIOS[scenario.scenarioId],`Unknown simulation scenario ${scenario.scenarioId}`);
+ const run=simulate({scenarioId:scenario.scenarioId,executor:scenario.executor,missionId:scenario.id,deadline:scenario.deadlineMinutes,seed:'DE-cert-v1',runTimestamp:'2026-01-01T00:00:00.000Z'});
+ const result=certifyGermanyLogisticsRun(run,scenario);
+ assert.equal(result.status,'PASS_SIMULATED_ONLY',`${scenario.id}: ${JSON.stringify(result.failures)}`);
+ assert.equal(result.realWorldCertified,false); assert.equal(result.physicalDeliveryProven,false);
+ assert.equal(replaySimulation(run).match,true,`${scenario.id} replay must be deterministic`);
+ assert.equal(run.productionMutation,false); assert.equal(run.deviceCommandSent,false);
+}
+const blockedPlan=buildSimulationPlan({scenarioId:'DE-blocked',executorId:'virtual-van',deadlineMinutes:10,seed:'x',resources:{requiredMinutes:28,requiredCapacity:2,availableCapacity:1}});
+assert.equal(blockedPlan.status,'BLOCKED'); assert.equal(blockedPlan.steps.length,0); assert.equal(blockedPlan.execution.allowed,false);
+const van=resolveVirtualDeviceProfile('virtual-van'); assert.equal(assertVirtualDeviceSafety(van,{speedKph:90,payloadKg:1200}).allowed,true);
+assert.throws(()=>assertVirtualDeviceSafety(van,{speedKph:91,payloadKg:1}),/VIRTUAL_DEVICE_SPEED_LIMIT_EXCEEDED/);
+assert.throws(()=>assertVirtualDeviceSafety(van,{speedKph:1,payloadKg:1201}),/VIRTUAL_DEVICE_PAYLOAD_LIMIT_EXCEEDED/);
+assert.equal(integration.productionExecutionEnabled,false); assert.equal(integration.hardwareTransportEnabled,false); assert.equal(integration.hilActuationEnabled,false);
+assert.equal(integration.gates.find(g=>g.id==='HARDWARE-IN-THE-LOOP').status,'BLOCKED_BY_DESIGN');
+assert.equal(integration.gates.find(g=>g.id==='DEPLOYED-BROWSER-HTTP').status,'PENDING_DEPLOYED_EVIDENCE');
+assert.equal(roadmap.rules.simulationNeverAuthorizesLiveExecution,true); assert.equal(roadmap.rules.simulationEvidenceNeverProvesPhysicalEffect,true);
+assert.equal(germany.journey[0],'OBSERVE'); assert.equal(germany.journey.at(-1),'OBSERVE');
+console.log('16.10.78 simulation integration, planner, vendor/SIL/HIL safety, and Germany logistics contracts: PASS');

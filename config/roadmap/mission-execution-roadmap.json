@@ -1,7 +1,7 @@
 {
   "schema": "onmission.roadmap.v1",
-  "version": "16.10.77",
-  "baseline": "16.10.76",
+  "version": "16.10.78",
+  "baseline": "16.10.77",
   "permanentPriority": [
     "Security",
     "Truth",
@@ -156,36 +156,47 @@
     {
       "id": "SIM-PLANNER",
       "title": "Canonical planner integration and replay certification",
-      "status": "PENDING",
-      "versions": [],
+      "status": "IMPLEMENTED_CONTRACTS_RUNTIME_PENDING",
+      "versions": [
+        "16.10.78"
+      ],
       "dependsOn": [
         "SIM-CERT"
       ],
       "exitCriteria": [
         "Actual canonical planning/evaluation outputs are consumed through read-only governed contracts",
         "Resource constraints are tied to canonical contracts",
-        "Expected/observed outcome comparisons are reproducible"
+        "Expected/observed outcome comparisons are reproducible",
+        "Deterministic certification harness validates canonical planning contract version and fail-closed constraints",
+        "No live mission plan is created or mutated by simulation certification"
       ]
     },
     {
       "id": "SIM-DEVICE-INTEGRATION",
       "title": "Vendor simulation and software/hardware in the loop",
-      "status": "PENDING",
-      "versions": [],
+      "status": "CONTRACTS_AND_SIL_HARNESS_IMPLEMENTED_VENDOR_HIL_PENDING",
+      "versions": [
+        "16.10.78"
+      ],
       "dependsOn": [
         "SIM-PLANNER"
       ],
       "exitCriteria": [
         "Vendor simulator contract and sandbox are approved",
         "Software-in-the-loop passes device-specific safety tests",
-        "Hardware-in-the-loop remains disabled until explicit device safety certification"
+        "Hardware-in-the-loop remains disabled until explicit device safety certification",
+        "Vendor adapter is a deterministic local contract harness and has no production network or device credentials",
+        "SIL test fixtures exercise success, timeout, malformed response, safety-limit violation and loss of heartbeat",
+        "HIL actuation is hard-disabled until vendor/device-specific safety approval and supervised test evidence exist"
       ]
     },
     {
       "id": "SIM-DE-LOGISTICS",
       "title": "Germany logistics end-to-end certification",
-      "status": "PENDING",
-      "versions": [],
+      "status": "SCENARIO_CONTRACT_IMPLEMENTED_RUNTIME_PENDING",
+      "versions": [
+        "16.10.78"
+      ],
       "dependsOn": [
         "SIM-DEVICE-INTEGRATION"
       ],
@@ -194,7 +205,9 @@
         "Blocked assignment is safely handled",
         "Failed delivery enters recovery",
         "Evidence is checked independently",
-        "Final outcome and next situation are correct"
+        "Final outcome and next situation are correct",
+        "Germany logistics scenarios cover normal delivery, blocked assignment, failed delivery/recovery and independent evidence verification",
+        "Scenario contract tests are deterministic and do not claim live customer, carrier or physical-delivery evidence"
       ]
     },
     {

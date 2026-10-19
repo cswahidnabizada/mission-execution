@@ -9,9 +9,9 @@ const routes=read('src/worker/modules/admin-control/admin-launch-config.routes.j
 const migration=read('database/migrations/0161_simulation_run_records.sql');
 const uiAdmin=read('public/assets/js/frontend/admin/simulation-lab.js');
 const uiTenant=read('public/assets/js/frontend/admin/simulation-lab.js');
-assert.equal(pkg.version,'16.10.77');
+assert.equal(pkg.version,'16.10.78');
 assert.equal(lock.version,pkg.version); assert.equal(lock.packages[''].version,pkg.version);
-assert.equal(read('VERSION').trim(),pkg.version); assert.equal(manifest.version,pkg.version); assert.equal(manifest.base,'16.10.76','16.10.77');
+assert.equal(read('VERSION').trim(),pkg.version); assert.equal(manifest.version,pkg.version); assert.equal(manifest.base,'16.10.77','16.10.78');
 assert.match(routes,/router\.get\('\/api\/tenant\/simulation\/runs'/);
 assert.match(routes,/router\.post\('\/api\/tenant\/simulation\/runs'/);
 assert.match(routes,/requireRole\(request,env,\['admin'\]\)/);

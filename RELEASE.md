@@ -1,3 +1,11 @@
+# Mission Execution 16.10.78 — Simulation Integration Certification
+
+Status: protected candidate
+
+## 16.10.78 — Simulation Integration Certification
+
+Adds canonical-planner contract checks, deterministic vendor simulation, SIL fault fixtures, fail-closed HIL safety interlocks, and Germany logistics scenario certification contracts. No live mission mutation, production vendor connection, device command, or real-world effect is enabled. External/runtime/hardware certification remains pending.
+
 # Mission Execution 16.10.77 — Simulator Adversarial Gates
 
 ## 16.10.77 — Simulator Adversarial Gates

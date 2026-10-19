@@ -1,7 +1,7 @@
 {
-  "version": "16.10.77",
+  "version": "16.10.78",
   "release": "RELEASE.md",
-  "base": "16.10.76",
+  "base": "16.10.77",
   "migrationHighWaterMark": "0161",
   "migrationCount": 161,
   "schemaSnapshot": {
@@ -9,6 +9,6 @@
     "sha256": "e816aad94295dad3d5a051bf6522be676c54c3dbc493316a707fbb02b89ce537"
   },
   "generatedFrom": "deterministic-release-pipeline",
-  "releaseName": "Simulator Adversarial Gates",
-  "certificationControl": "config/certification/simulator-adversarial-gates.json"
+  "releaseName": "Simulation Integration Certification",
+  "certificationControl": "config/certification/simulation-integration-certification.json"
 }
