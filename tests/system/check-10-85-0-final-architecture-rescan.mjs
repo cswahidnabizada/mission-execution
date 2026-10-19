@@ -41,6 +41,6 @@ for(const p of adminFiles){
 }
 const manifest=JSON.parse(read('RELEASE-MANIFEST.json'));
 assert.equal(manifest.version,version);
-assert.ok(['0129','0130','0131','0132','0133','0134','0135','0136','0137','0138','0139','0140','0141','0142','0143','0144','0145','0146','0147','0147','0148','0149','0151','0152','0153','0154','0155','0156','0157','0158','0159','0160'].includes(manifest.migrationHighWaterMark));
-assert.ok([129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160].includes(manifest.migrationCount));
+assert.ok(['0129','0130','0131','0132','0133','0134','0135','0136','0137','0138','0139','0140','0141','0142','0143','0144','0145','0146','0147','0147','0148','0149','0151','0152','0153','0154','0155','0156','0157','0158','0159','0160','0161'].includes(manifest.migrationHighWaterMark));
+assert.ok([129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161].includes(manifest.migrationCount));
 console.log('10.85.1 Final Independent Architecture Rescan: PASS (retired mission assignment authority and runtime consumers; FK-bound compatibility column retained, canonical view, UI vocabulary and release identity verified)');

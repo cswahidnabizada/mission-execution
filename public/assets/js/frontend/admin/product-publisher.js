@@ -1,5 +1,5 @@
 /* ON Mission 16.7.0 — Canonical Market Factory. Market launch work is governed in one workspace. */
-import {renderMarketFactory} from './market-factory.js?v=16.10.70';
+import {renderMarketFactory} from './market-factory.js?v=16.10.71';
 const SECTOR_LABELS={logistics:'Logistics',cleaning:'Cleaning',security:'Security',general:'General Operations'};
 const JOURNEY=[['prepare','Prepare Data'],['configure','Configure'],['compose','Compose'],['validate','Validate'],['test','Test'],['authorize','Authorize'],['publish','Publish'],['verify','Verify']];
 const stageForNext=k=>({scope:'prepare',country:'prepare',foundation:'prepare',sectors:'prepare',evidence:'prepare',definitions:'configure',configuration:'configure',lifecycle:'configure',validate:'validate',authorize:'authorize',publish:'publish',verify:'verify',history:'verify'})[String(k||'prepare').toLowerCase()]||'prepare';

@@ -1,35 +1,38 @@
-ON MISSION 16.10.70 — Simulation Foundation
-Base: 16.10.69
-Status: source candidate; NOT production-certified
+ON MISSION 16.10.71 — Governed Simulation Records
+Base: 16.10.70
+Status: protected candidate; not yet deployed or production-certified
 
 IMPLEMENTED
-- Super Admin session-gated Simulation Lab page, reachable from Layout Studio.
-- Pure deterministic simulation engine for five scenarios: normal delivery, executor unavailable, blocked route, delivery failure/recovery, and device disconnect.
-- Full canonical journey trace from OBSERVE through NEXT SITUATION.
-- Simulated-only evidence labels and explicit safety invariants: simulationOnly=true, realWorldEffects=false, productionMutation=false, deviceCommandSent=false.
-- Run record JSON export and journey trace copy.
-- Virtual drone remains planning-only; no physical commands or vendor API integration.
-- Added focused executable contract test and bumped package, lockfile, VERSION and release manifest to 16.10.70.
+- New append-only D1 migration 0161_simulation_run_records.sql.
+- Server-owned platform simulation run records with immutable update/delete triggers.
+- Authenticated Super Admin endpoints to save, list, and retrieve simulation runs.
+- Hash of the exact serialized run payload for integrity checks.
+- Explicit validation that persisted records are simulation-only and cannot claim real-world effects, production mutation, or device commands.
+- Simulation Lab history list, refresh, save feedback, and load saved run.
+- Preserved existing deterministic virtual scenarios and canonical mission journey trace.
 
-CHECKS
-- Simulation Foundation contract: PASS.
+VALIDATION PERFORMED
+- JavaScript syntax checks for changed route and UI files: PASS.
+- Focused simulation persistence contract: PASS.
+- Existing simulation foundation contract: PASS.
 - Layout Studio route reconciliation contract: PASS.
-- Release integrity, production cleanliness and dependency-lock checks: PASS.
-- Full `npm run check:release`: PASS (all chained release, security, architecture, migration, schema, runtime and historical compatibility contracts completed).
-- Focused simulation engine tests cover normal delivery, blocked assignment, route failure, delivery recovery, device disconnect, drone planning-only boundary, invalid IDs and deadline bounds.
+- Migration contract: PASS (161 ordered migrations, high-water mark 0161).
+- Dependency lock integrity: PASS.
+- SQLite migration smoke test: PASS; immutable update/delete triggers rejected both mutations.
+- Release integrity and production cleanliness/version convergence: PASS.
+- Full npm run check:release: PASS (cumulative release suite).
+- npm run build: BLOCKED in this environment because Node is 22.16.0 while repository requires Node 24.18.0 (Node 24.x).
+- Browser/accessibility verification and Cloudflare deployment: NOT PERFORMED.
 
-NOT IMPLEMENTED / NOT CERTIFIED
-- Server-persisted simulation scenarios or run history.
-- Tenant-scoped simulator.
-- Canonical mission planner integration; current engine is a deterministic isolated model.
-- Vendor simulation, software-in-the-loop, hardware-in-the-loop or physical device execution.
-- Browser, accessibility, security penetration, production build and deployment certification.
+SAFETY / SCOPE
+- No physical device command integration.
+- No tenant-facing simulation API yet; tenant scope is represented in schema only and is not exposed.
+- No promotion of simulated outcomes to production mission truth.
+- Existing real mission authority remains unchanged.
 
-BUILD ENVIRONMENT
-- Available Node.js: 22.16.0. Repository contract: Node.js 24.x (pinned 24.18.0). Production build gate is therefore blocked; no deployment is authorized.
-
-PERMANENT PRIORITIES
-Security -> Truth -> Liveness -> Stability -> Experience -> Scale
-
-CANONICAL JOURNEY
-OBSERVE -> UNDERSTAND -> PLAN -> EVALUATE -> ACCEPT -> AUTHORIZE -> PREPARE -> ASSIGN -> EXECUTE -> EFFECT -> VERIFY -> RECOVER -> OUTCOME -> LEARN -> NEXT SITUATION -> OBSERVE
+NEXT ROADMAP STEP
+1. Build under the pinned Node.js 24.18.0 environment; the current environment is blocked at the Node version gate.
+2. Verify CSS/runtime asset identity and browser behavior after the pinned build.
+3. Browser-certify authenticated save/history/load flows.
+4. Implement tenant-scoped simulation access with explicit tenant ownership checks and adversarial isolation tests.
+5. Add canonical planner integration and deterministic replay before vendor/device simulator work.

@@ -1,6 +1,6 @@
-## Current candidate: ON MISSION 16.10.70 — Simulation Foundation
+## Current candidate: ON MISSION 16.10.71 — Governed Simulation Records
 
-Adds a Super Admin-gated virtual Simulation Lab with deterministic delivery, failure-injection and recovery scenarios, a canonical journey trace, simulated-only evidence and export. No physical device command, production mutation, or real-world success claim is possible in this first slice. It remains a source candidate, not production-certified; see `RELEASE.md`.
+Adds authenticated, append-only server-side run history to the Super Admin Simulation Lab, including saved run integrity hashes and a history list that can reopen prior simulations. The 16.10.70 deterministic virtual scenarios remain isolated from production mission truth. Tenant-scoped simulation and physical device commands are not included. This is a protected source candidate, not production-certified; see `RELEASE.md`.
 
 ## Previous candidate: ON MISSION 16.10.69 — Layout Studio Functional Integration and Route Parity
 

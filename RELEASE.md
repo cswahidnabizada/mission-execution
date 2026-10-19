@@ -1,26 +1,32 @@
-# Mission Execution 16.10.70 — Simulation Foundation
+# Mission Execution 16.10.71 — Governed Simulation Records
 
-Base: ON MISSION 16.10.69 — Layout Studio Functional Integration and Route Parity
-Status: source candidate; NOT production-certified
+Base: ON MISSION 16.10.70 — Simulation Foundation
+Status: protected candidate; NOT production-certified — DO NOT DEPLOY until required build, browser and release gates pass
 
-## Implemented in 16.10.70
-- Added a Super Admin-gated Simulation Lab entry point linked from Layout Studio.
-- Added a deterministic virtual mission simulation engine covering successful delivery, unavailable executor, blocked route, delivery failure/recovery, and virtual device disconnect.
-- Preserved the canonical journey trace and explicitly classified all run evidence as SIMULATED.
-- Added run JSON export and journey-trace copy, with bounded mission ID/deadline validation.
-- Explicitly prevented physical device commands, production mutations and real-world success claims; virtual drone remains planning-only.
-- Added a focused simulation contract test and release identity 16.10.70.
-- No new domain authority, production mission writer, database table, provider credential or publishing path was added.
+## Implemented in 16.10.71
+- Added governed, authenticated server-side simulation run history for the Super Admin Simulation Lab.
+- Added additive migration 0161 for append-only simulation records with immutable update/delete triggers, scope metadata, payload hash and indexed history queries.
+- Added Super Admin-authorized API routes to save, list and retrieve persisted simulation runs. Payload validation rejects records that do not assert simulation-only invariants.
+- Connected the UI to persist runs, refresh history, reopen saved runs and show the saved payload SHA-256. A failed save is clearly reported as local-only.
+- Preserved the 16.10.70 deterministic virtual scenarios, canonical journey trace, export and device-command prohibition.
+- No production mission writer, real-device command path, tenant simulation endpoint or new mission authority was added.
 
 ## Verification status
-- Simulation Foundation contract: PASS.
-- Existing Layout Studio route reconciliation contract: PASS.
-- Full `npm run check:release`: PASS, including architecture convergence, tenant isolation, recovery, release lifecycle, schema/migration and prior mission journey regression gates.
-- Protected build requires Node.js 24.x; available runtime is Node.js 22.16.0, so CSS build and full deployment pipeline are blocked until the pinned runtime is used.
-- Browser accessibility, authenticated live-route behavior, server-persisted run history, tenant-scoped simulation, vendor simulator and hardware-in-the-loop are NOT IMPLEMENTED / NOT CERTIFIED.
+- 16.10.71 simulation persistence contract: PASS.
+- 16.10.70 simulation foundation contract: PASS.
+- Layout Studio route reconciliation contract: PASS.
+- Migration contract: PASS (161 ordered migrations; high-water mark 0161).
+- Dependency lock, release integrity and production cleanliness/version convergence: PASS.
+- SQLite migration smoke test: PASS; update/delete immutability triggers rejected both mutations.
+- Full `npm run check:release`: PASS after reconciling inherited release metadata and preserving the historical regression suite.
+- `npm run build`: BLOCKED in the available Node.js 22.16.0 runtime; repository requires Node.js 24.18.0 / 24.x, so CSS compilation did not run.
+- Browser/accessibility, authenticated live route, tenant-scoped simulation, canonical planner integration, vendor simulator, hardware-in-the-loop and Cloudflare deployment: NOT CERTIFIED.
 
 ## Deployment decision
-**DO NOT DEPLOY** until the pinned build, full release suite, browser/security checks and production route verification pass. Simulation remains a local virtual preview only.
+**DO NOT DEPLOY** until the full release suite passes, the pinned Node.js 24.18.0 build and CSS compilation pass, browser/security certification is complete, and the production D1 migration is verified. This release adds durable simulation history only; it does not certify real-world device execution.
+
+Permanent priorities: Security → Truth → Liveness → Stability → Experience → Scale.
+Canonical mission journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
 
 ---
 
