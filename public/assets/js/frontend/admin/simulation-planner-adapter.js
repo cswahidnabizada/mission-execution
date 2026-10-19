@@ -3,7 +3,7 @@
  * It deliberately does not invoke a live mission planner or write mission truth.
  */
 export const SIMULATION_PLANNER_CONTRACT = Object.freeze({
-  adapterVersion: '16.10.75',
+  adapterVersion: '16.10.77',
   planningAuthorityVersion: '14.0.0',
   evaluationAuthorityVersion: '13.8.0',
   mode: 'SIMULATION_ONLY',

@@ -1,37 +1,43 @@
-ON MISSION 16.10.75 — VIRTUAL DEVICE SAFETY PROFILES
-Base: 16.10.74 — Canonical Planning Adapter + Deterministic Replay
-Status: protected source candidate; automated release suite passes; NOT production-certified.
+ON MISSION 16.10.77 — SIMULATOR ADVERSARIAL GATES
+Status: SOURCE CANDIDATE — NOT DEPLOYED / NOT BROWSER-CERTIFIED
+Baseline: 16.10.76
+
+PURPOSE
+Advance the simulator certification phase without falsely treating source-level checks as proof of deployed runtime behavior. This release adds a machine-readable certification control register and adversarial source-contract tests while preserving canonical authorities and the no-real-world-effect boundary.
 
 IMPLEMENTED
-- Versioned virtual profiles for virtual-van, virtual-robot and virtual-drone.
-- Explicit per-profile speed/payload limits and allowed simulated stages.
-- Safety envelope fails closed: simulationOnly=true, physicalConnectionAllowed=false, actuationEnabled=false, productionMutation=false, deviceCommandSent=false, geofenceEnforced=true and emergencyStopMode=SIMULATED_ONLY.
-- Drone remains planning-only; attempts to simulate later execution stages are rejected by profile validation.
-- Device profile and safety envelope are included in simulation outcomes and replay fingerprints; safety-envelope tampering causes replay mismatch.
-- Both Super Admin and tenant simulator pages describe the safety boundary. Existing mission truth, authorization, tenant scope, append-only record storage and canonical journey remain unchanged.
-- No migration, vendor connection, physical device command or live mission mutation added.
+- Added config/certification/simulator-adversarial-gates.json. It separates static contract results from pending authenticated runtime, browser, accessibility, concurrency and deployment evidence.
+- Added tests/system/check-16-10-77-simulator-adversarial-gates.mjs and placed it first in npm run check:release.
+- The new regression contract checks server-derived tenant scope, tenant list/item predicates, tenant role guard, platform super-administrator guard, platform/tenant ownership separation, immutable run triggers, run-ID content conflict behavior and simulation-only safety invariants.
+- Updated roadmap phase SIM-CERT to PARTIAL_STATIC_GATES_RUNTIME_PENDING and recorded 16.10.77 as an incremental certification-control release.
+- Updated release identity, compatibility expectations, cache-busting references and release docs while retaining historical release entries.
+- No database migration, new service, parallel mission authority, device actuation or production mission mutation was introduced.
 
-VERIFICATION
-- `npm run check:release`: PASS (full cumulative suite).
-- Focused virtual-device safety contract: PASS.
-- Deterministic replay, tamper detection, tenant-scope SQLite smoke test, persistence, navigation and foundation contracts: PASS.
-- Dependency lock gate: PASS.
-- Release integrity and production cleanliness/version convergence: PASS.
-- JavaScript syntax checks for simulation profile/engine/fingerprint/replay modules: PASS.
-- Local `npm run build`: BLOCKED by environment gate (current Node.js 22.16.0; project requires Node.js 24.18.0 / 24.x). CSS compilation did not run locally.
-- User-provided Cloudflare logs certify successful deployment of 16.10.74 only; they do not certify this 16.10.75 candidate.
-- Authenticated browser workflows, production D1 checks, adversarial cross-tenant HTTP denial, vendor simulation, software-in-the-loop, hardware-in-the-loop and Germany logistics end-to-end certification remain NOT CERTIFIED.
+VALIDATION
+PASS: npm run check:release (full cumulative suite).
+PASS: node scripts/check-dependency-lock.mjs.
+PASS: node scripts/check-release-integrity.mjs.
+PASS: node scripts/check-production-cleanliness.mjs.
+PASS: node scripts/check-schema-current.mjs — 253 tables, 463 indexes.
+PASS: node scripts/check-migration-contract.mjs — 161 ordered migrations, high-water mark 0161.
+PASS: focused simulator adversarial gate contract.
+PASS: roadmap continuity contract.
+PASS: virtual device safety and deterministic replay contracts.
+PASS: tenant-scope SQLite runtime smoke test.
 
-DEPLOYMENT DECISION
-Do not claim production certification. Run the normal Cloudflare release pipeline for this candidate, then verify authenticated browser save/history/replay and cross-tenant denial before proceeding to vendor simulation. Hardware-in-the-loop remains disabled pending device-specific certification.
+BUILD LIMITATION
+npm run build was attempted and stopped at the repository's explicit environment gate: local Node.js is 22.16.0, while .node-version requires 24.18.0 and engines.node requires 24.x. CSS compilation did not run. Configure the build environment to Node.js 24.18.0 (Cloudflare build logs previously showed Node 24.21.0 on 16.10.75, but this does not prove this candidate was built).
 
-NEXT ROADMAP
-1. Cloudflare build/deploy verification and browser runtime certification.
-2. Adversarial tenant isolation and role-based access verification.
-3. Canonical plan/evaluation runtime integration through read-only governed contracts.
-4. Vendor simulator adapters, then software-in-the-loop; hardware-in-the-loop only after safety review.
-5. Germany logistics end-to-end: normal delivery, blocked assignment, failed delivery, recovery and evidence verification.
-6. Return to governed action orchestration, unified Platform Control, infrastructure/data/content centers, integrations/AI capabilities, Market Factory, tenant activation and certified real-world execution.
+NOT CERTIFIED / REQUIRED NEXT
+- No deployment of 16.10.77 has been performed or verified in this session.
+- Authenticated browser journey: Super Admin save/history/open/replay and tenant save/history/open/replay.
+- Deployed HTTP adversarial tests: tenant A vs tenant B list/item access, role denial, platform/tenant boundary, session/revocation behavior.
+- Concurrent same-ID same-content and different-content requests; database failure and partial-write recovery.
+- Accessibility and failure-recovery UX review.
+- Tie browser/network evidence to the deployed Worker version and retain deployment identity.
+- Do not mark SIM-CERT complete or enable real-world execution until required gates pass. Simulation evidence does not prove physical effect.
 
-Permanent priorities: Security → Truth → Liveness → Stability → Experience → Scale.
-Canonical journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+PERMANENT PRIORITIES
+Security → Truth → Liveness → Stability → Experience → Scale
+Canonical journey remains:
+OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE

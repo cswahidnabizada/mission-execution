@@ -1,0 +1,271 @@
+{
+  "schema": "onmission.roadmap.v1",
+  "version": "16.10.77",
+  "baseline": "16.10.76",
+  "permanentPriority": [
+    "Security",
+    "Truth",
+    "Liveness",
+    "Stability",
+    "Experience",
+    "Scale"
+  ],
+  "canonicalJourney": [
+    "OBSERVE",
+    "UNDERSTAND",
+    "PLAN",
+    "EVALUATE",
+    "ACCEPT",
+    "AUTHORIZE",
+    "PREPARE",
+    "ASSIGN",
+    "EXECUTE",
+    "EFFECT",
+    "VERIFY",
+    "RECOVER",
+    "OUTCOME",
+    "LEARN",
+    "NEXT SITUATION",
+    "OBSERVE"
+  ],
+  "rules": {
+    "oneCanonicalAuthorityPerDomain": true,
+    "simulationNeverAuthorizesLiveExecution": true,
+    "simulationEvidenceNeverProvesPhysicalEffect": true,
+    "productionPublishRequiresExistingReleaseLifecycle": true,
+    "noNewServiceByDefault": true,
+    "eachReleaseMustUpdateThisRoadmap": true
+  },
+  "authorityMap": [
+    {
+      "domain": "mission-truth-and-lifecycle",
+      "authority": "Existing canonical mission truth and lifecycle writer",
+      "changePolicy": "Reuse; no parallel mission state authority"
+    },
+    {
+      "domain": "authorization-and-tenant-scope",
+      "authority": "Existing authorization/session and tenant-context services",
+      "changePolicy": "Enforce server-derived identity and tenant scope"
+    },
+    {
+      "domain": "capability-and-resource-contracts",
+      "authority": "Existing canonical capability and resource contract registries",
+      "changePolicy": "Read and validate; do not duplicate definitions"
+    },
+    {
+      "domain": "execution-and-effects",
+      "authority": "Existing governed execution coordinator and effect verification",
+      "changePolicy": "No bypass; simulation has no physical effects"
+    },
+    {
+      "domain": "product-and-market-release",
+      "authority": "Existing canonical product/market release lifecycle",
+      "changePolicy": "New immutable versions only; no live edits"
+    },
+    {
+      "domain": "simulation-records",
+      "authority": "Append-only platform_simulation_runs records",
+      "changePolicy": "Simulation records are evidence for tests, never mission truth"
+    }
+  ],
+  "phases": [
+    {
+      "id": "SIM-FOUNDATION",
+      "title": "Simulation foundation and governed records",
+      "status": "IMPLEMENTED_NOT_FULLY_CERTIFIED",
+      "versions": [
+        "16.10.70",
+        "16.10.71"
+      ],
+      "dependsOn": [],
+      "exitCriteria": [
+        "Virtual scenarios and failure injection work",
+        "Run records are immutable and content-hashed",
+        "Simulation-only safety invariants are enforced"
+      ]
+    },
+    {
+      "id": "SIM-TENANT",
+      "title": "Tenant-scoped simulation",
+      "status": "IMPLEMENTED_RUNTIME_CERTIFICATION_PENDING",
+      "versions": [
+        "16.10.73"
+      ],
+      "dependsOn": [
+        "SIM-FOUNDATION"
+      ],
+      "exitCriteria": [
+        "Tenant identity is derived server-side",
+        "Cross-tenant reads and writes are denied",
+        "Role boundaries are verified over authenticated HTTP"
+      ]
+    },
+    {
+      "id": "SIM-REPLAY",
+      "title": "Planning adapter and deterministic replay",
+      "status": "IMPLEMENTED_RUNTIME_CERTIFICATION_PENDING",
+      "versions": [
+        "16.10.74"
+      ],
+      "dependsOn": [
+        "SIM-TENANT"
+      ],
+      "exitCriteria": [
+        "Scenario inputs are versioned",
+        "Replay detects altered outcomes and traces",
+        "Resource/deadline constraints block unsafe plans"
+      ]
+    },
+    {
+      "id": "SIM-DEVICE",
+      "title": "Virtual device safety profiles",
+      "status": "IMPLEMENTED_RUNTIME_CERTIFICATION_PENDING",
+      "versions": [
+        "16.10.75"
+      ],
+      "dependsOn": [
+        "SIM-REPLAY"
+      ],
+      "exitCriteria": [
+        "Versioned virtual device profiles enforce speed and payload limits",
+        "Physical connections, actuation, production mutation and device commands remain disabled",
+        "Planning-only profiles reject later execution stages"
+      ]
+    },
+    {
+      "id": "SIM-CERT",
+      "title": "Simulator browser and adversarial certification",
+      "status": "PARTIAL_STATIC_GATES_RUNTIME_PENDING",
+      "versions": [
+        "16.10.76",
+        "16.10.77"
+      ],
+      "dependsOn": [
+        "SIM-DEVICE"
+      ],
+      "exitCriteria": [
+        "Authenticated Super Admin save/history/reload/replay is browser-tested",
+        "Tenant save/history/reload/replay is browser-tested",
+        "Cross-tenant denial and role authorization are verified",
+        "Failure handling and accessibility are reviewed",
+        "Deployment and runtime evidence is retained",
+        "Static adversarial contracts enforce server-derived tenant scope, role guards, platform/tenant record separation, immutable run records, replay conflict handling and simulation-only invariants",
+        "Authenticated browser and deployed HTTP evidence is attached before certification is marked complete"
+      ]
+    },
+    {
+      "id": "SIM-PLANNER",
+      "title": "Canonical planner integration and replay certification",
+      "status": "PENDING",
+      "versions": [],
+      "dependsOn": [
+        "SIM-CERT"
+      ],
+      "exitCriteria": [
+        "Actual canonical planning/evaluation outputs are consumed through read-only governed contracts",
+        "Resource constraints are tied to canonical contracts",
+        "Expected/observed outcome comparisons are reproducible"
+      ]
+    },
+    {
+      "id": "SIM-DEVICE-INTEGRATION",
+      "title": "Vendor simulation and software/hardware in the loop",
+      "status": "PENDING",
+      "versions": [],
+      "dependsOn": [
+        "SIM-PLANNER"
+      ],
+      "exitCriteria": [
+        "Vendor simulator contract and sandbox are approved",
+        "Software-in-the-loop passes device-specific safety tests",
+        "Hardware-in-the-loop remains disabled until explicit device safety certification"
+      ]
+    },
+    {
+      "id": "SIM-DE-LOGISTICS",
+      "title": "Germany logistics end-to-end certification",
+      "status": "PENDING",
+      "versions": [],
+      "dependsOn": [
+        "SIM-DEVICE-INTEGRATION"
+      ],
+      "exitCriteria": [
+        "Normal delivery is verified",
+        "Blocked assignment is safely handled",
+        "Failed delivery enters recovery",
+        "Evidence is checked independently",
+        "Final outcome and next situation are correct"
+      ]
+    },
+    {
+      "id": "PLATFORM-ORCHESTRATION",
+      "title": "Governed action orchestration",
+      "status": "AFTER_SIMULATOR_CERTIFICATION",
+      "versions": [],
+      "dependsOn": [
+        "SIM-DE-LOGISTICS"
+      ],
+      "exitCriteria": [
+        "Intent, plan, capability, risk, resources, authorization, execution, effects and verification use one governed path"
+      ]
+    },
+    {
+      "id": "PLATFORM-CONTROL",
+      "title": "Unified Platform Control",
+      "status": "PENDING",
+      "versions": [],
+      "dependsOn": [
+        "PLATFORM-ORCHESTRATION"
+      ],
+      "exitCriteria": [
+        "Operational blockers, resources, approvals, readiness and recovery are surfaced without duplicate authorities"
+      ]
+    },
+    {
+      "id": "PLATFORM-CENTERS",
+      "title": "Infrastructure, data, experience and content centers",
+      "status": "PENDING",
+      "versions": [],
+      "dependsOn": [
+        "PLATFORM-CONTROL"
+      ],
+      "exitCriteria": [
+        "Shared governed data and configuration workflows are reused across control centers"
+      ]
+    },
+    {
+      "id": "INTEGRATION-AI",
+      "title": "Integration and AI capability centers",
+      "status": "PENDING",
+      "dependsOn": [
+        "PLATFORM-CENTERS"
+      ],
+      "exitCriteria": [
+        "Providers use versioned capability contracts, bounded permissions and verified effects"
+      ]
+    },
+    {
+      "id": "MARKET-TENANT",
+      "title": "Market Factory and tenant activation",
+      "status": "PENDING",
+      "dependsOn": [
+        "INTEGRATION-AI"
+      ],
+      "exitCriteria": [
+        "Market packages/releases are immutable, validated, authorized and verified",
+        "Tenant activation follows market and access readiness"
+      ]
+    },
+    {
+      "id": "REAL-WORLD-PILOT",
+      "title": "Certified real-world mission execution",
+      "status": "PENDING",
+      "dependsOn": [
+        "MARKET-TENANT"
+      ],
+      "exitCriteria": [
+        "Controlled Germany logistics pilot passes safety, authorization, evidence and recovery gates"
+      ]
+    }
+  ]
+}

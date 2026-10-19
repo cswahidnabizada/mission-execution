@@ -1,0 +1,24 @@
+{
+  "schema": "onmission.simulator-certification-gates.v1",
+  "release": "16.10.77",
+  "baseline": "16.10.76",
+  "classification": "CERTIFICATION_CONTROL_NOT_CERTIFICATION_EVIDENCE",
+  "productionExecutionEnabled": false,
+  "simulationEvidenceMayProvePhysicalEffect": false,
+  "priority": ["Security", "Truth", "Liveness", "Stability", "Experience", "Scale"],
+  "canonicalJourney": ["OBSERVE", "UNDERSTAND", "PLAN", "EVALUATE", "ACCEPT", "AUTHORIZE", "PREPARE", "ASSIGN", "EXECUTE", "EFFECT", "VERIFY", "RECOVER", "OUTCOME", "LEARN", "NEXT SITUATION", "OBSERVE"],
+  "gates": [
+    {"id":"TENANT-AUTH-SERVER-SCOPE","status":"PASS_STATIC_CONTRACT","evidence":"Tenant routes require authenticated admin role and derive tenantId from the authenticated actor; tenantId is not accepted from request payload as scope authority.","limitation":"Authenticated HTTP denial must still be exercised against a deployed runtime."},
+    {"id":"TENANT-READ-ISOLATION","status":"PASS_STATIC_CONTRACT","evidence":"Tenant list and item reads include owner_scope='tenant' and server-derived tenant_id predicates.","limitation":"Cross-tenant 404 behavior is not runtime-certified by static inspection."},
+    {"id":"PLATFORM-TENANT-BOUNDARY","status":"PASS_STATIC_CONTRACT","evidence":"Platform routes require the platform super-administrator guard and select platform-owned records only.","limitation":"Role matrix and session revocation require authenticated runtime tests."},
+    {"id":"IMMUTABLE-RUNS","status":"PASS_STATIC_CONTRACT","evidence":"Existing migration declares UPDATE and DELETE prevention triggers; run records remain append-only.","limitation":"Production database trigger behavior must be confirmed by deployment/runtime evidence."},
+    {"id":"REPLAY-CONFLICT","status":"PASS_STATIC_CONTRACT","evidence":"Tenant and platform save paths compare stored content digest and reject conflicting reuse of a run ID.","limitation":"Concurrent duplicate submissions require deployed race testing."},
+    {"id":"SIMULATION-NO-LIVE-EFFECTS","status":"PASS_STATIC_CONTRACT","evidence":"Save endpoints reject runs unless simulationOnly=true and realWorldEffects, productionMutation, deviceCommandSent are all false.","limitation":"This does not certify vendor simulators, hardware, or physical effects."},
+    {"id":"SUPER-ADMIN-BROWSER-JOURNEY","status":"PENDING_AUTHENTICATED_RUNTIME","requiredEvidence":["Save a run","Reload history","Open saved run","Replay unchanged inputs","Capture browser console and network results"]},
+    {"id":"TENANT-BROWSER-JOURNEY","status":"PENDING_AUTHENTICATED_RUNTIME","requiredEvidence":["Save a run in tenant A","Reload and open tenant A run","Authenticate tenant B and prove no listing/item disclosure","Verify role-denied request"]},
+    {"id":"CONCURRENCY-AND-RECOVERY","status":"PENDING_AUTHENTICATED_RUNTIME","requiredEvidence":["Concurrent same-ID same-content requests","Concurrent same-ID different-content requests","DB unavailable handling","No partial success on persistence failure"]},
+    {"id":"ACCESSIBILITY-AND-FAILURE-UX","status":"PENDING_BROWSER_REVIEW","requiredEvidence":["Keyboard-only journey","Focus visibility and dialog focus","Screen-reader labels/status","Visible recovery from API errors"]},
+    {"id":"DEPLOYMENT-IDENTITY","status":"PENDING_DEPLOYMENT_EVIDENCE","requiredEvidence":["Cloudflare deployment logs for 16.10.77","Live release identity endpoint or page","Browser evidence tied to deployed Worker version"]}
+  ],
+  "releaseDecision": "BLOCK_REAL_WORLD_CERTIFICATION_UNTIL_ALL_REQUIRED_RUNTIME_GATES_PASS"
+}

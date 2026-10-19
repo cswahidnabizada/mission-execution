@@ -1,3 +1,41 @@
+# Mission Execution 16.10.77 — Simulator Adversarial Gates
+
+## 16.10.77 — Simulator Adversarial Gates
+
+- Adds a machine-readable simulator certification gate register separating static source-contract passes from pending authenticated browser, deployed HTTP, concurrency, accessibility and deployment evidence.
+- Adds regression contracts for server-derived tenant scope, tenant/platform record separation, role guards, append-only records, run-ID conflict handling and simulation-only safety invariants.
+- Keeps real-world execution certification blocked until all runtime evidence is recorded. No schema migration, new service, physical-device actuation, or alternate mission authority is introduced.
+
+# Mission Execution 16.10.77 — Simulator Adversarial Gates
+
+Base: 16.10.75 — Virtual Device Safety Profiles
+Status: Protected source candidate. Automated release suite must pass; browser/runtime certification remains pending. Do not claim the simulator is fully certified.
+
+## Implemented
+- Added `config/roadmap/mission-execution-roadmap.json` as a machine-readable phase/dependency register for simulator completion and the broader platform roadmap.
+- Added `docs/roadmap/ON-MISSION-ROADMAP.md` with current checkpoint, permanent priorities, canonical journey, authority map guardrails, simulator exit criteria, and post-simulator platform sequence.
+- Added a regression contract that validates unique phase IDs, ordered dependencies, the canonical journey, safety rules, and continuity through governed orchestration, Platform Control, platform centers, integrations/AI, Market Factory/tenant activation, and real-world pilot.
+- Added this gate to the cumulative release suite and advanced current release/cache-busting metadata to 16.10.76. Existing functionality is preserved.
+
+## Verification and limits
+- The supplied Cloudflare logs confirm deployment of 16.10.75 only.
+- This source candidate has not been deployed or browser-certified.
+- The local environment uses Node.js 22.16.0; the repository requires Node.js 24.x. Run the build in the existing Cloudflare pipeline.
+- Authenticated browser flows, adversarial tenant denial, canonical planner runtime integration, vendor simulation, software/hardware-in-the-loop, and Germany logistics end-to-end certification remain pending.
+
+## Next gates
+1. Deploy 16.10.76 through the existing Cloudflare workflow and verify release/version identity.
+2. Browser-test authenticated Super Admin and tenant save/history/reload/replay.
+3. Verify cross-tenant denial, role authorization, replay conflicts, failure handling and accessibility.
+4. Integrate actual canonical planner/evaluation outputs through read-only governed contracts.
+5. Progress to vendor simulation and software-in-the-loop; hardware-in-the-loop requires separate device-specific certification.
+6. Certify Germany logistics end-to-end, then return to governed action orchestration, unified Platform Control, infrastructure/data/experience/content centers, integrations/AI, Market Factory, tenant activation and controlled real-world execution.
+
+Permanent priorities: Security → Truth → Liveness → Stability → Experience → Scale.
+Canonical journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+
+---
+
 # Mission Execution 16.10.75 — Virtual Device Safety Profiles
 
 Base: 16.10.74 — Canonical Planning Adapter + Deterministic Replay
