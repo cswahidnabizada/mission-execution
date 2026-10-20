@@ -1,7 +1,7 @@
 {
   "schema": "onmission.roadmap.v1",
-  "version": "16.10.80",
-  "baseline": "16.10.79",
+  "version": "16.10.84",
+  "baseline": "16.10.83",
   "permanentPriority": [
     "Security",
     "Truth",
@@ -315,6 +315,66 @@
       ],
       "exitCriteria": [
         "Controlled Germany logistics pilot passes safety, authorization, evidence and recovery gates"
+      ]
+    },
+    {
+      "id": "GOVERNED-HUMAN-EXECUTION",
+      "version": "16.10.81",
+      "title": "Governed Human Execution Orchestration",
+      "status": "CONTRACT_IMPLEMENTED_RUNTIME_EVIDENCE_PENDING",
+      "description": "Connect human-executor orchestration to existing canonical mission, authorization, assignment, capability, action and recovery authorities.",
+      "dependsOn": [
+        "CANONICAL-JOURNEY-CERTIFICATION"
+      ],
+      "exitCriteria": [
+        "All consequential commands use existing canonical authorities",
+        "No parallel mission truth or lifecycle writer",
+        "Uncertain effect is reconciled or explicitly waiting"
+      ]
+    },
+    {
+      "id": "GERMANY-LOGISTICS-PILOT",
+      "version": "16.10.82",
+      "title": "Germany Logistics Pilot Contract",
+      "status": "PILOT_CONTRACT_IMPLEMENTED_OPERATIONAL_PROOF_PENDING",
+      "description": "Define bounded Germany logistics pilot scenarios, evidence requirements, custody boundaries, human roles and recovery rules.",
+      "dependsOn": [
+        "GOVERNED-HUMAN-EXECUTION"
+      ],
+      "exitCriteria": [
+        "Bounded Germany delivery scenarios are versioned",
+        "Evidence and custody criteria are explicit",
+        "Fixtures are isolated from real customer operations"
+      ]
+    },
+    {
+      "id": "END-TO-END-HUMAN-MISSION-PROOF",
+      "version": "16.10.83",
+      "title": "End-to-End Human-Executor Mission Proof",
+      "status": "SCENARIO_PROOF_HARNESS_IMPLEMENTED_LIVE_EXECUTION_UNVERIFIED",
+      "description": "Exercise deterministic end-to-end normal and failure/recovery scenario contracts; keep live physical effects unverified until independently evidenced.",
+      "dependsOn": [
+        "GERMANY-LOGISTICS-PILOT"
+      ],
+      "exitCriteria": [
+        "Normal path and failure/recovery path pass deterministic contract harness",
+        "Every stage emits expected evidence requirements",
+        "No scenario claims physical delivery from simulation"
+      ]
+    },
+    {
+      "id": "CONTROLLED-PILOT-READINESS",
+      "version": "16.10.84",
+      "title": "Controlled Pilot Readiness and Operational Approval",
+      "status": "READINESS_GATES_DEFINED_APPROVAL_PENDING",
+      "description": "Define controlled pilot readiness gates, explicit human approval requirements, stop conditions, incident response and rollback.",
+      "dependsOn": [
+        "END-TO-END-HUMAN-MISSION-PROOF"
+      ],
+      "exitCriteria": [
+        "All readiness gates have evidence or remain blocked",
+        "Authorized human approval is explicit and auditable",
+        "Stop conditions, incident handling and rollback are documented"
       ]
     }
   ],

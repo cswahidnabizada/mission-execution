@@ -1,0 +1,156 @@
+{
+  "schema": "onmission.controlled-pilot-readiness.v1",
+  "version": "16.10.84",
+  "baseline": "16.10.83",
+  "status": "READINESS_CONTRACT_ONLY_NOT_APPROVED",
+  "market": {
+    "country": "Germany",
+    "iso2": "DE",
+    "sector": "logistics",
+    "pilotType": "human-executor-first"
+  },
+  "permanentPriority": [
+    "Security",
+    "Truth",
+    "Liveness",
+    "Stability",
+    "Experience",
+    "Scale"
+  ],
+  "canonicalJourney": [
+    "OBSERVE",
+    "UNDERSTAND",
+    "PLAN",
+    "EVALUATE",
+    "ACCEPT",
+    "AUTHORIZE",
+    "PREPARE",
+    "ASSIGN",
+    "EXECUTE",
+    "EFFECT",
+    "VERIFY",
+    "RECOVER",
+    "OUTCOME",
+    "LEARN",
+    "NEXT SITUATION",
+    "OBSERVE"
+  ],
+  "gates": [
+    {
+      "id": "RUNTIME_CERTIFICATION",
+      "title": "Deployed runtime certification",
+      "requiredEvidence": [
+        "target Worker version",
+        "authenticated browser journey results",
+        "authenticated HTTP authorization and tenant isolation results",
+        "failure/recovery test evidence"
+      ],
+      "defaultStatus": "BLOCKED_UNVERIFIED",
+      "blocking": true
+    },
+    {
+      "id": "CANONICAL_JOURNEY",
+      "title": "Canonical mission journey",
+      "requiredEvidence": [
+        "authoritative transition references",
+        "correct predecessor state",
+        "verification evidence",
+        "recovery and next-situation evidence"
+      ],
+      "defaultStatus": "BLOCKED_UNVERIFIED",
+      "blocking": true
+    },
+    {
+      "id": "TENANT_AND_ACCESS",
+      "title": "Tenant access and role boundaries",
+      "requiredEvidence": [
+        "server-derived tenant scope",
+        "role matrix results",
+        "cross-tenant denial results",
+        "audit records"
+      ],
+      "defaultStatus": "BLOCKED_UNVERIFIED",
+      "blocking": true
+    },
+    {
+      "id": "HUMAN_OPERATIONS",
+      "title": "Human executor operating readiness",
+      "requiredEvidence": [
+        "executor identity and training confirmation",
+        "dispatch and escalation ownership",
+        "support contact and incident procedure"
+      ],
+      "defaultStatus": "BLOCKED_UNVERIFIED",
+      "blocking": true
+    },
+    {
+      "id": "EVIDENCE_AND_PRIVACY",
+      "title": "Evidence, privacy and retention",
+      "requiredEvidence": [
+        "evidence provenance and access controls",
+        "data minimization review",
+        "retention and deletion policy review",
+        "incident and audit trace"
+      ],
+      "defaultStatus": "BLOCKED_UNVERIFIED",
+      "blocking": true
+    },
+    {
+      "id": "STOP_AND_ROLLBACK",
+      "title": "Stop conditions and rollback",
+      "requiredEvidence": [
+        "stop authority",
+        "mission pause/abort procedure",
+        "reconciliation procedure",
+        "rollback and customer communication plan"
+      ],
+      "defaultStatus": "BLOCKED_UNVERIFIED",
+      "blocking": true
+    },
+    {
+      "id": "EXPLICIT_OPERATIONAL_APPROVAL",
+      "title": "Explicit operational approval",
+      "requiredEvidence": [
+        "named authorized approver",
+        "approved scope and time window",
+        "approved tenant and scenario",
+        "recorded decision and expiry"
+      ],
+      "defaultStatus": "NOT_APPROVED",
+      "blocking": true
+    }
+  ],
+  "approvalPolicy": {
+    "explicitHumanApprovalRequired": true,
+    "approvalMayBeInferredFromTests": false,
+    "approvalMayBeInferredFromDeployment": false,
+    "approvalMustBeScoped": true,
+    "approvalExpires": true,
+    "superAdminUiCannotSelfApproveBypass": true,
+    "productionExecutionEnabled": false,
+    "physicalActuationEnabled": false
+  },
+  "stopConditions": [
+    "Any critical security or tenant-isolation failure",
+    "Canonical mission truth or assignment is ambiguous",
+    "Required evidence cannot be verified",
+    "Execution effect is unknown without reconciliation owner",
+    "Privacy or data handling incident",
+    "Executor unavailable without a safe waiting/reassignment state",
+    "Rollback or stop authority unavailable"
+  ],
+  "successMetrics": [
+    "Mission completion rate with verified evidence",
+    "Failed delivery recovery rate",
+    "Time to reconcile unknown effect",
+    "Unauthorized transition rejection rate",
+    "Unresolved critical incidents",
+    "Evidence completeness rate"
+  ],
+  "requiredReviewers": [
+    "Tenant operational owner",
+    "Platform/security owner",
+    "Data protection/privacy reviewer as applicable",
+    "Authorized pilot approver"
+  ]
+}

@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 const pkg = JSON.parse(fs.readFileSync('package.json','utf8'));
 const version = fs.readFileSync('VERSION','utf8').trim();
-assert.ok(['16.10.39','16.10.40','16.10.41','16.10.43','16.10.44','16.10.45','16.10.46','16.10.47','16.10.48','16.10.49','16.10.50','16.10.51','16.10.52','16.10.53','16.10.54','16.10.55','16.10.56','16.10.57','16.10.60','16.10.61','16.10.62','16.10.63','16.10.64','16.10.65','16.10.66','16.10.67','16.10.68','16.10.69','16.10.70','16.10.71','16.10.72','16.10.73','16.10.74','16.10.75','16.10.76','16.10.77','16.10.78','16.10.79','16.10.80','16.10.72'].includes(version), 'canonical release version preserves the inventory baseline');
+assert.ok(['16.10.39','16.10.40','16.10.41','16.10.43','16.10.44','16.10.45','16.10.46','16.10.47','16.10.48','16.10.49','16.10.50','16.10.51','16.10.52','16.10.53','16.10.54','16.10.55','16.10.56','16.10.57','16.10.60','16.10.61','16.10.62','16.10.63','16.10.64','16.10.65','16.10.66','16.10.67','16.10.68','16.10.69','16.10.70','16.10.71','16.10.72','16.10.73','16.10.74','16.10.75','16.10.76','16.10.77','16.10.78','16.10.79','16.10.80','16.10.72','16.10.81','16.10.82','16.10.83','16.10.84'].includes(version), 'canonical release version preserves the inventory baseline');
 assert.equal(pkg.version, version, 'package version follows canonical VERSION');
 assert.match(pkg.scripts['check:release'], /check-16-10-39-layout-inventory\.mjs/, 'inventory contract is release-gated');
 const json = JSON.parse(fs.readFileSync('docs/16.10.39-layout-inventory.json','utf8'));

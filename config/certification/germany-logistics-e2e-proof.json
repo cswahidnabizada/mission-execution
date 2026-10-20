@@ -1,0 +1,150 @@
+{
+  "schema": "onmission.germany-logistics-e2e-proof.v1",
+  "version": "16.10.83",
+  "baseline": "16.10.82",
+  "status": "DETERMINISTIC_CONTRACT_HARNESS_ONLY_LIVE_EXECUTION_UNVERIFIED",
+  "mode": "LOCAL_FIXTURE_CONTRACTS_NO_NETWORK_NO_PHYSICAL_ACTUATION",
+  "market": {
+    "country": "Germany",
+    "iso2": "DE",
+    "sector": "logistics"
+  },
+  "permanentPriority": [
+    "Security",
+    "Truth",
+    "Liveness",
+    "Stability",
+    "Experience",
+    "Scale"
+  ],
+  "canonicalJourney": [
+    "OBSERVE",
+    "UNDERSTAND",
+    "PLAN",
+    "EVALUATE",
+    "ACCEPT",
+    "AUTHORIZE",
+    "PREPARE",
+    "ASSIGN",
+    "EXECUTE",
+    "EFFECT",
+    "VERIFY",
+    "RECOVER",
+    "OUTCOME",
+    "LEARN",
+    "NEXT SITUATION",
+    "OBSERVE"
+  ],
+  "authorityPolicy": "EXISTING_CANONICAL_AUTHORITIES_ONLY",
+  "scenarios": [
+    {
+      "id": "E2E-NORMAL",
+      "scenario": "Normal delivery",
+      "expectedOutcome": "VERIFIED_DELIVERED",
+      "steps": [
+        "OBSERVE",
+        "UNDERSTAND",
+        "PLAN",
+        "EVALUATE",
+        "ACCEPT",
+        "AUTHORIZE",
+        "PREPARE",
+        "ASSIGN",
+        "EXECUTE",
+        "EFFECT",
+        "VERIFY",
+        "OUTCOME",
+        "LEARN",
+        "NEXT SITUATION"
+      ],
+      "requiredEvidence": [
+        "observation provenance",
+        "feasible plan fingerprint",
+        "acceptance and authorization references",
+        "assignment acceptance",
+        "executor action events",
+        "delivery evidence provenance",
+        "verification result",
+        "outcome record"
+      ],
+      "mustNotClaim": [
+        "PHYSICAL_SUCCESS_WITHOUT_EVIDENCE",
+        "SIMULATION_AS_PHYSICAL_PROOF"
+      ]
+    },
+    {
+      "id": "E2E-FAILED-RECOVERY",
+      "scenario": "Failed delivery followed by recovery",
+      "expectedOutcome": "RECOVERED_AND_VERIFIED_OR_EXPLICITLY_BLOCKED",
+      "steps": [
+        "OBSERVE",
+        "UNDERSTAND",
+        "PLAN",
+        "EVALUATE",
+        "ACCEPT",
+        "AUTHORIZE",
+        "PREPARE",
+        "ASSIGN",
+        "EXECUTE",
+        "EFFECT",
+        "VERIFY",
+        "RECOVER",
+        "PREPARE",
+        "ASSIGN",
+        "EXECUTE",
+        "EFFECT",
+        "VERIFY",
+        "OUTCOME",
+        "LEARN",
+        "NEXT SITUATION"
+      ],
+      "requiredEvidence": [
+        "initial failure reason",
+        "recovery owner",
+        "recovery decision",
+        "new assignment version",
+        "retry idempotency key",
+        "final verification evidence or explicit block"
+      ],
+      "mustNotClaim": [
+        "SUCCESS_WHILE_UNVERIFIED",
+        "RETRY_WITHOUT_IDEMPOTENCY",
+        "SILENT_FAILURE"
+      ]
+    },
+    {
+      "id": "E2E-UNKNOWN-EFFECT",
+      "scenario": "Unknown execution effect",
+      "expectedOutcome": "RECONCILIATION_REQUIRED",
+      "steps": [
+        "EXECUTE",
+        "EFFECT",
+        "RECOVER",
+        "NEXT SITUATION"
+      ],
+      "requiredEvidence": [
+        "command identity",
+        "last acknowledged state",
+        "reconciliation status",
+        "waiting owner and escalation deadline"
+      ],
+      "mustNotClaim": [
+        "ASSUMED_SUCCESS",
+        "DUPLICATE_EFFECT_ON_RETRY"
+      ]
+    }
+  ],
+  "assertions": {
+    "everyTransitionHasPredecessor": true,
+    "authorizationPrecedesExecution": true,
+    "assignmentVersionMustBeCurrent": true,
+    "verificationRequiresProvenance": true,
+    "recoveryMustBeExplicit": true,
+    "outcomeRequiresVerificationOrExplicitBlock": true,
+    "tenantScopeServerDerived": true,
+    "simulatedEvidenceCannotProvePhysicalEffect": true
+  },
+  "liveEvidenceStatus": "UNVERIFIED",
+  "physicalEffectStatus": "UNVERIFIED",
+  "productionExecutionEnabled": false
+}

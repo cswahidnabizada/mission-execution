@@ -2,11 +2,11 @@
  * Old Control Plane navigation is retired. This shell exposes the eight human jobs while
  * keeping every workspace implementation and canonical authority intact.
  */
-import {workspaceGroups,state} from './admin-runtime.js?v=16.10.80';
-import {workspaceFor} from './workspace-registry.js?v=16.10.80';
-import {installCommandPalette} from './command-palette.js?v=16.10.80';
+import {workspaceGroups,state} from './admin-runtime.js?v=16.10.84';
+import {workspaceFor} from './workspace-registry.js?v=16.10.84';
+import {installCommandPalette} from './command-palette.js?v=16.10.84';
 /* Compatibility evidence for the historical architecture contract: CURRENT SITUATION · NEEDS ATTENTION · RELEASE JOURNEY · RECENT ACTIVITY · PLATFORM · SECURE. These are projections/labels only; the live navigation remains the eight-job operating model. */
-import {readExperienceContext,writeExperienceContext,contextLabel} from '../core/experience-context.js?v=16.10.80';
+import {readExperienceContext,writeExperienceContext,contextLabel} from '../core/experience-context.js?v=16.10.84';
 
 // Canonical navigation inventory remains workspaceGroups.map(renderGroup) in the retired shell contract; the live shell renders the same inventory through the new eight-job layout.
 const primary=workspaceGroups.map(g=>g.key);

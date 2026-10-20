@@ -1,0 +1,89 @@
+{
+  "schema": "onmission.governed-human-execution.v1",
+  "version": "16.10.81",
+  "baseline": "16.10.80",
+  "mode": "GOVERNED_COMMAND_CONTRACT_ONLY",
+  "runtimeStatus": "UNVERIFIED_UNTIL_DEPLOYED_EVIDENCE_LINKED",
+  "purpose": "Human executor orchestration through existing canonical authorities",
+  "permanentPriority": [
+    "Security",
+    "Truth",
+    "Liveness",
+    "Stability",
+    "Experience",
+    "Scale"
+  ],
+  "canonicalJourney": [
+    "OBSERVE",
+    "UNDERSTAND",
+    "PLAN",
+    "EVALUATE",
+    "ACCEPT",
+    "AUTHORIZE",
+    "PREPARE",
+    "ASSIGN",
+    "EXECUTE",
+    "EFFECT",
+    "VERIFY",
+    "RECOVER",
+    "OUTCOME",
+    "LEARN",
+    "NEXT SITUATION",
+    "OBSERVE"
+  ],
+  "authorityPolicy": "REUSE_EXISTING_CANONICAL_AUTHORITIES_ONLY",
+  "rules": {
+    "oneCanonicalAuthorityPerDomain": true,
+    "noDuplicateMissionTruth": true,
+    "missingEvidenceStatus": "UNVERIFIED",
+    "failedEvidenceSourceStatus": "UNAVAILABLE",
+    "simulationCannotProvePhysicalEffect": true,
+    "tenantScopeServerDerived": true,
+    "idempotencyRequired": true,
+    "failClosedOnUncertainEffect": true,
+    "mutationEnabled": false,
+    "physicalActuationEnabled": false
+  },
+  "gates": [
+    {
+      "id": "MISSION_TRUTH",
+      "authority": "Canonical mission truth",
+      "required": "Mission identity, tenant scope and expected predecessor state",
+      "failure": "Reject stale or ambiguous mission state"
+    },
+    {
+      "id": "AUTHORIZATION",
+      "authority": "Existing authorization and step-up controls",
+      "required": "Actor, tenant, action, target and decision evidence",
+      "failure": "Fail closed when authorization is absent or stale"
+    },
+    {
+      "id": "ASSIGNMENT",
+      "authority": "Canonical assignment authority",
+      "required": "Executor identity, assignment version and acceptance",
+      "failure": "Reject conflicting or superseded assignment"
+    },
+    {
+      "id": "COMMAND",
+      "authority": "Canonical Action Registry + Mission Execution Coordinator",
+      "required": "Action contract, idempotency key, actor and command result",
+      "failure": "Do not duplicate effects on retry"
+    },
+    {
+      "id": "EFFECT_RECONCILIATION",
+      "authority": "Existing effect verification/recovery authorities",
+      "required": "Provider/executor acknowledgement and independently verifiable evidence",
+      "failure": "Unknown effect becomes RECONCILIATION_REQUIRED or WAITING"
+    },
+    {
+      "id": "LIVENESS",
+      "authority": "Existing Next Situation Engine / liveness guard",
+      "required": "Next action or explicit waiting condition with owner",
+      "failure": "Block terminal-like success without verified outcome"
+    }
+  ],
+  "humanExecutorFirst": true,
+  "newBackend": false,
+  "newMissionAuthority": false,
+  "physicalActuationEnabled": false
+}

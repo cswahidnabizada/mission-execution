@@ -1,0 +1,155 @@
+{
+  "schema": "onmission.germany-logistics-pilot.v1",
+  "version": "16.10.82",
+  "baseline": "16.10.81",
+  "status": "PILOT_CONTRACT_ONLY_NOT_OPERATIONALLY_APPROVED",
+  "market": {
+    "country": "Germany",
+    "iso2": "DE",
+    "sector": "logistics",
+    "pilotType": "human-executor-first"
+  },
+  "scope": {
+    "realCustomerExecutionEnabled": false,
+    "physicalActuationEnabled": false,
+    "fixturesIsolatedFromProduction": true,
+    "requiresExplicitOperationalApproval": true
+  },
+  "permanentPriority": [
+    "Security",
+    "Truth",
+    "Liveness",
+    "Stability",
+    "Experience",
+    "Scale"
+  ],
+  "canonicalJourney": [
+    "OBSERVE",
+    "UNDERSTAND",
+    "PLAN",
+    "EVALUATE",
+    "ACCEPT",
+    "AUTHORIZE",
+    "PREPARE",
+    "ASSIGN",
+    "EXECUTE",
+    "EFFECT",
+    "VERIFY",
+    "RECOVER",
+    "OUTCOME",
+    "LEARN",
+    "NEXT SITUATION",
+    "OBSERVE"
+  ],
+  "authorityPolicy": "REUSE_EXISTING_CANONICAL_AUTHORITIES_ONLY",
+  "roles": {
+    "missionOwner": "Tenant-authorized dispatcher or mission owner",
+    "executor": "Assigned human executor",
+    "verifier": "Authorized verification role; independent where policy requires",
+    "platformOperator": "Super Admin oversight; cannot impersonate tenant authorization"
+  },
+  "evidencePolicy": {
+    "sourceProvenanceRequired": true,
+    "observedAtRequired": true,
+    "tenantScopeServerDerived": true,
+    "simulatedEvidenceCannotSatisfyPhysicalDelivery": true,
+    "sensitiveDataMinimized": true,
+    "retentionPolicyMustBeResolvedBeforePilot": true
+  },
+  "scenarios": [
+    {
+      "id": "DELIVERY-NORMAL",
+      "name": "Normal delivery",
+      "expectedPath": [
+        "OBSERVE",
+        "UNDERSTAND",
+        "PLAN",
+        "EVALUATE",
+        "ACCEPT",
+        "AUTHORIZE",
+        "PREPARE",
+        "ASSIGN",
+        "EXECUTE",
+        "EFFECT",
+        "VERIFY",
+        "OUTCOME",
+        "LEARN",
+        "NEXT SITUATION"
+      ],
+      "requiredEvidence": [
+        "mission reference",
+        "authorized executor",
+        "assignment acceptance",
+        "delivery proof",
+        "verification decision",
+        "outcome reference"
+      ],
+      "recoveryRequired": false
+    },
+    {
+      "id": "EXECUTOR-UNAVAILABLE",
+      "name": "Executor unavailable before start",
+      "expectedPath": [
+        "ASSIGN",
+        "RECOVER",
+        "NEXT SITUATION"
+      ],
+      "requiredEvidence": [
+        "failed assignment attempt",
+        "reason code",
+        "reassignment or waiting owner",
+        "due time or escalation"
+      ],
+      "recoveryRequired": true
+    },
+    {
+      "id": "DELIVERY-FAILED",
+      "name": "Failed delivery and recovery",
+      "expectedPath": [
+        "EXECUTE",
+        "EFFECT",
+        "VERIFY",
+        "RECOVER",
+        "PREPARE",
+        "ASSIGN",
+        "EXECUTE",
+        "VERIFY",
+        "OUTCOME"
+      ],
+      "requiredEvidence": [
+        "failed delivery reason",
+        "attempt reference",
+        "recovery owner",
+        "retry or return plan",
+        "new assignment version",
+        "final verification"
+      ],
+      "recoveryRequired": true
+    },
+    {
+      "id": "EFFECT-UNKNOWN",
+      "name": "Execution effect uncertain",
+      "expectedPath": [
+        "EXECUTE",
+        "EFFECT",
+        "RECOVER",
+        "NEXT SITUATION"
+      ],
+      "requiredEvidence": [
+        "command idempotency key",
+        "last known acknowledgement",
+        "reconciliation state",
+        "explicit waiting/escalation owner"
+      ],
+      "recoveryRequired": true
+    }
+  ],
+  "stopConditions": [
+    "Authorization or tenant scope cannot be verified",
+    "Executor identity or assignment is ambiguous",
+    "Delivery evidence is missing, conflicting or unverifiable",
+    "Mission state conflicts with latest canonical version",
+    "Execution effect is unknown and reconciliation owner is absent",
+    "Security, privacy or safety incident is suspected"
+  ]
+}
