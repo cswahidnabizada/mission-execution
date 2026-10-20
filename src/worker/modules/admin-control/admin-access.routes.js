@@ -147,9 +147,16 @@ export function registerAdminAccessRoutes(router){
       if(!env.PLATFORM_SUPER_ADMIN_SECRET)throw Object.assign(new Error('PLATFORM_SUPER_ADMIN_NOT_CONFIGURED'),{status:503});
       const body=await readJson(request);
       const supplied=String(body.secret||'').trim();
-      const x=new TextEncoder().encode(supplied),y=new TextEncoder().encode(String(env.PLATFORM_SUPER_ADMIN_SECRET));
-      if(x.length!==y.length)throw Object.assign(new Error('FORBIDDEN'),{status:403});
-      let diff=0;for(let i=0;i<x.length;i++)diff|=x[i]^y[i];if(diff!==0)throw Object.assign(new Error('FORBIDDEN'),{status:403});
+      // Compare fixed-length SHA-256 digests so neither content nor length of the secret leaks via timing.
+      const dx=new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(supplied)));
+      const dy=new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(String(env.PLATFORM_SUPER_ADMIN_SECRET))));
+      let diff=0;for(let i=0;i<dx.length;i++)diff|=dx[i]^dy[i];
+      if(diff!==0){
+        // Audit failed attempts (previously only successes were logged). The IP is stored only as a truncated hash (GDPR data minimisation).
+        const ipHash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(requestIp(request))))).slice(0,6).map(b=>b.toString(16).padStart(2,'0')).join('');
+        await auditAdminControl(env,{actor:{role:'anonymous'},action:'platform.super_admin.login_failed',resourceType:'platform_control_plane',resourceId:null,targetCompanyId:null,requestId,metadata:{ipHash}}).catch(error=>console.error('ADMIN_LOGIN_FAILURE_AUDIT_UNAVAILABLE',String(error?.message||error)));
+        throw Object.assign(new Error('FORBIDDEN'),{status:403});
+      }
       const superToken=await createPlatformSuperAdminSession(env,request);
       await auditAdminControl(env,{actor:{role:'platform_super_administrator'},action:'platform.super_admin.login',resourceType:'platform_control_plane',resourceId:null,targetCompanyId:null,requestId,metadata:{ipBound:Boolean(String(env.PLATFORM_SUPER_ADMIN_ALLOWED_IPS||'').trim())}}).catch(error=>{throw authorityUnavailable('platform_admin_access_audit',error);});
       const response=json({success:true,administrator:{role:'platform_super_administrator'}});
@@ -160,6 +167,6 @@ export function registerAdminAccessRoutes(router){
 
   router.get('/api/platform/access/admin/status',async({request,env})=>{try{const actor=await requirePlatformAdministrator(request,env);const url=new URL(request.url);const scope=url.searchParams.get('scope')||null;const stepUp=await readPlatformSuperAdminStepUp(request,env,scope);return json({success:true,authenticated:true,role:actor.role,sessionExpiresAt:actor.expiresAt,stepUpActive:Boolean(stepUp),stepUpExpiresAt:stepUp?.expiresAt||null,stepUpScope:stepUp?.scope||null});}catch(e){return json({success:true,authenticated:false},200);}});
 
-  router.post('/api/platform/access/admin/logout',async({request,env})=>{try{await destroyPlatformSuperAdministrator(request,env);}catch{}const response=json({success:true});response.headers.append('Set-Cookie','onmission_platform_super_admin=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0');response.headers.append('Set-Cookie','onmission_platform_super_admin_stepup=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0');return response;});
+  router.post('/api/platform/access/admin/logout',async({request,env})=>{try{await destroyPlatformSuperAdministrator(request,env);}catch(error){console.error('ADMIN_SESSION_REVOKE_FAILED',String(error?.message||error));}const response=json({success:true});response.headers.append('Set-Cookie','onmission_platform_super_admin=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0');response.headers.append('Set-Cookie','onmission_platform_super_admin_stepup=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0');return response;});
   router.post('/api/platform/access/admin/step-up',async({request,env,requestId})=>{try{await consumeRateLimit(env,`platform-admin-stepup:${requestIp(request)}`,{limit:6,windowSeconds:900});await requirePlatformSuperAdministrator(request,env);const body=await readJson(request);const scope=String(body.scope||'*').trim()||'*';const token=await createPlatformSuperAdminStepUpSession(env,request,body.secret,scope);await auditAdminControl(env,{actor:{role:'platform_super_administrator'},action:'platform.super_admin.step_up',resourceType:'platform_control_plane',resourceId:null,targetCompanyId:null,requestId,metadata:{}}).catch(error=>{throw authorityUnavailable('platform_admin_access_audit',error);});const response=json({success:true,stepUpExpiresIn:PLATFORM_SUPER_ADMIN_STEPUP_TTL});response.headers.set('Set-Cookie',`onmission_platform_super_admin_stepup=${token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${PLATFORM_SUPER_ADMIN_STEPUP_TTL}`);return response;}catch(e){return fail(e);}});
 }

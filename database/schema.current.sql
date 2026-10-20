@@ -5805,3 +5805,9 @@ CREATE INDEX IF NOT EXISTS idx_platform_simulation_runs_scope_created ON platfor
 CREATE INDEX IF NOT EXISTS idx_platform_simulation_runs_scenario_created ON platform_simulation_runs(scenario_id,created_at DESC);
 CREATE TRIGGER IF NOT EXISTS trg_platform_simulation_runs_no_update BEFORE UPDATE ON platform_simulation_runs BEGIN SELECT RAISE(ABORT,'SIMULATION_RUNS_IMMUTABLE'); END;
 CREATE TRIGGER IF NOT EXISTS trg_platform_simulation_runs_no_delete BEFORE DELETE ON platform_simulation_runs BEGIN SELECT RAISE(ABORT,'SIMULATION_RUNS_IMMUTABLE'); END;
+
+-- 0162 audit immutability
+CREATE TRIGGER IF NOT EXISTS trg_admin_control_audit_events_no_update BEFORE UPDATE ON admin_control_audit_events BEGIN SELECT RAISE(ABORT,'AUDIT_EVENTS_IMMUTABLE'); END;
+CREATE TRIGGER IF NOT EXISTS trg_admin_control_audit_events_no_delete BEFORE DELETE ON admin_control_audit_events BEGIN SELECT RAISE(ABORT,'AUDIT_EVENTS_IMMUTABLE'); END;
+CREATE TRIGGER IF NOT EXISTS trg_audit_logs_no_update BEFORE UPDATE ON audit_logs BEGIN SELECT RAISE(ABORT,'AUDIT_LOG_IMMUTABLE'); END;
+CREATE TRIGGER IF NOT EXISTS trg_audit_logs_no_early_delete BEFORE DELETE ON audit_logs WHEN OLD.created_at > datetime('now','-30 days') BEGIN SELECT RAISE(ABORT,'AUDIT_LOG_RETENTION_FLOOR'); END;

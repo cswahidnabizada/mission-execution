@@ -14,7 +14,7 @@ function allowedIp(request,env){
 }
 
 function make(message,status){const e=new Error(message);e.status=status;return e;}
-function readCookie(request,name){for(const part of String(request.headers.get('Cookie')||'').split(';')){const i=part.indexOf('=');if(i>=0&&part.slice(0,i).trim()===name)return decodeURIComponent(part.slice(i+1).trim())}return ''}
+function readCookie(request,name){for(const part of String(request.headers.get('Cookie')||'').split(';')){const i=part.indexOf('=');if(i>=0&&part.slice(0,i).trim()===name){try{return decodeURIComponent(part.slice(i+1).trim())}catch{return ''}}}return ''}
 function b64u(bytes){let s='';for(const b of bytes)s+=String.fromCharCode(b);return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
 function ub64u(s){const p=s.replace(/-/g,'+').replace(/_/g,'/');const pad='='.repeat((4-p.length%4)%4);const raw=atob(p+pad);return Uint8Array.from(raw,c=>c.charCodeAt(0));}
 
@@ -109,10 +109,36 @@ export async function readPlatformSuperAdministrator(request,env){
   if(!(await verify(payload,parts[4],env.PLATFORM_SUPER_ADMIN_SECRET)))return null;
   const generation=String(env.PLATFORM_SUPER_ADMIN_SESSION_GENERATION||'1');
   if(parts[3]!==generation)return null;
+  if(await isSessionRevoked(env,parts[2]))return null;
   return Object.freeze({role:'platform_super_administrator',sourceRole:'platform_access_admin',expiresAt:exp*1000,nonce:parts[2],generation});
 }
 
-export async function destroyPlatformSuperAdministrator(){return true;}
+// Server-side revocation. Sessions are stateless signed tokens, so logout writes the
+// session nonce to a KV deny-list for the token's remaining lifetime. A revoked
+// nonce also invalidates any step-up token bound to it (step-up is nonce-bound).
+// KV is eventually consistent across regions (typically <60s), which still shrinks
+// the post-logout window from the full 30-minute TTL. If KV is unreachable the read
+// fails closed (session treated as revoked).
+const REVOKE_PREFIX='platform-admin-revoked:';
+async function isSessionRevoked(env,nonce){
+  if(!env.KV_BINDING)return false;
+  try{return Boolean(await env.KV_BINDING.get(REVOKE_PREFIX+nonce));}
+  catch{return true;}
+}
+export async function destroyPlatformSuperAdministrator(request,env){
+  if(!request||!env?.KV_BINDING)return false;
+  const token=readCookie(request,COOKIE);
+  const parts=token.split('|');
+  if(parts.length!==5||parts[0]!=='v2')return false;
+  const exp=Number(parts[1]);
+  if(!Number.isSafeInteger(exp))return false;
+  // Only revoke tokens that carry a valid signature, so unauthenticated callers cannot
+  // fill the deny-list with arbitrary nonces.
+  if(!env.PLATFORM_SUPER_ADMIN_SECRET||!(await verify(parts.slice(0,4).join('|'),parts[4],env.PLATFORM_SUPER_ADMIN_SECRET)))return false;
+  const ttl=Math.max(60,exp-Math.floor(Date.now()/1000)+60);
+  await env.KV_BINDING.put(REVOKE_PREFIX+parts[2],'1',{expirationTtl:ttl});
+  return true;
+}
 
 function safeEqual(a,b){const x=new TextEncoder().encode(String(a||'')),y=new TextEncoder().encode(String(b||''));if(x.length!==y.length)return false;let d=x.length^y.length;const n=Math.max(x.length,y.length);for(let i=0;i<n;i++)d|=(x[i%n]||0)^(y[i%n]||0);return d===0}
 

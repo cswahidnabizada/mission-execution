@@ -2,11 +2,11 @@
   "version": "16.10.84",
   "release": "RELEASE.md",
   "base": "16.10.83",
-  "migrationHighWaterMark": "0161",
-  "migrationCount": 161,
+  "migrationHighWaterMark": "0162",
+  "migrationCount": 162,
   "schemaSnapshot": {
     "file": "database/schema.current.sql",
-    "sha256": "e816aad94295dad3d5a051bf6522be676c54c3dbc493316a707fbb02b89ce537"
+    "sha256": "f11086f52358906eb9583fa305a766eec1628a8d7984aba4b9151cd50c08d18e"
   },
   "generatedFrom": "deterministic-release-pipeline",
   "releaseName": "Controlled Pilot Readiness and Operational Approval",

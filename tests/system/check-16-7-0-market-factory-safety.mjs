@@ -22,6 +22,6 @@ assert.match(ui,/scrollIntoView/);
 assert.match(release,/Base: ON Mission 16\.7\.0/);
 assert.equal(manifest.version,fs.readFileSync('VERSION','utf8').trim());
 assert.ok(manifest.base.localeCompare('16.10.0', undefined, {numeric:true})>=0);
-assert.ok(['0158','0159','0160','0161'].includes(manifest.migrationHighWaterMark));
-assert.ok([158,159,160,161].includes(manifest.migrationCount));
+assert.ok(['0158','0159','0160','0161','0162'].includes(manifest.migrationHighWaterMark));
+assert.ok([158,159,160,161,162].includes(manifest.migrationCount));
 console.log('16.7.0 canonical safety + lifecycle preservation remains present in current release: PASS');

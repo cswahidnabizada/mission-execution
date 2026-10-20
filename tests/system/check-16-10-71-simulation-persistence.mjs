@@ -13,7 +13,7 @@ const html=read('public/simulator.html');
 assert.ok(['16.10.80','16.10.81','16.10.82','16.10.83','16.10.84'].includes(pkg.version));
 assert.equal(lock.version,pkg.version);assert.equal(lock.packages[''].version,pkg.version);
 assert.equal(read('VERSION').trim(),pkg.version);assert.equal(manifest.version,pkg.version);
-assert.ok(['16.10.79','16.10.80','16.10.81','16.10.82','16.10.83'].includes(manifest.base));assert.equal(manifest.migrationHighWaterMark,'0161');assert.equal(manifest.migrationCount,161);
+assert.ok(['16.10.79','16.10.80','16.10.81','16.10.82','16.10.83'].includes(manifest.base));assert.equal(manifest.migrationHighWaterMark,'0162');assert.equal(manifest.migrationCount,162);
 assert.equal(manifest.schemaSnapshot.sha256,crypto.createHash('sha256').update(Buffer.from(schema)).digest('hex'));
 for(const contract of ['platform_simulation_runs','owner_scope','tenant_id','content_sha256','run_json','trg_platform_simulation_runs_no_update','trg_platform_simulation_runs_no_delete'])assert.ok(migration.includes(contract),`migration missing ${contract}`);
 assert.ok(schema.includes('-- Canonical schema snapshot: 0161 immutable simulation run records'));
