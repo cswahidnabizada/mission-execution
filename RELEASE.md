@@ -1,4 +1,4 @@
-# Mission Execution 16.11.0 — Stage Contract UI/API Integration
+# Mission Execution 16.12.0 — Registered Market Launch Command Adapters
 
 Status: protected candidate — exact Node.js 24 build, full cumulative release gates, authenticated browser/runtime certification and deployed pilot proof pending. DO NOT DEPLOY until required gates pass.
 
@@ -1198,3 +1198,14 @@ This release deliberately does not pretend all owning-authority commands are wir
 
 ### Quality policy
 Security → Truth → Liveness → Stability → Experience → Scale. No evidence-only shortcut may bypass a canonical authority or launch gate.
+
+
+## 16.12.0 — Registered Market Launch Command Adapters (hardening candidate)
+
+- Added a server-owned, explicit allowlist for market-launch command adapters.
+- Resolve can execute the registered canonical-read and reconciliation-validation adapters; the server performs the read/validation and persists the canonical outcome.
+- Only adapter-returned canonical outcomes can mark these supported steps verified. Browser-submitted evidence cannot mark a step complete.
+- The Resolve UI renders direct execution controls only for commands that are actually registered. Other steps remain evidence-only and explicitly unverified until their owning authority adapter exists.
+- No schema migration was added.
+- This remains a hardening candidate: resource creation/configuration/linking, legal review, test-lab execution, recovery, and deployed-runtime certification adapters are not yet fully implemented. Do not claim full market launch completion or deploy as certified.
+- Node 24 build, full cumulative release gates, authenticated browser tests, and deployed-runtime certification remain pending.

@@ -74,3 +74,8 @@ Status: source candidate. Server-defined contracts now declare ordered steps, au
 
 ## 16.11.0 — Authority-Driven Market Launch Execution
 Evidence submission is now explicitly separated from authority verification; generic completion controls are removed. Next work: connect each task to registered owning-authority commands and schema-driven forms, then verify canonical outcomes.
+
+
+## 16.12.0 — Registered Market Launch Command Adapters
+
+Status: hardening candidate. Resolve now executes only the registered canonical-read and reconciliation-validation adapters through a protected step-up endpoint. The server records adapter output and verifies supported steps from canonical results; evidence-only commands cannot claim completion. The rest of the command surface remains explicitly unimplemented and must stay blocked/unverified until real owning-authority adapters are wired for resource creation/configuration/relationships, legal decisions, certification/test-lab execution, recovery, and deployed-runtime proof. Release gates: Node 24 build, full cumulative suite, authenticated browser/runtime tests, and Germany logistics pilot proof.
