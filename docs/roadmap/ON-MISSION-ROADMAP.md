@@ -79,3 +79,11 @@ Evidence submission is now explicitly separated from authority verification; gen
 ## 16.12.0 — Registered Market Launch Command Adapters
 
 Status: hardening candidate. Resolve now executes only the registered canonical-read and reconciliation-validation adapters through a protected step-up endpoint. The server records adapter output and verifies supported steps from canonical results; evidence-only commands cannot claim completion. The rest of the command surface remains explicitly unimplemented and must stay blocked/unverified until real owning-authority adapters are wired for resource creation/configuration/relationships, legal decisions, certification/test-lab execution, recovery, and deployed-runtime proof. Release gates: Node 24 build, full cumulative suite, authenticated browser/runtime tests, and Germany logistics pilot proof.
+
+## 16.14.0 — Canonical Sector Resource Execution and Market Linking (candidate)
+- Added one persisted Resolve task per package sector.
+- Implemented registered server-side sector search, selection, create/reuse configuration and country-blueprint relationship adapters.
+- Enforced immutable package scope, DRAFT/VALIDATED mutation boundary, canonical drift rejection, read-after-write verification and audit logging.
+- Stage prerequisites now require both `COMPLETE` and `authorityVerified=true`.
+- Still open: general resource types and market-specific product relationships; authorized legal/policy reviewer decision workflow; actual Test Lab execution and persisted test-run proof; end-to-end Germany Logistics mission/effect/recovery certification; full recovery/lifecycle adapter coverage; Node 24 build; full cumulative suite; authenticated browser/deployed-runtime certification.
+- No schema change; migration high-water mark remains 0163. Not deployed or production-certified.

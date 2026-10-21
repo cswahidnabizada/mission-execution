@@ -211,6 +211,9 @@ export async function previewMarketReconciliation(env,packageVersionId){
 
 function launchTasksFor(pkg,market,preview){
  const tasks=[{key:'market-status',category:'market',title:'Resolve market lifecycle status',required:true,description:'Investigate RETIRED/SUSPENDED state and confirm the intended transition.'}];
+ // Each reusable sector receives its own governed execution task. This keeps mutations
+ // narrow and retryable instead of applying an entire package in one opaque command.
+ for(const item of arr(pkg.sectors))tasks.push({key:`resource:sector:${item.code}`,category:'product',title:`Product resource: ${item.name}`,required:true,resourceType:'sector',resourceCode:item.code,description:'Create or reuse the canonical sector, link it to the country blueprint, then re-read both authorities.'});
  for(const item of arr(pkg.legal).filter(x=>x.required))tasks.push({key:`legal:${item.key}`,category:'legal',title:`Review ${item.title}`,required:true,description:'Record an evidence-backed applicability decision; status alone is not proof.'});
  for(const item of arr(pkg.content))tasks.push({key:`content:${item.code}`,category:'content',title:`Approve ${item.name}`,required:true,description:`Review ${item.languageCode.toUpperCase()} content and confirm it is accurate, complete and customer-ready.`});
  tasks.push({key:'reconciliation',category:'platform',title:'Review canonical reconciliation',required:true,description:'Inspect all create/reuse/update operations and resolve scope conflicts.'});
@@ -253,7 +256,7 @@ export async function updateMarketLaunchStageStep(env,actor,packageVersionId,tas
  const summary=clean(input.evidence?.summary,2000),evidenceRef=clean(input.evidence?.evidenceRef,1000);
  if(status==='COMPLETE')throw fail('Evidence submission cannot verify an owning-authority outcome. Use a registered authority command and canonical result before verification.',409,'MARKET_LAUNCH_STEP_AUTHORITY_VERIFICATION_REQUIRED');
  if(status==='IN_PROGRESS'&&(summary.length<12||evidenceRef.length<4))throw fail('Progress evidence requires a substantive summary and traceable reference.',422,'MARKET_LAUNCH_STEP_EVIDENCE_REQUIRED');
- for(const prereq of step.prerequisites){const prior=contract.steps.find(x=>x.key===prereq);if(prior&&prior.status!=='COMPLETE')throw fail(`Substep blocked: prerequisite ${prereq} is not verified complete.`,409,'MARKET_LAUNCH_STEP_PREREQUISITE_BLOCKED');}
+ for(const prereq of step.prerequisites){const prior=contract.steps.find(x=>x.key===prereq);if(prior&&!(prior.status==='COMPLETE'&&prior.authorityVerified===true))throw fail(`Substep blocked: prerequisite ${prereq} has no verified canonical outcome.`,409,'MARKET_LAUNCH_STEP_PREREQUISITE_BLOCKED');}
  const evidenceRow=await env.DB.prepare('SELECT evidence_json FROM platform_market_launch_task_evidence WHERE package_version_id=? AND task_key=? LIMIT 1').bind(Number(packageVersionId),taskKey).first();const evidence=parseJson(evidenceRow?.evidence_json||'{}');const priorState=evidence.stageContract&&evidence.stageContract.contractKey===contract.contractKey?evidence.stageContract:contract;evidence.stageContract={...priorState,steps:contract.steps.map(x=>x.key===stepKey?{...x,status,evidence:status==='IN_PROGRESS'?{summary,evidenceRef,submittedAt:new Date().toISOString(),submittedBy:actor.id||actor.role}:null,authorityVerified:false}:x),updatedAt:new Date().toISOString()};
  await env.DB.prepare(`INSERT INTO platform_market_launch_task_evidence(package_version_id,task_key,status,evidence_json,updated_by_type,updated_by_id,updated_at) VALUES(?,?,?,?,?,?,CURRENT_TIMESTAMP) ON CONFLICT(package_version_id,task_key) DO UPDATE SET status=excluded.status,evidence_json=excluded.evidence_json,updated_by_type=excluded.updated_by_type,updated_by_id=excluded.updated_by_id,updated_at=CURRENT_TIMESTAMP`).bind(Number(packageVersionId),taskKey,task.status==='COMPLETE'?'IN_PROGRESS':(task.status==='TODO'?'IN_PROGRESS':task.status),JSON.stringify({...evidence,recordedAt:new Date().toISOString()}),actor.role,actor.id||null).run();
  await auditAdminControl(env,{actor,action:'admin.market-factory.launch-substep.updated',resourceType:'market_package_version',resourceId:packageVersionId,requestId,metadata:{taskKey,stepKey,status}}).catch(error=>{throw authorityUnavailable('market_factory_audit',error);});return getMarketLaunchStageContract(env,packageVersionId,taskKey);
@@ -261,6 +264,42 @@ export async function updateMarketLaunchStageStep(env,actor,packageVersionId,tas
 
 
 const MARKET_LAUNCH_COMMAND_ADAPTERS=Object.freeze({
+ 'resource.search': async (env,packageVersionId,taskKey)=>{
+  const match=/^resource:sector:([a-z0-9._:-]+)$/.exec(String(taskKey));if(!match)throw fail('Resource search is only registered for sector resource tasks.',422,'MARKET_LAUNCH_RESOURCE_SCOPE_INVALID');
+  const row=await env.DB.prepare(`SELECT v.package_json,p.country_code FROM platform_market_package_versions v JOIN platform_market_packages p ON p.id=v.package_id WHERE v.id=? LIMIT 1`).bind(Number(packageVersionId)).first();if(!row)throw fail('Market package version not found.',404,'MARKET_PACKAGE_VERSION_NOT_FOUND');
+  const pkg=parseJson(row.package_json);const item=arr(pkg.sectors).find(x=>x.code===match[1]);if(!item)throw fail('Sector is not present in this immutable package version.',409,'MARKET_LAUNCH_RESOURCE_NOT_IN_PACKAGE');
+  const canonical=await env.DB.prepare(`SELECT code,name,description,active FROM platform_reusable_sectors WHERE code=? LIMIT 1`).bind(item.code).first();
+  return {adapter:'market-launch.sector-search.v1',result:{resourceType:'sector',code:item.code,requestedName:item.name,countryCode:row.country_code,exists:Boolean(canonical),canonical:canonical?{code:canonical.code,name:canonical.name,description:canonical.description,active:Number(canonical.active)===1}:null,readOnly:true}};
+ },
+ 'resource.select': async (env,packageVersionId,taskKey)=>{
+  const result=await MARKET_LAUNCH_COMMAND_ADAPTERS['resource.search'](env,packageVersionId,taskKey);
+  if(result.result.exists&&(result.result.canonical.name!==result.result.requestedName))throw fail('Existing canonical sector differs from the package. Resolve drift through the owning resource authority; it will not be overwritten.',409,'MARKET_LAUNCH_RESOURCE_DRIFT');
+  return {adapter:'market-launch.sector-selection.v1',result:{...result.result,selected:true,selectionScope:`market-package-version:${packageVersionId}`}};
+ },
+ 'resource.configure': async (env,packageVersionId,taskKey)=>{
+  const match=/^resource:sector:([a-z0-9._:-]+)$/.exec(String(taskKey));if(!match)throw fail('Sector configuration is not registered for this task.',422,'MARKET_LAUNCH_RESOURCE_SCOPE_INVALID');
+  const row=await env.DB.prepare(`SELECT v.package_json,v.status,p.country_code FROM platform_market_package_versions v JOIN platform_market_packages p ON p.id=v.package_id WHERE v.id=? LIMIT 1`).bind(Number(packageVersionId)).first();if(!row)throw fail('Market package version not found.',404,'MARKET_PACKAGE_VERSION_NOT_FOUND');
+  if(!['DRAFT','VALIDATED'].includes(String(row.status).toUpperCase()))throw fail('Canonical resource mutation is only allowed before release authorization.',409,'MARKET_LAUNCH_VERSION_IMMUTABLE');
+  const pkg=parseJson(row.package_json);const item=arr(pkg.sectors).find(x=>x.code===match[1]);if(!item)throw fail('Sector is not present in this immutable package version.',409,'MARKET_LAUNCH_RESOURCE_NOT_IN_PACKAGE');
+  const current=await env.DB.prepare(`SELECT code,name,description,active FROM platform_reusable_sectors WHERE code=? LIMIT 1`).bind(item.code).first();
+  if(current){if(String(current.name)!==String(item.name)||String(current.description||'')!==String(item.description||''))throw fail('Canonical sector has different values; explicit owning-authority reconciliation is required.',409,'MARKET_LAUNCH_RESOURCE_DRIFT');return {adapter:'market-launch.sector-configure.v1',result:{code:item.code,created:false,reused:true,canonical:{code:current.code,name:current.name,description:current.description,active:Number(current.active)===1}}};}
+  await env.DB.prepare(`INSERT INTO platform_reusable_sectors(code,name,description,active,updated_at) VALUES(?,?,?,1,CURRENT_TIMESTAMP)`).bind(item.code,item.name,item.description||'').run();
+  const verified=await env.DB.prepare(`SELECT code,name,description,active FROM platform_reusable_sectors WHERE code=? LIMIT 1`).bind(item.code).first();
+  if(!verified||verified.name!==item.name||String(verified.description||'')!==String(item.description||'')||Number(verified.active)!==1)throw fail('Sector creation did not pass canonical read-after-write verification.',503,'MARKET_LAUNCH_RESOURCE_POSTCONDITION_FAILED');
+  return {adapter:'market-launch.sector-configure.v1',result:{code:item.code,created:true,reused:false,canonical:{code:verified.code,name:verified.name,description:verified.description,active:true}}};
+ },
+ 'market.relationship.create': async (env,packageVersionId,taskKey,actor)=>{
+  const match=/^resource:sector:([a-z0-9._:-]+)$/.exec(String(taskKey));if(!match)throw fail('Sector relationship is not registered for this task.',422,'MARKET_LAUNCH_RESOURCE_SCOPE_INVALID');
+  const row=await env.DB.prepare(`SELECT v.package_json,v.status,p.country_code FROM platform_market_package_versions v JOIN platform_market_packages p ON p.id=v.package_id WHERE v.id=? LIMIT 1`).bind(Number(packageVersionId)).first();if(!row)throw fail('Market package version not found.',404,'MARKET_PACKAGE_VERSION_NOT_FOUND');
+  if(!['DRAFT','VALIDATED'].includes(String(row.status).toUpperCase()))throw fail('Market relationship mutation is only allowed before release authorization.',409,'MARKET_LAUNCH_VERSION_IMMUTABLE');
+  const pkg=parseJson(row.package_json);const item=arr(pkg.sectors).find(x=>x.code===match[1]);if(!item)throw fail('Sector is not present in this immutable package version.',409,'MARKET_LAUNCH_RESOURCE_NOT_IN_PACKAGE');
+  const canonical=await env.DB.prepare(`SELECT code,name,description,active FROM platform_reusable_sectors WHERE code=? LIMIT 1`).bind(item.code).first();if(!canonical||canonical.name!==item.name||String(canonical.description||'')!==String(item.description||'')||Number(canonical.active)!==1)throw fail('Canonical sector must exist and match the package before linking.',409,'MARKET_LAUNCH_RESOURCE_NOT_CONFIGURED');
+  const blueprint=await env.DB.prepare(`SELECT id FROM platform_country_product_blueprints WHERE country_code=? LIMIT 1`).bind(row.country_code).first();if(!blueprint)throw fail('Country product blueprint must exist before creating the relationship.',409,'MARKET_LAUNCH_BLUEPRINT_REQUIRED');
+  await upsertBlueprintSector(env,actor,Number(blueprint.id),{sectorCode:item.code,sectorName:item.name,notes:item.description||'',required:item.required!==false});
+  const linked=await env.DB.prepare(`SELECT sector_code,sector_name,required FROM platform_country_product_sectors WHERE blueprint_id=? AND sector_code=? LIMIT 1`).bind(Number(blueprint.id),item.code).first();
+  if(!linked||linked.sector_name!==item.name||Number(linked.required)!==(item.required===false?0:1))throw fail('Market-sector relationship failed canonical read-after-write verification.',503,'MARKET_LAUNCH_RELATIONSHIP_POSTCONDITION_FAILED');
+  return {adapter:'market-launch.sector-market-relationship.v1',result:{blueprintId:Number(blueprint.id),countryCode:row.country_code,sectorCode:item.code,linked:true,canonical:{sectorCode:linked.sector_code,sectorName:linked.sector_name,required:Number(linked.required)===1}}};
+ },
  'canonical.read': async (env,packageVersionId,taskKey)=>{
   const workbench=await getMarketLaunchWorkbench(env,packageVersionId);
   const task=workbench.tasks.find(x=>x.key===taskKey);
@@ -286,7 +325,7 @@ export async function executeMarketLaunchStageCommand(env,actor,packageVersionId
  if(!adapter)throw fail(`No registered owning-authority adapter exists for ${step.permittedCommand}. Submit evidence only; this step remains unverified until its owning adapter is implemented.`,409,'MARKET_LAUNCH_COMMAND_ADAPTER_UNAVAILABLE');
  if(step.status==='COMPLETE'&&step.authorityVerified===true)return contract;
  for(const prerequisite of step.prerequisites||[]){const prior=contract.steps.find(x=>x.key===prerequisite);if(prior&&!(prior.status==='COMPLETE'&&prior.authorityVerified===true))throw fail(`Command blocked: prerequisite ${prerequisite} has no verified canonical outcome.`,409,'MARKET_LAUNCH_STEP_PREREQUISITE_BLOCKED');}
- const outcome=await adapter(env,Number(packageVersionId),taskKey);
+ const outcome=await adapter(env,Number(packageVersionId),taskKey,actor,requestId);
  if(step.permittedCommand==='canonical.validate'&&outcome.result.safeToApply!==true){
   const row=await env.DB.prepare('SELECT evidence_json FROM platform_market_launch_task_evidence WHERE package_version_id=? AND task_key=? LIMIT 1').bind(Number(packageVersionId),taskKey).first();
   const evidence=parseJson(row?.evidence_json||'{}');const prior=evidence.stageContract&&evidence.stageContract.contractKey===contract.contractKey?evidence.stageContract:contract;

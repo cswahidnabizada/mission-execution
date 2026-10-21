@@ -1,4 +1,4 @@
-# Mission Execution 16.12.0 — Registered Market Launch Command Adapters
+# Mission Execution 16.14.0 — Canonical Sector Resource Execution and Market Linking
 
 Status: protected candidate — exact Node.js 24 build, full cumulative release gates, authenticated browser/runtime certification and deployed pilot proof pending. DO NOT DEPLOY until required gates pass.
 
@@ -1209,3 +1209,14 @@ Security → Truth → Liveness → Stability → Experience → Scale. No evide
 - No schema migration was added.
 - This remains a hardening candidate: resource creation/configuration/linking, legal review, test-lab execution, recovery, and deployed-runtime certification adapters are not yet fully implemented. Do not claim full market launch completion or deploy as certified.
 - Node 24 build, full cumulative release gates, authenticated browser tests, and deployed-runtime certification remain pending.
+
+
+## 16.14.0 — Canonical sector resource execution and market linking
+- Added one governed launch task per package sector so operations are narrow, independently retryable and visible in Resolve.
+- Registered server-side adapters for sector search, selection, creation/configuration and country-blueprint relationship creation. Commands derive the target only from the immutable package version; no browser-supplied resource payload can redirect a mutation.
+- Sector creation rejects canonical drift, limits mutation to DRAFT/VALIDATED package versions, and verifies persisted values after insert.
+- Relationship creation requires a canonical matching active sector and an existing country blueprint, uses the blueprint owning service, and re-reads the relationship after mutation.
+- Fixed stage prerequisite enforcement to require both COMPLETE and authorityVerified=true.
+- No schema change; migration high-water mark remains 0163.
+- Legal decision workflow, policy-authority decisions, certification/Test Lab execution, full recovery adapters, full cumulative suite, Node 24 build, authenticated browser/deployed-runtime tests and Germany Logistics pilot certification remain OPEN.
+- This is a hardening candidate, not a production-certified release. Do not deploy until all mandatory gates pass.
