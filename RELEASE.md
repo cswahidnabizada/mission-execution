@@ -8,7 +8,7 @@ No schema migration is introduced. This release is not a claim of production run
 
 Status: protected candidate — exact Node.js 24 build, full release gates and deployed browser/runtime certification pending. DO NOT DEPLOY until required gates pass.
 
-Base: ON Mission 16.10.91.
+Base: ON MISSION 16.10.92.
 
 ## Release intent
 This candidate introduces the first in-place resource-preparation vertical slice inside the canonical Market Factory launch workbench. It uses the existing governed Data Entry boundary and does not create a competing canonical domain or resource authority.
@@ -24,10 +24,13 @@ This candidate introduces the first in-place resource-preparation vertical slice
 ## Architecture and governance
 Preserve the deterministic build and migration contract. Maintain one canonical domain authority per resource, canonical capability contracts (Capability registry), canonical vocabulary, and the permanent priority Security → Truth → Liveness → Stability → Experience → Scale.
 
-The platform retains Global Compliance Context, Private ForYou, Consent & Privacy, and Data Subject Rights as governed product concerns. The Logistics mission vocabulary continues to use Cargo/Object according to the canonical vocabulary and compatibility rules.
+No competing workflow authority is introduced. The platform retains Global Compliance Context, Private ForYou, Consent & Privacy, and Data Subject Rights as governed product concerns. The Logistics mission vocabulary continues to use Cargo/Object according to the canonical vocabulary and compatibility rules.
+
+## Truthful Runtime Certification
+The typed resource-specific form renderer is implemented in source and covered by the 16.10.93 focused regression. Authenticated browser validation against live Data Entry definitions remains pending.
 
 ## Not yet complete
-Typed resource-specific forms, automatic canonical package linkage, per-stage configuration editors, stage save/resume and evidence-backed completion, complete market publication/runtime proof, and Germany Logistics pilot certification remain outstanding.
+Automatic canonical package linkage, per-stage configuration editors, durable server-backed stage save/resume, and evidence-backed stage completion remain outstanding. Complete market publication/runtime proof and Germany Logistics pilot certification also remain outstanding. The full cumulative release suite currently stops on a legacy release-document assertion, and the required Node.js 24 build has not run in this Node.js 22 environment.
 
 ## Canonical mission journey
 OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
