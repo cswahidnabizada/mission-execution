@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const ui=fs.readFileSync('public/assets/js/frontend/admin/market-factory.js','utf8');
+assert.match(ui,/IN-PLACE RESOURCE PREPARATION/,'inline resource preparation must be visible in the launch workbench');
+assert.match(ui,/\/api\/platform\/admin\/data-entry\/definitions/,'resource types must come from the Data Entry authority');
+assert.match(ui,/\/api\/platform\/admin\/data-entry\/preview/,'creation must use governed preview');
+assert.match(ui,/\/api\/platform\/admin\/data-entry\/\$\{encodeURIComponent\(pendingEntryId\)\}\/commit/,'commit must use canonical Data Entry commit route');
+assert.match(ui,/ensureStepUp\(`POST:\/api\/platform\/admin\/data-entry\/\$\{pendingEntryId\}\/commit`\)/,'commit must require step-up authorization');
+assert.match(ui,/does not automatically link or publish a market resource/,'UI must not imply automatic market linkage');
+assert.match(ui,/Market linkage and stage completion still require their own canonical operation and evidence/,'draft commit must not complete launch gates');
+assert.match(ui,/No launch gate was bypassed/,'launch governance must remain explicit');
+console.log('PASS 16.10.92 Market Launch in-place governed resource preparation contract');

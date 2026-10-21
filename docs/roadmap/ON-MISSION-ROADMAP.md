@@ -27,3 +27,10 @@ A machine-readable contract maps all 16 journey positions to existing authority 
 Hardware-in-the-loop requires separate device-specific safety approval, supervised test procedures, and independently verified emergency-stop behavior. This release does not implement or enable physical actuation.
 
 Deployment and source-level tests do **not** establish authenticated browser certification. Browser/runtime evidence remains pending until the candidate is deployed and the authenticated journeys are executed.
+
+
+## 16.10.92 — Market Launch In-Place Resource Preparation
+- **Implemented in source:** in-workbench Data Entry definition loading, JSON draft preview, step-up-protected canonical commit, clear lifecycle/market-linkage boundaries, regression contract.
+- **Not claimed complete:** typed resource-specific forms; automatic canonical package linkage; per-stage context-specific editors; full save/resume of stage configuration; integrated validation and verified task completion; publication and live-market proof.
+- **Next:** run exact Node.js 24 build and release gates; browser-test preview/commit and failure states; then extend the shared Stage Execution Engine to typed canonical resource selectors/forms and evidence-backed stage validation.
+- **Guardrails:** Data Entry remains a governed intake boundary, never a competing resource authority. Draft creation never publishes, activates or completes a market launch.
