@@ -1,9 +1,10 @@
 /* ON Mission 10.79.0 — unified operational Command Center */
-import {workspaceFor} from './workspace-registry.js?v=16.10.85';
-import {statusTone,displayValue,escapeHtml} from './ui-system.js?v=16.10.85';
-import {ADMIN_WORKSPACE_GROUPS} from './workspace-registry.js?v=16.10.85';
-import {openAdminDrawer} from './detail-drawer.js?v=16.10.85';
-import {governanceReadiness,renderGovernanceReadiness} from './governance-readiness.js?v=16.10.85';
+import {workspaceFor} from './workspace-registry.js?v=16.10.86';
+import {statusTone,displayValue,escapeHtml} from './ui-system.js?v=16.10.86';
+import {ADMIN_WORKSPACE_GROUPS} from './workspace-registry.js?v=16.10.86';
+import {openAdminDrawer} from './detail-drawer.js?v=16.10.86';
+import {governanceReadiness,renderGovernanceReadiness} from './governance-readiness.js?v=16.10.86';
+import {CONTROL_PLANE_AREAS,searchControlPlaneAreas} from './control-plane-model.js?v=16.10.86';
 
 export async function renderCommandCenter({$,state,esc,loadCommandCenter,api,navigate}){
  const box=$('#view-overview');
@@ -39,6 +40,13 @@ export async function renderCommandCenter({$,state,esc,loadCommandCenter,api,nav
       <div><span class="eyebrow">ON MISSION · PLATFORM CONTROL</span><h1 class="title">Control Center</h1><p class="sub">One operational surface for situation, work, system health and governed platform navigation.</p></div>
       <div class="control-hero-actions"><span class="pill ${tone(platformHealth)}">${escapeHtml(platformHealth)}</span><span class="mini">v${escapeHtml(s.version||'—')}</span>${action('overview','REFRESH')}<button class="btn muted" id="objectiveToggleSpecialist" type="button" aria-expanded="false">PLATFORM DETAILS</button></div>
     </header>
+
+    <section class="card section control-plane-home" aria-labelledby="control-plane-home-title">
+      <header class="section-head"><div><span class="eyebrow">UNIFIED CONTROL PLANE</span><h2 id="control-plane-home-title">Where do you want to work?</h2><p class="sub">Eight clear areas. Each action opens its existing canonical workspace; permissions and mutations remain server-enforced.</p></div><button class="btn muted" data-command-action="resource-management">RESOURCE EXPLORER</button></header>
+      <label class="control-plane-search-label" for="controlPlaneAreaSearch">Find a workspace or capability</label>
+      <input id="controlPlaneAreaSearch" class="input control-plane-area-search" type="search" maxlength="120" autocomplete="off" placeholder="Try: Germany, consent, onboarding, database, ChatGPT, tenant…" />
+      <div class="control-plane-area-grid" id="controlPlaneAreaGrid">${CONTROL_PLANE_AREAS.map(area=>`<article class="control-plane-area-card" data-control-area-card="${escapeHtml(area.key)}"><div class="control-plane-area-icon" aria-hidden="true">${escapeHtml(area.label.slice(0,1))}</div><div class="control-plane-area-content"><h3>${escapeHtml(area.label)}</h3><p>${escapeHtml(area.description)}</p><button type="button" class="btn muted" data-control-plane-action="${escapeHtml(area.action)}">OPEN WORKSPACE <span aria-hidden="true">→</span></button></div></article>`).join('')}<div class="control-plane-no-results" id="controlPlaneNoResults" hidden>No matching workspace. Try a broader term or open Resource Explorer to search canonical records.</div></div>
+    </section>
 
     <section class="card section objective-command" aria-labelledby="objective-command-title">
       <header class="section-head"><div><span class="eyebrow">OBJECTIVE WORKSPACE · ONE PLACE TO FINISH THE WORK</span><h2 id="objective-command-title">What outcome should ON MISSION achieve?</h2><p class="sub">Start once. Track the plan, provide missing information, review approvals, continue governed work and verify evidence here. Existing canonical services remain the only authorities.</p></div><span class="pill ok">GOVERNED · EVIDENCE-GATED</span></header>
@@ -92,6 +100,10 @@ export async function renderCommandCenter({$,state,esc,loadCommandCenter,api,nav
     </div></details>
   </div>`;
 
+  const areaSearch=$('#controlPlaneAreaSearch'),areaGrid=$('#controlPlaneAreaGrid'),areaEmpty=$('#controlPlaneNoResults');
+  const filterControlAreas=()=>{const matches=new Set(searchControlPlaneAreas(areaSearch?.value||'').map(x=>x.key));let visible=0;areaGrid?.querySelectorAll('[data-control-area-card]').forEach(card=>{const show=matches.has(card.dataset.controlAreaCard);card.hidden=!show;if(show)visible++;});if(areaEmpty)areaEmpty.hidden=visible!==0;};
+  areaSearch?.addEventListener('input',filterControlAreas);
+  box.querySelectorAll('[data-control-plane-action]').forEach(button=>button.addEventListener('click',()=>openWorkItem({action:button.dataset.controlPlaneAction})));
   const renderObjectiveInbox=async()=>{const approvalsNode=$('#objectiveGlobalApprovals'),runsNode=$('#objectiveRecentRuns');if(!approvalsNode||!runsNode)return;approvalsNode.innerHTML='<p class="sub">Refreshing approvals…</p>';runsNode.innerHTML='<p class="sub">Refreshing objectives…</p>';try{const [a,o]=await Promise.all([api('/api/platform/admin/objectives/approvals'),api('/api/platform/admin/objectives')]);const approvals=Array.isArray(a?.approvals)?a.approvals:null;const objectives=Array.isArray(o?.objectives)?o.objectives:null;if(approvals===null)throw new Error('Approval authority returned an invalid projection');if(objectives===null)throw new Error('Objective authority returned an invalid projection');approvalsNode.innerHTML=approvals.length?approvals.slice(0,8).map(x=>`<article class="objective-global-row"><div><b>${escapeHtml(x.objective_text||'Objective')}</b><p>${escapeHtml(x.step_title||'Decision')} · ${escapeHtml(x.authority_code||'canonical authority')}</p><small>${escapeHtml(x.approval_id)} · revision ${escapeHtml(x.revision)}</small></div><span class="pill warn">PENDING</span></article>`).join(''):'<p class="sub">No pending approvals.</p>';runsNode.innerHTML=objectives.length?objectives.slice(0,8).map(x=>`<article class="objective-global-row"><div><b>${escapeHtml(x.objective_text||'Objective')}</b><p>${escapeHtml(x.objective_id)} · ${escapeHtml(x.latest_run_id||'No run')}</p></div><span class="pill ${tone(x.status)}">${escapeHtml(x.status||'UNKNOWN')}</span>${x.latest_run_id?`<button class="btn muted" type="button" data-objective-open-run="${escapeHtml(x.latest_run_id)}">OPEN</button>`:`<button class="btn muted" type="button" disabled title="This objective has no persisted run to open">NO RUN</button>`}</article>`).join(''):'<p class="sub">No objectives have been recorded yet.</p>';runsNode.querySelectorAll('[data-objective-open-run]').forEach(b=>b.addEventListener('click',async()=>{if(!b.dataset.objectiveOpenRun)return;try{const fresh=await api(`/api/platform/admin/objective-runs/${encodeURIComponent(b.dataset.objectiveOpenRun)}`);await renderObjectiveRun(fresh.run);$('#objectiveCommandForm')?.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){runsNode.insertAdjacentHTML('afterbegin',`<p class="notice">Objective could not be opened: ${escapeHtml(e.message||'Authority unavailable')}</p>`);}}));}catch(e){approvalsNode.innerHTML=`<p class="notice">Approval inbox unavailable: ${escapeHtml(e.message||'Canonical authority unavailable')}</p>`;runsNode.innerHTML=`<p class="notice">Objective history unavailable: ${escapeHtml(e.message||'Canonical authority unavailable')}</p>`;}};
   $('#objectiveRefreshInbox')?.addEventListener('click',renderObjectiveInbox);void renderObjectiveInbox();
   const objectiveForm=$('#objectiveCommandForm');

@@ -1,7 +1,7 @@
 {
   "schema": "onmission.roadmap.v1",
-  "version": "16.10.85",
-  "baseline": "16.10.84",
+  "version": "16.10.86",
+  "baseline": "16.10.85",
   "permanentPriority": [
     "Security",
     "Truth",
@@ -69,6 +69,18 @@
     }
   ],
   "phases": [
+    {
+      "id": "UNIFIED-CONTROL-PLANE-ENTRY",
+      "status": "IMPLEMENTED_SOURCE_CANDIDATE_RUNTIME_VERIFICATION_PENDING",
+      "summary": "Introduce an eight-area searchable Control Plane entry point that routes to existing canonical workspaces without creating new domain authorities.",
+      "acceptance": [
+        "Eight unique top-level areas map only to registered canonical workspaces.",
+        "Workspace intent search returns only known areas and never fabricates resources.",
+        "Role and tenant authorization remains enforced by backend authorities.",
+        "Deployed browser and full market-launch journey are verified before production certification."
+      ],
+      "dependsOn": []
+    },
     {
       "id": "PLATFORM-RESULTS-CENTER",
       "title": "Super Admin Platform Results & Certification Center",

@@ -1,3 +1,23 @@
+# Mission Execution 16.10.86 — Unified Control Plane Entry
+
+Status: source release candidate — not production-certified.
+
+Baseline: 16.10.85
+
+## Delivered
+- Added a concise eight-area Control Plane entry point to the existing Super Admin Command Center.
+- Added workspace search for common intents including country/data, AI providers, onboarding/experience and databases/connections.
+- Routed actions into existing canonical workspaces; no new business or authorization authority was introduced.
+- Added a regression contract validating area uniqueness, route coverage, search behavior and UI integration.
+- Preserved the existing market lifecycle, Resource Management, product experience, infrastructure, tenant/access, governance and recovery authorities.
+
+## Not claimed
+- This release does not certify the deployed browser/runtime, publish a market, switch database providers, or prove a real-world mission outcome.
+- Search is a workspace-intent router. Canonical resource record search remains in Resource Management.
+- Full role-by-role workspace filtering and connector/database migration workflows remain in the roadmap; backend authorization continues to be authoritative.
+
+---
+
 # Mission Execution 16.10.85 — Audit Retention and Release Integrity
 
 Status: hardening candidate

@@ -7,5 +7,5 @@ assert.match(registry, /\['Simulation Lab','simulation-lab'/, 'Simulation Lab mu
 assert.match(panels, /function renderSimulationLabEntry\(\)/, 'Super Admin entry panel must exist');
 assert.match(panels, /'simulation-lab':renderSimulationLabEntry/, 'entry panel must be wired to canonical panel registry');
 assert.match(panels, /href="\/simulator\.html"/, 'entry panel must navigate to the simulator route');
-assert.match(route, /simulation-lab\.js\?v=16\.10\.(80|81|82|83|84|85)/, 'simulator page must use current cache-busting release version');
+assert.match(route, /simulation-lab\.js\?v=16\.10\.(80|81|82|83|84|85|86)/, 'simulator page must use current cache-busting release version');
 console.log('16.10.73 simulation navigation contract: PASS');

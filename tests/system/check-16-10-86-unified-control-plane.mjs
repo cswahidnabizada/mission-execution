@@ -1,0 +1,22 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {ADMIN_WORKSPACE_KEYS} from '../../public/assets/js/frontend/admin/workspace-registry.js';
+import {CONTROL_PLANE_AREAS,searchControlPlaneAreas,validateControlPlaneModel} from '../../public/assets/js/frontend/admin/control-plane-model.js';
+
+const model=validateControlPlaneModel(ADMIN_WORKSPACE_KEYS);
+assert.equal(model.valid,true,model.errors.join('; '));
+assert.equal(model.areaCount,8,'Control Plane must expose eight top-level areas');
+assert.equal(new Set(CONTROL_PLANE_AREAS.map(x=>x.key)).size,8,'area keys must be unique');
+assert.ok(searchControlPlaneAreas('Germany').some(x=>x.key==='data'),'market data search should route to Data & Resources');
+assert.ok(searchControlPlaneAreas('ChatGPT').some(x=>x.key==='ai'),'AI provider search should route to AI, Agents & Devices');
+assert.ok(searchControlPlaneAreas('onboarding').some(x=>x.key==='experience'),'screen search should route to Product & Experience');
+assert.ok(searchControlPlaneAreas('database').some(x=>x.key==='connections'),'database search should route to Connections & Infrastructure');
+assert.equal(searchControlPlaneAreas('not-a-real-capability').length,0,'unknown search should not fabricate a workspace');
+assert.equal(searchControlPlaneAreas('').length,8,'empty query should expose all top-level areas');
+const source=await readFile(new URL('../../public/assets/js/frontend/admin/command-center.js',import.meta.url),'utf8');
+assert.match(source,/controlPlaneAreaSearch/,'Control Center must render the searchable workspace entry point');
+assert.match(source,/data-control-plane-action/,'workspace cards must invoke registered navigation');
+assert.match(source,/resource-management/,'resource explorer must use canonical Resource Management workspace');
+assert.match(source,/product-publisher/,'market launch must use canonical Market Factory workspace');
+assert.match(source,/server-enforced/,'UI must state that authorization remains server-enforced');
+console.log('PASS 16.10.86 unified Control Plane: eight areas, canonical route coverage, search mappings and UI integration');

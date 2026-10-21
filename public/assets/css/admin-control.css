@@ -206,3 +206,20 @@ body{background:var(--admin-bg);color:var(--admin-ink)}.shell{min-height:100vh;b
 .control-center .objective-specialist-content>.os-command-strip{margin-top:.5rem;}
 .control-center .control-hero-actions{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
 @media(max-width:760px){.control-center .objective-command .section-head,.control-center .objective-plan-head{flex-direction:column;}.control-center .objective-specialist-details>summary{align-items:flex-start;}.control-center .objective-specialist-details>summary span{max-width:65%;text-align:right;}.control-center .objective-inbox-grid{grid-template-columns:1fr;}}
+
+/* 16.10.86 — Unified Control Plane: concise, searchable workspace entry point */
+.control-plane-home{background:linear-gradient(180deg,#fff,#fbfdff)}
+.control-plane-search-label{display:block;margin:0 0 6px;font-size:11px;font-weight:850;color:var(--admin-ink)}
+.control-plane-area-search{margin-bottom:14px;min-height:44px}
+.control-plane-area-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.control-plane-area-card{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-content:start;border:1px solid var(--admin-line);border-radius:14px;background:#fff;padding:13px;min-width:0;transition:border-color .15s,box-shadow .15s}
+.control-plane-area-card:hover{border-color:#93c5fd;box-shadow:0 8px 22px rgba(15,23,42,.06)}
+.control-plane-area-card[hidden],.control-plane-no-results[hidden]{display:none!important}
+.control-plane-area-icon{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:#eaf1ff;color:#1d4ed8;font-size:13px;font-weight:950}
+.control-plane-area-content{min-width:0;display:grid;gap:7px}
+.control-plane-area-content h3{margin:1px 0 0;font-size:12px;line-height:1.35}
+.control-plane-area-content p{margin:0;min-height:42px;font-size:10px;line-height:1.5;color:var(--admin-muted)}
+.control-plane-area-content .btn{justify-self:start;padding:8px 9px;font-size:9px}
+.control-plane-no-results{grid-column:1/-1;padding:22px;border:1px dashed var(--admin-line);border-radius:12px;text-align:center;color:var(--admin-muted);font-size:12px}
+@media(max-width:1250px){.control-plane-area-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.control-plane-area-grid{grid-template-columns:1fr}.control-plane-area-content p{min-height:0}}
