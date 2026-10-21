@@ -5810,4 +5810,7 @@ CREATE TRIGGER IF NOT EXISTS trg_platform_simulation_runs_no_delete BEFORE DELET
 CREATE TRIGGER IF NOT EXISTS trg_admin_control_audit_events_no_update BEFORE UPDATE ON admin_control_audit_events BEGIN SELECT RAISE(ABORT,'AUDIT_EVENTS_IMMUTABLE'); END;
 CREATE TRIGGER IF NOT EXISTS trg_admin_control_audit_events_no_delete BEFORE DELETE ON admin_control_audit_events BEGIN SELECT RAISE(ABORT,'AUDIT_EVENTS_IMMUTABLE'); END;
 CREATE TRIGGER IF NOT EXISTS trg_audit_logs_no_update BEFORE UPDATE ON audit_logs BEGIN SELECT RAISE(ABORT,'AUDIT_LOG_IMMUTABLE'); END;
-CREATE TRIGGER IF NOT EXISTS trg_audit_logs_no_early_delete BEFORE DELETE ON audit_logs WHEN OLD.created_at > datetime('now','-30 days') BEGIN SELECT RAISE(ABORT,'AUDIT_LOG_RETENTION_FLOOR'); END;
+
+-- 0163 audit retention policy alignment
+DROP TRIGGER IF EXISTS trg_audit_logs_no_early_delete;
+CREATE TRIGGER IF NOT EXISTS trg_audit_logs_no_early_delete BEFORE DELETE ON audit_logs WHEN OLD.created_at > datetime('now','-365 days') BEGIN SELECT RAISE(ABORT,'AUDIT_LOG_RETENTION_FLOOR'); END;

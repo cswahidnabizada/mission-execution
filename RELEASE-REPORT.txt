@@ -1,33 +1,40 @@
-ON MISSION 16.10.84 — CONTROLLED PILOT READINESS AND OPERATIONAL APPROVAL
-Baseline: 16.10.83
+ON MISSION 16.10.85 — AUDIT RETENTION AND RELEASE INTEGRITY
+Baseline: 16.10.84
 Status: SOURCE CANDIDATE — NOT DEPLOYED / NOT BROWSER-CERTIFIED
 
 PURPOSE
-Controlled pilot readiness, stop conditions and explicit operational approval gates.
+Reconcile release identity and close the audit-retention mismatch found during source review.
 
-IMPLEMENTED
-- Seven blocking readiness gates, required evidence and reviewer requirements.
-- Explicit scoped and expiring human approval policy.
-- Stop conditions, success metrics and production/actuation disabled.
+CHANGES
+- Added additive migration 0163 to replace the 30-day audit_logs deletion guard with the declared 365-day policy window.
+- Updated the canonical schema snapshot's audit deletion guard to match migration 0163.
+- Aligned VERSION, package.json, package-lock.json, release manifest, roadmap and release documentation at 16.10.85.
+- Restored .node-version and .nvmrc pins at Node.js 24.18.0, added .npmrc engine-strict enforcement, and added the required .gitignore.
+- Strengthened the focused SQLite test to reject deletion at 100 days and permit deletion after 365 days.
+- Updated cumulative compatibility contracts for the current release and migration high-water mark.
 
 VALIDATION
-- The final cumulative release suite passed after compatibility allowlists were updated for the current release family.
-- Focused contract test: PASS.
-- Full cumulative npm run check:release: PASS.
-- Release test log included in source directory at tests/check-release-16.10.84.log.
-- ZIP integrity: verified after packaging.
-- Local npm run build: BLOCKED by local Node.js 22.16.0; repository requires Node.js 24.x.
+- Cumulative npm run check:release: PASS.
+- npm run check:health: PASS.
+- npm run check:migrations: PASS (163 ordered migrations; high-water mark 0163).
+- npm run check:schema: PASS (253 tables, 463 indexes).
+- npm run check:release-engineering: PASS.
+- npm run check:current-runtime-integrity: PASS.
+- npm run check:current-architecture-convergence: PASS (one canonical lifecycle writer; no import cycles).
+- Local npm run build: BLOCKED by available Node.js 22.16.0; repository requires Node.js 24.x. The Node 24 build and CSS dependency execution remain unverified in this environment.
 
 NOT CERTIFIED
-- Deployed browser/HTTP behavior or real customer runtime.
-- Real-world delivery or physical effects.
-- Vendor sandbox, SIL or HIL compatibility.
-- Pilot approval; approval cannot be inferred from source tests or deployment.
+- Deployed browser/HTTP behavior or production D1 migration execution.
+- Real customer runtime, cross-region revocation behavior, or tenant-isolation matrix against deployed services.
+- Real-world delivery or physical effects; vendor sandbox, SIL or HIL compatibility.
+- Pilot approval. Approval cannot be inferred from source tests or deployment.
 
-NEXT
-1. Deploy and browser-certify.
-2. Gather required operational evidence and explicit human approval before a limited pilot.
-3. Continue broader control centers and later vendor/SIL/HIL waves.
+NEXT REQUIRED STEPS
+1. Run npm ci and npm run build in Node.js 24.18.0 CI/Cloudflare build environment.
+2. Review and apply migration 0163 to the intended production database through the governed deployment process, after backup and migration preflight.
+3. Deploy the candidate, verify deployed release identity, then run authenticated browser/HTTP tests and cross-tenant adversarial checks.
+4. Run Germany logistics scenarios: successful delivery, failed delivery with recovery, unavailable executor, and uncertain effect requiring reconciliation.
+5. Keep pilot blocked until all seven readiness gates have evidence and an authorized, scoped, expiring human approval.
 
 PERMANENT GUARDRAILS
-Security -> Truth -> Liveness -> Stability -> Experience -> Scale. Full canonical journey preserved. Missing evidence remains UNVERIFIED; failed evidence reads remain UNAVAILABLE. Simulation never proves physical effect. Production publishing and device actuation remain gated by separate authorization and safety evidence.
+Security -> Truth -> Liveness -> Stability -> Experience -> Scale. Preserve the full canonical journey: OBSERVE -> UNDERSTAND -> PLAN -> EVALUATE -> ACCEPT -> AUTHORIZE -> PREPARE -> ASSIGN -> EXECUTE -> EFFECT -> VERIFY -> RECOVER -> OUTCOME -> LEARN -> NEXT SITUATION -> OBSERVE. Simulation never proves physical effect; missing evidence remains UNVERIFIED.

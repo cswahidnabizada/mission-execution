@@ -1,16 +1,16 @@
 /* ON Mission 10.79.0 — Canonical Admin Panel Registry
  * Single composition point. Workspaces own their implementation; this registry owns only routing composition.
  */
-import { setAdminShow, adminPanelRenderers as oversightRenderers, refreshAdminData } from './oversight-panels.js?v=16.10.84';
-import { setGovernanceShow, renderDataControl, renderDataEntry, renderTrash } from './data-governance.js?v=16.10.84';
-import {renderOperations,renderActionMatrix,renderReleaseCenter,renderLaunchCenter,renderDependencyImpact,renderAgenticControl} from './operating-system.js?v=16.10.84';
-import {renderResourceManagement} from './resource-management.js?v=16.10.84';
-import {renderUserExperienceLab} from './user-experience-lab.js?v=16.10.84';
-import {renderDemoProduct} from './demo-product.js?v=16.10.84';
-import {renderProductExperience} from './product-experience.js?v=16.10.84';
-import {renderInfrastructureGovernance} from './infrastructure-governance.js?v=16.10.84';
-import {renderProductIdentity} from './product-identity.js?v=16.10.84';
-import {renderPlatformResults} from './platform-results-center.js?v=16.10.84';
+import { setAdminShow, adminPanelRenderers as oversightRenderers, refreshAdminData } from './oversight-panels.js?v=16.10.85';
+import { setGovernanceShow, renderDataControl, renderDataEntry, renderTrash } from './data-governance.js?v=16.10.85';
+import {renderOperations,renderActionMatrix,renderReleaseCenter,renderLaunchCenter,renderDependencyImpact,renderAgenticControl} from './operating-system.js?v=16.10.85';
+import {renderResourceManagement} from './resource-management.js?v=16.10.85';
+import {renderUserExperienceLab} from './user-experience-lab.js?v=16.10.85';
+import {renderDemoProduct} from './demo-product.js?v=16.10.85';
+import {renderProductExperience} from './product-experience.js?v=16.10.85';
+import {renderInfrastructureGovernance} from './infrastructure-governance.js?v=16.10.85';
+import {renderProductIdentity} from './product-identity.js?v=16.10.85';
+import {renderPlatformResults} from './platform-results-center.js?v=16.10.85';
 
 let show=null;
 export function configureAdminPanelShow(fn){

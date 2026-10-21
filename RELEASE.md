@@ -1,3 +1,13 @@
+# Mission Execution 16.10.85 — Audit Retention and Release Integrity
+
+Status: hardening candidate
+
+Baseline: 16.10.84
+
+This candidate aligns audit deletion enforcement with the declared 365-day retention policy, reconciles release identity, and restores reproducible Node.js build declarations. It does not certify the deployed runtime or authorize a live pilot.
+
+---
+
 # Mission Execution 16.10.84 — Controlled Pilot Readiness
 
 Status: protected candidate

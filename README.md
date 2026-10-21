@@ -1,4 +1,4 @@
-## Current candidate: ON MISSION 16.10.84 — Controlled Pilot Readiness and Operational Approval
+## Current candidate: ON MISSION 16.10.85 — Audit Retention and Release Integrity
 
 Adds an explicit machine-readable contract for all 16 positions of the canonical mission journey, including existing authority expectations, required evidence and acceptance invariants. The Super Admin Platform Results & Certification Center now exposes each stage contract while keeping runtime status UNVERIFIED until authoritative mission events/evidence are connected. No duplicate lifecycle authority, backend, migration or physical actuation path is introduced. Deployment and browser/runtime certification remain pending. See `docs/roadmap/ON-MISSION-ROADMAP.md`, `RELEASE.md` and the release report.
 
