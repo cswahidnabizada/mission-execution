@@ -70,3 +70,7 @@ Status: source candidate. Server-defined contracts now declare ordered steps, au
 - Parent task completion now checks persisted server-side contract state and blocks if the contract is uninitialized or required steps remain incomplete.
 - No schema migration; 163 migrations and the current schema snapshot remain unchanged.
 - Full cumulative release suite still has legacy cross-version assertions outside this feature; Node.js 24 build and deployed runtime/pilot certification remain required.
+
+
+## 16.11.0 — Authority-Driven Market Launch Execution
+Evidence submission is now explicitly separated from authority verification; generic completion controls are removed. Next work: connect each task to registered owning-authority commands and schema-driven forms, then verify canonical outcomes.

@@ -1,4 +1,4 @@
-# Mission Execution 16.10.99 — Stage Contract UI/API Integration
+# Mission Execution 16.11.0 — Stage Contract UI/API Integration
 
 Status: protected candidate — exact Node.js 24 build, full cumulative release gates, authenticated browser/runtime certification and deployed pilot proof pending. DO NOT DEPLOY until required gates pass.
 
@@ -1177,3 +1177,24 @@ This source candidate advances Market Launch Resolve with ordered task-specific 
 - Failed contract reads or step updates keep the task open and expose a retryable failure state.
 - No schema migration added; the existing 163-migration high-water mark and schema hash are preserved.
 - Candidate only: full cumulative suite, Node.js 24 build, authenticated browser tests and deployed pilot certification must pass before deployment.
+
+## 16.11.0 — Authority-Driven Market Launch Execution
+
+Status: hardening candidate — owning-authority command adapters, Node.js 24 build, cumulative release gates, authenticated browser/runtime certification and deployed pilot proof remain required. DO NOT DEPLOY until required gates pass.
+
+### Purpose
+Make Market Launch inputs purposeful and prevent evidence submission from being misrepresented as an authoritative outcome.
+
+### Changes in this candidate
+- Resolve substeps explicitly label their action as evidence submission rather than verification.
+- Substep evidence records are retained as submitted evidence; they are not marked authority-verified.
+- The server rejects a direct attempt to mark a substep COMPLETE through the evidence-only endpoint.
+- Generic task status controls no longer offer a manual COMPLETE choice.
+- Evidence labels explain the expected value: what was actually done and a traceable result reference.
+- Existing migration history and schema snapshot are unchanged.
+
+### Known limitation / required next integration
+This release deliberately does not pretend all owning-authority commands are wired. Resource creation, market relationship creation, legal approval, certification execution, and release transitions must be connected to their existing canonical command APIs individually. Until an operation has an adapter and canonical read-after-write verification, Resolve can capture progress/evidence but cannot claim that operation is verified. Production build and authenticated runtime certification remain required.
+
+### Quality policy
+Security → Truth → Liveness → Stability → Experience → Scale. No evidence-only shortcut may bypass a canonical authority or launch gate.

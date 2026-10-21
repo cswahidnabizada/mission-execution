@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const ui=fs.readFileSync('public/assets/js/frontend/admin/market-factory.js','utf8');
+const service=fs.readFileSync('src/worker/security/market-factory.service.js','utf8');
+const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
+assert.equal(pkg.version,'16.11.0');
+assert.match(ui,/data-mf-contract-step-form/);
+assert.match(ui,/SUBMIT EVIDENCE/);
+assert.doesNotMatch(ui,/>VERIFY STEP<\/button>/);
+assert.match(ui,/await mutation\(api,path,\{status:'IN_PROGRESS',evidence\}\)/);
+assert.match(ui,/authority execution must be confirmed separately/i);
+assert.match(service,/MARKET_LAUNCH_STEP_AUTHORITY_VERIFICATION_REQUIRED/);
+assert.match(service,/Evidence submission is not verification/);
+assert.match(service,/authorityVerified:false/);
+console.log('PASS 16.11.0 prevents evidence-only substeps from claiming authority verification and labels evidence inputs by their actual purpose');
