@@ -1,8 +1,8 @@
-# Mission Execution 16.10.95 — Adaptive Market Launch Workbench
+# Mission Execution 16.10.96 — Continuous Market Launch
 
 Status: protected candidate — exact Node.js 24 build, full cumulative release gates, authenticated browser/runtime certification and deployed pilot proof pending. DO NOT DEPLOY until required gates pass.
 
-Base: ON MISSION 16.10.93
+Base: ON MISSION 16.10.95
 Baseline: 16.10.93
 Permanent priority: Security → Truth → Liveness → Stability → Experience → Scale
 Truthful Runtime Certification: runtime claims require evidence from their owning authority.
@@ -1150,3 +1150,6 @@ Release lifecycle controls retain the explicit CREATE NEXT VERSION workflow, imm
 - Keeps task evidence controls in that workspace, preserving the task's stage/category context and allowing a return to the task list.
 - Evidence submission continues through the existing governed task API and step-up flow; after saving, the workbench refreshes canonical state so status and next action are recalculated.
 - This UI change does not complete tasks automatically, bypass readiness, or claim browser/production certification.
+
+## 16.10.96 — Continuous Market Launch
+After a governed task evidence save, canonical task state is reloaded and the next incomplete task is promoted into Resolve. Client-side continuity does not create task truth or bypass any launch gate.

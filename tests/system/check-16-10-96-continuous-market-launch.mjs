@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const ui=fs.readFileSync('public/assets/js/frontend/admin/market-factory.js','utf8');
+const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
+const manifest=JSON.parse(fs.readFileSync('RELEASE-MANIFEST.json','utf8'));
+assert.equal(pkg.version,'16.10.96');
+assert.equal(manifest.version,'16.10.96');
+assert.match(ui,/let continueResolveAfterRefresh=false/,'continuity flag must be explicit and local to the UI module');
+assert.match(ui,/continueResolveAfterRefresh=true;await loadWorkbench\(\);continueResolveAfterRefresh=false/,'saving a task must refresh canonical workbench state without leaving the guided loop');
+assert.match(ui,/if\(continueResolveAfterRefresh\)target\.querySelector\('#mfDoNextTask'\)\?\.click\(\)/,'after canonical refresh, the next required task must be promoted back into Resolve');
+assert.match(ui,/const next=allTasks\.find\(task=>!taskComplete\(task\)\)/,'the next task must be derived from current task statuses');
+assert.match(ui,/await mutation\(api,`\/api\/platform\/admin\/market-factory\/versions\/\$\{id\}\/workbench\/tasks\/\$\{taskKey\}`/,'task changes must continue through the canonical governed endpoint');
+assert.match(ui,/await refresh\(\)/,'canonical state refresh must remain available after resource and other operations');
+assert.match(pkg.scripts['check:release'],/check-16-10-96-continuous-market-launch/,'continuity regression must be included in release gates');
+console.log('PASS 16.10.96 Continuous Market Launch: canonical task saves refresh current state and promote the next required task in Resolve');

@@ -49,3 +49,8 @@ The workbench now derives a stage context from the selected incomplete canonical
 ## 16.10.95 — Resolve Workspace
 
 The guided Market Launch workbench now promotes the next incomplete task into a dedicated in-place Resolve Workspace. Existing governed evidence controls stay with the task, stage context is preserved, and saving evidence refreshes canonical state. Navigation alone never completes work. Multi-step task contracts, server-persisted resume, authenticated browser validation and Germany Logistics pilot certification remain outstanding.
+
+## 16.10.96 — Continuous Market Launch
+- After evidence save, reload canonical task state and automatically promote the next incomplete task into the in-place Resolve Workspace.
+- Keep the execution loop moving without implying success from navigation or client-side state.
+- Remaining: durable server-side resume, stage-contract-defined substeps, deployed browser certification, and Germany Logistics pilot evidence.

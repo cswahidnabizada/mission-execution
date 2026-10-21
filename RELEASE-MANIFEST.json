@@ -1,5 +1,5 @@
 {
-  "version": "16.10.95",
+  "version": "16.10.96",
   "release": "RELEASE.md",
   "base": "16.10.94",
   "migrationHighWaterMark": "0163",
@@ -9,6 +9,7 @@
     "sha256": "34e1befacc2e8b94aa0127dc1458be4f1db3177395a5594957b64dbbfd2456ac"
   },
   "generatedFrom": "deterministic-release-pipeline",
-  "releaseName": "Resolve Workspace · In-Place Required Task Execution",
-  "certificationControl": "config/certification/controlled-pilot-readiness.json"
+  "releaseName": "Continuous Market Launch Execution",
+  "certificationControl": "config/certification/controlled-pilot-readiness.json",
+  "baseVersion": "16.10.95"
 }
