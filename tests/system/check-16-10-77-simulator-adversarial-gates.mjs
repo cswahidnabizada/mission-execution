@@ -9,9 +9,9 @@ const routes=read('src/worker/modules/admin-control/admin-launch-config.routes.j
 const migration=read('database/migrations/0161_simulation_run_records.sql');
 const uiAdmin=read('public/assets/js/frontend/admin/simulation-lab.js');
 const uiTenant=read('public/assets/js/frontend/admin/simulation-lab.js');
-assert.ok(['16.10.80','16.10.81','16.10.82','16.10.83','16.10.84','16.10.85','16.10.86','16.10.87'].includes(pkg.version));
+assert.ok(['16.10.80','16.10.81','16.10.82','16.10.83','16.10.84','16.10.85','16.10.86','16.10.87','16.10.89'].includes(pkg.version));
 assert.equal(lock.version,pkg.version); assert.equal(lock.packages[''].version,pkg.version);
-assert.equal(read('VERSION').trim(),pkg.version); assert.equal(manifest.version,pkg.version); assert.ok(['16.10.79','16.10.80','16.10.81','16.10.82','16.10.83','16.10.84','16.10.85','16.10.86','16.10.87'].includes(manifest.base));
+assert.equal(read('VERSION').trim(),pkg.version); assert.equal(manifest.version,pkg.version); assert.ok(['16.10.79','16.10.80','16.10.81','16.10.82','16.10.83','16.10.84','16.10.85','16.10.86','16.10.87','16.10.88'].includes(manifest.base));
 assert.match(routes,/router\.get\('\/api\/tenant\/simulation\/runs'/);
 assert.match(routes,/router\.post\('\/api\/tenant\/simulation\/runs'/);
 assert.match(routes,/requireRole\(request,env,\['admin'\]\)/);

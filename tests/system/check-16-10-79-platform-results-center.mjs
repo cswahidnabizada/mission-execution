@@ -9,8 +9,8 @@ const contract=JSON.parse(read('config/certification/platform-results-center.jso
 const ui=read('public/assets/js/frontend/admin/platform-results-center.js');
 const registry=read('public/assets/js/frontend/admin/workspace-registry.js');
 const panels=read('public/assets/js/frontend/admin/panel-registry.js');
-assert.ok(['16.10.80','16.10.81','16.10.82','16.10.83','16.10.84','16.10.85','16.10.86','16.10.87'].includes(pkg.version)); assert.equal(lock.version,pkg.version); assert.equal(lock.packages[''].version,pkg.version);
-assert.equal(manifest.version,pkg.version); assert.ok(['16.10.79','16.10.80','16.10.81','16.10.82','16.10.83','16.10.84','16.10.85','16.10.86','16.10.87'].includes(manifest.base)); assert.equal(roadmap.version,pkg.version); assert.ok(['16.10.79','16.10.80','16.10.81','16.10.82','16.10.83','16.10.84','16.10.85','16.10.86'].includes(roadmap.baseline));
+assert.ok(['16.10.80','16.10.81','16.10.82','16.10.83','16.10.84','16.10.85','16.10.86','16.10.87','16.10.89'].includes(pkg.version)); assert.equal(lock.version,pkg.version); assert.equal(lock.packages[''].version,pkg.version);
+assert.equal(manifest.version,pkg.version); assert.ok(['16.10.79','16.10.80','16.10.81','16.10.82','16.10.83','16.10.84','16.10.85','16.10.86','16.10.87','16.10.88'].includes(manifest.base)); assert.equal(roadmap.version,pkg.version); assert.ok(['16.10.79','16.10.80','16.10.81','16.10.82','16.10.83','16.10.84','16.10.85','16.10.86','16.10.87','16.10.88'].includes(roadmap.baseline));
 assert.equal(contract.mode,'READ_ONLY_AGGREGATION'); assert.equal(contract.authorityPolicy,'REUSE_EXISTING_AUTHORITIES_ONLY');
 assert.equal(contract.certificationPolicy.sourceReadDoesNotEqualFunctionalCertification,true);
 assert.equal(contract.certificationPolicy.missingEvidenceStatus,'UNVERIFIED'); assert.equal(contract.certificationPolicy.failedReadStatus,'UNAVAILABLE');

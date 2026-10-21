@@ -1,8 +1,24 @@
-# Mission Execution 16.10.87 — Canonical Resource Search Bridge
+# Mission Execution 16.10.89 — Resource Relationship & Lifecycle Evidence
 
-Status: source candidate — deployment/browser certification pending.
+Status: protected candidate — deployment/browser certification pending. DO NOT DEPLOY until exact-artifact Node 24 build and browser certification pass.
 
-Baseline: 16.10.86
+Baseline: 16.10.88
+
+
+## 16.10.88 — Canonical Resource Inventory Workbench
+- Added real resource-type and lifecycle-status filters to the existing Resource Management inventory.
+- Added filtered-result counts and explicit scope disclosure: filters apply only to the current canonical result set, not an exhaustive server-side query.
+- Added clear-filters behavior and Resource 360 refresh-record and copy-identity controls.
+- Preserved canonical re-read, lifecycle actions, dependency graph, audit activity and Data Studio ownership.
+- No database migration and no competing workflow authority.
+- Focused regression test is part of the cumulative release suite.
+
+## Remaining certification
+- Exact artifact Node 24 build/deployment and browser interaction testing.
+- Broader resource lifecycle and relationship coverage.
+- Complete resumable Market Launch wizard and evidence-driven readiness.
+- AI/connector/device lifecycle, tenant/developer authorization, database migration/cutover/rollback.
+- Germany Logistics end-to-end mission evidence and explicit pilot approval.
 
 ## Delivered
 - Added a Control Home action that carries a user's current search query into the canonical Resource Management workspace.
@@ -1077,3 +1093,11 @@ Historical migration lineage preserved: `0154_governed_intake_pipeline.sql`. No 
 - Workspace filter is scoped to the visible operating area.
 - Layout Studio quick access is a navigation shortcut only; it does not bypass Super Admin session checks.
 - No database migration is included.
+
+## 16.10.89 — Resource Relationship & Lifecycle Evidence
+
+Baseline: 16.10.88. This candidate improves Resource 360 relationship and lifecycle visibility without introducing a second authority or a database migration. The dependency view summarizes the selected resource's returned canonical graph, including nodes, edges, incoming references, outgoing dependencies and relationship types where those fields are provided. It explicitly does not claim global impact completeness. The lifecycle view displays version/revision and timestamps only when the canonical resource authority supplies them and accepts snake_case/camelCase trash/legal-hold metadata. Missing values remain unknown rather than inferred.
+
+This candidate does not complete global impact analysis, all resource lifecycle APIs, the Market Launch wizard, external provider/database migration certification, tenant/developer runtime certification or Germany Logistics production proof. Exact Node.js 24 build, browser verification and deployed runtime certification remain required.
+
+Release lifecycle controls retain the explicit CREATE NEXT VERSION workflow, immutable candidate identity, validation, authorization, publication, verification and release history. These controls remain governed by the existing canonical release lifecycle.

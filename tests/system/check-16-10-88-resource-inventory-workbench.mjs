@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+const ui=await readFile(new URL('../../public/assets/js/frontend/admin/resource-management.js',import.meta.url),'utf8');
+const css=await readFile(new URL('../../public/assets/css/admin-control.css',import.meta.url),'utf8');
+const pkg=JSON.parse(await readFile(new URL('../../package.json',import.meta.url),'utf8'));
+assert.ok(/^16\.10\.(?:8[89]|9[0-9]|[1-9][0-9]{2,})$/.test(pkg.version),'current release must retain or advance beyond the 16.10.88 inventory workbench');
+assert.match(ui,/id="resourceFilterType"/,'resource inventory must expose type filtering');
+assert.match(ui,/id="resourceFilterStatus"/,'resource inventory must expose lifecycle-status filtering');
+assert.match(ui,/function applyInventoryFilters\(\)/,'filter behavior must be implemented, not decorative');
+assert.match(ui,/Filters apply to this result set only/,'UI must not imply the local filter is exhaustive server-side search');
+assert.match(ui,/id="resourceClearFilters"/,'user must be able to clear filters');
+assert.match(ui,/data-rw-refresh/,'Resource 360 must expose canonical record refresh');
+assert.match(ui,/navigator\.clipboard\.writeText\(String\(r\.id\)\)/,'copy ID must copy the canonical resource identity');
+assert.match(ui,/resource-explorer\/\$\{encodeURIComponent\(r\.type\)\}\/\$\{encodeURIComponent\(r\.id\)\}/,'selected resource must still be re-read from its canonical authority');
+assert.match(css,/resource-inventory-controls/,'inventory controls must have responsive styling');
+assert.match(pkg.scripts['check:release'],/check-16-10-88-resource-inventory-workbench/,'new regression must be part of release suite');
+console.log('PASS 16.10.88 Resource Inventory Workbench: real filters, honest scope, canonical record refresh and identity copy');

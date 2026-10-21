@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+const ui=await readFile(new URL('../../public/assets/js/frontend/admin/resource-management.js',import.meta.url),'utf8');
+const pkg=JSON.parse(await readFile(new URL('../../package.json',import.meta.url),'utf8'));
+const manifest=JSON.parse(await readFile(new URL('../../RELEASE-MANIFEST.json',import.meta.url),'utf8'));
+assert.equal(pkg.version,'16.10.89');
+assert.equal(manifest.version,'16.10.89');
+assert.match(ui,/CANONICAL RELATIONSHIP EVIDENCE/,'dependency view must identify canonical relationship evidence');
+assert.match(ui,/RELATIONSHIP EDGES/,'dependency view must summarize edges');
+assert.match(ui,/INCOMING REFERENCES/,'dependency view must expose incoming references when supplied');
+assert.match(ui,/OUTGOING DEPENDENCIES/,'dependency view must expose outgoing dependencies when supplied');
+assert.match(ui,/not a global impact scan/i,'UI must not claim partial graph is exhaustive impact analysis');
+assert.match(ui,/Version \/ revision/,'lifecycle view must expose version metadata when the authority supplies it');
+assert.match(ui,/Not exposed/,'missing lifecycle metadata must not be invented');
+assert.match(ui,/legal_hold/,'lifecycle view must accept canonical snake_case legal hold metadata');
+assert.match(ui,/Purge is never equivalent|PURGE is never equivalent/,'destructive lifecycle boundary must remain explicit');
+assert.match(pkg.scripts['check:release'],/check-16-10-89-resource-relationship-lifecycle-evidence/,'new regression must be included in release suite');
+console.log('PASS 16.10.89 Resource relationship and lifecycle evidence: canonical graph counts, honest scope and non-inferred lifecycle metadata');

@@ -1,4 +1,4 @@
-ON MISSION 16.10.87 — Unified Control Plane Canonical Resource Search Bridge. Control Home now forwards search intent into canonical Resource Management; market publication remains governed through CREATE NEXT VERSION and explicit release authorization. This source candidate is not production-certified.
+ON MISSION 16.10.88 — Canonical Resource Inventory Workbench. Control Home now forwards search intent into canonical Resource Management; market publication remains governed through CREATE NEXT VERSION and explicit release authorization. This source candidate is not production-certified.
 
 ## Current candidate: ON MISSION 16.10.85 — Audit Retention and Release Integrity
 
@@ -521,3 +521,5 @@ This source candidate adds route launch links and a same-origin GET-only reachab
 ## ON MISSION 16.10.53 — Composition Ordering & Editor Integrity
 
 Current source candidate: page layer order now resolves from canonical `page.componentIds`, with accessible move-up/move-down controls and duplicate placement validation. The protected Product Publisher lifecycle retains **CREATE NEXT VERSION** as the canonical release workflow. Production renderer bindings remain unconnected and publication stays disabled pending browser parity and release verification.
+
+Current source candidate: **16.10.89 — Resource Relationship & Lifecycle Evidence**. The governed product release workflow retains **CREATE NEXT VERSION** as the explicit route for producing a new immutable release candidate; publication still requires the canonical authorization and verification lifecycle.

@@ -1,7 +1,7 @@
 {
   "schema": "onmission.roadmap.v1",
-  "version": "16.10.87",
-  "baseline": "16.10.86",
+  "version": "16.10.89",
+  "baseline": "16.10.88",
   "permanentPriority": [
     "Security",
     "Truth",
@@ -80,6 +80,25 @@
         "Deployed browser and full market-launch journey are verified before production certification."
       ],
       "dependsOn": []
+    },
+    {
+      "id": "RESOURCE-INVENTORY-WORKBENCH",
+      "title": "Canonical Resource Inventory Workbench",
+      "status": "IMPLEMENTED_SOURCE_CANDIDATE_RUNTIME_VERIFICATION_PENDING",
+      "summary": "Add practical resource-type and lifecycle-status filters, honest result-scope disclosure, record refresh and identity-copy actions to the existing canonical Resource Management workspace.",
+      "versions": [
+        "16.10.88"
+      ],
+      "dependsOn": [
+        "UNIFIED-CONTROL-PLANE-ENTRY"
+      ],
+      "exitCriteria": [
+        "Type/status filters operate on the current canonical result set and clearly disclose their scope.",
+        "Selecting a result re-reads the resource from its owning canonical authority.",
+        "Resource 360 refresh re-reads canonical truth and copy action copies only the stable resource identity.",
+        "Browser tests verify filters, empty states, record refresh, dependency navigation and authorized lifecycle actions.",
+        "No duplicate lifecycle or resource authority is introduced."
+      ]
     },
     {
       "id": "PLATFORM-RESULTS-CENTER",
@@ -387,6 +406,17 @@
         "All readiness gates have evidence or remain blocked",
         "Authorized human approval is explicit and auditable",
         "Stop conditions, incident handling and rollback are documented"
+      ]
+    },
+    {
+      "id": "RESOURCE-RELATIONSHIP-LIFECYCLE-EVIDENCE",
+      "status": "CONTRACT_IMPLEMENTED_RUNTIME_EVIDENCE_PENDING",
+      "summary": "Resource 360 surfaces canonical graph relationship counts and only authority-supplied lifecycle metadata; global impact scan remains outstanding.",
+      "dependsOn": [
+        "CANONICAL-JOURNEY-CERTIFICATION"
+      ],
+      "versions": [
+        "16.10.89"
       ]
     }
   ],
