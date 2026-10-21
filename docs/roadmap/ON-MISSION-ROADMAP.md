@@ -54,3 +54,7 @@ The guided Market Launch workbench now promotes the next incomplete task into a 
 - After evidence save, reload canonical task state and automatically promote the next incomplete task into the in-place Resolve Workspace.
 - Keep the execution loop moving without implying success from navigation or client-side state.
 - Remaining: durable server-side resume, stage-contract-defined substeps, deployed browser certification, and Germany Logistics pilot evidence.
+
+## 16.10.97 — Governed Stage Contracts and Launch Liveness
+
+Resolve now renders ordered, task-specific guided substeps for resource/product configuration, legal review, verification, release transitions, recovery, and general work. UI completion requires a substantive summary and traceable evidence reference; canonical server state remains authoritative. Empty task lists are explicitly not treated as readiness, and task-save failures preserve the task with retry guidance. Substeps are currently guided UI contracts, not durable server-side records; canonical contract APIs, server-persisted resume, Node.js 24 build, full release-suite completion, deployed browser/runtime certification, and Germany Logistics pilot evidence remain outstanding.

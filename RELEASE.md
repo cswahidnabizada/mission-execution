@@ -1,4 +1,4 @@
-# Mission Execution 16.10.96 — Continuous Market Launch
+# Mission Execution 16.10.97 — Governed Stage Contracts and Launch Liveness
 
 Status: protected candidate — exact Node.js 24 build, full cumulative release gates, authenticated browser/runtime certification and deployed pilot proof pending. DO NOT DEPLOY until required gates pass.
 
@@ -1153,3 +1153,7 @@ Release lifecycle controls retain the explicit CREATE NEXT VERSION workflow, imm
 
 ## 16.10.96 — Continuous Market Launch
 After a governed task evidence save, canonical task state is reloaded and the next incomplete task is promoted into Resolve. Client-side continuity does not create task truth or bypass any launch gate.
+
+## 16.10.97 — Governed Stage Contracts and Launch Liveness
+
+This source candidate advances Market Launch Resolve with ordered task-specific substep guidance, explicit owning-authority context, an evidence-required UI guard before COMPLETE, a non-misleading empty-work state, and recoverable task-save failures. Canonical task mutation remains behind the existing step-up-protected Market Factory endpoint. Substeps are not yet persisted as independent server-side records; production certification requires the Node.js 24 build, cumulative release suite, authenticated browser/runtime validation, durable server-side resume, and controlled Germany Logistics pilot evidence.

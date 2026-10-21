@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const ui=fs.readFileSync('public/assets/js/frontend/admin/market-factory.js','utf8');
+const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
+const manifest=JSON.parse(fs.readFileSync('RELEASE-MANIFEST.json','utf8'));
+assert.equal(pkg.version,'16.10.97');
+assert.equal(manifest.version,'16.10.97');
+assert.match(ui,/resolveContractForTask=/,'task contracts must map work to ordered substeps and an owning authority');
+assert.match(ui,/Find existing product or plan/,'product tasks must guide resource reuse before creation');
+assert.match(ui,/Create explicit market relationship/,'resource-to-market linking must be an explicit substep');
+assert.match(ui,/renderResolveContract\(next,category\)/,'contract must render inside Resolve');
+assert.match(ui,/Completion requires both a substantive summary and a traceable evidence reference/,'COMPLETE must require evidence');
+assert.match(ui,/this is not proof that the market is launch-ready/,'empty task list must not imply readiness');
+assert.match(ui,/Your task remains open/,'save failures must preserve task and provide a safe retry message');
+assert.match(ui,/canonical state will be re-read/,'liveness guidance must make the next step clear');
+assert.match(pkg.scripts['check:release'],/check-16-10-97-governed-stage-contracts/,'new stage-contract gate must run first');
+console.log('PASS 16.10.97 Governed Stage Contracts: ordered in-Resolve guidance, evidence guard, explicit authority, liveness and safe failure retention');

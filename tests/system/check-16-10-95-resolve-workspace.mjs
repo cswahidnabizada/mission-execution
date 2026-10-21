@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 const ui=fs.readFileSync('public/assets/js/frontend/admin/market-factory.js','utf8');
 const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
 const manifest=JSON.parse(fs.readFileSync('RELEASE-MANIFEST.json','utf8'));
-assert.equal(pkg.version,'16.10.96','package version must match resolve workspace release');
-assert.equal(manifest.version,'16.10.96','release manifest must match package version');
+assert.equal(pkg.version,'16.10.97','package version must match resolve workspace release');
+assert.equal(manifest.version,'16.10.97','release manifest must match package version');
 assert.match(ui,/id="mfResolveTaskWorkspace"[^>]*hidden/,'resolve workspace must exist and start hidden until a task is selected');
 assert.match(ui,/RESOLVE WORKSPACE · CURRENT REQUIRED TASK/,'the next required task must be promoted into the resolve workspace');
 assert.match(ui,/workspace\.append\(next\)/,'the active task must execute in-place instead of only scrolling to a distant task list');
@@ -13,4 +13,4 @@ assert.match(ui,/details\.mf-evidence-editor/,'task evidence controls must remai
 assert.match(ui,/await refresh\(\)/,'saving task evidence must re-read canonical workbench state for dynamic status updates');
 assert.match(ui,/BACK TO TASK LIST/,'the user must be able to return the task to its original stage list');
 assert.match(pkg.scripts['check:release'],/check-16-10-95-resolve-workspace/,'resolve workspace regression must run in the release suite');
-console.log('PASS 16.10.95 Resolve Workspace: next task runs in-place, stage context retained, evidence saves refresh canonical status');
+console.log('PASS 16.10.97 Resolve Workspace: next task runs in-place, stage context retained, evidence saves refresh canonical status');
