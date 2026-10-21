@@ -44,3 +44,8 @@ Source candidate adds schema-driven typed resource forms, advanced JSON fallback
 ## 16.10.94 — Adaptive Market Launch Workbench
 
 The workbench now derives a stage context from the selected incomplete canonical task, hides resource tools when that task does not indicate a resource need, exposes create only for likely configuration/missing-resource tasks, and provides canonical resource search followed by an authoritative resource re-read. Resource detail in this workbench is read-only; mutations remain with the owning Resource 360 controls. Task semantics are a relevance hint, not a substitute for server-side requirement contracts. Node.js 24 build, full cumulative suite, authenticated browser validation and deployed pilot certification remain pending. See `16.10.94-adaptive-market-launch-workbench.md`.
+
+
+## 16.10.95 — Resolve Workspace
+
+The guided Market Launch workbench now promotes the next incomplete task into a dedicated in-place Resolve Workspace. Existing governed evidence controls stay with the task, stage context is preserved, and saving evidence refreshes canonical state. Navigation alone never completes work. Multi-step task contracts, server-persisted resume, authenticated browser validation and Germany Logistics pilot certification remain outstanding.

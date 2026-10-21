@@ -1,4 +1,4 @@
-# Mission Execution 16.10.94 — Adaptive Market Launch Workbench
+# Mission Execution 16.10.95 — Adaptive Market Launch Workbench
 
 Status: protected candidate — exact Node.js 24 build, full cumulative release gates, authenticated browser/runtime certification and deployed pilot proof pending. DO NOT DEPLOY until required gates pass.
 
@@ -1142,3 +1142,11 @@ Baseline: 16.10.88. This candidate improves Resource 360 relationship and lifecy
 This candidate does not complete global impact analysis, all resource lifecycle APIs, the Market Launch wizard, external provider/database migration certification, tenant/developer runtime certification or Germany Logistics production proof. Exact Node.js 24 build, browser verification and deployed runtime certification remain required.
 
 Release lifecycle controls retain the explicit CREATE NEXT VERSION workflow, immutable candidate identity, validation, authorization, publication, verification and release history. These controls remain governed by the existing canonical release lifecycle.
+
+
+## 16.10.95 — Resolve Workspace: In-Place Required Task Execution
+
+- Promotes the next incomplete canonical workbench task into a dedicated Resolve Workspace when the user chooses **GO TO NEXT REQUIRED TASK**.
+- Keeps task evidence controls in that workspace, preserving the task's stage/category context and allowing a return to the task list.
+- Evidence submission continues through the existing governed task API and step-up flow; after saving, the workbench refreshes canonical state so status and next action are recalculated.
+- This UI change does not complete tasks automatically, bypass readiness, or claim browser/production certification.

@@ -14,7 +14,7 @@ assert.match(ui, /GO TO NEXT REQUIRED TASK/);
 assert.match(ui, /mfPreviousStage/);
 assert.match(ui, /mfNextStage/);
 assert.match(ui, /const remaining=allTasks\.filter\(task=>!taskComplete\(task\)\)/);
-assert.match(ui, /showStage\(group\.dataset\.mfTaskCategory\)/, 'next task navigation must reveal the task category before opening evidence');
+assert.match(ui, /showStage\((?:group\.dataset\.mfTaskCategory|category)\)/, 'next task navigation must reveal the task category before opening evidence');
 assert.match(ui, /ensureStepUp/, 'evidence mutations remain step-up protected');
 assert.match(ui, /PUBLISH MARKET/, 'canonical publication lifecycle remains intact');
 assert.match(css, /16\.10\.91 — guided launch task navigation/);
