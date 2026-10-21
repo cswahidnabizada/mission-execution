@@ -1,7 +1,7 @@
 {
-  "version": "16.10.97",
+  "version": "16.10.98",
   "release": "RELEASE.md",
-  "base": "16.10.96",
+  "base": "16.10.97",
   "migrationHighWaterMark": "0163",
   "migrationCount": 163,
   "schemaSnapshot": {
@@ -9,7 +9,7 @@
     "sha256": "34e1befacc2e8b94aa0127dc1458be4f1db3177395a5594957b64dbbfd2456ac"
   },
   "generatedFrom": "deterministic-release-pipeline",
-  "releaseName": "Governed Stage Contracts and Launch Liveness",
+  "releaseName": "Canonical Stage Contract Engine",
   "certificationControl": "config/certification/controlled-pilot-readiness.json",
-  "baseVersion": "16.10.96"
+  "baseVersion": "16.10.97"
 }

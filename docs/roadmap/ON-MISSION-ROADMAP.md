@@ -58,3 +58,8 @@ The guided Market Launch workbench now promotes the next incomplete task into a 
 ## 16.10.97 — Governed Stage Contracts and Launch Liveness
 
 Resolve now renders ordered, task-specific guided substeps for resource/product configuration, legal review, verification, release transitions, recovery, and general work. UI completion requires a substantive summary and traceable evidence reference; canonical server state remains authoritative. Empty task lists are explicitly not treated as readiness, and task-save failures preserve the task with retry guidance. Substeps are currently guided UI contracts, not durable server-side records; canonical contract APIs, server-persisted resume, Node.js 24 build, full release-suite completion, deployed browser/runtime certification, and Germany Logistics pilot evidence remain outstanding.
+
+
+## 16.10.98 — Canonical Stage Contract Engine
+
+Status: source candidate. Server-defined contracts now declare ordered steps, authority, prerequisites, permitted command, evidence schema, durable state, and recovery guidance. Substep state is stored in the canonical task evidence record. Required follow-up: connect the Resolve UI to the new contract endpoints, finish full-suite/build gates, and certify the deployed Germany Logistics journey.

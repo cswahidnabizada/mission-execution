@@ -1,4 +1,4 @@
-# Mission Execution 16.10.97 — Governed Stage Contracts and Launch Liveness
+# Mission Execution 16.10.98 — Canonical Stage Contract Engine
 
 Status: protected candidate — exact Node.js 24 build, full cumulative release gates, authenticated browser/runtime certification and deployed pilot proof pending. DO NOT DEPLOY until required gates pass.
 
@@ -1157,3 +1157,13 @@ After a governed task evidence save, canonical task state is reloaded and the ne
 ## 16.10.97 — Governed Stage Contracts and Launch Liveness
 
 This source candidate advances Market Launch Resolve with ordered task-specific substep guidance, explicit owning-authority context, an evidence-required UI guard before COMPLETE, a non-misleading empty-work state, and recoverable task-save failures. Canonical task mutation remains behind the existing step-up-protected Market Factory endpoint. Substeps are not yet persisted as independent server-side records; production certification requires the Node.js 24 build, cumulative release suite, authenticated browser/runtime validation, durable server-side resume, and controlled Germany Logistics pilot evidence.
+
+
+## 16.10.98 — Canonical Stage Contract Engine
+
+- Added a server-defined market launch stage-contract registry with named authority, ordered prerequisites, permitted commands, evidence schema, and recovery paths.
+- Added a protected contract read endpoint and step-up-protected substep update endpoint.
+- Persists substep state inside the existing canonical market launch task evidence record; no schema migration is required.
+- Enforces prerequisite ordering and evidence requirements for substep completion. When a task evidence payload carries a stage contract, task completion is rejected until all required substeps are complete.
+- Existing launch readiness, authorization, publication, verification, activation, and recovery gates remain canonical and separate.
+- Production certification remains pending until the full release suite, required Node.js 24 build, authenticated browser tests, and controlled pilot evidence pass.
