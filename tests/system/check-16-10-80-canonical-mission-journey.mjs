@@ -7,7 +7,7 @@ const roadmap=JSON.parse(read('config/roadmap/mission-execution-roadmap.json'));
 const contract=JSON.parse(read('config/certification/canonical-mission-journey.json'));
 const ui=read('public/assets/js/frontend/admin/platform-results-center.js');
 const resultsContract=JSON.parse(read('config/certification/platform-results-center.json'));
-assert.ok(['16.10.80','16.10.81','16.10.82','16.10.83','16.10.84','16.10.85','16.10.86'].includes(pkg.version)); assert.equal(lock.version,pkg.version); assert.equal(lock.packages[''].version,pkg.version);
+assert.ok(['16.10.80','16.10.81','16.10.82','16.10.83','16.10.84','16.10.85','16.10.86','16.10.87'].includes(pkg.version)); assert.equal(lock.version,pkg.version); assert.equal(lock.packages[''].version,pkg.version);
 assert.equal(manifest.version,pkg.version); assert.equal(contract.version,'16.10.80');
 assert.equal(contract.version,'16.10.80'); assert.equal(contract.baseline,'16.10.79');
 assert.equal(contract.mode,'CONTRACT_AND_EVIDENCE_REQUIREMENTS_ONLY');

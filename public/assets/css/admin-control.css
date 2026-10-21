@@ -223,3 +223,7 @@ body{background:var(--admin-bg);color:var(--admin-ink)}.shell{min-height:100vh;b
 .control-plane-no-results{grid-column:1/-1;padding:22px;border:1px dashed var(--admin-line);border-radius:12px;text-align:center;color:var(--admin-muted);font-size:12px}
 @media(max-width:1250px){.control-plane-area-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.control-plane-area-grid{grid-template-columns:1fr}.control-plane-area-content p{min-height:0}}
+/* 16.10.87 — bridge workspace-intent search to canonical record discovery. */
+.control-plane-search-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-4px 0 14px;padding:10px 12px;border:1px solid var(--admin-line);border-radius:10px;background:var(--surface,#fff)}
+.control-plane-search-actions .mini{margin:0;max-width:70%;line-height:1.5}
+@media(max-width:650px){.control-plane-search-actions{align-items:stretch;flex-direction:column}.control-plane-search-actions .mini{max-width:none}.control-plane-search-actions .btn{width:100%}}

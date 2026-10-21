@@ -2,7 +2,7 @@
  * Read-only aggregation of existing governed evidence surfaces. No new authority is introduced.
  * A successful endpoint read is never promoted to functional or production certification.
  */
-import { api, esc } from './admin-runtime.js?v=16.10.86';
+import { api, esc } from './admin-runtime.js?v=16.10.87';
 
 const SOURCES = [
   {id:'platform-health',title:'Data & Infrastructure',group:'infrastructure',endpoint:'/api/platform/admin/system-health',description:'Runtime and platform health projection.',workspace:'system-health',dependencies:'Runtime bindings, storage and system-health authority',nextAction:'Inspect any failed checks; run deployed persistence and recovery tests.'},

@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+const command=await readFile(new URL('../../public/assets/js/frontend/admin/command-center.js',import.meta.url),'utf8');
+const resources=await readFile(new URL('../../public/assets/js/frontend/admin/resource-management.js',import.meta.url),'utf8');
+const css=await readFile(new URL('../../public/assets/css/admin-control.css',import.meta.url),'utf8');
+assert.match(command,/id="controlPlaneSearchRecords"/,'Control Home must expose a canonical-record search action');
+assert.match(command,/state\.resourceSearchQuery=query/,'the query must be carried through shared app state, not encoded into a route or trusted as authority');
+assert.match(command,/openWorkItem\(\{action:'resource-management'\}\)/,'search action must open the canonical Resource Management workspace');
+assert.match(resources,/const initialQuery=String\(state\.resourceSearchQuery\|\|''\)\.trim\(\)/,'Resource Management must consume the forwarded query');
+assert.match(resources,/await search\(initialQuery\)/,'the canonical resource-search API must execute the forwarded query');
+assert.match(resources,/state\.resourceSearchQuery=''/,'forwarded query must be cleared after consumption to avoid stale searches');
+assert.match(resources,/resource-search\?q=\$\{encodeURIComponent\(query\)\}/,'record search must use the canonical search endpoint and encode user input');
+assert.match(css,/control-plane-search-actions/,'search bridge must have responsive presentation');
+console.log('PASS 16.10.87 Control Plane → canonical Resource Explorer search bridge');

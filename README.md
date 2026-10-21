@@ -1,4 +1,4 @@
-ON MISSION 16.10.86 — Unified Control Plane Candidate. The searchable eight-area Control Plane routes work to canonical workspaces; market publication remains governed through CREATE NEXT VERSION and explicit release authorization. This source candidate is not production-certified.
+ON MISSION 16.10.87 — Unified Control Plane Canonical Resource Search Bridge. Control Home now forwards search intent into canonical Resource Management; market publication remains governed through CREATE NEXT VERSION and explicit release authorization. This source candidate is not production-certified.
 
 ## Current candidate: ON MISSION 16.10.85 — Audit Retention and Release Integrity
 

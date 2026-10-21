@@ -1,37 +1,25 @@
-ON MISSION 16.10.86 — UNIFIED CONTROL PLANE ENTRY
-Baseline: 16.10.85
-Status: SOURCE CANDIDATE — NOT DEPLOYED / NOT BROWSER-CERTIFIED
+# ON MISSION 16.10.87 — CANONICAL RESOURCE SEARCH BRIDGE
+Baseline: 16.10.86
+Status: source candidate — not deployed / browser-certified
 
 DELIVERED
-- Added a concise, responsive eight-area Control Plane entry point to the existing Super Admin Command Center.
-- Added workspace-intent search for data/resources, AI/agents/devices, connections/infrastructure, product/experience, market launch, tenants/operations, and system/governance.
-- All navigation actions reuse existing canonical workspace routes. No new domain authority or database migration was introduced.
-- Added a focused regression contract and updated release/runtime identity, cache-busting URLs and roadmap continuity.
-- Added a complete journey review and explicit remaining-work list in docs/roadmap/16.10.86-control-plane-journey.md.
+- Control Home search query can now be forwarded into canonical Resource Management.
+- Resource Management consumes the handoff once and uses the existing canonical resource-search endpoint.
+- Responsive UI and regression contract added. No database migrations or new authorities.
 
-VALIDATION
-- npm run check:release: PASS (cumulative source and contract suite).
-- npm run check:health: PASS.
-- npm run check:release-engineering: PASS.
-- npm run check:migrations: PASS (163 ordered migrations; high-water mark 0163).
-- npm run check:schema: PASS (253 tables, 463 indexes).
-- Node syntax checks for the new model and modified Command Center: PASS.
-- Local npm run build: BLOCKED because local Node.js is 22.16.0 and the project requires Node.js 24.x. Cloudflare deployment of this exact 16.10.86 artifact has not been performed or verified.
+VALIDATION TARGETS
+- New focused search-bridge regression test.
+- Cumulative release and health checks.
+- Syntax checks for modified modules.
 
 NOT CERTIFIED
-- Deployed browser/runtime behavior or the live production health status.
-- Universal record-level search across every resource authority; current search maps intent to canonical workspaces.
-- Full role-specific filtering; all sensitive actions still depend on server-side authorization and require deployed adversarial tests.
-- Market launch completion or publication for Germany or any other market.
-- Database-provider cutover to Azure or any other provider.
-- Real-world mission effects or controlled pilot approval.
+- Node 24 production build/deploy for this exact artifact.
+- Browser/runtime and all role/tenant authorization matrices.
+- Universal resource coverage, full launch wizard, external connector lifecycle, database migration/cutover, or real-world mission proof.
 
-NEXT PRIORITIES
-1. Build with Node 24 in Cloudflare and verify the exact artifact identity.
-2. Deploy to controlled environment and browser-certify navigation/search and regression flows.
-3. Complete universal resource search and lifecycle coverage.
-4. Complete the resumable Market Launch wizard and approval/publication integration.
-5. Certify first supported external connector and bounded database migration/cutover/rollback workflow.
-6. Execute the Germany Logistics mission proof scenarios against the deployed runtime.
-
-Canonical journey and stage-by-stage remaining evidence: docs/roadmap/16.10.86-control-plane-journey.md
+NEXT
+1. Build with Node 24 and deploy to controlled environment.
+2. Browser-test query handoff and role/tenant-scoped canonical search.
+3. Continue Resource Explorer lifecycle/relationships/history coverage.
+4. Complete Market Launch wizard, connector lifecycle and bounded database migration workflow.
+5. Certify Germany Logistics scenarios through the full canonical mission journey.

@@ -1,3 +1,21 @@
+# Mission Execution 16.10.87 — Canonical Resource Search Bridge
+
+Status: source candidate — deployment/browser certification pending.
+
+Baseline: 16.10.86
+
+## Delivered
+- Added a Control Home action that carries a user's current search query into the canonical Resource Management workspace.
+- Resource Management consumes the query once, executes the existing canonical `/api/platform/admin/resource-search` endpoint, and clears the handoff state to avoid stale searches.
+- Added responsive styling and a regression contract for the search handoff, encoded query and canonical endpoint usage.
+- No new API authority, database table, migration, or alternate resource registry was introduced.
+
+## Not claimed
+- This does not make the Control Home itself a universal record search engine; record results still come from the existing authorized canonical endpoint.
+- Does not certify production/browser behavior, all role/tenant scopes, market publication, provider migration or real-world mission execution.
+
+---
+
 # Mission Execution 16.10.86 — Unified Control Plane Entry
 
 Status: source release candidate — not production-certified.

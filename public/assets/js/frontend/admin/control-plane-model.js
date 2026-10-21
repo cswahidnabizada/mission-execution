@@ -1,4 +1,4 @@
-/* ON Mission 16.10.86 — unified, role-aware Control Plane navigation model.
+/* ON Mission 16.10.87 — unified, role-aware Control Plane navigation model.
  * Presentation-only taxonomy. Canonical workspace registry and backend authorities remain owners.
  */
 export const CONTROL_PLANE_AREAS = Object.freeze([

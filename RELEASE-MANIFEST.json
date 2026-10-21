@@ -1,7 +1,7 @@
 {
-  "version": "16.10.86",
+  "version": "16.10.87",
   "release": "RELEASE.md",
-  "base": "16.10.85",
+  "base": "16.10.86",
   "migrationHighWaterMark": "0163",
   "migrationCount": 163,
   "schemaSnapshot": {
@@ -9,6 +9,6 @@
     "sha256": "34e1befacc2e8b94aa0127dc1458be4f1db3177395a5594957b64dbbfd2456ac"
   },
   "generatedFrom": "deterministic-release-pipeline",
-  "releaseName": "Unified Role-Aware Control Plane Entry",
+  "releaseName": "Unified Control Plane Canonical Resource Search Bridge",
   "certificationControl": "config/certification/controlled-pilot-readiness.json"
 }
