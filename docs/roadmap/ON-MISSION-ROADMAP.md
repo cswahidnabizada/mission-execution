@@ -63,3 +63,10 @@ Resolve now renders ordered, task-specific guided substeps for resource/product 
 ## 16.10.98 — Canonical Stage Contract Engine
 
 Status: source candidate. Server-defined contracts now declare ordered steps, authority, prerequisites, permitted command, evidence schema, durable state, and recovery guidance. Substep state is stored in the canonical task evidence record. Required follow-up: connect the Resolve UI to the new contract endpoints, finish full-suite/build gates, and certify the deployed Germany Logistics journey.
+
+## 16.10.99 — Stage Contract UI/API Integration
+- Connected Resolve to canonical server-defined task contracts and protected substep update endpoints.
+- Rendered persisted substep state, authority, command, prerequisite, evidence schema and recovery guidance in-place.
+- Parent task completion now checks persisted server-side contract state and blocks if the contract is uninitialized or required steps remain incomplete.
+- No schema migration; 163 migrations and the current schema snapshot remain unchanged.
+- Full cumulative release suite still has legacy cross-version assertions outside this feature; Node.js 24 build and deployed runtime/pilot certification remain required.

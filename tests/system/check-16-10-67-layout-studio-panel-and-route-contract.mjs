@@ -12,7 +12,7 @@ assert.equal(lock.version,pkg.version);
 assert.equal(lock.packages[''].version,pkg.version);
 assert.equal(read('VERSION').trim(),pkg.version);
 assert.equal(manifest.version,pkg.version);
-assert.ok(['16.10.66','16.10.67','16.10.68','16.10.69','16.10.70','16.10.71','16.10.72','16.10.73','16.10.74','16.10.75','16.10.76','16.10.77','16.10.78','16.10.79','16.10.80','16.10.81','16.10.82','16.10.83','16.10.84','16.10.85','16.10.86','16.10.87','16.10.88','16.10.89','16.10.90','16.10.91','16.10.92','16.10.93','16.10.94'].includes(manifest.base));
+assert.ok(['16.10.66','16.10.67','16.10.68','16.10.69','16.10.70','16.10.71','16.10.72','16.10.73','16.10.74','16.10.75','16.10.76','16.10.77','16.10.78','16.10.79','16.10.80','16.10.81','16.10.82','16.10.83','16.10.84','16.10.85','16.10.86','16.10.87','16.10.88','16.10.89','16.10.90','16.10.91','16.10.92','16.10.93','16.10.94','16.10.95','16.10.96','16.10.97','16.10.98'].includes(manifest.base));
 assert.match(css,/\.ls-grid\{align-items:stretch;grid-template-columns:minmax\(220px,\.72fr\) minmax\(0,2fr\) minmax\(240px,\.82fr\)/);
 assert.match(css,/\.ls-grid>\.ls-panel:first-child,\.ls-grid>\.ls-inspector\{position:sticky/);
 assert.match(css,/@media\(max-width:1180px\)/);

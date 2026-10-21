@@ -4,7 +4,7 @@ const service=fs.readFileSync('src/worker/security/market-factory.service.js','u
 const routes=fs.readFileSync('src/worker/modules/admin-control/admin-build-data.routes.js','utf8');
 const ui=fs.readFileSync('public/assets/js/frontend/admin/market-factory.js','utf8');
 const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
-assert.equal(pkg.version,'16.10.98');
+assert.equal(pkg.version,'16.10.99');
 assert.match(pkg.scripts['check:release'],/check-16-10-98-canonical-stage-contract-engine/);
 assert.match(service,/export function buildMarketLaunchStageContract/);
 assert.match(service,/export async function getMarketLaunchStageContract/);
@@ -15,5 +15,6 @@ assert.match(service,/MARKET_LAUNCH_STAGE_CONTRACT_INCOMPLETE/);
 assert.match(service,/platform_market_launch_task_evidence\.evidence_json\.stageContract/);
 assert.ok(routes.includes('workbench\\/tasks\\/(?<taskKey>'), 'contract read route must be registered');
 assert.match(routes,/updateMarketLaunchStageStep/);
-assert.match(ui,/TASK CONTRACT · GUIDED SUBSTEPS/);
+assert.match(ui,/CANONICAL TASK CONTRACT · PERSISTED SUBSTEPS/);
+assert.match(ui,/loadResolveContract\(api,versionId,taskKey\)/);
 console.log('PASS 16.10.98 canonical server-defined stage contracts, durable substep state, prerequisite/evidence gates, protected routes');

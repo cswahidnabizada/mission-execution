@@ -1,4 +1,4 @@
-# Mission Execution 16.10.98 — Canonical Stage Contract Engine
+# Mission Execution 16.10.99 — Stage Contract UI/API Integration
 
 Status: protected candidate — exact Node.js 24 build, full cumulative release gates, authenticated browser/runtime certification and deployed pilot proof pending. DO NOT DEPLOY until required gates pass.
 
@@ -1167,3 +1167,13 @@ This source candidate advances Market Launch Resolve with ordered task-specific 
 - Enforces prerequisite ordering and evidence requirements for substep completion. When a task evidence payload carries a stage contract, task completion is rejected until all required substeps are complete.
 - Existing launch readiness, authorization, publication, verification, activation, and recovery gates remain canonical and separate.
 - Production certification remains pending until the full release suite, required Node.js 24 build, authenticated browser tests, and controlled pilot evidence pass.
+
+
+## 16.10.99 — Stage Contract UI/API Integration
+- Resolve loads the server-defined stage contract from the canonical contract endpoint for the selected task.
+- Ordered substeps render server-owned status, authority, permitted command, prerequisites, evidence requirements and recovery guidance.
+- Substep evidence updates use the protected canonical step endpoint, then re-read the contract to display persisted status.
+- Parent task completion checks persisted server-side contract state; client-supplied contract state is never accepted as authority.
+- Failed contract reads or step updates keep the task open and expose a retryable failure state.
+- No schema migration added; the existing 163-migration high-water mark and schema hash are preserved.
+- Candidate only: full cumulative suite, Node.js 24 build, authenticated browser tests and deployed pilot certification must pass before deployment.
