@@ -1,29 +1,32 @@
-# ON MISSION 16.10.89 — RESOURCE RELATIONSHIP & LIFECYCLE EVIDENCE
-Baseline: 16.10.88
-Status: source candidate — exact Node.js 24 build, browser certification and deployment not yet verified
+ON MISSION RELEASE REPORT — 16.10.90
+Release: Guided Market Launch Stages
+Baseline: 16.10.89
+Status: SOURCE CANDIDATE — NOT DEPLOYED OR BROWSER-CERTIFIED
 
 DELIVERED
-- Resource 360 dependency view now summarizes canonical graph nodes, edges, incoming references and outgoing dependencies when the owning authority returns typed graph edges.
-- Relationship type counts are derived only from the returned canonical graph; the UI explicitly states this is not a global impact scan.
-- Lifecycle view now exposes version/revision, created/updated timestamps and lifecycle metadata only when supplied by the canonical authority.
-- Supports canonical snake_case and camelCase legal-hold/trash metadata without inventing absent values.
-- Preserved existing action authorization, step-up gates, canonical resource reads, Data Studio ownership and the existing migration chain.
-- No database schema changes or migrations.
+- Guided Market Launch stage navigation is rendered from canonical workbench task categories.
+- Stage cards derive completion and blocked counts from returned tasks only.
+- Selecting a stage filters presentation; it does not modify readiness or bypass any gate.
+- Show-all-stages and initial focus on the first stage are supported.
+- Existing evidence writes remain step-up protected and go through canonical Market Factory APIs.
+- Release identity advanced coherently to 16.10.90; package lock, manifest, runtime identity and roadmap are aligned.
+- Historical release acceptance lists were updated to accept the current release while retaining their domain assertions.
+- No database migration; migration high-water mark remains 0163.
 
-VALIDATION
-- Added focused 16.10.89 regression test to the cumulative release suite.
-- Source-level checks and focused regression are to be run in this environment; full release and health gates remain required.
-
-NOT CERTIFIED
-- Exact Node.js 24 build/deployment and browser interaction.
-- Exhaustive global impact analysis; this release only presents edges returned by the canonical resource graph.
-- Complete Market Launch wizard and live market publication proof.
-- External connector/provider and database migration/cutover certification.
-- Deployed tenant isolation and Germany Logistics end-to-end proof.
+CHECKS
+- 16.10.90 guided launch stage regression: PASS.
+- 16.10.89 resource relationship/lifecycle regression: PASS.
+- 16.10.88 resource inventory regression: PASS.
+- 16.10.87 search bridge regression: PASS.
+- 16.10.86 Control Plane regression: PASS.
+- 16.10.85 session/audit regression: PASS.
+- Cumulative release suite: PASS after reconciling stale historical release-version acceptance and roadmap metadata contracts.
+- Full build: BLOCKED locally by the intended Node.js version guard; local Node.js is 22.16.0, while .node-version requires 24.18.0 and engines.node requires 24.x. The production build gate correctly failed closed.
+- Browser, deployed runtime and Germany Logistics operational proof: PENDING.
 
 NEXT
-1. Run focused regression, release, health, schema and architecture checks.
-2. Build/deploy exact artifact with Node.js 24 and browser-test Resource 360.
-3. Complete server-backed resource lifecycle/dependency APIs and safe draft deletion where canonical APIs support it.
-4. Complete the resumable Market Launch wizard and integration contracts.
-5. Preserve and report the complete canonical mission journey after every release.
+1. Reconcile remaining historical release/roadmap assertions and rerun the complete release suite.
+2. Build under Node.js 24 and run all health, architecture, schema and migration gates.
+3. Verify guided launch interaction in browser and controlled deployment.
+4. Continue Resource Explorer lifecycle/impact completion and full market launch certification.
+5. Preserve the full canonical mission journey and mark each stage only with evidence from its owning authority.

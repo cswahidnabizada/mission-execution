@@ -1,8 +1,38 @@
-# Mission Execution 16.10.89 — Resource Relationship & Lifecycle Evidence
+# Mission Execution 16.10.90 — Guided Market Launch Stages
 
-Status: protected candidate — deployment/browser certification pending. DO NOT DEPLOY until exact-artifact Node 24 build and browser certification pass.
+Status: protected candidate — exact Node.js 24 build, complete release gates, and browser/runtime certification pending. DO NOT DEPLOY until those checks pass.
 
-Baseline: 16.10.88
+Base: ON MISSION 16.10.89
+Baseline: 16.10.89
+Permanent priority: Security → Truth → Liveness → Stability → Experience → Scale
+Truthful Runtime Certification: runtime claims require evidence from their owning authority.
+Canonical journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE
+No competing workflow authority is introduced.
+
+## 16.10.90 — Guided Market Launch Stages
+- Added a guided stage navigator to the existing Market Factory launch workbench.
+- Stages and completion/blocked counts are derived from canonical workbench task categories and task states.
+- Selecting a stage filters the visible task group; it does not change readiness, task status, publication state or authorization.
+- Added show-all-stages behavior and initial focus on the first canonical task category.
+- Preserved step-up authorization, evidence submission, immutable package revisions and validate → authorize → publish → verify → activate lifecycle.
+- Reconciled stale historical release-version acceptance lists without removing their functional assertions.
+- No database schema change or migration; migration high-water mark remains 0163.
+
+## Validation status for 16.10.90
+- Focused guided-launch regression: PASS.
+- Resource relationship/lifecycle, inventory, search bridge and Control Plane regressions: PASS.
+- Cumulative release suite: PASS after reconciling stale historical release-version acceptance and roadmap metadata contracts.
+- Exact Node.js 24 build: NOT CERTIFIED in this environment (local Node.js 22.16.0).
+- Browser/deployed runtime certification: PENDING.
+
+## Remaining
+1. Finish full cumulative test reconciliation and pass all release, health, architecture, migration and schema gates under Node.js 24.
+2. Browser-test guided stage filtering, evidence entry, step-up, refresh and failure handling.
+3. Complete Resource Explorer lifecycle, full impact analysis and safe draft deletion through canonical APIs.
+4. Complete market launch publication and live verification.
+5. Certify connectors, database migration/cutover/rollback, tenant/developer boundaries and the Germany Logistics mission journey.
+
+## 16.10.88 — Canonical Resource Inventory Workbench
 
 
 ## 16.10.88 — Canonical Resource Inventory Workbench

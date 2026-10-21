@@ -227,7 +227,7 @@ body{background:var(--admin-bg);color:var(--admin-ink)}.shell{min-height:100vh;b
 .control-plane-search-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-4px 0 14px;padding:10px 12px;border:1px solid var(--admin-line);border-radius:10px;background:var(--surface,#fff)}
 .control-plane-search-actions .mini{margin:0;max-width:70%;line-height:1.5}
 @media(max-width:650px){.control-plane-search-actions{align-items:stretch;flex-direction:column}.control-plane-search-actions .mini{max-width:none}.control-plane-search-actions .btn{width:100%}}
-/* ON Mission 16.10.89 — Resource Explorer inventory controls */
+/* ON Mission 16.10.90 — Resource Explorer inventory controls */
 .resource-inventory-controls{display:grid;grid-template-columns:minmax(140px,190px) minmax(140px,190px) auto minmax(180px,1fr);gap:8px;align-items:end;margin:10px 0 12px;padding:10px;border:1px solid var(--admin-line);border-radius:10px;background:#f8fafc}
 .resource-inventory-controls label{display:grid;gap:4px;min-width:0}.resource-inventory-controls label>span{font-size:8px;color:#64748b;font-weight:900;letter-spacing:.08em}.resource-inventory-controls .input{min-height:34px}.resource-inventory-controls .mini{align-self:center}.resource-identity-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.resource-identity-actions .btn{font-size:8px;padding:6px 8px}
 @media(max-width:760px){.resource-inventory-controls{grid-template-columns:1fr 1fr}.resource-inventory-controls #resourceClearFilters{grid-column:1}.resource-inventory-controls .mini{grid-column:1/-1}.resource-workspace-identity{flex-direction:column}}

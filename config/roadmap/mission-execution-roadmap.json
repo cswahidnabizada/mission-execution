@@ -1,7 +1,7 @@
 {
   "schema": "onmission.roadmap.v1",
-  "version": "16.10.89",
-  "baseline": "16.10.88",
+  "version": "16.10.90",
+  "baseline": "16.10.89",
   "permanentPriority": [
     "Security",
     "Truth",
@@ -417,6 +417,21 @@
       ],
       "versions": [
         "16.10.89"
+      ]
+    },
+    {
+      "id": "GUIDED-MARKET-LAUNCH-STAGES",
+      "status": "SOURCE_IMPLEMENTED_RUNTIME_EVIDENCE_PENDING",
+      "summary": "Market launch workbench derives guided stages from canonical task categories, filters the visible task group, and retains existing evidence, step-up, readiness and publication authorities.",
+      "acceptance": [
+        "Stage list derives only from returned canonical workbench tasks",
+        "First stage is focused by default and stage selection filters only presentation",
+        "Show all stages restores the complete task list",
+        "No stage selection changes readiness, task status, publication status or authorization",
+        "Existing governed task mutations and release lifecycle remain intact"
+      ],
+      "dependsOn": [
+        "RESOURCE-RELATIONSHIP-LIFECYCLE-EVIDENCE"
       ]
     }
   ],

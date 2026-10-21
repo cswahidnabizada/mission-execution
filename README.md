@@ -1,4 +1,10 @@
-ON MISSION 16.10.88 — Canonical Resource Inventory Workbench. Control Home now forwards search intent into canonical Resource Management; market publication remains governed through CREATE NEXT VERSION and explicit release authorization. This source candidate is not production-certified.
+ON MISSION 16.10.90 — Guided Market Launch Stages. The Market Factory workbench now presents canonical task categories as a guided stage navigator, with stage-scoped task focus and evidence-derived completion/blocker counts. CREATE NEXT VERSION and explicit release authorization remain governed. This source candidate is not production-certified.
+
+## Current candidate: ON MISSION 16.10.90 — Guided Market Launch Stages
+
+The guided stage navigator is derived from canonical launch-workbench tasks; it filters presentation only and cannot change readiness, authorization or publication state. The current roadmap still requires a complete Node.js 24 build, browser/runtime verification, full Resource Explorer lifecycle coverage and Germany Logistics end-to-end proof. See `RELEASE.md` and `RELEASE-REPORT.txt`.
+
+## Previous candidate: ON MISSION 16.10.88 — Canonical Resource Inventory Workbench. Control Home forwards search intent into canonical Resource Management; market publication remains governed through CREATE NEXT VERSION and explicit release authorization. This was a source candidate, not production certification.
 
 ## Current candidate: ON MISSION 16.10.85 — Audit Retention and Release Integrity
 
