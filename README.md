@@ -529,3 +529,7 @@ This source candidate adds route launch links and a same-origin GET-only reachab
 Current source candidate: page layer order now resolves from canonical `page.componentIds`, with accessible move-up/move-down controls and duplicate placement validation. The protected Product Publisher lifecycle retains **CREATE NEXT VERSION** as the canonical release workflow. Production renderer bindings remain unconnected and publication stays disabled pending browser parity and release verification.
 
 Current source candidate: **16.10.89 — Resource Relationship & Lifecycle Evidence**. The governed product release workflow retains **CREATE NEXT VERSION** as the explicit route for producing a new immutable release candidate; publication still requires the canonical authorization and verification lifecycle.
+
+## ON Mission 16.10.91 — Guided Launch Next-Action Navigation
+
+This candidate adds canonical-task-driven previous/next stage navigation and a “GO TO NEXT REQUIRED TASK” action to Market Factory. The action opens the first incomplete task returned by the canonical workbench and preserves existing step-up authorization. Product Publisher's governed release lifecycle remains unchanged, including CREATE NEXT VERSION, explicit authorization, publication, verification and activation gates. This candidate is not production-certified until exact Node.js 24 build and deployed runtime checks pass.

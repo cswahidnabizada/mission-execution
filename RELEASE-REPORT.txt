@@ -1,32 +1,32 @@
-ON MISSION RELEASE REPORT — 16.10.90
-Release: Guided Market Launch Stages
-Baseline: 16.10.89
-Status: SOURCE CANDIDATE — NOT DEPLOYED OR BROWSER-CERTIFIED
+ON MISSION RELEASE REPORT — 16.10.91
+Release: Guided Launch Next-Action Navigation
+Baseline: 16.10.90
+Status: PROTECTED SOURCE CANDIDATE — DO NOT DEPLOY UNTIL NODE.JS 24 BUILD AND RUNTIME CERTIFICATION PASS
 
 DELIVERED
-- Guided Market Launch stage navigation is rendered from canonical workbench task categories.
-- Stage cards derive completion and blocked counts from returned tasks only.
-- Selecting a stage filters presentation; it does not modify readiness or bypass any gate.
-- Show-all-stages and initial focus on the first stage are supported.
-- Existing evidence writes remain step-up protected and go through canonical Market Factory APIs.
-- Release identity advanced coherently to 16.10.90; package lock, manifest, runtime identity and roadmap are aligned.
-- Historical release acceptance lists were updated to accept the current release while retaining their domain assertions.
-- No database migration; migration high-water mark remains 0163.
+- Added previous/next stage controls to the canonical Market Factory guided launch workbench.
+- Added an accessible next-required-task status derived from canonical workbench tasks returned by the owning authority.
+- The next-task action searches all stages, switches to the relevant stage, opens its existing evidence editor and scrolls the task into view.
+- No incomplete task is marked complete, no readiness is inferred, and no alternate workflow authority is introduced.
+- Existing step-up authorization, canonical evidence writes, market publication gates and immutable release lifecycle preserved.
+- Updated release identity, package lock, manifest, runtime identity, cache-busting references, roadmap and historical version compatibility tests.
+- No database migration; 163 migrations preserved, high-water mark 0163.
 
 CHECKS
-- 16.10.90 guided launch stage regression: PASS.
-- 16.10.89 resource relationship/lifecycle regression: PASS.
-- 16.10.88 resource inventory regression: PASS.
-- 16.10.87 search bridge regression: PASS.
-- 16.10.86 Control Plane regression: PASS.
-- 16.10.85 session/audit regression: PASS.
-- Cumulative release suite: PASS after reconciling stale historical release-version acceptance and roadmap metadata contracts.
-- Full build: BLOCKED locally by the intended Node.js version guard; local Node.js is 22.16.0, while .node-version requires 24.18.0 and engines.node requires 24.x. The production build gate correctly failed closed.
-- Browser, deployed runtime and Germany Logistics operational proof: PENDING.
+- New 16.10.91 regression: PASS.
+- Full cumulative npm run check:release: PASS.
+- npm run check:health: PASS.
+- Migration contract: PASS (163 migrations).
+- Schema gate: PASS (253 tables, 463 indexes).
+- JavaScript syntax checks: PASS.
+- Exact production build: NOT CERTIFIED; local Node.js is 22.16.0 but repository requires Node.js 24.x.
+- Browser/deployed runtime certification: PENDING.
+- Germany Logistics live operational proof and pilot approval: PENDING.
 
 NEXT
-1. Reconcile remaining historical release/roadmap assertions and rerun the complete release suite.
-2. Build under Node.js 24 and run all health, architecture, schema and migration gates.
-3. Verify guided launch interaction in browser and controlled deployment.
-4. Continue Resource Explorer lifecycle/impact completion and full market launch certification.
-5. Preserve the full canonical mission journey and mark each stage only with evidence from its owning authority.
+1. Build exact candidate under Node.js 24.
+2. Browser-test stage navigation, next task, evidence form, step-up denial, refresh and error paths.
+3. Complete Resource Explorer server-backed lifecycle and impact analysis.
+4. Complete market readiness, authorization, publication, verification, activation and live proof.
+5. Certify integrations, database migration/cutover/rollback and tenant/developer boundaries.
+6. Complete Germany Logistics end-to-end mission and recovery evidence; obtain explicit pilot approval.

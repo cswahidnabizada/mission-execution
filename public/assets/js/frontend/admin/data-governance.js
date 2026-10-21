@@ -2,7 +2,7 @@
  * Data Entry, Data Control and Trash are composed here as one governance family.
  * Canonical domain authorities remain the only owners of truth.
  */
-import { $, api, esc, state, ensureStepUp } from './admin-runtime.js?v=16.10.90';
+import { $, api, esc, state, ensureStepUp } from './admin-runtime.js?v=16.10.91';
 
 let show=null;
 export function setGovernanceShow(fn){

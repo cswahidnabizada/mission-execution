@@ -1,7 +1,7 @@
 {
   "schema": "onmission.roadmap.v1",
-  "version": "16.10.90",
-  "baseline": "16.10.89",
+  "version": "16.10.91",
+  "baseline": "16.10.90",
   "permanentPriority": [
     "Security",
     "Truth",
@@ -498,6 +498,22 @@
     "blockedUntil": [
       "16.10.79 deployed Results Center runtime verification",
       "16.10.80 deployed journey contract inspection and authenticated runtime certification"
+    ]
+  },
+  "currentMilestone": {
+    "id": "GUIDED-LAUNCH-NEXT-ACTION",
+    "status": "SOURCE_IMPLEMENTED_RELEASE_VALIDATION_PENDING",
+    "delivered": [
+      "Canonical task-derived next required task summary",
+      "Previous/next stage navigation",
+      "Open next incomplete task across all stages"
+    ],
+    "remaining": [
+      "Node.js 24 exact build",
+      "Browser and deployed runtime verification",
+      "Resource Explorer lifecycle and impact completion",
+      "Complete market publication and live verification",
+      "Germany Logistics end-to-end pilot evidence"
     ]
   }
 }

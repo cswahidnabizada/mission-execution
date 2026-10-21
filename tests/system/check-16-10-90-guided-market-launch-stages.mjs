@@ -5,8 +5,8 @@ const ui = await readFile(new URL('public/assets/js/frontend/admin/market-factor
 const css = await readFile(new URL('public/assets/css/frontend/admin.css', root), 'utf8');
 const pkg = JSON.parse(await readFile(new URL('package.json', root), 'utf8'));
 const manifest = JSON.parse(await readFile(new URL('RELEASE-MANIFEST.json', root), 'utf8'));
-assert.equal(pkg.version, '16.10.90');
-assert.equal(manifest.version, '16.10.90');
+assert.equal(pkg.version, manifest.version, 'current package and manifest release identities must align');
+assert.ok(/^16\.10\.\d+$/.test(manifest.version), 'release identity must remain in the 16.10 patch series');
 assert.match(ui, /GUIDED LAUNCH/);
 assert.match(ui, /data-mf-stage/);
 assert.match(ui, /data-mf-task-category/);

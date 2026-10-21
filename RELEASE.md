@@ -1,3 +1,45 @@
+# Mission Execution 16.10.91 — Guided Launch Next-Action Navigation
+
+Status: protected candidate — deployment and browser/runtime certification pending. DO NOT DEPLOY until the exact Node.js 24 build, complete release gates and required certification pass.
+
+Base: ON MISSION 16.10.90.
+Baseline: ON Mission 16.10.90.
+Truthful Runtime Certification: runtime claims require evidence from their owning authority.
+Permanent priority: Security → Truth → Liveness → Stability → Experience → Scale.
+Canonical journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+No competing workflow authority is introduced.
+
+## Delivered
+- Added previous/next stage controls to the existing canonical Market Factory guided launch workbench.
+- Added a live next-required-task summary derived only from the canonical workbench tasks currently returned by the owning authority.
+- “Go to next required task” now finds the first incomplete canonical task across all stages, switches to its category, opens its evidence editor and scrolls it into view.
+- Empty/incomplete state is reported without fabricating readiness or marking tasks complete.
+- Preserved step-up authorization, evidence writes through the canonical Market Factory API, publication gates and immutable release lifecycle.
+- No database migration or new workflow authority introduced; migration high-water mark remains 0163.
+
+## Validation
+- New guided launch next-action regression: PASS.
+- Full cumulative `npm run check:release`: PASS after extending historical release-identity acceptance contracts without weakening their domain assertions.
+- `npm run check:health`: PASS.
+- Migration contract: PASS (163 ordered migrations, high-water mark 0163).
+- Current schema: PASS (253 tables, 463 indexes).
+- JavaScript syntax checks: PASS.
+- Exact Node.js 24 build: PENDING because the available local runtime is Node.js 22.16.0 and the build guard fails closed.
+- Browser interaction and deployed runtime certification: PENDING. Do not claim production certification until those checks pass.
+
+## Remaining
+1. Run exact candidate build under Node.js 24 and all cumulative release/health/architecture/schema/migration gates.
+2. Browser-test previous/next stage, next required task, evidence entry, step-up denial, refresh and error paths.
+3. Complete Resource Explorer server-backed lifecycle, version/history and dependency-impact operations.
+4. Complete market launch readiness → authorization → publication → verification → activation and prove one market is live.
+5. Certify connector/device lifecycle, supported database migration/cutover/rollback and tenant/developer authorization.
+6. Complete Germany Logistics end-to-end scenarios, recovery proof and explicit pilot approval.
+
+
+---
+
+# Historical release contracts and prior milestones
+
 # Mission Execution 16.10.90 — Guided Market Launch Stages
 
 Status: protected candidate — exact Node.js 24 build, complete release gates, and browser/runtime certification pending. DO NOT DEPLOY until those checks pass.

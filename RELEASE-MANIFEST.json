@@ -1,7 +1,7 @@
 {
-  "version": "16.10.90",
+  "version": "16.10.91",
   "release": "RELEASE.md",
-  "base": "16.10.89",
+  "base": "16.10.90",
   "migrationHighWaterMark": "0163",
   "migrationCount": 163,
   "schemaSnapshot": {
@@ -9,6 +9,6 @@
     "sha256": "34e1befacc2e8b94aa0127dc1458be4f1db3177395a5594957b64dbbfd2456ac"
   },
   "generatedFrom": "deterministic-release-pipeline",
-  "releaseName": "Guided Market Launch Stages",
+  "releaseName": "Guided Launch Next-Action Navigation",
   "certificationControl": "config/certification/controlled-pilot-readiness.json"
 }
