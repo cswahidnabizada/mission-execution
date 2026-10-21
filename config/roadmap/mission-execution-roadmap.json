@@ -1,7 +1,7 @@
 {
   "schema": "onmission.roadmap.v1",
-  "version": "16.10.92",
-  "baseline": "16.10.90",
+  "version": "16.10.93",
+  "baseline": "16.10.92",
   "permanentPriority": [
     "Security",
     "Truth",
