@@ -39,3 +39,8 @@ Deployment and source-level tests do **not** establish authenticated browser cer
 ## 16.10.93 — Contextual Market Launch Execution
 
 Source candidate adds schema-driven typed resource forms, advanced JSON fallback and session-local draft convenience inside Market Launch. Canonical Data Entry preview/step-up commit and separate market linkage/readiness/publication gates are preserved. Exact Node.js 24 build, full certification, deployed runtime, full-stage integration and Germany Logistics mission proof remain pending. See `16.10.93-contextual-market-launch-execution.md`.
+
+
+## 16.10.94 — Adaptive Market Launch Workbench
+
+The workbench now derives a stage context from the selected incomplete canonical task, hides resource tools when that task does not indicate a resource need, exposes create only for likely configuration/missing-resource tasks, and provides canonical resource search followed by an authoritative resource re-read. Resource detail in this workbench is read-only; mutations remain with the owning Resource 360 controls. Task semantics are a relevance hint, not a substitute for server-side requirement contracts. Node.js 24 build, full cumulative suite, authenticated browser validation and deployed pilot certification remain pending. See `16.10.94-adaptive-market-launch-workbench.md`.

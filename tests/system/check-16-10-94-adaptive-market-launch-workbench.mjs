@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const ui=fs.readFileSync('public/assets/js/frontend/admin/market-factory.js','utf8');
+const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
+assert.equal(pkg.version,'16.10.94','package version must match adaptive workbench candidate');
+assert.match(ui,/id="mfAdaptiveResourcePanel"[^>]*hidden/,'resource context must start hidden until stage relevance is established');
+assert.match(ui,/function bindAdaptiveLaunchContext\(box,\{api\}\)/,'stage-specific resource context must have an explicit controller');
+assert.match(ui,/const relevant=Boolean\(task&&resourceWords\.test\(text\)\)/,'resource tools must be derived from the selected incomplete canonical task');
+assert.match(ui,/const create=Boolean\(task&&createWords\.test\(text\)&&resourceWords\.test\(text\)\)/,'resource creation must require a task context that indicates configuration or a missing resource');
+assert.match(ui,/id="mfToggleInlineResource"[^>]*hidden/,'create action must start hidden until the selected task needs it');
+assert.match(ui,/\/api\/platform\/admin\/resource-search\?q=\$\{encodeURIComponent\(q\)\}&limit=20/,'in-workbench search must use canonical resource search');
+assert.match(ui,/\/api\/platform\/admin\/resource-explorer\/\$\{encodeURIComponent\(x\.type\)\}\/\$\{encodeURIComponent\(String\(x\.id\)\)\}/,'search results must be re-read from the canonical resource authority');
+assert.match(ui,/Read-only context in Market Launch/,'resource details must not imply that search or viewing mutates canonical state');
+assert.match(ui,/CREATE RESOURCE/,'governed resource creation remains available when context requires it');
+assert.match(ui,/does not automatically link or publish a market resource/,'resource creation must not imply market linkage or launch completion');
+assert.match(pkg.scripts['check:release'],/check-16-10-94-adaptive-market-launch-workbench/,'adaptive workbench regression must be part of release suite');
+console.log('PASS 16.10.94 Adaptive Market Launch Workbench: task-scoped resource tools, canonical search and authoritative re-read');

@@ -1,6 +1,10 @@
-ON MISSION 16.10.90 — Guided Market Launch Stages. The Market Factory workbench now presents canonical task categories as a guided stage navigator, with stage-scoped task focus and evidence-derived completion/blocker counts. CREATE NEXT VERSION and explicit release authorization remain governed. This source candidate is not production-certified.
+ON MISSION 16.10.94 — Adaptive Market Launch Workbench. Resource tools are now scoped to the selected incomplete launch task, with canonical search and authoritative re-read; the primary action is expressed as one verb. This source candidate is not production-certified.
 
-## Current candidate: ON MISSION 16.10.90 — Guided Market Launch Stages
+## Current candidate: ON MISSION 16.10.94 — Adaptive Market Launch Workbench
+
+Resource discovery/creation tools appear only when the selected incomplete task indicates they are relevant. Existing resources are searched through the canonical search API and re-read from Resource Explorer. In-workbench detail is read-only; resource creation, market linkage and launch stage completion remain separate governed operations. Full release gates, Node.js 24 build, authenticated browser/runtime verification and Germany Logistics pilot proof remain pending. See `RELEASE.md` and `docs/roadmap/16.10.94-adaptive-market-launch-workbench.md`.
+
+## Historical candidate: ON MISSION 16.10.90 — Guided Market Launch Stages
 
 The guided stage navigator is derived from canonical launch-workbench tasks; it filters presentation only and cannot change readiness, authorization or publication state. The current roadmap still requires a complete Node.js 24 build, browser/runtime verification, full Resource Explorer lifecycle coverage and Germany Logistics end-to-end proof. See `RELEASE.md` and `RELEASE-REPORT.txt`.
 
