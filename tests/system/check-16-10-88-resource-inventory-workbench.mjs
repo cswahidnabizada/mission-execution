@@ -3,7 +3,7 @@ import {readFile} from 'node:fs/promises';
 const ui=await readFile(new URL('../../public/assets/js/frontend/admin/resource-management.js',import.meta.url),'utf8');
 const css=await readFile(new URL('../../public/assets/css/admin-control.css',import.meta.url),'utf8');
 const pkg=JSON.parse(await readFile(new URL('../../package.json',import.meta.url),'utf8'));
-assert.ok(/^16\.10\.(?:8[89]|9[0-9]|[1-9][0-9]{2,})$/.test(pkg.version),'current release must retain or advance beyond the 16.10.88 inventory workbench');
+const current=pkg.version.split('.').map(Number);assert.ok(current.length===3&&(current[0]>16||(current[0]===16&&(current[1]>10||(current[1]===10&&current[2]>=88)))),'current release must retain or advance beyond the 16.10.88 inventory workbench');
 assert.match(ui,/id="resourceFilterType"/,'resource inventory must expose type filtering');
 assert.match(ui,/id="resourceFilterStatus"/,'resource inventory must expose lifecycle-status filtering');
 assert.match(ui,/function applyInventoryFilters\(\)/,'filter behavior must be implemented, not decorative');

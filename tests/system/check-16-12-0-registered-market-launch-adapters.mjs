@@ -4,7 +4,7 @@ const ui=fs.readFileSync('public/assets/js/frontend/admin/market-factory.js','ut
 const service=fs.readFileSync('src/worker/security/market-factory.service.js','utf8');
 const routes=fs.readFileSync('src/worker/modules/admin-control/admin-build-data.routes.js','utf8');
 const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
-assert.equal(pkg.version,'16.16.0');
+assert.equal(pkg.version,'16.17.0');
 assert.match(service,/MARKET_LAUNCH_COMMAND_ADAPTERS/);
 assert.match(service,/'canonical\.read': async/);
 assert.match(service,/'canonical\.validate': async/);

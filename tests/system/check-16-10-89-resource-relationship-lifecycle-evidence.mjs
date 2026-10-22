@@ -3,7 +3,7 @@ import {readFile} from 'node:fs/promises';
 const ui=await readFile(new URL('../../public/assets/js/frontend/admin/resource-management.js',import.meta.url),'utf8');
 const pkg=JSON.parse(await readFile(new URL('../../package.json',import.meta.url),'utf8'));
 const manifest=JSON.parse(await readFile(new URL('../../RELEASE-MANIFEST.json',import.meta.url),'utf8'));
-assert.ok(/^16\.10\.(?:89|9[0-9]|[1-9][0-9]{2,})$/.test(pkg.version),'current release must retain or advance beyond 16.10.89');
+const current=pkg.version.split('.').map(Number);assert.ok(current.length===3&&(current[0]>16||(current[0]===16&&(current[1]>10||(current[1]===10&&current[2]>=89)))),'current release must retain or advance beyond 16.10.89');
 assert.equal(manifest.version,pkg.version,'package and manifest release identities must agree');
 assert.match(ui,/CANONICAL RELATIONSHIP EVIDENCE/,'dependency view must identify canonical relationship evidence');
 assert.match(ui,/RELATIONSHIP EDGES/,'dependency view must summarize edges');

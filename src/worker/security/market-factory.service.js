@@ -177,6 +177,25 @@ export async function getMarketPackage(env,{packageId=null,countryCode='',packag
  if(!market)return null;const versions=(await env.DB.prepare(`SELECT * FROM platform_market_package_versions WHERE package_id=? ORDER BY id DESC`).bind(Number(market.id)).all()).results||[];return {...market,versions:versions.map(v=>({...v,package_json:parseJson(v.package_json),import_report_json:parseJson(v.import_report_json),readiness_json:parseJson(v.readiness_json),dependency_snapshot_json:parseJson(v.dependency_snapshot_json)}))};
 }
 export async function listMarketPackages(env,{limit=100}={}){const n=Math.min(250,Math.max(1,Number(limit)||100));const rows=(await env.DB.prepare(`SELECT p.*,COALESCE(c.name,p.country_code) country_name,v.version active_version,v.status active_version_status,v.readiness_json active_readiness,latest.version latest_version,latest.status latest_version_status,latest.readiness_json latest_readiness FROM platform_market_packages p LEFT JOIN platform_product_country_catalog c ON c.code=p.country_code LEFT JOIN platform_market_package_versions v ON v.id=p.active_version_id LEFT JOIN platform_market_package_versions latest ON latest.id=(SELECT lv.id FROM platform_market_package_versions lv WHERE lv.package_id=p.id ORDER BY lv.id DESC LIMIT 1) ORDER BY COALESCE(c.name,p.country_code) ASC LIMIT ?`).bind(n).all()).results||[];return rows.map(r=>({...r,active_readiness:parseJson(r.active_readiness),latest_readiness:parseJson(r.latest_readiness)}));}
+
+/** Permanently remove only an unfinished draft market and its draft-only coordination records. */
+export async function deleteUnfinishedMarketPackage(env,actor,packageId,requestId=''){
+ const market=await env.DB.prepare(`SELECT * FROM platform_market_packages WHERE id=? LIMIT 1`).bind(Number(packageId)).first();
+ if(!market)throw fail('Market package not found.',404,'MARKET_PACKAGE_NOT_FOUND');
+ if(String(market.status).toUpperCase()!=='DRAFT'||market.active_version_id)throw fail('Only an unactivated DRAFT market can be deleted. Published, activated, suspended or retired market history must be retained.',409,'MARKET_DELETE_NOT_ALLOWED');
+ const versions=(await env.DB.prepare(`SELECT id,status FROM platform_market_package_versions WHERE package_id=? ORDER BY id`).bind(Number(packageId)).all()).results||[];
+ const allowed=new Set(['IMPORTED','DRAFT','NORMALIZED','VALIDATED','REJECTED']);
+ const unsafe=versions.filter(v=>!allowed.has(String(v.status).toUpperCase()));
+ if(unsafe.length)throw fail('This market contains a release that has progressed beyond a disposable draft. Preserve its history and create a new version instead.',409,'MARKET_DELETE_RELEASE_HISTORY_PROTECTED');
+ const versionIds=versions.map(v=>Number(v.id));
+ for(const id of versionIds){const op=await env.DB.prepare(`SELECT status,stage FROM platform_market_publication_operations WHERE package_version_id=? LIMIT 1`).bind(id).first();if(op&&String(op.status).toUpperCase()!=='PREPARED')throw fail('A publication operation has started. Resolve or recover it before cleanup.',409,'MARKET_DELETE_OPERATION_EXISTS');}
+ await auditAdminControl(env,{actor,action:'admin.market-factory.draft-deletion.requested',resourceType:'market_package',resourceId:packageId,requestId,metadata:{packageKey:market.package_key,countryCode:market.country_code,productKey:market.product_key,versionIds,versionCount:versionIds.length,permanent:true}}).catch(error=>{throw authorityUnavailable('market_factory_audit',error);});
+ // Child evidence/import/release rows cascade from package versions. Delete package-level operation rows first for DBs with stricter FK enforcement.
+ await env.DB.batch([env.DB.prepare(`DELETE FROM platform_market_publication_operations WHERE package_id=? AND status='PREPARED'`).bind(Number(packageId)),env.DB.prepare(`DELETE FROM platform_market_packages WHERE id=? AND status='DRAFT' AND active_version_id IS NULL`).bind(Number(packageId))]);
+ const remaining=await env.DB.prepare(`SELECT id FROM platform_market_packages WHERE id=? LIMIT 1`).bind(Number(packageId)).first();
+ if(remaining)throw fail('Draft market could not be removed safely. No success was reported; refresh and inspect its dependencies.',409,'MARKET_DELETE_NOT_COMPLETED');
+ return {deleted:true,packageId:Number(packageId),packageKey:market.package_key,countryCode:market.country_code,productKey:market.product_key,deletedVersionCount:versionIds.length,deletedAt:new Date().toISOString(),auditRecorded:true};
+}
 async function inspectCanonicalTargets(env,pkg){
  const country=await env.DB.prepare(`SELECT code,name,active,requires_review,default_subscription_class FROM platform_product_country_catalog WHERE code=? LIMIT 1`).bind(pkg.country.iso).first();
  const sectors=[];for(const s of pkg.sectors)sectors.push({code:s.code,exists:Boolean(await env.DB.prepare(`SELECT code FROM platform_reusable_sectors WHERE code=? LIMIT 1`).bind(s.code).first())});

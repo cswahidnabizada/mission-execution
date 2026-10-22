@@ -101,3 +101,9 @@ Status: hardening candidate. Resolve now executes only the registered canonical-
 - Guided package composition records requirements without pretending that integrations, credentials, canonical resources or live activation have already happened.
 - Tenant-facing reuse must be implemented as tenant-scoped surfaces, not by granting tenants Super Admin access.
 - Remaining: real adapters for all requirement types, semantic server validation, provider-owned connections, full certification and Node 24 release gates.
+
+## 16.17.0 — Market Cleanup and Guided Intake
+- Added guarded permanent deletion for unfinished DRAFT market packages, with step-up, typed package-specific confirmation, pre-delete audit intent and protection for active/progressed releases.
+- Added a copyable/editable example market JSON in advanced intake.
+- Shared canonical country/sector/policy records are deliberately retained to avoid deleting data used by other markets.
+- Node 24 build, full cumulative release suite and authenticated/deployed runtime certification remain open.

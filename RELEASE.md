@@ -1,4 +1,4 @@
-# Mission Execution 16.16.0 — Unified Market Launch Studio and Role-Bounded Control Plane UX
+# Mission Execution 16.17.0 — Market Cleanup and Guided Intake
 
 Status: protected candidate — exact Node.js 24 build, full cumulative release gates, authenticated browser/runtime certification and deployed pilot proof pending. DO NOT DEPLOY until required gates pass.
 
@@ -1235,3 +1235,10 @@ Status: hardening candidate. This release adds a step-up-protected legal decisio
 - Added responsive layout and clear safety boundaries: no live edits, no duplicate identities, no implicit tenant access, no external writes and no physical actuation from the preparation form.
 - Preserved the canonical domain authorities, existing release lifecycle, migration high-water mark 0163, and schema snapshot. No migration added.
 - Status: hardening candidate. Node 24 build, full cumulative release suite, authenticated browser tests, deployed runtime tests and Germany Logistics pilot certification remain required. DO NOT DEPLOY until gates pass.
+
+
+## 16.17.0 — Market Cleanup and Guided Intake
+
+Status: hardening candidate. Adds a step-up-protected permanent deletion path for unfinished DRAFT market packages only; deletes only package/version-scoped coordination data through existing foreign-key cascades; refuses active or progressed releases and started publication operations; records an audit intent before deletion. Market portfolio cards expose cleanup only for DRAFT packages without an active release. Advanced intake now includes a visible minimal market JSON example with copy/edit-to-input actions.
+
+No production deployment, authenticated browser certification, full cumulative suite certification, or Node 24 production build is claimed.

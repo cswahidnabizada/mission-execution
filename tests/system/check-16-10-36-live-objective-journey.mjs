@@ -7,7 +7,7 @@ const manifest=JSON.parse(fs.readFileSync('RELEASE-MANIFEST.json','utf8'));
 const route=fs.readFileSync('src/worker/modules/admin-control/objective-orchestrator.routes.js','utf8');
 const command=fs.readFileSync('src/worker/modules/admin-control/command-center.service.js','utf8');
 const release=fs.readFileSync('RELEASE.md','utf8');
-assert.match(version,/^16\.10\.\d+$/,'current release must remain in the 16.10 line');
+assert.ok(version.localeCompare('16.10.36',undefined,{numeric:true})>=0,'current release must retain or advance beyond the live objective journey baseline');
 assert.equal(pkg.version,version);assert.equal(lock.version,version);assert.equal(lock.packages[''].version,version);assert.equal(manifest.version,version);
 assert.match(command,/const missingConfigurations=required\.filter\(k=>!activeConfigKeys\.has\(k\)\)/,'configuration gaps must name the exact missing canonical keys');
 assert.match(command,/configurationGaps:\{required:required\.length,active:readyConfigs,missing:missingConfigurations\}/,'command center must expose detailed readiness gaps');
