@@ -19,7 +19,7 @@ assert(buildSurface.includes("'product-publisher': renderProductPublisher"),'Pro
 assert(panels.includes("'product-publisher': withNavigation(buildSurface['product-publisher'])"),'Control Plane facade must compose Product Factory through BUILD surface');
 assert(!panels.includes("'product-launch':renderProductLaunch"),'Legacy Product Launch renderer must not remain a routable renderer');
 assert(admin.includes('panel-registry.js'),'Admin bootstrap must load the canonical Admin panel registry');
-assert(registry.includes("['Market Factory','product-publisher'")||registry.includes("['Product Factory','product-publisher'"),'Super Admin must expose exactly one canonical Market Factory/Product Publisher workspace route');
+assert(registry.includes("['Market Factory','product-publisher'")||registry.includes("['Product Factory','product-publisher'")||registry.includes("['Market Launch Studio','product-publisher'"),'Super Admin must expose exactly one canonical Market Factory/Product Publisher workspace route');
 assert(!shell.includes('Product & Country · Expansion'),'Expansion must not remain a parallel product-building navigation destination');
 assert(runtime.includes('ADMIN_PRIMARY_SECTION')&&registry.includes("['Certification','certification'"),'Super Admin navigation registry must retain Command Center and Certification');
 assert(ui.includes('const JOURNEY=[')&&ui.includes("['prepare','Prepare Data']")&&ui.includes("['verify','Verify']"),'Publisher UI must define the canonical journey without numeric navigation');

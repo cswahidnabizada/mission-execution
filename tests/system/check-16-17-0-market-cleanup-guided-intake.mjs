@@ -4,13 +4,16 @@ const service=fs.readFileSync('src/worker/security/market-factory.service.js','u
 const routes=fs.readFileSync('src/worker/modules/admin-control/admin-build-data.routes.js','utf8');
 const ui=fs.readFileSync('public/assets/js/frontend/admin/market-factory.js','utf8');
 const manifest=JSON.parse(fs.readFileSync('RELEASE-MANIFEST.json','utf8'));
-assert.equal(manifest.version,'16.17.0');
+assert.equal(manifest.version,'16.19.0');
 assert.match(service,/export async function deleteUnfinishedMarketPackage/);
-assert.match(service,/String\(market\.status\)\.toUpperCase\(\)!=='DRAFT'\|\|market\.active_version_id/);
+assert.match(service,/export async function previewUnfinishedMarketPackageDeletion/);
+assert.match(service,/const preview=await previewUnfinishedMarketPackageDeletion\(env,packageId\)/);
 assert.match(service,/MARKET_DELETE_RELEASE_HISTORY_PROTECTED/);
 assert.match(service,/MARKET_DELETE_OPERATION_EXISTS/);
 assert.match(service,/admin\.market-factory\.draft-deletion\.requested/);
 assert.match(routes,/delete-draft/);
+assert.match(routes,/delete-preview/);
+assert.match(routes,/previewUnfinishedMarketPackageDeletion/);
 assert.match(routes,/MARKET_DELETE_CONFIRMATION_REQUIRED/);
 assert.match(routes,/requirePlatformSuperAdminStepUp\(request,env\)/);
 assert.match(ui,/DELETE UNFINISHED DRAFT/);

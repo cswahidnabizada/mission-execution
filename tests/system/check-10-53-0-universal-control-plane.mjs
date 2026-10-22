@@ -20,7 +20,7 @@ assert(service.includes('parseJson(activeLaunch.manifest_json)'),'country/sector
 assert(service.includes('evaluateProductLaunchReadiness(env,{countryCode:country'),'country/sector lens must use canonical readiness authority');
 assert(!service.includes('parseJson(activeLaunch.manifest_json):{};\n    const manifestSectors')||service.includes('const parseJson='),'manifest parser must be locally defined');
 assert(runtime.includes('commandScope'),'Admin runtime must persist the selected command-center lens');
-for(const x of ['BUILD','OPERATE','GOVERN','SECURE','PLATFORM'])assert(registry.includes(`label:'${x}'`),`workspace category missing ${x}`);
+for(const x of ['MARKET STUDIO','OPERATE','GOVERN','RESOURCES','COMMAND'])assert(registry.includes(`label:'${x}'`),`workspace category missing ${x}`);
 for(const x of ['PLATFORM CONTROL','CURRENT SITUATION','CURRENT ACTION','RELEASE JOURNEY','RECENT ACTIVITY','AUTHORITY AVAILABILITY'])assert(ui.includes(x),`Command Center surface missing ${x}`);
 for(const x of ['control-center','control-metrics','workspace-index-grid','journey-track','platform-context'])assert(css.includes(x),`Command Center UI styling missing ${x}`);
 assert(release.includes('Unified Operational Experience')&&release.includes('Admin orchestrates'),'release documentation must describe the new Control Plane boundary');

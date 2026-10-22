@@ -23,7 +23,8 @@ const fail=(m,s=400,c=m)=>Object.assign(new Error(m),{status:s,code:c});
 const arr=v=>Array.isArray(v)?v:[];
 const obj=v=>v&&typeof v==='object'&&!Array.isArray(v)?v:{};
 const parseJson=(v,label='JSON')=>{try{return typeof v==='object'?v:JSON.parse(String(v));}catch{throw fail(`${label} is not valid JSON`,422,'MARKET_PACKAGE_JSON_INVALID')}};
-const stableJson=v=>JSON.stringify(v&&typeof v==='object'&&!Array.isArray(v)?Object.fromEntries(Object.keys(v).sort().map(k=>[k,typeof v[k]==='object'&&v[k]!==null?JSON.parse(stableJson(v[k])):v[k]])):v);
+const canonicalize=v=>Array.isArray(v)?v.map(canonicalize):v&&typeof v==='object'?Object.fromEntries(Object.keys(v).sort().map(k=>[k,canonicalize(v[k])])):v;
+const stableJson=v=>JSON.stringify(canonicalize(v));
 const assertKeys=(o,allowed,label)=>{for(const k of Object.keys(obj(o)))if(!allowed.includes(k))throw fail(`${label} contains unsupported field: ${k}`,422,'MARKET_PACKAGE_UNKNOWN_FIELD')};
 async function sha256Bytes(bytes){const h=await crypto.subtle.digest('SHA-256',bytes);return [...new Uint8Array(h)].map(x=>x.toString(16).padStart(2,'0')).join('');}
 async function sha256Text(text){return sha256Bytes(new TextEncoder().encode(text));}
@@ -137,7 +138,7 @@ async function dependencySnapshot(env,pkg,launch,definitions){
 }
 
 async function importMarketPackageCore(env,actor,{format='json',json=null,bytes=null,sourceName='',requestId='',sourceHash=null}={}){
- const parsed=await parseSource({format,bytes,json,sourceName});const pkg=parsed.pkg;const hash=sourceHash||await sha256Text(JSON.stringify(pkg));
+ const parsed=await parseSource({format,bytes,json,sourceName});const pkg=parsed.pkg;const hash=sourceHash||await sha256Text(stableJson(pkg));
  const packageKey=`${pkg.product.productKey||'on_mission'}:${pkg.country.iso}`;let market=await env.DB.prepare(`SELECT * FROM platform_market_packages WHERE package_key=? LIMIT 1`).bind(packageKey).first();
  if(!market){const r=await env.DB.prepare(`INSERT INTO platform_market_packages(package_key,product_key,country_code,status,onboarding_mode,created_by_type,created_by_id) VALUES(?,?,?,'DRAFT','CLOSED',?,?)`).bind(packageKey,pkg.product.productKey||'on_mission',pkg.country.iso,actor.role,actor.id||null).run();market=await env.DB.prepare(`SELECT * FROM platform_market_packages WHERE id=?`).bind(Number(r.meta?.last_row_id)).first();}
  const duplicate=await env.DB.prepare(`SELECT * FROM platform_market_package_versions WHERE package_id=? AND source_hash=? LIMIT 1`).bind(Number(market.id),hash).first();if(duplicate)return getMarketPackage(env,{packageId:Number(market.id)});
@@ -154,7 +155,7 @@ async function importMarketPackageCore(env,actor,{format='json',json=null,bytes=
 
 
 export async function importMarketPackage(env,actor,{format='json',json=null,bytes=null,sourceName='',requestId='',sourceHash=null}={}){
- const intakeHash=sourceHash||await sha256Intake(bytes??json??{});
+ const intakeHash=sourceHash||await sha256Intake(bytes??(json!==null?stableJson(json):{}));
  const intake=await beginGovernedIntake(env,actor,{intakeType:'market_package',sourceType:'market_package',sourceName:sourceName||'market-package',sourceHash:intakeHash,idempotencyKey:`market-package:${intakeHash}`,countryScope:json?.country?.iso||json?.country?.code||null,manifest:{format,requestId,stage:'intake-before-canonical-publication'}});
  try{
   await finishGovernedIntake(env,intake.intake_id,{status:'SCANNING',summary:{stage:'parse-and-validate',format}});
@@ -178,17 +179,33 @@ export async function getMarketPackage(env,{packageId=null,countryCode='',packag
 }
 export async function listMarketPackages(env,{limit=100}={}){const n=Math.min(250,Math.max(1,Number(limit)||100));const rows=(await env.DB.prepare(`SELECT p.*,COALESCE(c.name,p.country_code) country_name,v.version active_version,v.status active_version_status,v.readiness_json active_readiness,latest.version latest_version,latest.status latest_version_status,latest.readiness_json latest_readiness FROM platform_market_packages p LEFT JOIN platform_product_country_catalog c ON c.code=p.country_code LEFT JOIN platform_market_package_versions v ON v.id=p.active_version_id LEFT JOIN platform_market_package_versions latest ON latest.id=(SELECT lv.id FROM platform_market_package_versions lv WHERE lv.package_id=p.id ORDER BY lv.id DESC LIMIT 1) ORDER BY COALESCE(c.name,p.country_code) ASC LIMIT ?`).bind(n).all()).results||[];return rows.map(r=>({...r,active_readiness:parseJson(r.active_readiness),latest_readiness:parseJson(r.latest_readiness)}));}
 
-/** Permanently remove only an unfinished draft market and its draft-only coordination records. */
-export async function deleteUnfinishedMarketPackage(env,actor,packageId,requestId=''){
+/** Read-only cleanup preview. It identifies deletable draft-owned rows and explains every protection. */
+export async function previewUnfinishedMarketPackageDeletion(env,packageId){
  const market=await env.DB.prepare(`SELECT * FROM platform_market_packages WHERE id=? LIMIT 1`).bind(Number(packageId)).first();
  if(!market)throw fail('Market package not found.',404,'MARKET_PACKAGE_NOT_FOUND');
- if(String(market.status).toUpperCase()!=='DRAFT'||market.active_version_id)throw fail('Only an unactivated DRAFT market can be deleted. Published, activated, suspended or retired market history must be retained.',409,'MARKET_DELETE_NOT_ALLOWED');
- const versions=(await env.DB.prepare(`SELECT id,status FROM platform_market_package_versions WHERE package_id=? ORDER BY id`).bind(Number(packageId)).all()).results||[];
+ const versions=(await env.DB.prepare(`SELECT id,version,status,source_format FROM platform_market_package_versions WHERE package_id=? ORDER BY id`).bind(Number(packageId)).all()).results||[];
+ const versionIds=versions.map(v=>Number(v.id));const reasons=[];
+ if(String(market.status).toUpperCase()!=='DRAFT')reasons.push(`Market lifecycle is ${String(market.status).toUpperCase()}, not DRAFT.`);
+ if(market.active_version_id)reasons.push('An active version is assigned.');
  const allowed=new Set(['IMPORTED','DRAFT','NORMALIZED','VALIDATED','REJECTED']);
- const unsafe=versions.filter(v=>!allowed.has(String(v.status).toUpperCase()));
- if(unsafe.length)throw fail('This market contains a release that has progressed beyond a disposable draft. Preserve its history and create a new version instead.',409,'MARKET_DELETE_RELEASE_HISTORY_PROTECTED');
+ for(const v of versions)if(!allowed.has(String(v.status).toUpperCase()))reasons.push(`Version ${v.version} is ${v.status}; progressed release history must be retained.`);
+ let preparedOperations=0,startedOperations=0;
+ for(const id of versionIds){const op=await env.DB.prepare(`SELECT status,stage FROM platform_market_publication_operations WHERE package_version_id=? LIMIT 1`).bind(id).first();if(op){if(String(op.status).toUpperCase()==='PREPARED')preparedOperations++;else{startedOperations++;reasons.push(`Version ${id} has publication operation ${op.status} at ${op.stage||'unknown stage'}.`);}}}
+ const packageOps=await env.DB.prepare(`SELECT COUNT(*) count FROM platform_market_publication_operations WHERE package_id=?`).bind(Number(packageId)).first();
+ const evidence=await env.DB.prepare(`SELECT COUNT(*) count FROM platform_market_launch_task_evidence WHERE package_version_id IN (SELECT id FROM platform_market_package_versions WHERE package_id=?)`).bind(Number(packageId)).first();
+ const imports=await env.DB.prepare(`SELECT COUNT(*) count FROM platform_market_package_imports WHERE package_version_id IN (SELECT id FROM platform_market_package_versions WHERE package_id=?)`).bind(Number(packageId)).first();
+ const allowedToDelete=reasons.length===0;
+ return {packageId:Number(packageId),packageKey:market.package_key,status:market.status,allowedToDelete,protectionReasons:[...new Set(reasons)],deletion:{marketPackage:1,versions:versions.length,importRecords:Number(imports?.count||0),taskEvidence:Number(evidence?.count||0),preparedPublicationOperations:preparedOperations,totalPublicationOperations:Number(packageOps?.count||0)},retained:{canonicalCountries:1,canonicalSectors:'all shared canonical sector records',policies:'all shared canonical policy records',content:'all shared canonical content records',languages:'all shared canonical language records',auditHistory:'audit records are retained',otherMarkets:'all other market packages and their records'},versions:versions.map(v=>({id:Number(v.id),version:v.version,status:v.status,sourceFormat:v.source_format})),previewedAt:new Date().toISOString(),authority:'market_factory_draft_cleanup_preview'};
+}
+
+/** Permanently remove only an unfinished draft market and its draft-only coordination records. */
+export async function deleteUnfinishedMarketPackage(env,actor,packageId,requestId=''){
+ const preview=await previewUnfinishedMarketPackageDeletion(env,packageId);
+ if(!preview.allowedToDelete){const reason=preview.protectionReasons.join(' ');throw fail(`Draft cleanup is blocked: ${reason}`,409,preview.protectionReasons.some(x=>x.includes('publication operation'))?'MARKET_DELETE_OPERATION_EXISTS':preview.status!=='DRAFT'?'MARKET_DELETE_NOT_ALLOWED':'MARKET_DELETE_RELEASE_HISTORY_PROTECTED');}
+ const market=await env.DB.prepare(`SELECT * FROM platform_market_packages WHERE id=? LIMIT 1`).bind(Number(packageId)).first();
+ if(!market)throw fail('Market package not found.',404,'MARKET_PACKAGE_NOT_FOUND');
+ const versions=(await env.DB.prepare(`SELECT id,status FROM platform_market_package_versions WHERE package_id=? ORDER BY id`).bind(Number(packageId)).all()).results||[];
  const versionIds=versions.map(v=>Number(v.id));
- for(const id of versionIds){const op=await env.DB.prepare(`SELECT status,stage FROM platform_market_publication_operations WHERE package_version_id=? LIMIT 1`).bind(id).first();if(op&&String(op.status).toUpperCase()!=='PREPARED')throw fail('A publication operation has started. Resolve or recover it before cleanup.',409,'MARKET_DELETE_OPERATION_EXISTS');}
  await auditAdminControl(env,{actor,action:'admin.market-factory.draft-deletion.requested',resourceType:'market_package',resourceId:packageId,requestId,metadata:{packageKey:market.package_key,countryCode:market.country_code,productKey:market.product_key,versionIds,versionCount:versionIds.length,permanent:true}}).catch(error=>{throw authorityUnavailable('market_factory_audit',error);});
  // Child evidence/import/release rows cascade from package versions. Delete package-level operation rows first for DBs with stricter FK enforcement.
  await env.DB.batch([env.DB.prepare(`DELETE FROM platform_market_publication_operations WHERE package_id=? AND status='PREPARED'`).bind(Number(packageId)),env.DB.prepare(`DELETE FROM platform_market_packages WHERE id=? AND status='DRAFT' AND active_version_id IS NULL`).bind(Number(packageId))]);

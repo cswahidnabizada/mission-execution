@@ -1,3 +1,7 @@
+# Current candidate: ON Mission 16.18.0 — Idempotent Market Studio and Safe Cleanup Preview
+
+Market intake hashes normalized package content deterministically to prevent duplicate versions when JSON object key ordering changes. Draft cleanup now begins with a read-only preview of records to be deleted, shared canonical records and audit history to be retained, and reasons a package is protected; the server rechecks eligibility before deletion. Market changes continue through immutable versions and explicit CREATE NEXT VERSION / authorization gates. This is a source hardening candidate, not a production-certified deployment. Node.js 24 build, authenticated browser/runtime checks and Germany Logistics pilot proof remain pending. See `RELEASE.md` and `docs/roadmap/16.18.0-idempotent-market-studio-safe-cleanup-preview.md`.
+
 ON MISSION 16.10.94 — Adaptive Market Launch Workbench. Resource tools are now scoped to the selected incomplete launch task, with canonical search and authoritative re-read; the primary action is expressed as one verb. This source candidate is not production-certified.
 
 ## Current candidate: ON MISSION 16.10.94 — Adaptive Market Launch Workbench
@@ -537,3 +541,7 @@ Current source candidate: **16.10.89 — Resource Relationship & Lifecycle Evide
 ## ON Mission 16.10.91 — Guided Launch Next-Action Navigation
 
 This candidate adds canonical-task-driven previous/next stage navigation and a “GO TO NEXT REQUIRED TASK” action to Market Factory. The action opens the first incomplete task returned by the canonical workbench and preserves existing step-up authorization. Product Publisher's governed release lifecycle remains unchanged, including CREATE NEXT VERSION, explicit authorization, publication, verification and activation gates. This candidate is not production-certified until exact Node.js 24 build and deployed runtime checks pass.
+
+## ON Mission 16.19.0 — Canonical Resource Studio
+
+Resource Studio provides schema-driven guided asset creation, copyable JSON samples, bounded JSON file intake, canonical validation/commit, and Asset 360 dependency/lifecycle/audit views. Changes to governed live product releases continue through the explicit **CREATE NEXT VERSION** lifecycle; staging or editing a reusable resource does not authorize publication or activation. Release candidate only: complete Node.js 24 build and deployed-runtime certification before production deployment.

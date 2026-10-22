@@ -107,3 +107,18 @@ Status: hardening candidate. Resolve now executes only the registered canonical-
 - Added a copyable/editable example market JSON in advanced intake.
 - Shared canonical country/sector/policy records are deliberately retained to avoid deleting data used by other markets.
 - Node 24 build, full cumulative release suite and authenticated/deployed runtime certification remain open.
+
+
+## 16.18.0 — Idempotent Market Studio and Safe Cleanup Preview
+- Normalize package JSON deterministically before source hashing; preserve database uniqueness as the final duplicate-prevention authority.
+- Provide an authenticated cleanup preview with deletion/retention counts and protection reasons before step-up and typed confirmation.
+- Re-check cleanup eligibility at mutation time to avoid treating a stale preview as authorization.
+- Preserve schema and migration baseline 0163.
+- Remaining: full schema-driven lifecycle for every market stage; complete canonical resource editor; tenant-scoped settings/integration surfaces; Node 24 build and deployed certification.
+
+
+## 16.19.0 — Canonical Resource Studio and Guided Asset Workflows
+- Unify resource discovery and management under Resource Studio / Asset 360 while retaining owning-authority controls.
+- Provide three-step schema-driven asset creation and JSON sample/file intake with strict schema-key matching and a 1 MiB file limit.
+- Reuse canonical dependency graph and lifecycle tabs; no shared asset is deleted based only on market usage.
+- Release remains a candidate pending Node 24 build, cumulative gates, browser/runtime tests and pilot certification.

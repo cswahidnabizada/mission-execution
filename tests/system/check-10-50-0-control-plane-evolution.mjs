@@ -19,7 +19,7 @@ assert(context.includes('getProductDependencyImpact')&&context.includes('PRODUCT
 assert(route.includes('/dependency-impact')&&route.includes('getProductDependencyImpact'),'dependency impact route missing');
 assert(orch.includes('dependencyImpact')&&orch.includes('getProductDependencyImpact'),'Publisher workspace does not expose dependency impact');
 const registry=read('public/assets/js/frontend/admin/workspace-registry.js');
-assert(registry.includes("label:'BUILD'")&&registry.includes("label:'OPERATE'")&&registry.includes("label:'GOVERN'")&&registry.includes("label:'SECURE'"),'Control Plane unified category surface is missing');
+assert(registry.includes("label:'MARKET STUDIO'")&&registry.includes("label:'OPERATE'")&&registry.includes("label:'GOVERN'")&&registry.includes("label:'RESOURCES'"),'Control Plane unified category surface is missing');
 for(const x of ['PRODUCT FACTORY','PREPARE DATA','CONFIGURE','COMPOSE','VALIDATE','TEST','AUTHORIZE','PUBLISH','VERIFY'])assert(ui.includes(x),`Product Factory flow missing ${x}`);
 for(const x of ['data-config-mode="basic"','data-config-mode="advanced"','Basic configuration','Advanced configuration','canonical JSON','version IDs','policy keys','action codes','provider IDs','configuration lineage','raw contract','audit references'])assert(ui.includes(x),`Basic/Advanced configuration UX missing ${x}`);
 for(const x of ['publisher-factory-flow','publisher-mode-switch','publisher-impact-grid','publisher-impact-summary'])assert(css.includes(x),`Control Plane UI styling missing ${x}`);

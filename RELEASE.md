@@ -1,4 +1,4 @@
-# Mission Execution 16.17.0 — Market Cleanup and Guided Intake
+# Mission Execution 16.19.0 — Canonical Resource Studio and Guided Asset Workflows
 
 Status: protected candidate — exact Node.js 24 build, full cumulative release gates, authenticated browser/runtime certification and deployed pilot proof pending. DO NOT DEPLOY until required gates pass.
 
@@ -1242,3 +1242,25 @@ Status: hardening candidate. This release adds a step-up-protected legal decisio
 Status: hardening candidate. Adds a step-up-protected permanent deletion path for unfinished DRAFT market packages only; deletes only package/version-scoped coordination data through existing foreign-key cascades; refuses active or progressed releases and started publication operations; records an audit intent before deletion. Market portfolio cards expose cleanup only for DRAFT packages without an active release. Advanced intake now includes a visible minimal market JSON example with copy/edit-to-input actions.
 
 No production deployment, authenticated browser certification, full cumulative suite certification, or Node 24 production build is claimed.
+
+
+## 16.18.0 — Idempotent Market Studio and Safe Cleanup Preview
+
+Status: hardening candidate. Production deployment, Node 24 build, full cumulative release gates, authenticated browser/runtime certification and deployed pilot proof remain pending. DO NOT DEPLOY until required gates pass.
+
+- Canonicalize normalized market-package data before computing the persisted source hash, so semantically identical JSON object key ordering cannot create duplicate package versions. Existing unique constraints on package identity, product/country, package version and source hash remain the database backstop.
+- Add a read-only, role-protected cleanup preview that lists draft-owned records scheduled for deletion, shared canonical records and audit history that will be retained, and exact reasons cleanup is blocked.
+- Require the cleanup service to re-evaluate the same protection rules immediately before deletion; the preview is informational and never grants deletion authority.
+- The UI now previews cleanup before step-up and typed confirmation. Active, progressed or publication-started market history remains protected.
+- No schema change or migration; migration high-water mark remains 0163 and the current schema snapshot is unchanged.
+- Tenant-facing settings remain separate from Super Admin authentication; this release does not claim a complete tenant settings portal or full market lifecycle UI.
+
+
+## 16.19.0 — Canonical Resource Studio and Guided Asset Workflows
+- Reframed the reusable-resource operating surface as Resource Studio / Asset 360 while preserving canonical authority boundaries.
+- Added schema-definition-driven three-step asset creation with identity, configuration and governance steps.
+- Added bounded JSON file intake (1 MiB), copyable schema-based sample payloads, JSON-to-form mapping and unknown-field rejection before the existing canonical validation/commit path.
+- Preserved the existing canonical resource explorer dependency graph, use/scope, lifecycle, activity and change tabs.
+- Existing create flow still requires step-up, server validation, canonical commit and resource identity confirmation. JSON intake never bypasses validation.
+- No database migration; migration high-water mark remains 0163 and canonical shared-resource deletion remains subject to owning-authority lifecycle/dependency checks.
+- Node.js 24 build, full cumulative release gates, authenticated browser/runtime validation and deployed Germany Logistics pilot certification remain pending.

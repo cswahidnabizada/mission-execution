@@ -7,7 +7,7 @@ const catalog=read('public/assets/js/frontend/admin/data-catalog.js');
 const command=read('public/assets/js/frontend/admin/command-center.js');
 const routes=read('src/worker/modules/admin-control/admin-launch-config.routes.js');
 const must=(ok,msg)=>{if(!ok)throw new Error(msg)};
-must(registry.includes("['Market Factory','product-publisher'"),'Product Factory must replace the visible Product Publisher workspace label while retaining the canonical route key.');
+must(registry.includes("['Market Factory','product-publisher'")||registry.includes("['Market Launch Studio','product-publisher'"),'Product Factory must replace the visible Product Publisher workspace label while retaining the canonical route key.');
 for(const x of ['1. Prepare Data','2. Configure','3. Compose','4. Validate','5. Test','6. Authorize','7. Publish','8. Verify'])must(ui.includes(x),`Missing Product Factory stage: ${x}`);
 for(const x of ['product-factory-hero','product-factory-stage-panel','product-factory-catalog','data-factory-entry','DELIST / RETIRE'])must(ui.includes(x),`Missing Product Factory interaction: ${x}`);
 for(const x of ['dataEntryType','country-product-launches/','retire'])must(ui.includes(x)||routes.includes(x),`Missing canonical Product Factory route contract: ${x}`);
