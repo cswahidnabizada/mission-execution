@@ -19,7 +19,7 @@ assert.match(ui,/workspaceNavigator\('layout-studio'\)/,'layout navigation must 
 assert.match(ui,/workspaceNavigator\('product-publisher'\)/,'market/product navigation must use the existing workspace navigator');
 assert.match(css,/Resource Studio: one adaptive asset workspace/,'responsive Resource Studio styles must be present');
 assert.match(css,/@media\(max-width:560px\)/,'mobile layout must be covered');
-assert.match(html,/admin\.js\?v=16\.25\.0/,'entrypoint cache version must be updated');
+assert.match(html,/admin\.js\?v=16\.26\.0/,'entrypoint cache version must be updated');
 assert.match(ui,/canonical authority/i,'the UI must preserve canonical authority language');
 assert.match(ui,/No fallback or guessed asset data is shown/,'canonical read failure must not invent state');
-console.log('16.25.0 Adaptive Canonical Resource Studio contract: PASS');
+console.log('16.26.0 Adaptive Canonical Resource Studio contract: PASS');

@@ -1,4 +1,4 @@
-# Mission Execution 16.25.0 — Canonical Asset Authority Actions and Verified Mutation
+# Mission Execution 16.26.0 — Canonical Asset Authority Actions and Verified Mutation
 
 Status: protected hardening candidate. Production build, complete cumulative release gates, authenticated browser/runtime certification and deployed pilot proof must pass before deployment.
 
@@ -1331,3 +1331,15 @@ This release does not claim completed tenant integration/AI/device settings, ful
 - Corrected canonical status derivation so a non-empty status is preserved instead of incorrectly coerced to active.
 - No database migrations.
 - Production build and authenticated deployed-runtime certification remain required.
+
+
+## 16.26.0 — Unified asset configure workflow
+
+- Resource Studio exposes one `CONFIGURE & EDIT` action instead of separate Manage/Edit controls.
+- The selected canonical asset opens directly into its owning authority's compact editor, when the authority exposes an edit contract.
+- The compact workflow starts at the edit form and retains validate → preview → step-up → commit, optimistic timestamp checks, dependency blockers and canonical read-after-write behavior.
+- Save returns to the selected Asset 360 workspace and refreshes canonical truth; it does not route through Data Catalog or Data Control.
+- Inspect-only records show a clear owner-contract limitation instead of a fake editor.
+- No schema migration; high-water mark remains 0163.
+
+Status: hardening candidate. Full authenticated browser and deployed API verification is still required.

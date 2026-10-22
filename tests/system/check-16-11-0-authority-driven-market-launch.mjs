@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 const ui=fs.readFileSync('public/assets/js/frontend/admin/market-factory.js','utf8');
 const service=fs.readFileSync('src/worker/security/market-factory.service.js','utf8');
 const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
-assert.equal(pkg.version,'16.25.0');
+assert.equal(pkg.version,'16.26.0');
 assert.match(ui,/data-mf-contract-step-form/);
 assert.match(ui,/SUBMIT EVIDENCE/);
 assert.doesNotMatch(ui,/>VERIFY STEP<\/button>/);

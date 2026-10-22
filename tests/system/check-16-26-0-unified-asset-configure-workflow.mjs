@@ -1,0 +1,18 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const root=process.cwd();
+const rm=fs.readFileSync(`${root}/public/assets/js/frontend/admin/resource-management.js`,'utf8');
+const ds=fs.readFileSync(`${root}/public/assets/js/frontend/admin/data-studio.js`,'utf8');
+assert.match(rm,/CONFIGURE & EDIT/,'Asset workspace has one configure/edit action');
+assert.match(rm,/d\.resource\.canConfigure=Boolean\(authorityRecord\.record\?\.capabilities\?\.edit\)/,'Configure action is gated by the owning authority edit capability');
+assert.match(rm,/\&\&r\.canConfigure\?/,'Configure action is hidden when authority does not support editing');
+assert.doesNotMatch(rm,/data-rw-manage|data-rw-edit/,'Separate ambiguous Manage/Edit buttons are retired');
+assert.match(rm,/compact:true,startInEdit:true/,'Configure opens compact editor directly');
+assert.match(rm,/onSaved:async\(\)=>\{await selectResource/,'Close/save returns to refreshed Asset 360');
+assert.match(ds,/data-studio-compact/,'Compact mode removes legacy Data Studio navigation shell');
+assert.match(ds,/if\(compact&&startInEdit\)/,'Compact editor opens directly in edit mode');
+assert.match(ds,/dataStudioValidate/,'Validation remains required');
+assert.match(ds,/dataStudioSave/,'Save still uses governed commit flow');
+assert.match(ds,/expectedUpdatedAt:current\.record\.record\.updated_at/,'Optimistic concurrency remains enforced');
+assert.match(ds,/onSaved\(r2\)/,'Successful commit returns to owning Asset 360 workspace');
+console.log('16.26.0 unified asset configure workflow: PASS');

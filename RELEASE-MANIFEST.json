@@ -1,7 +1,7 @@
 {
-  "version": "16.25.0",
+  "version": "16.26.0",
   "release": "RELEASE.md",
-  "base": "16.24.0",
+  "base": "16.25.0",
   "migrationHighWaterMark": "0163",
   "migrationCount": 163,
   "schemaSnapshot": {

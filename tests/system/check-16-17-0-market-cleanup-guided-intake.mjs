@@ -4,7 +4,7 @@ const service=fs.readFileSync('src/worker/security/market-factory.service.js','u
 const routes=fs.readFileSync('src/worker/modules/admin-control/admin-build-data.routes.js','utf8');
 const ui=fs.readFileSync('public/assets/js/frontend/admin/market-factory.js','utf8');
 const manifest=JSON.parse(fs.readFileSync('RELEASE-MANIFEST.json','utf8'));
-assert.equal(manifest.version,'16.25.0');
+assert.equal(manifest.version,'16.26.0');
 assert.match(service,/export async function deleteUnfinishedMarketPackage/);
 assert.match(service,/export async function previewUnfinishedMarketPackageDeletion/);
 assert.match(service,/const preview=await previewUnfinishedMarketPackageDeletion\(env,packageId\)/);

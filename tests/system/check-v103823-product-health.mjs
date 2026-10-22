@@ -17,5 +17,5 @@ if(version==='10.38.23' && migrations[migrations.length-1]!=='0091_product_defin
 if(version==='10.38.24' && migrations[migrations.length-1]!=='0092_product_expansion_workspace.sql')fail('10.38.24 migration high-water mismatch');
 if(version==='10.38.25' && migrations[migrations.length-1]!=='0092_product_expansion_workspace.sql')fail('10.38.25 migration high-water mismatch');
 if(version==='10.38.26' && migrations[migrations.length-1]!=='0093_platform_trash_and_cleanup.sql')fail('10.38.26 migration high-water mismatch');
-if(['10.38.27','10.38.28','10.38.28','10.38.29','10.40.0','10.40.1','10.40.1','16.20.0','16.25.0'].includes(version) && !['0094_platform_data_control_and_bulk_operations.sql','0095_governed_data_entry_gate.sql'].includes(migrations[migrations.length-1]))fail('10.38.27 migration high-water mismatch');
+if(['10.38.27','10.38.28','10.38.28','10.38.29','10.40.0','10.40.1','10.40.1','16.20.0','16.26.0'].includes(version) && !['0094_platform_data_control_and_bulk_operations.sql','0095_governed_data_entry_gate.sql'].includes(migrations[migrations.length-1]))fail('10.38.27 migration high-water mismatch');
 console.log('10.38.23 Product Health Engine: PASS');

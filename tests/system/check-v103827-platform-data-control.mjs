@@ -1,7 +1,7 @@
 import fs from 'node:fs'; import path from 'node:path';
 const root=process.cwd(), read=f=>fs.readFileSync(path.join(root,f),'utf8');
-const version=read('VERSION').trim(); if(!['10.38.27','10.38.28','10.38.29','16.20.0','16.25.0'].includes(version))throw new Error('VERSION mismatch');
-const pkg=JSON.parse(read('package.json')); if(!['10.38.27','10.38.28','10.38.29','16.20.0','16.25.0'].includes(pkg.version))throw new Error('package version mismatch');
+const version=read('VERSION').trim(); if(!['10.38.27','10.38.28','10.38.29','16.20.0','16.26.0'].includes(version))throw new Error('VERSION mismatch');
+const pkg=JSON.parse(read('package.json')); if(!['10.38.27','10.38.28','10.38.29','16.20.0','16.26.0'].includes(pkg.version))throw new Error('package version mismatch');
 const migration=read('database/migrations/0094_platform_data_control_and_bulk_operations.sql');
 for(const x of ['platform_admin_data_actions','platform_admin_bulk_operations','platform_data_control','DE_PLATFORM_DATA_CONTROL'])if(!migration.includes(x))throw new Error(`missing ${x}`);
 const trash=read('src/worker/security/platform-trash.service.js'); for(const x of ["PLATFORM_TRASH_VERSION='10.38.27'","type==='tenant'","type==='user'"])if(!trash.includes(x))throw new Error(`trash missing ${x}`);

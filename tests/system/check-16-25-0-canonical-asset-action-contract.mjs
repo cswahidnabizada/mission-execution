@@ -11,4 +11,4 @@ assert.match(svc,/quarantine:false,purge:false/,'Generic Data Studio does not cl
 assert.match(ui,/c\.quarantine\?/,'Quarantine control is rendered only when the authority contract permits it');
 assert.match(ui,/c\.edit\?tabButton\('edit','Edit'\)/,'Edit tab is hidden for inspect-only resources');
 assert.match(ui,/dataStudioSave/,'Supported edits still use validate/preview/step-up/commit flow');
-console.log('16.25.0 canonical asset action contract: PASS');
+console.log('16.26.0 canonical asset action contract: PASS');

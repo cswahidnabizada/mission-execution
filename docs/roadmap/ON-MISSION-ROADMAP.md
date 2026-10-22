@@ -152,3 +152,11 @@ Status: hardening candidate. Resolve now executes only the registered canonical-
 - Removed the verbose property dump and redundant primary tab strip.
 - Authority-returned actions only; contextual impact, Layout Studio and Market Studio actions retained.
 - Remaining: validate real edit/save/publish and lifecycle actions against each owning authority in authenticated browser/runtime; Node 24 build and deployed certification.
+
+
+### 16.26.0 — Unified Asset Configure Workflow
+- [x] Single Configure & Edit action in Asset 360.
+- [x] Compact inline editor opens directly for resources with an owning-authority edit contract.
+- [x] Preserve validation, dependency blocker, step-up, commit and read-after-write controls.
+- [x] Return to Asset 360 after save/close; do not navigate to Data Catalog/Data Control.
+- [ ] Verify every asset type against authenticated deployed APIs; inspect-only types remain intentionally non-editable until their authority implements mutation.

@@ -4,7 +4,7 @@ const service=fs.readFileSync('src/worker/security/market-factory.service.js','u
 const routes=fs.readFileSync('src/worker/modules/admin-control/admin-build-data.routes.js','utf8');
 const ui=fs.readFileSync('public/assets/js/frontend/admin/market-factory.js','utf8');
 const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
-assert.equal(pkg.version,'16.25.0');
+assert.equal(pkg.version,'16.26.0');
 assert.match(pkg.scripts['check:release'],/check-16-10-98-canonical-stage-contract-engine/);
 assert.match(service,/export function buildMarketLaunchStageContract/);
 assert.match(service,/export async function getMarketLaunchStageContract/);

@@ -9,4 +9,4 @@ assert.match(ui,/LAYOUT STUDIO/,'Layout-related assets must expose Layout Studio
 assert.match(ui,/MARKET STUDIO/,'Selected assets must expose Market Studio navigation');
 assert.match(ui,/data-rw-impact/,'Impact preview must remain available');
 assert.match(ui,/actions\.includes\('PURGE'\)/,'Purge UI must only render when owning authority explicitly returns PURGE');
-console.log('16.25.0 canonical action-boundary regression: PASS');
+console.log('16.26.0 canonical action-boundary regression: PASS');
