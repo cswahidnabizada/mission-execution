@@ -141,7 +141,7 @@ Status: hardening candidate. Resolve now executes only the registered canonical-
 - Focused contract and runtime certification required before deployment.
 
 
-## 16.22.0 — Version-Pinned Market Assets and Locale Resolution
+## 16.23.0 — Version-Pinned Market Assets and Locale Resolution
 - Market packages can pin canonical Resource Studio asset identity, version and lifecycle snapshots; changed/unresolved bindings block validation and require a new market version.
 - Layout Studio safe renderer resolves translation-key properties with explicit locale fallback and missing-key behavior.
 - Remaining: tenant-scoped provider/AI/device settings, production-wide translation propagation, Node 24 build, authenticated browser and deployed pilot certification.

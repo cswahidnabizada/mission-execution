@@ -1,7 +1,7 @@
 import fs from 'node:fs';import path from 'node:path';
 const root=process.cwd();const read=p=>fs.readFileSync(path.join(root,p),'utf8');const fail=m=>{throw new Error(m)};
-const version=read('VERSION').trim();if(!['10.38.24','10.38.25','10.38.26','10.38.27','10.38.28','10.38.28','10.38.29','10.40.0','10.40.1','16.20.0','16.22.0'].includes(version))fail(`VERSION expected 10.38.24, got ${version}`);
-const pkg=JSON.parse(read('package.json'));if(!['10.38.24','10.38.25','10.38.26','10.38.27','10.38.28','10.38.28','10.38.29','10.40.0','10.40.1','16.20.0','16.22.0'].includes(pkg.version))fail('package version mismatch');
+const version=read('VERSION').trim();if(!['10.38.24','10.38.25','10.38.26','10.38.27','10.38.28','10.38.28','10.38.29','10.40.0','10.40.1','16.20.0','16.23.0'].includes(version))fail(`VERSION expected 10.38.24, got ${version}`);
+const pkg=JSON.parse(read('package.json'));if(!['10.38.24','10.38.25','10.38.26','10.38.27','10.38.28','10.38.28','10.38.29','10.40.0','10.40.1','16.20.0','16.23.0'].includes(pkg.version))fail('package version mismatch');
 const migration=read('database/migrations/0092_product_expansion_workspace.sql');
 if(!migration.includes("INSERT OR IGNORE INTO processing_purposes") || !migration.includes("'product_expansion'"))fail('Expansion migration must seed its processing purpose before classification rows');
 if(!migration.includes("INSERT OR IGNORE INTO retention_policies") || !migration.includes("'DE_PRODUCT_EXPANSION_REVIEW'"))fail('Expansion migration must seed its retention policy before classification rows');
@@ -13,6 +13,6 @@ if(/\beval\s*\(|new Function\s*\(|\bFunction\s*\(/.test(service))fail('Expansion
 const routes=read('src/worker/modules/admin-control/admin-control.routes.js');for(const x of ['/api/platform/admin/expansions','/foundation','/compose','/compile','/validate','/activate','requirePlatformSuperAdminStepUp(request,env)'])if(!routes.includes(x))fail(`Expansion route missing: ${x}`);
 const admin=read('public/assets/js/frontend/admin/admin.js');for(const x of ['Expansion Workspace','renderExpansionWorkspace','renderExpansionDetail','START EXPANSION','REUSE + DELTAS','PRODUCT LINEAGE','ACTIVATE PRODUCT'])if(!admin.includes(x))fail(`Expansion Workspace UX missing: ${x}`);
 if(version==='10.38.24'&&!admin.includes("['Expansion Workspace','expansion']"))fail('Expansion Workspace is not in Super Admin navigation');
-if(['10.38.25','10.38.26','10.38.27','10.38.28','10.38.28','10.38.29','10.40.0','10.40.1','16.20.0','16.22.0'].includes(version)&&!admin.includes("['Product Ecosystem','product-ecosystem']"))fail('Product Ecosystem is not in Super Admin navigation');
+if(['10.38.25','10.38.26','10.38.27','10.38.28','10.38.28','10.38.29','10.40.0','10.40.1','16.20.0','16.23.0'].includes(version)&&!admin.includes("['Product Ecosystem','product-ecosystem']"))fail('Product Ecosystem is not in Super Admin navigation');
 const migrations=fs.readdirSync(path.join(root,'database/migrations')).filter(x=>x.endsWith('.sql')).sort();if(!['0094_platform_data_control_and_bulk_operations.sql','0095_governed_data_entry_gate.sql'].includes(migrations.at(-1)))fail('Expansion regression high-water mark mismatch');
 console.log('10.38.24 Expansion Workspace: PASS');

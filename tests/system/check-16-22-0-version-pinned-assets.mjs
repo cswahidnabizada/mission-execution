@@ -5,7 +5,7 @@ const market=read('public/assets/js/frontend/admin/market-factory.js');
 const service=read('src/worker/security/market-factory.service.js');
 const renderer=read('public/assets/js/frontend/admin/layout-studio-renderer.js');
 const pkg=JSON.parse(read('package.json'));
-assert.equal(pkg.version,'16.22.0');
+assert.equal(pkg.version,'16.23.0');
 assert.match(market,/Market asset bindings/,'Market Launch Studio must expose pinned Resource Studio assets');
 assert.match(market,/resource-search\?q=/,'asset selection must use canonical resource search');
 assert.match(market,/PIN REVISION/,'market workflow must pin a specific asset revision');
@@ -16,4 +16,4 @@ assert.match(service,/MARKET_RESOURCE_BINDING_UNRESOLVED/,'unresolved canonical 
 assert.match(renderer,/resolveTranslation/,'layout renderer must resolve versioned translation bundles');
 assert.match(renderer,/fallbackLocale/,'translation resolution must have explicit locale fallback');
 assert.match(renderer,/found: false/,'missing translations must be represented explicitly');
-console.log('16.22.0 Version-pinned market assets and locale resolution contract: PASS');
+console.log('16.23.0 Version-pinned market assets and locale resolution contract: PASS');

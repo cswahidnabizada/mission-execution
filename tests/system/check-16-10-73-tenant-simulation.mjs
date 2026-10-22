@@ -13,5 +13,5 @@ assert.match(routes,/SIMULATION_SAFETY_INVARIANTS_FAILED/);
 assert.match(ui,/TENANT_MODE=location\.pathname==='\/tenant-simulator\.html'/);
 assert.match(ui,/\/api\/auth\/session\?optional=1/);
 assert.match(page,/Tenant Simulation Lab/);
-assert.match(page,/v=(?:16\.10\.(80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99)|16\.17\.0|16\.19\.0|16\.20\.0|16\.21\.0|16\.22\.0)/);
+assert.match(page,/v=(?:16\.10\.(80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99)|16\.17\.0|16\.19\.0|16\.20\.0|16\.21\.0|16\.23\.0)/);
 console.log('16.10.73 tenant simulation scope contract: PASS');

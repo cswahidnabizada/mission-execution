@@ -1,4 +1,4 @@
-# Mission Execution 16.22.0 — Adaptive Canonical Resource Studio and Asset Control Surface
+# Mission Execution 16.23.0 — Adaptive Asset Control Surface and Canonical Action Safety
 
 Status: protected hardening candidate. Production build, complete cumulative release gates, authenticated browser/runtime certification and deployed pilot proof must pass before deployment.
 
@@ -1296,8 +1296,17 @@ Status: hardening candidate. Production deployment, Node 24 build, full cumulati
 Status: hardening candidate. This release adds server-described field schemas for the Resource Studio, explicit boolean/integer/enum/relationship/JSON controls, canonical configuration-backed sector lifecycle assets, versioned translation bundles, lifecycle transition validation, and an authenticated dependency-impact preview. These additions do not certify all market portfolio integration or tenant provider/AI/device workflows. No database migration was added. Production build and deployed-runtime certification must pass before deployment.
 
 
-## 16.22.0 — Version-Pinned Market Assets and Locale Resolution
+## 16.23.0 — Version-Pinned Market Assets and Locale Resolution
 
 Status: hardening candidate. Market Launch Studio can search canonical Resource Studio assets, inspect their canonical detail and pin a selected revision into a newly imported immutable market package version. The market package schema now persists normalized resourceBindings; server-side market validation re-resolves the canonical reusable-resource inventory and blocks unresolved or changed status/version snapshots rather than silently switching revisions. Layout Studio's safe preview renderer now supports translation-key properties with explicit locale/fallback resolution and explicit missing-key behavior.
 
 This release does not claim completed tenant integration/AI/device settings, full live translation propagation in every production renderer, or deployed pilot certification. No database migration was added. Node 24.18.0 build, authenticated browser tests, tenant isolation and deployed Germany Logistics pilot validation remain required.
+
+
+## 16.23.0 — Adaptive Asset Control Surface and Canonical Action Safety
+
+- Redesigned selected-asset action area to emphasize authority-owned controls and lifecycle context.
+- Reusable canonical assets expose Manage/Edit only from the generic explorer; destructive operations must be offered by a resource-specific owning authority, not guessed from the resource type.
+- Kept Layout Studio navigation for layout/content/language assets and Market Studio navigation available from the selected-asset overview.
+- Preserved existing step-up controls, canonical editor routing, impact preview, and no-migration baseline.
+- Release status: hardening candidate. Full authenticated browser and deployed-runtime verification required before production.

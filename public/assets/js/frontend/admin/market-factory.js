@@ -1,4 +1,4 @@
-/* ON Mission 16.22.0 — Version-pinned canonical resource bindings for market releases. */
+/* ON Mission 16.23.0 — Version-pinned canonical resource bindings for market releases. */
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const arr=v=>Array.isArray(v)?v:[];
 const tone=s=>['LIVE','READY','VALIDATED','AUTHORIZED','PUBLISHED','VERIFIED'].includes(String(s||'').toUpperCase())?'ok':['REJECTED','SUSPENDED','RETIRED'].includes(String(s||'').toUpperCase())?'bad':'warn';

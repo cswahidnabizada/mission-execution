@@ -1,5 +1,5 @@
 {
-  "version": "16.22.0",
+  "version": "16.23.0",
   "release": "RELEASE.md",
   "base": "16.21.0",
   "migrationHighWaterMark": "0163",
@@ -9,7 +9,7 @@
     "sha256": "34e1befacc2e8b94aa0127dc1458be4f1db3177395a5594957b64dbbfd2456ac"
   },
   "generatedFrom": "deterministic-release-pipeline",
-  "releaseName": "Version-Pinned Market Assets and Locale Resolution",
+  "releaseName": "Adaptive Asset Control Surface and Canonical Action Safety",
   "certificationControl": "config/certification/controlled-pilot-readiness.json",
-  "baseVersion": "16.21.0"
+  "baseVersion": "16.22.0"
 }
