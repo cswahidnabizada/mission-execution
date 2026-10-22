@@ -3,7 +3,7 @@
  * Renders only approved component types and escaped scalar properties.
  * This is the canonical Studio-preview renderer; production-route bindings remain a separate gate.
  */
-export const STUDIO_RENDERER_VERSION = '16.21.0';
+export const STUDIO_RENDERER_VERSION = '16.22.0';
 
 const SAFE_INTERNAL_ROUTES = new Set(['/','/register.html','/driver/','/login.html','/status.html','/app/','/missions.html']);
 export function isSafeInternalRoute(href) { return typeof href === 'string' && SAFE_INTERNAL_ROUTES.has(href); }
@@ -25,6 +25,31 @@ export const COMPONENT_RENDERERS = Object.freeze({
   progress: { label: 'Progress', properties: ['label', 'state'] }
 });
 
+
+/** Resolve a version-pinned translation key with explicit locale fallback. Missing keys
+ * return the caller fallback and are surfaced as missing; the renderer never invents copy. */
+export function resolveTranslation(key, bundles = [], locale = 'en', fallbackLocale = 'en') {
+  const list = Array.isArray(bundles) ? bundles : Object.entries(bundles || {}).map(([localeKey, bundle]) => ({ locale: bundle?.locale || bundle?.languageCode || localeKey, ...bundle }));
+  const normalize = value => String(value || '').trim().toLowerCase();
+  const wanted = normalize(locale); const fallback = normalize(fallbackLocale);
+  const find = code => list.find(bundle => normalize(bundle?.locale || bundle?.languageCode || bundle?.code) === code && (!bundle?.status || ['active','published','validated'].includes(String(bundle.status).toLowerCase())));
+  for (const code of [...new Set([wanted, fallback])]) {
+    const bundle = find(code); const messages = bundle?.messages || bundle?.translations || {};
+    if (bundle && Object.prototype.hasOwnProperty.call(messages, key) && typeof messages[key] === 'string') return { value: messages[key], locale: code, found: true, bundleVersion: bundle.version || null };
+  }
+  return { value: '', locale: null, found: false, bundleVersion: null };
+}
+function resolveLocalizedProperties(properties, options = {}) {
+  const source = properties && typeof properties === 'object' && !Array.isArray(properties) ? properties : {};
+  return Object.fromEntries(Object.entries(source).map(([name, raw]) => {
+    if (raw && typeof raw === 'object' && !Array.isArray(raw) && typeof raw.translationKey === 'string') {
+      const resolved = resolveTranslation(raw.translationKey, options.translationBundles || [], options.locale || 'en', options.fallbackLocale || 'en');
+      return [name, resolved.found ? resolved.value : (raw.fallback ?? '')];
+    }
+    return [name, raw];
+  }));
+}
+
 export function escapeMarkup(value) {
   return String(value ?? '').replace(/[&<>"']/g, char => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
@@ -37,7 +62,7 @@ export function renderComponent(component, options = {}) {
   if (!component || typeof component !== 'object' || Array.isArray(component)) return '';
   const definition = COMPONENT_RENDERERS[component.type];
   if (!definition) return `<div class="ls-renderer-unsupported" role="status">Unsupported component type: ${escapeMarkup(component.type || 'unknown')}</div>`;
-  const p = component.properties && typeof component.properties === 'object' && !Array.isArray(component.properties) ? component.properties : {};
+  const p = resolveLocalizedProperties(component.properties, options);
   const id = escapeMarkup(component.id || 'component');
   switch (component.type) {
     case 'header': return options.mode === 'production' ? `<header class="ls-render ls-render-header" data-component-id="${id}"><a class="ls-render-brand" href="/"><strong>${value(p, 'label', 'ON MISSION')}</strong></a><nav aria-label="Primary"><a href="/status.html">Product status</a><a href="/login.html">Sign in</a></nav></header>` : `<header class="ls-render ls-render-header" data-component-id="${id}"><strong>${value(p, 'label', 'ON MISSION')}</strong><span>Workspace · Help</span></header>`;

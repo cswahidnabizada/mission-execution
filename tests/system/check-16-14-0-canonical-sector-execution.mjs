@@ -14,7 +14,7 @@ assert.match(service,/MARKET_LAUNCH_RESOURCE_POSTCONDITION_FAILED/);
 assert.match(service,/MARKET_LAUNCH_RELATIONSHIP_POSTCONDITION_FAILED/);
 assert.match(service,/platform_country_product_sectors WHERE blueprint_id=\? AND sector_code=\?/);
 assert.match(service,/prior\.status==='COMPLETE'&&prior\.authorityVerified===true/);
-assert.match(service,/const outcome=await adapter\(env,Number\(packageVersionId\),taskKey,actor,requestId,obj\(input\)\)/);
+assert.match(service,/const outcome=await adapter\(env,Number\(packageVersionId\),taskKey,actor,requestId,obj\(input\),authorityAdapters\)/);
 assert.match(routes,/executeMarketLaunchStageCommand/);
 assert.ok(routes.includes('steps\\/(?<stepKey>'));
 console.log('16.14.0 canonical sector execution checks passed');

@@ -1,7 +1,7 @@
 import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');const read=p=>fs.readFileSync(path.join(root,p),'utf8');const fail=m=>{throw new Error(m)};
-const version=read('VERSION').trim();if(!['10.38.22','10.38.23','10.38.24','10.38.25','10.38.26','10.38.27','10.38.28','10.38.28','10.38.29','10.40.0','10.40.1','16.20.0','16.21.0'].includes(version))fail(`VERSION expected 10.38.22+ compatible release, got ${version}`);
-const pkg=JSON.parse(read('package.json'));if(!['10.38.22','10.38.23','10.38.24','10.38.25','10.38.26','10.38.27','10.38.28','10.38.28','10.38.29','10.40.0','10.40.1','16.20.0','16.21.0'].includes(pkg.version))fail('package version mismatch');
+const version=read('VERSION').trim();if(!['10.38.22','10.38.23','10.38.24','10.38.25','10.38.26','10.38.27','10.38.28','10.38.28','10.38.29','10.40.0','10.40.1','16.20.0','16.22.0'].includes(version))fail(`VERSION expected 10.38.22+ compatible release, got ${version}`);
+const pkg=JSON.parse(read('package.json'));if(!['10.38.22','10.38.23','10.38.24','10.38.25','10.38.26','10.38.27','10.38.28','10.38.28','10.38.29','10.40.0','10.40.1','16.20.0','16.22.0'].includes(pkg.version))fail('package version mismatch');
 const engine=read('public/assets/js/frontend/product-experience.js');
 for(const token of ['TRUSTED_EXPERIENCE_TYPES','workspace','section','navigation','card','panel','form','empty-state','guidance','renderProductExperience','resolveTrustedNavigation'])if(!engine.includes(token))fail(`Declarative Experience Engine missing ${token}`);
 for(const forbidden of ['eval(','new Function(','Function('])if(engine.includes(forbidden))fail(`Trusted renderer must never execute configuration as code: ${forbidden}`);

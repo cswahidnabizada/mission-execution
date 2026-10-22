@@ -8,8 +8,8 @@ const migration=fs.readFileSync(path.join(root,'database/migrations/0093_platfor
 const pkg=JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8'));
 const version=fs.readFileSync(path.join(root,'VERSION'),'utf8').trim();
 const must=(text,needle,label)=>{if(!text.includes(needle))throw new Error(`Missing ${label}: ${needle}`)};
-if(!['10.38.26','10.38.27','10.38.28','10.38.28','10.38.29','16.20.0','16.21.0'].includes(version))throw new Error(`VERSION ${version}`);
-if(!['10.38.26','10.38.27','10.38.28','10.38.28','10.38.29','16.20.0','16.21.0'].includes(pkg.version))throw new Error(`package version ${pkg.version}`);
+if(!['10.38.26','10.38.27','10.38.28','10.38.28','10.38.29','16.20.0','16.22.0'].includes(version))throw new Error(`VERSION ${version}`);
+if(!['10.38.26','10.38.27','10.38.28','10.38.28','10.38.29','16.20.0','16.22.0'].includes(pkg.version))throw new Error(`package version ${pkg.version}`);
 for(const x of ['listCleanupCandidates','trashResource','restoreTrash','purgeTrash','PLATFORM_TRASH_VERSION'])must(service,x,x);
 for(const x of ['/api/platform/admin/trash','/api/platform/admin/trash/candidates','/restore','/purge'])must(routes,x,`route ${x}`);
 for(const x of ['Trash & Cleanup','renderTrash','data-trash-candidate','data-trash-restore','data-trash-purge'])must(ui,x,x);

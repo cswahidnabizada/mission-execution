@@ -10,7 +10,7 @@ import {RELEASE_VERSION} from '../core/release.js';
 import {beginGovernedIntake,recordGovernedIntakeItem,finishGovernedIntake,sha256Intake} from './governed-intake.service.js';
 import {assessMarketLaunchEvidence,requireMarketLaunchEvidence} from './market-launch-evidence.js';
 import {classifyMarketReadiness} from './market-readiness-reconciliation.js';
-import {runProductTestLab} from '../modules/admin-control/product-test-lab.service.js';
+import {listReusableData} from './platform-reusable-data.service.js';
 
 export const MARKET_FACTORY_VERSION=RELEASE_VERSION;
 const MAX_JSON_BYTES=2*1024*1024;
@@ -45,18 +45,19 @@ function validatePackage(input){
  const content=arr(p.content).map(x=>obj(x)).filter(x=>x.code).map(x=>({code:key(x.code),name:clean(x.name||x.code,180),pageType:clean(x.pageType||'content',60),languageCode:clean(x.languageCode||languages.find(l=>l.primary)?.code||languages[0]?.code||'en',20).toLowerCase(),body:clean(x.body,30000),countryCode:iso,status:x.status||'draft'}));
  const legal=arr(p.legal).map(x=>obj(x)).filter(x=>x.key||x.code).map(x=>({key:key(x.key||x.code),title:clean(x.title||x.name||x.key||x.code,180),description:clean(x.description,3000),sourceUrl:clean(x.sourceUrl,1000),required:x.required!==false,status:['missing','researching','prepared','reviewed'].includes(x.status)?x.status:'prepared'}));
  const providers=arr(p.providers).map(x=>obj(x)).filter(x=>x.code).map(x=>({code:key(x.code),name:clean(x.name||x.code,180),providerType:clean(x.providerType||'other',40),countryCode:clean(x.countryCode||iso,2).toUpperCase(),regionCode:clean(x.regionCode,120)}));
+ const resourceBindings=arr(p.resourceBindings).map(x=>obj(x)).map(x=>({type:key(x.type,80),id:clean(x.id,180),name:clean(x.name,180),version:clean(x.version,80),status:clean(x.status,60).toUpperCase(),authority:clean(x.authority,120),required:x.required!==false}));
  const capabilities=arr(p.capabilities).map(x=>typeof x==='string'?key(x):key(x.code)).filter(Boolean);
  const actions=arr(p.actions).map(x=>typeof x==='string'?key(x):key(x.actionCode||x.code)).filter(Boolean);
  const eligibility=obj(p.eligibility);const residency=obj(p.residency);const execution=obj(p.execution);const subscriptions=arr(p.subscriptions).map(x=>obj(x));const billing=arr(p.billing).map(x=>obj(x));const governance=obj(p.governance);const rp=obj(p.regionalPlacement);assertKeys(rp,['regionKey','jurisdictionCode','residencyPolicyCode','retentionPolicyCode','requiredEvidence','policyVersion'],'regionalPlacement');const regionalPlacement={regionKey:clean(rp.regionKey||(iso==='DE'?'eu-germany':''),48).toLowerCase(),jurisdictionCode:clean(rp.jurisdictionCode||(iso==='DE'?'EU':''),16).toUpperCase(),residencyPolicyCode:clean(rp.residencyPolicyCode,80),retentionPolicyCode:clean(rp.retentionPolicyCode,80),requiredEvidence:arr(rp.requiredEvidence).map(x=>clean(x,120)).filter(Boolean),policyVersion:clean(rp.policyVersion||'regional-placement-v1',80)};
- const allowedTop=new Set(['schemaVersion','packageType','metadata','country','languages','policies','content','legal','sectors','providers','capabilities','actions','eligibility','residency','execution','subscriptions','billing','product','certification','dependencies','governance','regionalPlacement']);const unknownTop=Object.keys(p).filter(x=>!allowedTop.has(x));if(unknownTop.length)throw fail(`Unsupported market package fields: ${unknownTop.join(', ')}`,422,'MARKET_PACKAGE_UNKNOWN_FIELDS');
- for(const x of languages)assertKeys(x,['code','name','primary'],'languages');for(const x of sectors)assertKeys(x,['code','name','description','required'],'sectors');for(const x of policies)assertKeys(x,['code','name','policyType','scope','configuration'],'policies');for(const x of content)assertKeys(x,['code','name','pageType','languageCode','body','countryCode','status'],'content');for(const x of legal)assertKeys(x,['key','title','description','sourceUrl','required','status'],'legal');for(const x of providers)assertKeys(x,['code','name','providerType','countryCode','regionCode'],'providers');
+ const allowedTop=new Set(['schemaVersion','packageType','metadata','country','languages','policies','content','legal','sectors','providers','resourceBindings','capabilities','actions','eligibility','residency','execution','subscriptions','billing','product','certification','dependencies','governance','regionalPlacement']);const unknownTop=Object.keys(p).filter(x=>!allowedTop.has(x));if(unknownTop.length)throw fail(`Unsupported market package fields: ${unknownTop.join(', ')}`,422,'MARKET_PACKAGE_UNKNOWN_FIELDS');
+ for(const x of languages)assertKeys(x,['code','name','primary'],'languages');for(const x of sectors)assertKeys(x,['code','name','description','required'],'sectors');for(const x of policies)assertKeys(x,['code','name','policyType','scope','configuration'],'policies');for(const x of content)assertKeys(x,['code','name','pageType','languageCode','body','countryCode','status'],'content');for(const x of legal)assertKeys(x,['key','title','description','sourceUrl','required','status'],'legal');for(const x of providers)assertKeys(x,['code','name','providerType','countryCode','regionCode'],'providers');for(const x of resourceBindings)assertKeys(x,['type','id','name','version','status','authority','required'],'resourceBindings');
  const duplicates=(values)=>values.length-new Set(values).size;
- const duplicateCodes=[['languages',languages.map(x=>x.code)],['sectors',sectors.map(x=>x.code)],['policies',policies.map(x=>x.code)],['content',content.map(x=>x.code)],['legal',legal.map(x=>x.key)],['providers',providers.map(x=>x.code)]].flatMap(([t,v])=>duplicates(v)?[`${t}:duplicate-key`]:[]);
+ const duplicateCodes=[['languages',languages.map(x=>x.code)],['sectors',sectors.map(x=>x.code)],['policies',policies.map(x=>x.code)],['content',content.map(x=>x.code)],['legal',legal.map(x=>x.key)],['providers',providers.map(x=>x.code)],['resourceBindings',resourceBindings.map(x=>`${x.type}:${x.id}`)]].flatMap(([t,v])=>duplicates(v)?[`${t}:duplicate-key`]:[]);
  if(duplicateCodes.length)throw fail(`Duplicate keys inside package: ${duplicateCodes.join(', ')}`,422,'MARKET_PACKAGE_DUPLICATE_KEYS');
  if(!languages.length)throw fail('At least one language is required.',422,'MARKET_PACKAGE_LANGUAGES_REQUIRED');
  if(!languages.some(x=>x.primary))languages[0].primary=true;
  if(!sectors.length)throw fail('At least one sector is required.',422,'MARKET_PACKAGE_SECTORS_REQUIRED');
- return {schemaVersion:'1.0',packageType:'market-package',metadata:{id:m.id||`${iso}-${productKey}`,name,version,productKey},country:{iso,name},languages,sectors,policies,content,legal,providers,capabilities,actions,eligibility,residency,execution,subscriptions,billing,product:{...product,productKey},certification:obj(p.certification),dependencies:obj(p.dependencies),governance,regionalPlacement};
+ return {schemaVersion:'1.0',packageType:'market-package',metadata:{id:m.id||`${iso}-${productKey}`,name,version,productKey},country:{iso,name},languages,sectors,policies,content,legal,providers,resourceBindings,capabilities,actions,eligibility,residency,execution,subscriptions,billing,product:{...product,productKey},certification:obj(p.certification),dependencies:obj(p.dependencies),governance,regionalPlacement};
 }
 
 async function readZipEntries(bytes){
@@ -348,11 +349,11 @@ const MARKET_LAUNCH_COMMAND_ADAPTERS=Object.freeze({
   const item=arr(parseJson(row.package_json).legal).find(x=>x.key===match[1]);if(!item)throw fail('Legal requirement is not present in this immutable package version.',409,'MARKET_LAUNCH_LEGAL_ITEM_NOT_IN_PACKAGE');
   return {adapter:'market-launch.authorized-legal-decision.v1',result:{decision,legalKey:item.key,countryCode:row.country_code,reviewerId:String(actor.id||''),reviewerRole:String(actor.role||''),sourceEvidenceRef,rationale,requiresNewImmutableVersion:true,packageLegalStatus:item.status,decisionAt:new Date().toISOString(),requestId:String(requestId||'')}};
  },
- 'certification.testlab.run': async (env,packageVersionId,taskKey,actor,requestId)=>{
+ 'certification.testlab.run': async (env,packageVersionId,taskKey,actor,requestId,input={},authorityAdapters={})=>{
   const row=await env.DB.prepare(`SELECT p.country_code FROM platform_market_package_versions v JOIN platform_market_packages p ON p.id=v.package_id WHERE v.id=? LIMIT 1`).bind(Number(packageVersionId)).first();if(!row)throw fail('Market package version not found.',404,'MARKET_PACKAGE_VERSION_NOT_FOUND');
   const launch=await env.DB.prepare(`SELECT id FROM country_product_launches WHERE country_code=? ORDER BY id DESC LIMIT 1`).bind(String(row.country_code).toUpperCase()).first();
   if(!launch)throw fail('No canonical country product launch exists for this market; prepare the product launch before running Test Lab.',409,'MARKET_LAUNCH_TESTLAB_LAUNCH_REQUIRED');
-  const report=await runProductTestLab(env,{launchId:Number(launch.id)});
+  const runner=authorityAdapters?.runProductTestLab;if(typeof runner!=='function')throw fail('Product Test Lab adapter was not supplied by the admin-control composition root.',503,'MARKET_LAUNCH_TESTLAB_ADAPTER_UNAVAILABLE');const report=await runner(env,{launchId:Number(launch.id)});
   const result={runId:`market-testlab:${packageVersionId}:${launch.id}:${Date.now()}`,authority:'product_test_lab',mode:report.mode,launchId:report.launchId,countryCode:report.countryCode,summary:report.summary,checks:report.checks.map(x=>({key:x.key,status:x.status,passed:x.passed,detail:x.detail})),blocked:report.blocked,requestId:String(requestId||''),executedBy:String(actor.id||actor.role||''),executedAt:new Date().toISOString(),missionEffectsCertified:false};
   return {adapter:'market-launch.product-test-lab.v1',result:{...result,ready:report.summary?.ready===true}};
  },
@@ -370,7 +371,7 @@ const MARKET_LAUNCH_COMMAND_ADAPTERS=Object.freeze({
 
 /** Execute only commands backed by an explicitly registered canonical adapter.
  * Evidence submitted by the browser is never used as proof of command success. */
-export async function executeMarketLaunchStageCommand(env,actor,packageVersionId,taskKey,stepKey,requestId='',input={}){
+export async function executeMarketLaunchStageCommand(env,actor,packageVersionId,taskKey,stepKey,requestId='',input={},authorityAdapters={}){
  const workbench=await getMarketLaunchWorkbench(env,packageVersionId);
  const task=workbench.tasks.find(x=>x.key===taskKey);
  if(!task)throw fail('Unknown market launch task.',404,'MARKET_LAUNCH_TASK_NOT_FOUND');
@@ -381,7 +382,7 @@ export async function executeMarketLaunchStageCommand(env,actor,packageVersionId
  if(!adapter)throw fail(`No registered owning-authority adapter exists for ${step.permittedCommand}. Submit evidence only; this step remains unverified until its owning adapter is implemented.`,409,'MARKET_LAUNCH_COMMAND_ADAPTER_UNAVAILABLE');
  if(step.status==='COMPLETE'&&step.authorityVerified===true)return contract;
  for(const prerequisite of step.prerequisites||[]){const prior=contract.steps.find(x=>x.key===prerequisite);if(prior&&!(prior.status==='COMPLETE'&&prior.authorityVerified===true))throw fail(`Command blocked: prerequisite ${prerequisite} has no verified canonical outcome.`,409,'MARKET_LAUNCH_STEP_PREREQUISITE_BLOCKED');}
- const outcome=await adapter(env,Number(packageVersionId),taskKey,actor,requestId,obj(input));
+ const outcome=await adapter(env,Number(packageVersionId),taskKey,actor,requestId,obj(input),authorityAdapters);
  if((step.permittedCommand==='canonical.validate'&&outcome.result.safeToApply!==true)||(step.permittedCommand==='certification.testlab.run'&&outcome.result.ready!==true)){
   const blockedCode=step.permittedCommand==='canonical.validate'?'MARKET_LAUNCH_CANONICAL_VALIDATION_BLOCKED':'MARKET_LAUNCH_TESTLAB_BLOCKED';
   const row=await env.DB.prepare('SELECT evidence_json FROM platform_market_launch_task_evidence WHERE package_version_id=? AND task_key=? LIMIT 1').bind(Number(packageVersionId),taskKey).first();
@@ -426,9 +427,24 @@ async function stageComposition(env,pkg,actor){
  return {canonical,launch,definitions:launch?(await env.DB.prepare(`SELECT id,sector_code,definition_version,status,compiled_hash FROM platform_product_definitions WHERE launch_id=?`).bind(Number(launch.id)).all()).results||[]:[],blockers:[]};
 }
 
+async function validatePinnedResourceBindings(env,bindings){
+ if(!Array.isArray(bindings)||!bindings.length)return {valid:true,checked:0};
+ const allowed=new Set(['country_blueprint','product_country','sector','language','currency','region','classification','feature','guidance','eligibility','pricing','policy','residency','retention','consent','role','capability','responsibility','storage','provider','component','page','configuration','sector_lifecycle','translation_bundle','plan']);
+ for(const b of bindings){
+  if(!allowed.has(b.type)||!b.id||!b.version||!b.status)throw fail(`Resource binding ${b.type||'unknown'}:${b.id||'?'} is missing a canonical type, identity, version or status snapshot.`,422,'MARKET_RESOURCE_BINDING_INVALID');
+  const snapshot=await listReusableData(env,{q:String(b.id),limit:50});const list=Array.isArray(snapshot?.data?.[b.type])?snapshot.data[b.type]:[];const current=list.find(x=>String(x.code??x.role_code??x.id??'')===String(b.id));
+  if(!current)throw fail(`Pinned resource ${b.type}:${b.id} could not be resolved from the canonical resource authority.`,409,'MARKET_RESOURCE_BINDING_UNRESOLVED');
+  const currentStatus=String(current.status??(current.active===0?'inactive':'active')).toUpperCase();
+  const currentVersion=String(current.version??current.revision??current.updated_at??'');
+  if(currentStatus!==String(b.status).toUpperCase()||(b.version&&currentVersion&&currentVersion!==String(b.version)))throw fail(`Pinned resource ${b.type}:${b.id} changed since it was selected. Review the impact and create a new market version with the current compatible asset.`,409,'MARKET_RESOURCE_BINDING_STALE');
+ }
+ return {valid:true,checked:bindings.length};
+}
+
 export async function validateMarketPackage(env,actor,packageVersionId,requestId=''){
  const v=await env.DB.prepare(`SELECT * FROM platform_market_package_versions WHERE id=? LIMIT 1`).bind(Number(packageVersionId)).first();if(!v)throw fail('Market package version not found',404,'MARKET_PACKAGE_VERSION_NOT_FOUND');
  const pkg=parseJson(v.package_json);const market=await env.DB.prepare(`SELECT * FROM platform_market_packages WHERE id=?`).bind(Number(v.package_id)).first();
+ await validatePinnedResourceBindings(env,pkg.resourceBindings||[]);
  const canonical=await inspectCanonicalTargets(env,pkg);const blockers=[];const warnings=[];const placement=pkg.regionalPlacement||{};if(pkg.country.iso==='DE'||placement.regionKey){if(!placement.regionKey||!placement.jurisdictionCode)blockers.push({code:'REGIONAL_PLACEMENT_CONTRACT_REQUIRED',message:'A regional placement key and jurisdiction are required before this market can be published.'});else{const placementRow=await env.DB.prepare('SELECT region_key,jurisdiction_code,status,activation_allowed,policy_version FROM platform_region_placements WHERE region_key=? LIMIT 1').bind(placement.regionKey).first();if(!placementRow)blockers.push({code:'REGIONAL_PLACEMENT_NOT_REGISTERED',message:`Regional placement ${placement.regionKey} is not registered.`});else if(String(placementRow.jurisdiction_code)!==String(placement.jurisdictionCode))blockers.push({code:'REGIONAL_PLACEMENT_JURISDICTION_MISMATCH',message:'Market package jurisdiction does not match the canonical placement registry.'});else if(placementRow.status!=='ACTIVE'||Number(placementRow.activation_allowed)!==1)blockers.push({code:'REGIONAL_PLACEMENT_NOT_ACTIVE',message:`Regional placement ${placement.regionKey} is ${placementRow.status}; market publication remains blocked until the region passes its independent activation gates.`});if(placement.policyVersion&&placementRow&&String(placement.policyVersion)!==String(placementRow.policy_version))blockers.push({code:'REGIONAL_PLACEMENT_POLICY_VERSION_MISMATCH',message:'Market package placement policy version differs from the registry.'});}}const reconciliation=await previewMarketReconciliation(env,Number(v.id));for(const conflict of reconciliation.conflicts)blockers.push({code:conflict.code,message:conflict.message});if(['RETIRED','SUSPENDED','RESTRICTED'].includes(String(market?.status||'').toUpperCase()))blockers.push({code:'MARKET_STATUS_BLOCKS_PUBLICATION',message:`Market status ${market.status} must be explicitly resolved before publication.`});
  if(!canonical.country)warnings.push({code:'COUNTRY_WILL_BE_CREATED',message:`Product market country ${pkg.country.iso} will be created/reconciled at publication.`});
  for(const x of canonical.sectors.filter(x=>!x.exists))warnings.push({code:'SECTOR_WILL_BE_CREATED',message:`Canonical sector ${x.code} will be created/reconciled at publication.`});

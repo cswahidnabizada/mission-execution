@@ -4,4 +4,4 @@
  */
 export * from "./components.js";
 export * from "./domains.js";
-export * from "./canonical-mission-workspace.js?v=16.21.0";
+export * from "./canonical-mission-workspace.js?v=16.22.0";

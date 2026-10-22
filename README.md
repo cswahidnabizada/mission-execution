@@ -549,3 +549,7 @@ Resource Studio provides schema-driven guided asset creation, copyable JSON samp
 ## Current release candidate: 16.21.0
 
 Resource Studio now has Assets, Create and Monitor surfaces. Changes to shared resources remain governed by canonical authorities; release updates use the existing **CREATE NEXT VERSION** workflow where required. This candidate is not production-certified until the Node.js 24.18.0 build and authenticated deployed-runtime checks pass.
+
+## Release 16.22.0 — Version-Pinned Market Assets and Locale Resolution
+
+Market Launch Studio can pin canonical Resource Studio asset revisions into a new immutable market package version. Market validation re-resolves selected reusable assets and blocks unresolved or stale status/version snapshots rather than silently switching dependencies. Layout Studio preview supports translation-key properties with explicit locale fallback and missing-key behavior. The existing Product Publisher lifecycle continues to use CREATE NEXT VERSION for changes to live product releases. This is a hardening candidate; Node 24 build, authenticated browser tests, tenant settings workflows and deployed Germany Logistics certification remain outstanding.
