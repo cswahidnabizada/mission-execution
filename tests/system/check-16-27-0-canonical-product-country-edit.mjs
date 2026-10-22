@@ -14,4 +14,10 @@ assert.match(country,/PRODUCT_COUNTRY_CODE_INVALID/,'Owning authority validates 
 assert.match(country,/PRODUCT_COUNTRY_NAME_REQUIRED/,'Owning authority validates country name');
 assert.match(routes,/requirePlatformSuperAdminStepUp/,'Commit endpoint requires step-up authorization');
 assert.match(studio,/function fieldLabel\(field\)\{const key=String\(field\?\?'field'\)/,'Field label rendering tolerates missing field metadata');
+assert.match(studio,/function renderOverview\(r\)\{const rec=r;/,'Overview renders the canonical response wrapper consistently');
+assert.match(studio,/function renderEdit\(r,defs\)\{const rec=r;/,'Edit form receives canonical metadata and nested record separately');
+assert.match(studio,/for\(const f of fieldsFor\(def\)\)payload\[f\]=valueFor\(f,rec\)/,'Edit form hydrates fields from the actual canonical record');
+const explorer=fs.readFileSync(`${root}/public/assets/js/frontend/admin/resource-management.js`,'utf8');
+assert.match(explorer,/const canonicalType=t=>String\(t\|\|''\)\.trim\(\)\.toLowerCase\(\)\.replaceAll\('-','_'\)/,'Asset type aliases normalize before opening the configuration workspace');
+assert.match(explorer,/compact:true,startInEdit:true/,'Asset configuration opens directly in edit mode');
 console.log('16.27.0 canonical Product Country edit contract: PASS');

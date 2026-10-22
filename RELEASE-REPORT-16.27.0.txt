@@ -1,26 +1,25 @@
-ON Mission 16.27.0 — Canonical Product Country Edit
+ON Mission 16.27.0 — Canonical Product Country Edit Workspace Repair
+Status: HARDENING CANDIDATE — NOT PRODUCTION CERTIFIED
 
-Status: HARDENING CANDIDATE — NOT DEPLOYED / NOT PRODUCTION-CERTIFIED
+Changes in this candidate:
+- Fixed Data Studio renderer contract to consistently consume the canonical response wrapper and its nested raw record. Overview, edit form, preview, JSON, history, dependency and governance surfaces now read the proper canonical fields instead of mistakenly treating the raw DB row as the metadata wrapper.
+- Edit field hydration now resolves fields against the actual canonical record wrapper.
+- Normalized resource type aliases (hyphen/underscore/case) before selecting the matching Data Entry definition for Asset 360's Configure & Edit workflow.
+- Preserved the Product Country immutable ISO identity, explicit requiresReview boolean, canonical update service, validation/preview, step-up, dependency checks, optimistic concurrency, audit/lifecycle evidence, and read-after-write verification.
+- No database migration added.
 
-Changes:
-- Version advanced to 16.27.0 in runtime release identity, package metadata and lockfile root metadata.
-- Product Country Data Studio editor renders requiresReview as a boolean choice instead of a free-text value.
-- Product Country ISO code is treated as immutable canonical identity during edit and is retained in the submitted payload.
-- Data Studio field-label rendering now safely normalizes missing field metadata rather than calling string methods on undefined.
-- Existing Data Studio preview/commit flow remains in place: validation, dependency blocker check, step-up authorization, mutation lease, expected updated_at concurrency fence, canonical Product Country owner update, read-after-write verification, lifecycle evidence and audit.
-- Added focused 16.27.0 contract test.
+Focused verification:
+PASS tests/system/check-16-27-0-canonical-product-country-edit.mjs
+PASS tests/system/check-16-26-0-unified-asset-configure-workflow.mjs
+PASS tests/system/check-16-25-0-canonical-asset-action-contract.mjs
+PASS tests/system/check-16-24-0-compact-asset-360.mjs
+PASS tests/system/check-16-22-0-version-pinned-assets.mjs
+PASS JavaScript syntax checks for resource-management.js, data-studio.js, and platform-data-studio.service.js
 
-Verification:
-- JavaScript syntax checks: PASS (targeted files).
-- 16.27.0 canonical Product Country edit contract: PASS.
-- 16.26.0 unified configure workflow: PASS.
-- 16.25.0 canonical asset action contract: PASS.
-- 16.24.0 compact Asset 360 regression: PASS.
-- 16.22.0 version-pinned market assets regression updated for current release and to be rerun.
+Build gate:
+BLOCKED. Local Node.js is 22.16.0; repository requires Node.js 24.18.0 (.node-version) and engines.node 24.x. npm run build stopped at the environment gate before CSS build/release generation.
 
 Limitations:
-- Runtime build gate requires Node.js 24.x; available runtime is Node.js 22.16.0. Full build and cumulative suite are not certified here.
-- No authenticated deployed API or production database was available for live edit/save verification.
-- Not deployed. No database migrations added.
-
-Build attempt: BLOCKED by environment gate (Node.js 22.16.0; release requires 24.18.0).
+- No live authenticated production API test was possible in this local source-only session.
+- Create → list → reopen → edit → save → reload has not been proven end-to-end against deployed data.
+- Do not deploy until building with Node 24.18.0, the full cumulative release suite passes, and live API persistence/authorization/concurrency checks pass.
