@@ -1,4 +1,29 @@
-# Mission Execution 16.20.0 — Typed Resource Schemas, Sector Lifecycle and Translation Assets — Canonical Resource Studio and Guided Asset Workflows
+# Mission Execution 16.21.0 — Adaptive Canonical Resource Studio and Asset Control Surface
+
+Status: protected hardening candidate. Production build, complete cumulative release gates, authenticated browser/runtime certification and deployed pilot proof must pass before deployment.
+
+Base: 16.20.0
+Permanent priority: Security → Truth → Liveness → Stability → Experience → Scale
+
+## 16.21.0 — Adaptive Resource Studio redesign
+- Reorganized Super Admin Resource Studio into three explicit surfaces: Assets, Create, and Monitor.
+- Asset inventory is sorted by latest update and opens the selected canonical record in a full-width single control surface.
+- Asset workspace continues to expose canonical overview, usage/scope, dependencies, lifecycle, audit activity and owning-authority change workflow.
+- Added contextual navigation from layout-related assets to Layout Studio and reusable assets to Market/Product Studio through the existing workspace navigator.
+- Added monitoring summaries from returned canonical inventory only; no client-side state can certify asset readiness.
+- Preserved canonical service ownership, step-up boundaries, dependency impact preview, and the 163-migration schema baseline.
+- No database migration added.
+
+## 16.21.0 validation status
+- Focused Adaptive Resource Studio contract: PASS.
+- Resource Studio, typed resource schema, market launch and cleanup regression tests: PASS.
+- JavaScript syntax: PASS.
+- Full cumulative `npm run check:release`: PASS.
+- Release integrity, production cleanliness, dependency lock, migration, schema and release engineering gates: PASS.
+- Current architecture convergence and canonical convergence audit: PASS.
+- Node.js 24.18.0 production build: NOT RUN TO COMPLETION; available environment is Node.js 22.16.0 and the build environment gate requires Node.js 24.18.0.
+- Authenticated browser and deployed runtime certification: PENDING.
+- No deployment performed. Do not deploy until the required build and runtime certification pass.
 
 Status: protected candidate — exact Node.js 24 build, full cumulative release gates, authenticated browser/runtime certification and deployed pilot proof pending. DO NOT DEPLOY until required gates pass.
 

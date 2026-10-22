@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 const ui=fs.readFileSync('public/assets/js/frontend/admin/market-factory.js','utf8');
 const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
-assert.equal(pkg.version,'16.20.0','package version must match adaptive workbench candidate');
+assert.equal(pkg.version,'16.21.0','package version must match adaptive workbench candidate');
 assert.match(ui,/id="mfAdaptiveResourcePanel"[^>]*hidden/,'resource context must start hidden until stage relevance is established');
 assert.match(ui,/function bindAdaptiveLaunchContext\(box,\{api\}\)/,'stage-specific resource context must have an explicit controller');
 assert.match(ui,/const relevant=Boolean\(task&&resourceWords\.test\(text\)\)/,'resource tools must be derived from the selected incomplete canonical task');

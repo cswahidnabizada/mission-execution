@@ -545,3 +545,7 @@ This candidate adds canonical-task-driven previous/next stage navigation and a â
 ## ON Mission 16.20.0 â€” Canonical Resource Studio
 
 Resource Studio provides schema-driven guided asset creation, copyable JSON samples, bounded JSON file intake, canonical validation/commit, and Asset 360 dependency/lifecycle/audit views. Changes to governed live product releases continue through the explicit **CREATE NEXT VERSION** lifecycle; staging or editing a reusable resource does not authorize publication or activation. Release candidate only: complete Node.js 24 build and deployed-runtime certification before production deployment.
+
+## Current release candidate: 16.21.0
+
+Resource Studio now has Assets, Create and Monitor surfaces. Changes to shared resources remain governed by canonical authorities; release updates use the existing **CREATE NEXT VERSION** workflow where required. This candidate is not production-certified until the Node.js 24.18.0 build and authenticated deployed-runtime checks pass.

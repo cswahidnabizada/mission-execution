@@ -132,3 +132,10 @@ Status: hardening candidate. Resolve now executes only the registered canonical-
 - [ ] Complete market portfolio resource selection and operational management integration.
 - [ ] Tenant-scoped provider/AI/device Settings adapters and end-to-end isolation certification.
 - [ ] Node 24 production build, full release suite, authenticated browser and deployed-runtime certification.
+
+
+## 16.21.0 — Adaptive Canonical Resource Studio
+- One responsive Resource Studio with Assets, Create and Monitor surfaces.
+- Last-updated inventory and full-width selected-asset workflow.
+- Contextual routes to Layout Studio and Market/Product Studio; owning authorities remain canonical.
+- Focused contract and runtime certification required before deployment.

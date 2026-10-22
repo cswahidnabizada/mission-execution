@@ -6,6 +6,6 @@ if(!routes.includes('/api/platform/admin/resource-management/action')) throw new
 for(const x of ['RESOURCE_IDENTITY_REQUIRED','RESOURCE_ACTION_NOT_SUPPORTED','getResourceExplorer(env,{resourceType,resourceId})','outcome:action===\'purge\'?\'PURGED\':\'APPLIED\'']) if(!routes.includes(x)) throw new Error(`Resource command contract missing: ${x}`);
 if(!bridge.includes('/api/platform/admin/resource-management/action')) throw new Error('Resource client does not use canonical command route');
 if(!bridge.includes('Idempotency-Key')) throw new Error('Resource commands missing idempotency key');
-if(!resources.includes('RESOURCE CONTRACT TYPE') || !resources.includes('resourceTypeSelect')) throw new Error('Resource contract selector missing');
+if(!resources.includes('data-create-resource') || !resources.includes('resource-create-card') || !resources.includes('RELATIONSHIPS')) throw new Error('Resource schema cards with owning-authority/dependency context missing');
 if(resources.includes('data-add-resource-type')) throw new Error('Old resource category chip selector remains');
 console.log('12.7.0 Resource command contract: PASS');

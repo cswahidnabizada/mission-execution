@@ -1,7 +1,7 @@
 {
   "schema": "onmission.roadmap.v1",
-  "version": "16.20.0",
-  "baseline": "16.19.0",
+  "version": "16.21.0",
+  "baseline": "16.20.0",
   "permanentPriority": [
     "Security",
     "Truth",
@@ -515,5 +515,19 @@
       "Complete market publication and live verification",
       "Germany Logistics end-to-end pilot evidence"
     ]
-  }
+  },
+  "releaseNotes": [
+    {
+      "version": "16.21.0",
+      "title": "Adaptive Canonical Resource Studio",
+      "status": "candidate",
+      "changes": [
+        "Assets/Create/Monitor navigation",
+        "latest-updated inventory",
+        "full-width canonical asset workspace",
+        "contextual Layout Studio and Market/Product Studio navigation",
+        "responsive monitoring view"
+      ]
+    }
+  ]
 }
