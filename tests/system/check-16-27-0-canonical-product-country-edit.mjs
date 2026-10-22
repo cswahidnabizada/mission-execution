@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const root=process.cwd();
+const studio=fs.readFileSync(`${root}/public/assets/js/frontend/admin/data-studio.js`,'utf8');
+const service=fs.readFileSync(`${root}/src/worker/security/platform-data-studio.service.js`,'utf8');
+const country=fs.readFileSync(`${root}/src/worker/security/product-country-catalog.service.js`,'utf8');
+const routes=fs.readFileSync(`${root}/src/worker/modules/admin-control/admin-build-data.routes.js`,'utf8');
+assert.match(studio,/key==='requiresReview'/,'Product Country review policy is rendered as an explicit boolean choice');
+assert.match(studio,/payload\.code=String\(current\.record\.record\?\.code/ ,'Edit payload retains canonical country code');
+assert.match(studio,/key==='code'&&current\?\.record\?\.resourceType==='product_country'/,'Canonical ISO identity is immutable in edit mode');
+assert.match(service,/updateProductCountry\(env,actor,String\(resourceId\)/,'Data Studio commits through Product Country owning authority');
+assert.match(service,/expectedUpdatedAt:expected/,'Data Studio passes optimistic concurrency fence');
+assert.match(country,/PRODUCT_COUNTRY_CODE_INVALID/,'Owning authority validates ISO code');
+assert.match(country,/PRODUCT_COUNTRY_NAME_REQUIRED/,'Owning authority validates country name');
+assert.match(routes,/requirePlatformSuperAdminStepUp/,'Commit endpoint requires step-up authorization');
+assert.match(studio,/function fieldLabel\(field\)\{const key=String\(field\?\?'field'\)/,'Field label rendering tolerates missing field metadata');
+console.log('16.27.0 canonical Product Country edit contract: PASS');

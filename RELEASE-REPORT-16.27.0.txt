@@ -1,0 +1,26 @@
+ON Mission 16.27.0 — Canonical Product Country Edit
+
+Status: HARDENING CANDIDATE — NOT DEPLOYED / NOT PRODUCTION-CERTIFIED
+
+Changes:
+- Version advanced to 16.27.0 in runtime release identity, package metadata and lockfile root metadata.
+- Product Country Data Studio editor renders requiresReview as a boolean choice instead of a free-text value.
+- Product Country ISO code is treated as immutable canonical identity during edit and is retained in the submitted payload.
+- Data Studio field-label rendering now safely normalizes missing field metadata rather than calling string methods on undefined.
+- Existing Data Studio preview/commit flow remains in place: validation, dependency blocker check, step-up authorization, mutation lease, expected updated_at concurrency fence, canonical Product Country owner update, read-after-write verification, lifecycle evidence and audit.
+- Added focused 16.27.0 contract test.
+
+Verification:
+- JavaScript syntax checks: PASS (targeted files).
+- 16.27.0 canonical Product Country edit contract: PASS.
+- 16.26.0 unified configure workflow: PASS.
+- 16.25.0 canonical asset action contract: PASS.
+- 16.24.0 compact Asset 360 regression: PASS.
+- 16.22.0 version-pinned market assets regression updated for current release and to be rerun.
+
+Limitations:
+- Runtime build gate requires Node.js 24.x; available runtime is Node.js 22.16.0. Full build and cumulative suite are not certified here.
+- No authenticated deployed API or production database was available for live edit/save verification.
+- Not deployed. No database migrations added.
+
+Build attempt: BLOCKED by environment gate (Node.js 22.16.0; release requires 24.18.0).
