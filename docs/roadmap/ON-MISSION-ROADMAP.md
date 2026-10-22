@@ -145,3 +145,10 @@ Status: hardening candidate. Resolve now executes only the registered canonical-
 - Market packages can pin canonical Resource Studio asset identity, version and lifecycle snapshots; changed/unresolved bindings block validation and require a new market version.
 - Layout Studio safe renderer resolves translation-key properties with explicit locale fallback and missing-key behavior.
 - Remaining: tenant-scoped provider/AI/device settings, production-wide translation propagation, Node 24 build, authenticated browser and deployed pilot certification.
+
+
+## 16.24.0 — Compact Asset 360 and Action-First Workflow
+- Compact asset identity/status/revision summary and short actionable control surface.
+- Removed the verbose property dump and redundant primary tab strip.
+- Authority-returned actions only; contextual impact, Layout Studio and Market Studio actions retained.
+- Remaining: validate real edit/save/publish and lifecycle actions against each owning authority in authenticated browser/runtime; Node 24 build and deployed certification.

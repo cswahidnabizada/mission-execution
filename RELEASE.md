@@ -1,4 +1,4 @@
-# Mission Execution 16.23.0 — Adaptive Asset Control Surface and Canonical Action Safety
+# Mission Execution 16.24.0 — Compact Asset 360 and Action-First Workflow
 
 Status: protected hardening candidate. Production build, complete cumulative release gates, authenticated browser/runtime certification and deployed pilot proof must pass before deployment.
 
@@ -1310,3 +1310,13 @@ This release does not claim completed tenant integration/AI/device settings, ful
 - Kept Layout Studio navigation for layout/content/language assets and Market Studio navigation available from the selected-asset overview.
 - Preserved existing step-up controls, canonical editor routing, impact preview, and no-migration baseline.
 - Release status: hardening candidate. Full authenticated browser and deployed-runtime verification required before production.
+
+
+## 16.24.0 — Compact Asset 360 and Action-First Workflow
+- Replaced the verbose selected-resource property dump with a compact identity/status/revision summary and an action-first Asset 360 surface.
+- Removed the redundant Overview / Use & Scope / Dependencies / Lifecycle / Activity / Change tab strip from the primary control surface; dependencies, lifecycle/activity and configuration are opened only when requested.
+- Kept only authority-reported lifecycle actions; purge/quarantine/restore/stop controls render only when the canonical explorer explicitly returns those actions.
+- Preserved contextual Layout Studio and Market Studio actions, impact preview, refresh and copy identity.
+- Added responsive compact styling and a focused regression contract.
+- No database migration added.
+- Not certified: authenticated browser action execution, actual authority edit support for every resource type, Node 24 production build and deployed-runtime validation remain open.

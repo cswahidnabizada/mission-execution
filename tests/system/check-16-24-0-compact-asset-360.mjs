@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const root=process.cwd();
+const ui=fs.readFileSync(`${root}/public/assets/js/frontend/admin/resource-management.js`,'utf8');
+const css=fs.readFileSync(`${root}/public/assets/css/frontend/admin.css`,'utf8');
+assert.match(ui,/function renderWorkspace\(d\)/);
+assert.match(ui,/asset360-head/,'Asset workspace uses compact identity-first surface');
+assert.match(ui,/data-rw-impact/,'Impact preview remains a real action');
+assert.match(ui,/data-rw-layout/,'Layout Studio action remains contextual');
+assert.match(ui,/data-rw-market/,'Market Studio action remains contextual');
+assert.match(ui,/actions\.includes\('PURGE'\)/,'Purge is shown only when explicitly authorized by the owning authority');
+assert.match(ui,/data-rw-tab="lifecycle"/,'Lifecycle and activity remain accessible in the selected workspace');
+assert.match(css,/Asset 360: compact, action-first canonical resource workspace/);
+assert.doesNotMatch(ui,/data-rw-tab="usage">USE & SCOPE/,'Removed the old verbose tab strip');
+console.log('16.24.0 compact Asset 360 workspace contract: PASS');
