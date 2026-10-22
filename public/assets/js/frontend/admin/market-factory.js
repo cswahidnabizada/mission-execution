@@ -1,4 +1,4 @@
-/* ON Mission 16.19.0 — Idempotent market studio and safe cleanup preview. */
+/* ON Mission 16.20.0 — Idempotent market studio and safe cleanup preview. */
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const arr=v=>Array.isArray(v)?v:[];
 const tone=s=>['LIVE','READY','VALIDATED','AUTHORIZED','PUBLISHED','VERIFIED'].includes(String(s||'').toUpperCase())?'ok':['REJECTED','SUSPENDED','RETIRED'].includes(String(s||'').toUpperCase())?'bad':'warn';

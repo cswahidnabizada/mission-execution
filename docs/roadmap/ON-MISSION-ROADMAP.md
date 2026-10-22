@@ -117,8 +117,18 @@ Status: hardening candidate. Resolve now executes only the registered canonical-
 - Remaining: full schema-driven lifecycle for every market stage; complete canonical resource editor; tenant-scoped settings/integration surfaces; Node 24 build and deployed certification.
 
 
-## 16.19.0 — Canonical Resource Studio and Guided Asset Workflows
+## 16.20.0 — Canonical Resource Studio and Guided Asset Workflows
 - Unify resource discovery and management under Resource Studio / Asset 360 while retaining owning-authority controls.
 - Provide three-step schema-driven asset creation and JSON sample/file intake with strict schema-key matching and a 1 MiB file limit.
 - Reuse canonical dependency graph and lifecycle tabs; no shared asset is deleted based only on market usage.
 - Release remains a candidate pending Node 24 build, cumulative gates, browser/runtime tests and pilot certification.
+
+
+## 16.20.0 — Typed Resource Schemas, Sector Lifecycle and Translation Assets
+- [x] Server-described typed fields in Resource Studio.
+- [x] Canonical configuration-backed sector lifecycle asset with transition validation.
+- [x] Versioned locale translation bundle asset.
+- [x] Dependency-impact preview that does not authorize mutation.
+- [ ] Complete market portfolio resource selection and operational management integration.
+- [ ] Tenant-scoped provider/AI/device Settings adapters and end-to-end isolation certification.
+- [ ] Node 24 production build, full release suite, authenticated browser and deployed-runtime certification.

@@ -1,10 +1,10 @@
 /* ON Mission 12.3.0 — unified Super Admin Resource Explorer. */
-import {api,rawApi,ensureStepUp,esc} from './admin-runtime.js?v=16.19.0';
+import {api,rawApi,ensureStepUp,esc} from './admin-runtime.js?v=16.20.0';
 
 const ACTION_TYPE={tenant:'tenant',user:'user',country:'country',sector:'sector',component:'ui',data_entry:'data_entry',launch:'country_product_launch',expansion:'expansion_case'};
 const ACTION_LABEL={STOP:'STOP',TRASH:'TRASH',PURGE:'PURGE'};
 const MANAGEABLE_EDIT=new Set(['tenant','user','country']);
-const REUSABLE_TYPES=new Set(['country_blueprint','product_country','sector','language','currency','region','classification','policy','residency','retention','consent','role','capability','responsibility','storage','provider','component','page','feature','configuration','guidance','plan','eligibility','pricing']);
+const REUSABLE_TYPES=new Set(['country_blueprint','product_country','sector','language','currency','region','classification','policy','residency','retention','consent','role','capability','responsibility','storage','provider','component','page','feature','configuration','guidance','plan','eligibility','pricing','sector_lifecycle','translation_bundle']);
 
 function root(){return document.querySelector('#adminDrawerRoot')}
 function statusClass(s){const v=String(s||'').toLowerCase();return ['active','completed','live','ready','verified'].includes(v)?'ok':['blocked','failed','error','uncertain','retired','cancelled'].includes(v)?'bad':'warn'}

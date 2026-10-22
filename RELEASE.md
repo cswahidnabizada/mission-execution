@@ -1,4 +1,4 @@
-# Mission Execution 16.19.0 — Canonical Resource Studio and Guided Asset Workflows
+# Mission Execution 16.20.0 — Typed Resource Schemas, Sector Lifecycle and Translation Assets — Canonical Resource Studio and Guided Asset Workflows
 
 Status: protected candidate — exact Node.js 24 build, full cumulative release gates, authenticated browser/runtime certification and deployed pilot proof pending. DO NOT DEPLOY until required gates pass.
 
@@ -1256,7 +1256,7 @@ Status: hardening candidate. Production deployment, Node 24 build, full cumulati
 - Tenant-facing settings remain separate from Super Admin authentication; this release does not claim a complete tenant settings portal or full market lifecycle UI.
 
 
-## 16.19.0 — Canonical Resource Studio and Guided Asset Workflows
+## 16.20.0 — Canonical Resource Studio and Guided Asset Workflows
 - Reframed the reusable-resource operating surface as Resource Studio / Asset 360 while preserving canonical authority boundaries.
 - Added schema-definition-driven three-step asset creation with identity, configuration and governance steps.
 - Added bounded JSON file intake (1 MiB), copyable schema-based sample payloads, JSON-to-form mapping and unknown-field rejection before the existing canonical validation/commit path.
@@ -1264,3 +1264,8 @@ Status: hardening candidate. Production deployment, Node 24 build, full cumulati
 - Existing create flow still requires step-up, server validation, canonical commit and resource identity confirmation. JSON intake never bypasses validation.
 - No database migration; migration high-water mark remains 0163 and canonical shared-resource deletion remains subject to owning-authority lifecycle/dependency checks.
 - Node.js 24 build, full cumulative release gates, authenticated browser/runtime validation and deployed Germany Logistics pilot certification remain pending.
+
+
+## 16.20.0 — Typed Resource Schemas, Sector Lifecycle and Translation Assets
+
+Status: hardening candidate. This release adds server-described field schemas for the Resource Studio, explicit boolean/integer/enum/relationship/JSON controls, canonical configuration-backed sector lifecycle assets, versioned translation bundles, lifecycle transition validation, and an authenticated dependency-impact preview. These additions do not certify all market portfolio integration or tenant provider/AI/device workflows. No database migration was added. Production build and deployed-runtime certification must pass before deployment.

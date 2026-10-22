@@ -7,7 +7,7 @@ function parse(v){try{return JSON.parse(v||'{}')}catch{return {}}}
 const FORBIDDEN_KEYS=/password|secret|api[_-]?key|private[_-]?key|signing[_-]?key|credential|token/i;
 
 export const PLATFORM_CONFIGURATION_DOMAINS=Object.freeze([
-  'countries','jurisdictions','capabilities','organization_types','sectors','mission_rules','roles','rendering','guidance','capability_eligibility','subscription_plans','limits','communication_policies','provider_policies','retention','privacy','policy','residency','operational_thresholds'
+  'countries','jurisdictions','capabilities','organization_types','sectors','mission_rules','roles','rendering','guidance','capability_eligibility','subscription_plans','limits','communication_policies','provider_policies','retention','privacy','policy','residency','operational_thresholds','mission.lifecycle','i18n.catalog'
 ]);
 
 export async function listPlatformConfigurations(env){

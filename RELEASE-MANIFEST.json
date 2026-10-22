@@ -1,7 +1,7 @@
 {
-  "version": "16.19.0",
+  "version": "16.20.0",
   "release": "RELEASE.md",
-  "base": "16.18.0",
+  "base": "16.19.0",
   "migrationHighWaterMark": "0163",
   "migrationCount": 163,
   "schemaSnapshot": {
@@ -9,7 +9,7 @@
     "sha256": "34e1befacc2e8b94aa0127dc1458be4f1db3177395a5594957b64dbbfd2456ac"
   },
   "generatedFrom": "deterministic-release-pipeline",
-  "releaseName": "Canonical Resource Studio and Guided Asset Workflows",
+  "releaseName": "Typed Resource Schemas, Sector Lifecycle and Translation Assets",
   "certificationControl": "config/certification/controlled-pilot-readiness.json",
-  "baseVersion": "16.18.0"
+  "baseVersion": "16.19.0"
 }

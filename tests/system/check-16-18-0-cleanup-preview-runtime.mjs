@@ -22,4 +22,4 @@ db.prepare('UPDATE platform_market_packages SET status=? WHERE id=1').run('LIVE'
 preview=await previewUnfinishedMarketPackageDeletion(env,1);
 assert.equal(preview.allowedToDelete,false);assert.ok(preview.protectionReasons.some(x=>x.includes('not DRAFT')));
 db.close();
-console.log('16.19.0 cleanup preview SQLite runtime: PASS (eligible draft, progressed release, publication-in-progress and live-market protection)');
+console.log('16.20.0 cleanup preview SQLite runtime: PASS (eligible draft, progressed release, publication-in-progress and live-market protection)');

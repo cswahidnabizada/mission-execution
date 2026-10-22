@@ -542,6 +542,6 @@ Current source candidate: **16.10.89 — Resource Relationship & Lifecycle Evide
 
 This candidate adds canonical-task-driven previous/next stage navigation and a “GO TO NEXT REQUIRED TASK” action to Market Factory. The action opens the first incomplete task returned by the canonical workbench and preserves existing step-up authorization. Product Publisher's governed release lifecycle remains unchanged, including CREATE NEXT VERSION, explicit authorization, publication, verification and activation gates. This candidate is not production-certified until exact Node.js 24 build and deployed runtime checks pass.
 
-## ON Mission 16.19.0 — Canonical Resource Studio
+## ON Mission 16.20.0 — Canonical Resource Studio
 
 Resource Studio provides schema-driven guided asset creation, copyable JSON samples, bounded JSON file intake, canonical validation/commit, and Asset 360 dependency/lifecycle/audit views. Changes to governed live product releases continue through the explicit **CREATE NEXT VERSION** lifecycle; staging or editing a reusable resource does not authorize publication or activation. Release candidate only: complete Node.js 24 build and deployed-runtime certification before production deployment.
