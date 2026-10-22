@@ -4,7 +4,7 @@ const read=p=>fs.readFileSync(p,'utf8');
 const ui=read('public/assets/js/frontend/admin/resource-management.js');
 const css=read('public/assets/css/admin-control.css');
 const pkg=JSON.parse(read('package.json'));
-assert.equal(pkg.version,'16.24.0');
+assert.equal(pkg.version,'16.25.0');
 assert.match(ui,/Resource Studio/);
 assert.match(ui,/SINGLE CONTROL SURFACE/);
 assert.match(ui,/function samplePayload\(d\)/);
@@ -18,7 +18,7 @@ assert.match(ui,/data-entry\/reusable\/preview/,'resource schema must use canoni
 assert.match(ui,/data-entry\/\$\{encodeURIComponent\(entry\.entry_id\)\}\/commit/,'resource commit must use the canonical commit endpoint');
 assert.match(ui,/data-rw-tab="dependencies"/,'dependency graph remains available in the selected asset workspace');
 assert.match(ui,/data-rw-tab="lifecycle"/);
-assert.match(ui,/data-rw-tab="activity"/);
+assert.match(ui,/LIFECYCLE & ACTIVITY/);
 assert.match(css,/resource-wizard-progress/);
 assert.match(css,/resource-json-intake/);
 console.log('16.20.0 Canonical Resource Studio and Guided Asset Workflows: PASS');

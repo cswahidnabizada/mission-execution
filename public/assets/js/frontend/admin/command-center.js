@@ -1,10 +1,10 @@
 /* ON Mission 10.79.0 — unified operational Command Center */
-import {workspaceFor} from './workspace-registry.js?v=16.24.0';
-import {statusTone,displayValue,escapeHtml} from './ui-system.js?v=16.24.0';
-import {ADMIN_WORKSPACE_GROUPS} from './workspace-registry.js?v=16.24.0';
-import {openAdminDrawer} from './detail-drawer.js?v=16.24.0';
-import {governanceReadiness,renderGovernanceReadiness} from './governance-readiness.js?v=16.24.0';
-import {CONTROL_PLANE_AREAS,searchControlPlaneAreas} from './control-plane-model.js?v=16.24.0';
+import {workspaceFor} from './workspace-registry.js?v=16.25.0';
+import {statusTone,displayValue,escapeHtml} from './ui-system.js?v=16.25.0';
+import {ADMIN_WORKSPACE_GROUPS} from './workspace-registry.js?v=16.25.0';
+import {openAdminDrawer} from './detail-drawer.js?v=16.25.0';
+import {governanceReadiness,renderGovernanceReadiness} from './governance-readiness.js?v=16.25.0';
+import {CONTROL_PLANE_AREAS,searchControlPlaneAreas} from './control-plane-model.js?v=16.25.0';
 
 export async function renderCommandCenter({$,state,esc,loadCommandCenter,api,navigate}){
  const box=$('#view-overview');

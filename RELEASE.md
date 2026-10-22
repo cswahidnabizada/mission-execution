@@ -1,8 +1,8 @@
-# Mission Execution 16.24.0 — Compact Asset 360 and Action-First Workflow
+# Mission Execution 16.25.0 — Canonical Asset Authority Actions and Verified Mutation
 
 Status: protected hardening candidate. Production build, complete cumulative release gates, authenticated browser/runtime certification and deployed pilot proof must pass before deployment.
 
-Base: 16.20.0
+Base: 16.24.0
 Permanent priority: Security → Truth → Liveness → Stability → Experience → Scale
 
 ## 16.21.0 — Adaptive Resource Studio redesign
@@ -1320,3 +1320,14 @@ This release does not claim completed tenant integration/AI/device settings, ful
 - Added responsive compact styling and a focused regression contract.
 - No database migration added.
 - Not certified: authenticated browser action execution, actual authority edit support for every resource type, Node 24 production build and deployed-runtime validation remain open.
+
+
+## 16.25.0 — Canonical Asset Authority Actions and Verified Mutation
+
+- Replaced broad reusable-resource edit claims with an explicit allowlist of resource types backed by an owning-authority mutation path.
+- Added sector lifecycle and translation bundle to versioned Data Studio inspection/edit routing.
+- Generic Asset 360 no longer advertises quarantine or purge for shared canonical assets; destructive actions remain hidden unless an authority explicitly grants them.
+- Canonical mutations now perform a read-after-write lookup; missing verification is persisted as evidence reconciliation required, never as verified completion.
+- Corrected canonical status derivation so a non-empty status is preserved instead of incorrectly coerced to active.
+- No database migrations.
+- Production build and authenticated deployed-runtime certification remain required.

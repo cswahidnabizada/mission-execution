@@ -22,7 +22,7 @@ assert.match(ui,/schema\.type==='boolean'/);
 assert.match(ui,/schema\.type==='integer'/);
 assert.match(ui,/schema\.type==='enum'/);
 assert.match(ui,/schema\.type==='json'/);
-assert.match(ui,/PREVIEW CHANGE IMPACT/);
+assert.match(ui,/CHECK IMPACT/);
 assert.match(ui,/resource-management\/\$\{encodeURIComponent\(r\.type\)\}\/\$\{encodeURIComponent\(r\.id\)\}\/impact/);
 const reusable=read('src/worker/security/platform-reusable-data.service.js');
 assert.match(reusable,/SECTOR_LIFECYCLE_TRANSITION_INVALID/);

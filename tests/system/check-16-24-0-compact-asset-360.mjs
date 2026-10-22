@@ -12,4 +12,4 @@ assert.match(ui,/actions\.includes\('PURGE'\)/,'Purge is shown only when explici
 assert.match(ui,/data-rw-tab="lifecycle"/,'Lifecycle and activity remain accessible in the selected workspace');
 assert.match(css,/Asset 360: compact, action-first canonical resource workspace/);
 assert.doesNotMatch(ui,/data-rw-tab="usage">USE & SCOPE/,'Removed the old verbose tab strip');
-console.log('16.24.0 compact Asset 360 workspace contract: PASS');
+console.log('16.25.0 compact Asset 360 workspace contract: PASS');

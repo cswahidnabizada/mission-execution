@@ -4,7 +4,7 @@ const ui=fs.readFileSync('public/assets/js/frontend/admin/market-factory.js','ut
 const service=fs.readFileSync('src/worker/security/market-factory.service.js','utf8');
 const routes=fs.readFileSync('src/worker/modules/admin-control/admin-build-data.routes.js','utf8');
 const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
-assert.equal(pkg.version,'16.24.0');
+assert.equal(pkg.version,'16.25.0');
 assert.match(ui,/async function loadResolveContract\(api,versionId,taskKey\)/);
 assert.match(ui,/workbench\/tasks\/\$\{encodeURIComponent\(taskKey\)\}\/contract/);
 assert.match(ui,/data-mf-contract-step-form/);

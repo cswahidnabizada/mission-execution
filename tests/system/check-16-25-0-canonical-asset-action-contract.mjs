@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const root=process.cwd();
+const svc=fs.readFileSync(`${root}/src/worker/security/platform-data-studio.service.js`,'utf8');
+const ui=fs.readFileSync(`${root}/public/assets/js/frontend/admin/data-studio.js`,'utf8');
+assert.match(svc,/const DATA_STUDIO_EDIT_TYPES=new Set\(/,'Editable resource types are explicit and separate from inspectable types');
+assert.match(svc,/mutationMode:versioned\?'NEW_IMMUTABLE_VERSION'/,'Versioned assets create a new immutable version');
+assert.match(svc,/readAfterWriteVerified/,'Canonical mutations require an independent read-after-write check');
+assert.match(svc,/DATA_STUDIO_READ_AFTER_WRITE_REQUIRED/,'Unverified writes remain in reconciliation rather than being marked fully complete');
+assert.match(svc,/quarantine:false,purge:false/,'Generic Data Studio does not claim unsupported destructive operations');
+assert.match(ui,/c\.quarantine\?/,'Quarantine control is rendered only when the authority contract permits it');
+assert.match(ui,/c\.edit\?tabButton\('edit','Edit'\)/,'Edit tab is hidden for inspect-only resources');
+assert.match(ui,/dataStudioSave/,'Supported edits still use validate/preview/step-up/commit flow');
+console.log('16.25.0 canonical asset action contract: PASS');

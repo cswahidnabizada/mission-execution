@@ -17,7 +17,8 @@ export const PLATFORM_DATA_STUDIO_VERSION=RELEASE_VERSION;
 const fail=(m,s=400,c=m)=>Object.assign(new Error(m),{status:s,code:c});
 const clean=(v,max=240)=>String(v??'').trim().slice(0,max);
 const json=v=>{try{return JSON.parse(String(v??'{}'))||{}}catch{return {}}};
-const REUSABLE_TYPES=new Set(['country_blueprint','product_country','sector','language','currency','region','classification','policy','residency','retention','consent','role','capability','responsibility','storage','provider','component','page','feature','configuration','guidance','plan','eligibility','pricing']);
+const REUSABLE_TYPES=new Set(['country_blueprint','product_country','sector','language','currency','region','classification','policy','residency','retention','consent','role','capability','responsibility','storage','provider','component','page','feature','configuration','guidance','plan','eligibility','pricing','sector_lifecycle','translation_bundle']);
+const DATA_STUDIO_EDIT_TYPES=new Set(['country_blueprint','product_country','sector','language','currency','region','classification','policy','residency','retention','role','capability','responsibility','storage','provider','component','page','feature','configuration','guidance','plan','eligibility','pricing','sector_lifecycle','translation_bundle']);
 
 const keyOf=(type,row)=>String(row?.code??row?.role_code??row?.id??'');
 function matches(type,row,id){return keyOf(type,row)===String(id);}
@@ -32,7 +33,7 @@ async function entryHistory(env,resourceType,resourceId){
   return rows.map((r,i)=>({id:Number(r.id),entry_id:r.entry_id,entry_type:r.entry_type,status:r.status,actor_type:r.actor_type,actor_id:r.actor_id,classification:r.classification,purpose:r.purpose,risk_level:r.risk_level,created_at:r.created_at,updated_at:r.updated_at,committed_at:r.committed_at,revision:rows.length-i,payload:json(r.payload_json),validation:json(r.validation_json),dependencies:json(r.dependency_json),impact:json(r.impact_json)}));
 }
 function definitionFor(type){return listReusableDataDefinitions().find(x=>x.entryType===type)||null;}
-function capabilitiesFor(type){const editable=REUSABLE_TYPES.has(type);return {inspect:true,edit:editable,preview:editable,json:true,history:true,dependencies:true,governance:true,disposition:true,quarantineAuthority:'data-control/trash',uiPreview:type==='page'||type==='component'};}
+function capabilitiesFor(type){const editable=DATA_STUDIO_EDIT_TYPES.has(type);const versioned=['configuration','sector_lifecycle','translation_bundle'].includes(type);const supportedControl=['tenant','user','country','sector','ui','content','country_blueprint','product_definition','country_product_launch','expansion_case','data_entry'].includes(type);return {inspect:true,edit:editable,preview:editable,json:true,history:true,dependencies:true,governance:true,mutationMode:versioned?'NEW_IMMUTABLE_VERSION':editable?'CANONICAL_OWNER_UPDATE':'INSPECT_ONLY',actions:[...(editable?['EDIT','VALIDATE','SAVE']:[]),'PREVIEW','DEPENDENCIES','HISTORY',...(type==='page'||type==='component'?['LAYOUT_STUDIO']:[]),...(type==='product_country'||type==='country_blueprint'||type==='sector'||type==='sector_lifecycle'||type==='translation_bundle'?['MARKET_STUDIO']:[]),...(supportedControl?['OPEN_DATA_CONTROL']:[])],quarantine:false,purge:false,uiPreview:type==='page'||type==='component'};}
 
 async function currentReusable(env,type,id){
   const result=await listReusableData(env,{type,limit:250});
@@ -52,7 +53,7 @@ export async function inspectDataStudioRecord(env,{resourceType,resourceId}={}){
   const type=clean(resourceType,100),id=String(resourceId??'');
   if(!type||!id)throw fail('DATA_STUDIO_RESOURCE_REQUIRED',400,'DATA_STUDIO_RESOURCE_REQUIRED');
   let record,authority=type,capability='structured';
-  if(REUSABLE_TYPES.has(type)){record=await currentReusable(env,type,id);authority=({country_blueprint:'countryProductBlueprintAuthority',product_country:'productCountryCatalog',sector:'sectorCatalog',language:'languageCatalog',currency:'currencyCatalog',region:'regionCatalog',classification:'classificationCatalog',policy:'policyCatalog',residency:'policyCatalog',retention:'policyCatalog',consent:'consentPolicyAuthority',role:'organizationRoleCatalog',capability:'canonicalCapabilityRegistry',responsibility:'responsibilityCatalog',storage:'storageCatalog',provider:'externalProviderRegistry',component:'productComponentAuthority',page:'pageCatalog',feature:'featureCatalog',configuration:'platformConfigurationAuthority',guidance:'guidanceCatalog',plan:'subscriptionPlanAuthority',eligibility:'eligibilityCatalog',pricing:'pricingCatalog'})[type]||type;
+  if(REUSABLE_TYPES.has(type)){record=await currentReusable(env,type,id);authority=({country_blueprint:'countryProductBlueprintAuthority',product_country:'productCountryCatalog',sector:'sectorCatalog',language:'languageCatalog',currency:'currencyCatalog',region:'regionCatalog',classification:'classificationCatalog',policy:'policyCatalog',residency:'policyCatalog',retention:'policyCatalog',consent:'consentPolicyAuthority',role:'organizationRoleCatalog',capability:'canonicalCapabilityRegistry',responsibility:'responsibilityCatalog',storage:'storageCatalog',provider:'externalProviderRegistry',component:'productComponentAuthority',page:'pageCatalog',feature:'featureCatalog',configuration:'platformConfigurationAuthority',sector_lifecycle:'platformConfigurationAuthority',translation_bundle:'platformConfigurationAuthority',guidance:'guidanceCatalog',plan:'subscriptionPlanAuthority',eligibility:'eligibilityCatalog',pricing:'pricingCatalog'})[type]||type;
     if(type==='page'||type==='component')capability='ui';
   } else if(type==='data_entry'){
     record=await getDataEntry(env,id);if(!record)throw fail('DATA_STUDIO_RECORD_NOT_FOUND',404,'DATA_STUDIO_RECORD_NOT_FOUND');authority='platform_data_entry_records';
@@ -82,7 +83,7 @@ export async function inspectDataStudioRecord(env,{resourceType,resourceId}={}){
 
 export async function prepareDataStudioEdit(env,actor,{resourceType,resourceId,payload,reason=''}={}){
   const inspected=await inspectDataStudioRecord(env,{resourceType,resourceId});
-  if(!REUSABLE_TYPES.has(resourceType))throw fail('DATA_STUDIO_EDIT_OWNER_REQUIRED',409,'DATA_STUDIO_EDIT_OWNER_REQUIRED');
+  if(!DATA_STUDIO_EDIT_TYPES.has(resourceType))throw fail('DATA_STUDIO_EDIT_OWNER_REQUIRED',409,'DATA_STUDIO_EDIT_OWNER_REQUIRED');
   if(!clean(reason,1000))throw fail('DATA_STUDIO_CHANGE_REASON_REQUIRED',422,'DATA_STUDIO_CHANGE_REASON_REQUIRED');
   const input={...payload};
   if(resourceType==='country_blueprint')input.countryCode=input.countryCode||inspected.record.record.country_code;
@@ -92,7 +93,7 @@ export async function prepareDataStudioEdit(env,actor,{resourceType,resourceId,p
 }
 
 async function markEditEntry(env,entry,resourceType,resourceId,actor,requestId,result){
-  const canonicalStatus=String(result?.status||result?.active===1?'active':'committed');
+  const canonicalStatus=String(result?.status||(result?.active===1?'active':'committed'));
   await env.DB.prepare(`UPDATE platform_data_entry_records SET status='committed',canonical_resource_type=?,canonical_resource_id=?,canonical_status=?,committed_at=CURRENT_TIMESTAMP,commit_recovery_status='none',updated_at=CURRENT_TIMESTAMP WHERE entry_id=?`).bind(resourceType,String(resourceId),canonicalStatus,entry.entry_id).run();
   let evidenceStatus='complete';
   try{
@@ -111,7 +112,7 @@ async function markEditEntry(env,entry,resourceType,resourceId,actor,requestId,r
 export async function commitDataStudioEdit(env,actor,{resourceType,resourceId,payload,reason='',requestId='',expectedUpdatedAt=null}={}){
   const inspected=await inspectDataStudioRecord(env,{resourceType,resourceId});
   if(!clean(reason,1000))throw fail('DATA_STUDIO_CHANGE_REASON_REQUIRED',422,'DATA_STUDIO_CHANGE_REASON_REQUIRED');
-  if(!REUSABLE_TYPES.has(resourceType))throw fail('DATA_STUDIO_EDIT_OWNER_REQUIRED',409,'DATA_STUDIO_EDIT_OWNER_REQUIRED');
+  if(!DATA_STUDIO_EDIT_TYPES.has(resourceType))throw fail('DATA_STUDIO_EDIT_OWNER_REQUIRED',409,'DATA_STUDIO_EDIT_OWNER_REQUIRED');
   const scopeKey=`data-studio:${clean(resourceType,100)}:${String(resourceId??'')}`;
   return withPlatformMutationLease(env,{scopeKey,actorType:actor?.role||actor?.type||'platform_super_administrator',actorId:actor?.id||actor?.identityId||null},async()=>{
     // Re-read after acquiring the lease. This closes the check-then-write race.
@@ -131,7 +132,15 @@ export async function commitDataStudioEdit(env,actor,{resourceType,resourceId,pa
       else if(resourceType==='product_country') result=await updateProductCountry(env,actor,String(resourceId),{...input,dataEntryId:entry.entry_id,expectedUpdatedAt:expected});
       else result=await createReusableData(env,actor,resourceType,{...input,dataEntryId:entry.entry_id,expectedUpdatedAt:expected},requestId||crypto.randomUUID());
       const canonicalId=String(result?.id??result?.code??result?.country?.code??result?.blueprint?.id??resourceId);
+      let readAfterWriteVerified=false;
+      try {
+        const reread=await inspectDataStudioRecord(env,{resourceType,resourceId:canonicalId});
+        readAfterWriteVerified=Boolean(reread?.record&&String(reread.record.resourceId)===canonicalId);
+      } catch { readAfterWriteVerified=false; }
       const evidence=await markEditEntry(env,entry,resourceType,canonicalId,actor,requestId,result?.country||result?.blueprint||result);
+      if(!readAfterWriteVerified){
+        await env.DB.prepare(`UPDATE platform_data_entry_records SET commit_recovery_status='evidence_required',rejection_code='DATA_STUDIO_READ_AFTER_WRITE_REQUIRED',rejection_message='Canonical mutation returned, but independent read-after-write verification is pending.',updated_at=CURRENT_TIMESTAMP WHERE entry_id=?`).bind(entry.entry_id).run();
+      }
       let auditStatus='complete';
       try{
         const completed=await completeCriticalAudit(env,auditEventId,{success:true});
@@ -143,7 +152,7 @@ export async function commitDataStudioEdit(env,actor,{resourceType,resourceId,pa
         await env.DB.prepare(`UPDATE platform_data_entry_records SET commit_recovery_status='evidence_required',rejection_code=?,rejection_message=?,updated_at=CURRENT_TIMESTAMP WHERE entry_id=? AND status='committed'`).bind('DATA_STUDIO_AUDIT_COMPLETION_REQUIRED','Critical audit completion requires reconciliation.',entry.entry_id).run();
       }
       const finalEntry=await getDataEntry(env,entry.entry_id);
-      return {success:true,version:PLATFORM_DATA_STUDIO_VERSION,entry:finalEntry,result,resourceType,resourceId:canonicalId,revision:(current.record.revision||1)+1,reason,evidenceStatus:evidence.evidenceStatus==='pending_reconciliation'||auditStatus==='pending_reconciliation'?'pending_reconciliation':'complete'};
+      return {success:true,version:PLATFORM_DATA_STUDIO_VERSION,entry:finalEntry,result,resourceType,resourceId:canonicalId,revision:(current.record.revision||1)+1,reason,evidenceStatus:!readAfterWriteVerified||evidence.evidenceStatus==='pending_reconciliation'||auditStatus==='pending_reconciliation'?'pending_reconciliation':'complete',readAfterWriteVerified};
     }catch(error){
       try{await completeCriticalAudit(env,auditEventId,{success:false,errorCode:error?.code||'DATA_STUDIO_COMMIT_FAILED'});}catch{}
       throw error;
