@@ -17,8 +17,8 @@ export const ADMIN_WORKSPACE_GROUPS=Object.freeze([
   {key:'resources',label:'RESOURCES',description:'Find, create, inspect, understand, change and govern platform resources from one canonical workspace.',items:[
     ['Resource Management','resource-management','Search resources, add governed resources, inspect mission plans and evaluations, review recent changes, inspect dependencies and manage the selected record.','Canonical Resource Management','WRITE','RESOURCES']
   ]},
-  {key:'build',label:'BUILD',description:'Compose governed products from reusable Resources without creating shadow data authorities.',items:[
-    ['Market Factory','product-publisher','Intake, validate, reconcile, authorize and publish governed market releases.','Market Release Lifecycle','WRITE','BUILD'],
+  {key:'build',label:'MARKET STUDIO',description:'Prepare market data, compose the product, resolve dependencies, complete proof and launch from one governed workspace.',items:[
+    ['Market Launch Studio','product-publisher','Prepare market data, configure requirements, validate, authorize, publish, verify and activate governed market releases in one workspace.','Market Release Lifecycle','WRITE','BUILD'],
     ['Product Countries','countries','Inspect deliberate product-market countries created through Resources.','Country Product Foundation','WRITE','BUILD']
   ]},
   {key:'release',label:'RELEASE',description:'Prove, authorize, publish, verify and promote governed versions.',items:[

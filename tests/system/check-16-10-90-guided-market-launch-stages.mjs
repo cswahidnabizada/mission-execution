@@ -6,7 +6,7 @@ const css = await readFile(new URL('public/assets/css/frontend/admin.css', root)
 const pkg = JSON.parse(await readFile(new URL('package.json', root), 'utf8'));
 const manifest = JSON.parse(await readFile(new URL('RELEASE-MANIFEST.json', root), 'utf8'));
 assert.equal(pkg.version, manifest.version, 'current package and manifest release identities must align');
-assert.ok(/^16\.10\.\d+$/.test(manifest.version), 'release identity must remain in the 16.10 patch series');
+assert.ok(manifest.version.localeCompare('16.10.90', undefined, {numeric:true}) >= 0, 'release identity must preserve guided launch stages');
 assert.match(ui, /GUIDED LAUNCH/);
 assert.match(ui, /data-mf-stage/);
 assert.match(ui, /data-mf-task-category/);

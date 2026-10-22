@@ -1,6 +1,6 @@
-/* Canonical legacy compatibility reference: actions-intelligence.js?v=16.14.0 */
+/* Canonical legacy compatibility reference: actions-intelligence.js?v=16.16.0 */
 /* ON Mission 10.35.5 — canonical application action runtime. */
-import {recordActionExecutionTelemetry} from "./operations-action-telemetry.js?v=16.14.0";
+import {recordActionExecutionTelemetry} from "./operations-action-telemetry.js?v=16.16.0";
 
 async function preparePresentationAction(action,options={}){
   const missionId=Number(options.missionId||action?.missionId||0)||null;

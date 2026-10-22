@@ -2,11 +2,11 @@
  * Old Control Plane navigation is retired. This shell exposes the eight human jobs while
  * keeping every workspace implementation and canonical authority intact.
  */
-import {workspaceGroups,state} from './admin-runtime.js?v=16.14.0';
-import {workspaceFor} from './workspace-registry.js?v=16.14.0';
-import {installCommandPalette} from './command-palette.js?v=16.14.0';
+import {workspaceGroups,state} from './admin-runtime.js?v=16.16.0';
+import {workspaceFor} from './workspace-registry.js?v=16.16.0';
+import {installCommandPalette} from './command-palette.js?v=16.16.0';
 /* Compatibility evidence for the historical architecture contract: CURRENT SITUATION · NEEDS ATTENTION · RELEASE JOURNEY · RECENT ACTIVITY · PLATFORM · SECURE. These are projections/labels only; the live navigation remains the eight-job operating model. */
-import {readExperienceContext,writeExperienceContext,contextLabel} from '../core/experience-context.js?v=16.14.0';
+import {readExperienceContext,writeExperienceContext,contextLabel} from '../core/experience-context.js?v=16.16.0';
 
 // Canonical navigation inventory remains workspaceGroups.map(renderGroup) in the retired shell contract; the live shell renders the same inventory through the new eight-job layout.
 const primary=workspaceGroups.map(g=>g.key);
@@ -28,7 +28,7 @@ export function renderAdminShell({sections,platformLogout,show,state}){
     <div class="sa-body">
       <aside class="sa-sidebar">
         <div class="sa-sidebar-head"><span class="eyebrow">OPERATING AREA</span><h2 id="saGroupTitle">COMMAND</h2><p id="saGroupDescription">${groupFor('command').description}</p></div>
-        <div class="sa-sidebar-tools"><label class="sa-workspace-filter"><span aria-hidden="true">⌕</span><input id="saWorkspaceFilter" type="search" placeholder="Filter this area…" aria-label="Filter workspaces in this area"></label><button type="button" class="sa-quick-studio" data-quick-studio><span>✳</span><span><b>Layout Studio</b><small>Experience workspace</small></span><span aria-hidden="true">↗</span></button></div><div id="saWorkspaceList" class="sa-workspace-list" aria-label="Workspaces"></div>
+        <div class="sa-sidebar-tools"><label class="sa-workspace-filter"><span aria-hidden="true">⌕</span><input id="saWorkspaceFilter" type="search" placeholder="Filter this area…" aria-label="Filter workspaces in this area"></label><button type="button" class="sa-quick-studio" data-quick-studio><span>✳</span><span><b>Market Launch Studio</b><small>Prepare · prove · release</small></span><span aria-hidden="true">↗</span></button></div><div id="saWorkspaceList" class="sa-workspace-list" aria-label="Workspaces"></div>
         <div class="sa-sidebar-foot"><div><span class="eyebrow">AUTHORITY BOUNDARY</span><b>Admin orchestrates. Domain authorities own truth.</b></div><small>Read-only mode blocks Control Plane mutations in this browser. Server authorization remains authoritative.</small></div>
       </aside>
       <main class="sa-main">
@@ -50,7 +50,7 @@ export function renderAdminShell({sections,platformLogout,show,state}){
   };
   document.querySelectorAll('[data-primary-group]').forEach(b=>b.addEventListener('click',()=>{const key=b.dataset.primaryGroup;const first=groupFor(key).items[0]?.[1];if(first)show(first);else renderGroup(key);}));
   document.querySelector('#saWorkspaceFilter')?.addEventListener('input',event=>{const q=String(event.target.value||'').trim().toLowerCase();document.querySelectorAll('#saWorkspaceList [data-view]').forEach(b=>{b.hidden=!b.textContent.toLowerCase().includes(q);});});
-  document.querySelector('[data-quick-studio]')?.addEventListener('click',()=>show('layout-studio'));
+  document.querySelector('[data-quick-studio]')?.addEventListener('click',()=>show('product-publisher'));
   document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>show(b.dataset.view));
   document.getElementById('logout').onclick=platformLogout;
   document.getElementById('safeModeToggle')?.addEventListener('click',()=>{state.safeMode=!Boolean(state.safeMode);localStorage.setItem('onmission_super_admin_safe_mode',state.safeMode?'1':'0');const b=document.getElementById('safeModeToggle');if(b)b.textContent=state.safeMode?'READ-ONLY':'NORMAL';});

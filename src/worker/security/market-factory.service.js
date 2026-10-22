@@ -10,6 +10,7 @@ import {RELEASE_VERSION} from '../core/release.js';
 import {beginGovernedIntake,recordGovernedIntakeItem,finishGovernedIntake,sha256Intake} from './governed-intake.service.js';
 import {assessMarketLaunchEvidence,requireMarketLaunchEvidence} from './market-launch-evidence.js';
 import {classifyMarketReadiness} from './market-readiness-reconciliation.js';
+import {runProductTestLab} from '../modules/admin-control/product-test-lab.service.js';
 
 export const MARKET_FACTORY_VERSION=RELEASE_VERSION;
 const MAX_JSON_BYTES=2*1024*1024;
@@ -237,7 +238,7 @@ export function buildMarketLaunchStageContract(task, packageVersionId) {
  else if(/certif|test|runtime|verification|verify|mission journey/.test(text)){name='Verification';authority='certification_authority_and_deployed_runtime_evidence';steps=[['prepare','Define acceptance criteria'],['execute','Run required test'],['inspect','Inspect actual result and scope'],['recover','Resolve failure or declare waiting condition'],['evidence','Attach traceable evidence']];}
  else if(/publish|release|activat/.test(text)){name='Release transition';authority='market_factory_release_lifecycle_authority';steps=[['inspect','Inspect immutable release and readiness'],['resolve','Resolve blockers'],['authorize','Obtain required authorization'],['execute','Perform permitted transition'],['verify','Re-read release state'],['evidence','Retain transition evidence']];}
  else if(/recover|rollback|incident/.test(text)){name='Recovery';authority='owning_canonical_service_and_recovery_authority';steps=[['inspect','Inspect failure and canonical state'],['contain','Prevent duplicate or stale actions'],['recover','Run authorized recovery'],['verify','Verify resulting canonical state'],['evidence','Record recovery outcome']];}
- const commands={find:'resource.search',inspect:'canonical.read',select:'resource.select',configure:'resource.configure',link:'market.relationship.create',validate:'canonical.validate',evidence:'task.evidence.record',review:'human.review.request',prepare:'test.prepare',execute:'authorized.command.execute',recover:'recovery.execute',contain:'execution.contain',resolve:'blocker.resolve',authorize:'release.authorize',verify:'canonical.verify'};
+ const commands={find:'resource.search',inspect:'canonical.read',select:'resource.select',configure:'resource.configure',link:'market.relationship.create',validate:'canonical.validate',evidence:'task.evidence.record',review:'market.legal.review',prepare:'certification.testlab.run',execute:'authorized.command.execute',recover:'recovery.execute',contain:'execution.contain',resolve:'blocker.resolve',authorize:'release.authorize',verify:'canonical.verify'};
  const recovery={find:'Retry search; preserve selected scope.',inspect:'Retry canonical read; do not use stale search data.',select:'Return to search or create through the owning authority.',configure:'Retain draft; retry after validation errors are resolved.',link:'Do not duplicate; re-read relationship before retry.',validate:'Keep task open and report the exact failed invariant.',evidence:'Keep task incomplete and request valid evidence.',review:'Wait for an authorized reviewer.',prepare:'Keep verification blocked until prerequisites exist.',execute:'Record failure and use the owning authority recovery path.',recover:'Escalate if recovery cannot be verified.',contain:'Keep transition blocked until containment is verified.',resolve:'Keep launch blocked until canonical blocker clears.',authorize:'Wait for an authorized step-up actor.',verify:'Retry canonical read; never infer success.'};
  return {contractVersion:'1.0.0',contractKey:`market-launch:${task?.key||'unknown'}`,packageVersionId:Number(packageVersionId),taskKey:String(task?.key||''),name,authority,completionPolicy:'ALL_REQUIRED_STEPS_VERIFIED',steps:steps.map(([key,title],i)=>({key,title,order:i+1,required:true,authority,prerequisites:i? [steps[i-1][0]]:[],permittedCommand:commands[key]||'canonical.task.execute',evidenceSchema:{required:['summary','evidenceRef'],summary:{type:'string',minLength:12},evidenceRef:{type:'string',minLength:4}},status:'TODO',executionMode:'MANUAL_EVIDENCE',authorityVerified:false,recoveryPath:recovery[key]||'Keep task open; refresh canonical state and retry safely.'})),durability:{storedIn:'platform_market_launch_task_evidence.evidence_json.stageContract',serverOwned:true},note:'Evidence submission is not verification. Only a registered owning-authority command and canonical result may establish VERIFIED completion.'};
 }
@@ -300,6 +301,25 @@ const MARKET_LAUNCH_COMMAND_ADAPTERS=Object.freeze({
   if(!linked||linked.sector_name!==item.name||Number(linked.required)!==(item.required===false?0:1))throw fail('Market-sector relationship failed canonical read-after-write verification.',503,'MARKET_LAUNCH_RELATIONSHIP_POSTCONDITION_FAILED');
   return {adapter:'market-launch.sector-market-relationship.v1',result:{blueprintId:Number(blueprint.id),countryCode:row.country_code,sectorCode:item.code,linked:true,canonical:{sectorCode:linked.sector_code,sectorName:linked.sector_name,required:Number(linked.required)===1}}};
  },
+ 'market.legal.review': async (env,packageVersionId,taskKey,actor,requestId,input={})=>{
+  const match=/^legal:([a-z0-9._:-]+)$/.exec(String(taskKey));if(!match)throw fail('Legal decision adapter is only registered for a legal review task.',422,'MARKET_LAUNCH_LEGAL_SCOPE_INVALID');
+  const decision=String(input.decision||'').trim().toUpperCase();const sourceEvidenceRef=clean(input.sourceEvidenceRef,1000);const rationale=clean(input.rationale,3000);
+  if(!['APPROVED','REJECTED','NEEDS_CHANGES','NOT_APPLICABLE'].includes(decision))throw fail('Choose an explicit legal decision: APPROVED, REJECTED, NEEDS_CHANGES or NOT_APPLICABLE.',422,'MARKET_LAUNCH_LEGAL_DECISION_REQUIRED');
+  if(sourceEvidenceRef.length<8||!/^https:\/\/|^https:\/\/|^urn:|^sha256:/i.test(sourceEvidenceRef))throw fail('Legal review requires a traceable HTTPS, URN or SHA-256 source evidence reference.',422,'MARKET_LAUNCH_LEGAL_SOURCE_REQUIRED');
+  if(rationale.length<20)throw fail('Legal review rationale must contain at least 20 characters.',422,'MARKET_LAUNCH_LEGAL_RATIONALE_REQUIRED');
+  const row=await env.DB.prepare(`SELECT v.package_json,v.status,p.country_code FROM platform_market_package_versions v JOIN platform_market_packages p ON p.id=v.package_id WHERE v.id=? LIMIT 1`).bind(Number(packageVersionId)).first();if(!row)throw fail('Market package version not found.',404,'MARKET_PACKAGE_VERSION_NOT_FOUND');
+  if(!['DRAFT','VALIDATED'].includes(String(row.status).toUpperCase()))throw fail('Legal decisions cannot mutate an authorized or published immutable version; create a new draft version.',409,'MARKET_LAUNCH_VERSION_IMMUTABLE');
+  const item=arr(parseJson(row.package_json).legal).find(x=>x.key===match[1]);if(!item)throw fail('Legal requirement is not present in this immutable package version.',409,'MARKET_LAUNCH_LEGAL_ITEM_NOT_IN_PACKAGE');
+  return {adapter:'market-launch.authorized-legal-decision.v1',result:{decision,legalKey:item.key,countryCode:row.country_code,reviewerId:String(actor.id||''),reviewerRole:String(actor.role||''),sourceEvidenceRef,rationale,requiresNewImmutableVersion:true,packageLegalStatus:item.status,decisionAt:new Date().toISOString(),requestId:String(requestId||'')}};
+ },
+ 'certification.testlab.run': async (env,packageVersionId,taskKey,actor,requestId)=>{
+  const row=await env.DB.prepare(`SELECT p.country_code FROM platform_market_package_versions v JOIN platform_market_packages p ON p.id=v.package_id WHERE v.id=? LIMIT 1`).bind(Number(packageVersionId)).first();if(!row)throw fail('Market package version not found.',404,'MARKET_PACKAGE_VERSION_NOT_FOUND');
+  const launch=await env.DB.prepare(`SELECT id FROM country_product_launches WHERE country_code=? ORDER BY id DESC LIMIT 1`).bind(String(row.country_code).toUpperCase()).first();
+  if(!launch)throw fail('No canonical country product launch exists for this market; prepare the product launch before running Test Lab.',409,'MARKET_LAUNCH_TESTLAB_LAUNCH_REQUIRED');
+  const report=await runProductTestLab(env,{launchId:Number(launch.id)});
+  const result={runId:`market-testlab:${packageVersionId}:${launch.id}:${Date.now()}`,authority:'product_test_lab',mode:report.mode,launchId:report.launchId,countryCode:report.countryCode,summary:report.summary,checks:report.checks.map(x=>({key:x.key,status:x.status,passed:x.passed,detail:x.detail})),blocked:report.blocked,requestId:String(requestId||''),executedBy:String(actor.id||actor.role||''),executedAt:new Date().toISOString(),missionEffectsCertified:false};
+  return {adapter:'market-launch.product-test-lab.v1',result:{...result,ready:report.summary?.ready===true}};
+ },
  'canonical.read': async (env,packageVersionId,taskKey)=>{
   const workbench=await getMarketLaunchWorkbench(env,packageVersionId);
   const task=workbench.tasks.find(x=>x.key===taskKey);
@@ -314,7 +334,7 @@ const MARKET_LAUNCH_COMMAND_ADAPTERS=Object.freeze({
 
 /** Execute only commands backed by an explicitly registered canonical adapter.
  * Evidence submitted by the browser is never used as proof of command success. */
-export async function executeMarketLaunchStageCommand(env,actor,packageVersionId,taskKey,stepKey,requestId=''){
+export async function executeMarketLaunchStageCommand(env,actor,packageVersionId,taskKey,stepKey,requestId='',input={}){
  const workbench=await getMarketLaunchWorkbench(env,packageVersionId);
  const task=workbench.tasks.find(x=>x.key===taskKey);
  if(!task)throw fail('Unknown market launch task.',404,'MARKET_LAUNCH_TASK_NOT_FOUND');
@@ -325,18 +345,19 @@ export async function executeMarketLaunchStageCommand(env,actor,packageVersionId
  if(!adapter)throw fail(`No registered owning-authority adapter exists for ${step.permittedCommand}. Submit evidence only; this step remains unverified until its owning adapter is implemented.`,409,'MARKET_LAUNCH_COMMAND_ADAPTER_UNAVAILABLE');
  if(step.status==='COMPLETE'&&step.authorityVerified===true)return contract;
  for(const prerequisite of step.prerequisites||[]){const prior=contract.steps.find(x=>x.key===prerequisite);if(prior&&!(prior.status==='COMPLETE'&&prior.authorityVerified===true))throw fail(`Command blocked: prerequisite ${prerequisite} has no verified canonical outcome.`,409,'MARKET_LAUNCH_STEP_PREREQUISITE_BLOCKED');}
- const outcome=await adapter(env,Number(packageVersionId),taskKey,actor,requestId);
- if(step.permittedCommand==='canonical.validate'&&outcome.result.safeToApply!==true){
+ const outcome=await adapter(env,Number(packageVersionId),taskKey,actor,requestId,obj(input));
+ if((step.permittedCommand==='canonical.validate'&&outcome.result.safeToApply!==true)||(step.permittedCommand==='certification.testlab.run'&&outcome.result.ready!==true)){
+  const blockedCode=step.permittedCommand==='canonical.validate'?'MARKET_LAUNCH_CANONICAL_VALIDATION_BLOCKED':'MARKET_LAUNCH_TESTLAB_BLOCKED';
   const row=await env.DB.prepare('SELECT evidence_json FROM platform_market_launch_task_evidence WHERE package_version_id=? AND task_key=? LIMIT 1').bind(Number(packageVersionId),taskKey).first();
   const evidence=parseJson(row?.evidence_json||'{}');const prior=evidence.stageContract&&evidence.stageContract.contractKey===contract.contractKey?evidence.stageContract:contract;
   evidence.stageContract={...prior,steps:contract.steps.map(x=>x.key===stepKey?{...x,status:'BLOCKED',authorityVerified:false,commandOutcome:outcome.result}:x),updatedAt:new Date().toISOString()};
   await env.DB.prepare(`INSERT INTO platform_market_launch_task_evidence(package_version_id,task_key,status,evidence_json,updated_by_type,updated_by_id,updated_at) VALUES(?,?,?,?,?,?,CURRENT_TIMESTAMP) ON CONFLICT(package_version_id,task_key) DO UPDATE SET status='IN_PROGRESS',evidence_json=excluded.evidence_json,updated_by_type=excluded.updated_by_type,updated_by_id=excluded.updated_by_id,updated_at=CURRENT_TIMESTAMP`).bind(Number(packageVersionId),taskKey,'IN_PROGRESS',JSON.stringify({...evidence,recordedAt:new Date().toISOString()}),actor.role,actor.id||null).run();
   await auditAdminControl(env,{actor,action:'admin.market-factory.launch-command.blocked',resourceType:'market_package_version',resourceId:packageVersionId,requestId,metadata:{taskKey,stepKey,adapter:outcome.adapter,conflicts:outcome.result.conflicts?.length||0}}).catch(error=>{throw authorityUnavailable('market_factory_audit',error);});
-  throw fail(`Canonical validation found ${outcome.result.conflicts?.length||0} conflict(s); step remains blocked.`,409,'MARKET_LAUNCH_CANONICAL_VALIDATION_BLOCKED');
+  throw fail(step.permittedCommand==='canonical.validate'?`Canonical validation found ${outcome.result.conflicts?.length||0} conflict(s); step remains blocked.`:`Canonical Product Test Lab has ${outcome.result.summary?.blocked||'unknown'} blocker(s); step remains blocked.`,409,blockedCode);
  }
  const row=await env.DB.prepare('SELECT evidence_json FROM platform_market_launch_task_evidence WHERE package_version_id=? AND task_key=? LIMIT 1').bind(Number(packageVersionId),taskKey).first();
  const evidence=parseJson(row?.evidence_json||'{}');const prior=evidence.stageContract&&evidence.stageContract.contractKey===contract.contractKey?evidence.stageContract:contract;
- const canonicalEvidence={summary:`Canonical command ${outcome.adapter} completed and returned a server-generated result.`,evidenceRef:`market-launch:${packageVersionId}:${taskKey}:${stepKey}:${outcome.adapter}`,submittedAt:new Date().toISOString(),submittedBy:actor.id||actor.role};
+ const canonicalEvidence={summary:`Canonical command ${outcome.adapter} completed and returned a server-generated result.`,evidenceRef:`market-launch:${packageVersionId}:${taskKey}:${stepKey}:${outcome.adapter}`,submittedAt:new Date().toISOString(),submittedBy:actor.id||actor.role,authorityResult:outcome.result,authority:outcome.adapter};
  evidence.stageContract={...prior,steps:contract.steps.map(x=>x.key===stepKey?{...x,status:'COMPLETE',authorityVerified:true,verifiedAt:new Date().toISOString(),verifiedBy:actor.id||actor.role,evidence:canonicalEvidence,commandOutcome:outcome.result}:x),updatedAt:new Date().toISOString()};
  await env.DB.prepare(`INSERT INTO platform_market_launch_task_evidence(package_version_id,task_key,status,evidence_json,updated_by_type,updated_by_id,updated_at) VALUES(?,?,?,?,?,?,CURRENT_TIMESTAMP) ON CONFLICT(package_version_id,task_key) DO UPDATE SET evidence_json=excluded.evidence_json,updated_by_type=excluded.updated_by_type,updated_by_id=excluded.updated_by_id,updated_at=CURRENT_TIMESTAMP`).bind(Number(packageVersionId),taskKey,task.status==='TODO'?'IN_PROGRESS':task.status,JSON.stringify({...evidence,recordedAt:new Date().toISOString()}),actor.role,actor.id||null).run();
  await auditAdminControl(env,{actor,action:'admin.market-factory.launch-command.executed',resourceType:'market_package_version',resourceId:packageVersionId,requestId,metadata:{taskKey,stepKey,adapter:outcome.adapter,permittedCommand:step.permittedCommand}}).catch(error=>{throw authorityUnavailable('market_factory_audit',error);});

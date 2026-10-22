@@ -6,7 +6,7 @@ const css = await readFile(new URL('public/assets/css/frontend/admin.css', root)
 const pkg = JSON.parse(await readFile(new URL('package.json', root), 'utf8'));
 const manifest = JSON.parse(await readFile(new URL('RELEASE-MANIFEST.json', root), 'utf8'));
 const runtime = await readFile(new URL('public/assets/js/core/release.js', root), 'utf8');
-assert.ok(/^16\.10\.(?:93|94|9[5-9]|[1-9][0-9]{2,})$/.test(pkg.version));
+assert.ok(pkg.version.localeCompare('16.10.93', undefined, {numeric:true}) >= 0, 'release must preserve guided launch next-action capability');
 assert.equal(manifest.version, pkg.version);
 assert.match(runtime, new RegExp(`RELEASE_VERSION=\"${pkg.version.replaceAll('.', '\\.')}\"`));
 assert.match(ui, /mfLaunchNextSummary/);

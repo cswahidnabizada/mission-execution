@@ -87,3 +87,17 @@ Status: hardening candidate. Resolve now executes only the registered canonical-
 - Stage prerequisites now require both `COMPLETE` and `authorityVerified=true`.
 - Still open: general resource types and market-specific product relationships; authorized legal/policy reviewer decision workflow; actual Test Lab execution and persisted test-run proof; end-to-end Germany Logistics mission/effect/recovery certification; full recovery/lifecycle adapter coverage; Node 24 build; full cumulative suite; authenticated browser/deployed-runtime certification.
 - No schema change; migration high-water mark remains 0163. Not deployed or production-certified.
+
+
+## 16.15.0 — Authorized legal decisions and Test Lab execution
+- Added step-up-protected legal decision command with explicit decision, reviewer identity, rationale, and traceable source reference.
+- Decision is stored as a server-owned canonical command outcome; existing immutable package JSON is never edited in place. A new package version must reflect the legal decision before publication gates can pass.
+- Added canonical Product Test Lab invocation and persisted test-run identity/results. Blocked checks do not complete the stage. This is pre-publication contract certification, not real mission-effect certification.
+- Remaining: resource adapters for languages/policies/providers/content, mission-effect and recovery certification, immutable version transition automation, Node 24 build, full cumulative suite, authenticated browser and deployed-runtime validation.
+
+
+## 16.16.0 — Unified Market Launch Studio
+- Default Super Admin landing is the Market Launch Studio; guided market preparation and portfolio live in one workspace.
+- Guided package composition records requirements without pretending that integrations, credentials, canonical resources or live activation have already happened.
+- Tenant-facing reuse must be implemented as tenant-scoped surfaces, not by granting tenants Super Admin access.
+- Remaining: real adapters for all requirement types, semantic server validation, provider-owned connections, full certification and Node 24 release gates.

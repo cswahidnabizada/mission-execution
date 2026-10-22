@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 const ui=fs.readFileSync('public/assets/js/frontend/admin/market-factory.js','utf8');
 const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
-assert.ok(/^16\.10\.(?:93|94|9[5-9]|[1-9][0-9]{2,})$/.test(pkg.version),'package version must retain or advance beyond typed resource candidate');
+assert.ok(/^16\.(?:10\.(?:93|94|9[5-9]|[1-9][0-9]{2,})|1[1-9]\.\d+|[2-9][0-9]\.\d+)$/.test(pkg.version),'package version must retain or advance beyond typed resource candidate');
 assert.match(ui,/renderTypedResourceFields\(typeSelect\.value,selected\)/,'resource definition selection must render typed fields');
 assert.match(ui,/commonResourceFields=/,'common resource types must have typed form definitions');
 assert.match(ui,/data-mf-resource-field/,'typed fields must serialize into the governed payload');

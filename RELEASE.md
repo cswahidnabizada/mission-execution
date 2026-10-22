@@ -1,4 +1,4 @@
-# Mission Execution 16.14.0 — Canonical Sector Resource Execution and Market Linking
+# Mission Execution 16.16.0 — Unified Market Launch Studio and Role-Bounded Control Plane UX
 
 Status: protected candidate — exact Node.js 24 build, full cumulative release gates, authenticated browser/runtime certification and deployed pilot proof pending. DO NOT DEPLOY until required gates pass.
 
@@ -1220,3 +1220,18 @@ Security → Truth → Liveness → Stability → Experience → Scale. No evide
 - No schema change; migration high-water mark remains 0163.
 - Legal decision workflow, policy-authority decisions, certification/Test Lab execution, full recovery adapters, full cumulative suite, Node 24 build, authenticated browser/deployed-runtime tests and Germany Logistics pilot certification remain OPEN.
 - This is a hardening candidate, not a production-certified release. Do not deploy until all mandatory gates pass.
+
+
+## 16.15.0 — Authorized legal decisions and Product Test Lab execution
+
+Status: hardening candidate. This release adds a step-up-protected legal decision command with explicit decision, reviewer identity, rationale, and traceable source evidence; the decision is persisted in the server-owned stage contract result and does not mutate an existing package version. A new immutable package version is still required to reflect legal status changes. It also invokes the canonical Product Test Lab for the latest country product launch and persists the server-generated test run identity and check results. A blocked Test Lab result remains blocked. This pre-publication Test Lab does not certify real mission effects or Germany Logistics end-to-end execution. No production deployment or pilot certification is claimed.
+
+
+## 16.16.0 — Unified Market Launch Studio and Role-Bounded Control Plane UX
+- Introduced a guided single-workspace market preparation form for country, product, sector, language, data jurisdiction/region, billing currency and intended product capabilities.
+- Guided preparation composes a strict market-package shape and submits it through the existing step-up-protected Market Factory intake route. The resulting package is staged; it does not activate a market or create external credentials/connections.
+- Added explicit lifecycle stages, market portfolio in the same workspace, and advanced JSON/ZIP intake behind a disclosure.
+- Recorded AI, Microsoft 365, cloud/SAP, layout, roles, onboarding and workspace selections as staged requirements only. They do not imply live integrations or authorization; canonical owning authorities and separate verification remain required.
+- Added responsive layout and clear safety boundaries: no live edits, no duplicate identities, no implicit tenant access, no external writes and no physical actuation from the preparation form.
+- Preserved the canonical domain authorities, existing release lifecycle, migration high-water mark 0163, and schema snapshot. No migration added.
+- Status: hardening candidate. Node 24 build, full cumulative release suite, authenticated browser tests, deployed runtime tests and Germany Logistics pilot certification remain required. DO NOT DEPLOY until gates pass.
