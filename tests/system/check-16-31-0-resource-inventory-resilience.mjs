@@ -7,6 +7,6 @@ assert.match(service,/Promise\.allSettled\(sources\.map\(\(\[,read\]\)=>read\(\)
 assert.match(service,/inventoryState:unavailableAuthorities\.length\?'PARTIAL':'COMPLETE'/,'inventory reports completeness explicitly');
 assert.match(service,/unavailableAuthorities/,'unavailable authorities are returned to the client');
 assert.match(ui,/Partial canonical inventory/,'UI visibly warns when inventory is partial');
-assert.match(ui,/counts and search results may be incomplete/,'partial results are not represented as complete');
+assert.match(ui,/results and counts may be incomplete/,'partial results are not represented as complete');
 assert.match(ui,/No alternate record source is substituted/,'no fallback authority is introduced');
 console.log('16.31.0 Resource inventory resilience contract: PASS');

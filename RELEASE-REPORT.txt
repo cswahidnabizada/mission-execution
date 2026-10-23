@@ -1,21 +1,19 @@
-ON MISSION RELEASE REPORT — 16.31.0
-Release: Resource & Asset Workspace — Inventory Resilience Candidate
-Baseline: 16.30.0
-Status: HARDENING CANDIDATE — DO NOT DEPLOY UNTIL REQUIRED BUILD, FULL RELEASE GATES, AND LIVE RUNTIME CERTIFICATION PASS
+ON MISSION RELEASE REPORT — 16.32.0
+Release: Resource & Asset Workspace — Persistent Inventory Health
+Baseline: 16.31.0 candidate
+Status: ENGINEERING CANDIDATE — DEPLOY ONLY AFTER CLOUDFLARE BUILD AND REQUIRED RELEASE GATES PASS
 
 DELIVERED
-- Canonical Resource & Asset Workspace remains the primary surface for resource discovery and management.
-- Recent inventory aggregation now isolates source failures instead of failing the entire inventory when any one source is unavailable.
-- API response reports COMPLETE or PARTIAL inventory state and identifies unavailable source authorities without substituting an alternate record source.
-- UI displays a visible warning when inventory results are partial, including a reminder that counts and search results may be incomplete.
-- Added focused 16.31.0 inventory-resilience contract test.
+- Preserve canonical inventory completeness state in the Resource & Asset Workspace.
+- Keep the PARTIAL inventory warning visible through search result rendering and filter changes instead of removing it when the list rerenders.
+- Show the authorities that failed in the last inventory response and provide a retry-inventory action.
+- Preserve source authority boundaries: no fallback records, inferred completeness, or fabricated counts.
+- Added focused 16.32.0 persistent inventory-health contract test.
 
 VERIFICATION
-- 16.31.0 inventory-resilience contract: PASS.
-- 16.28.0 unified Resource & Asset Workspace contract: PASS.
-- 16.26.0 unified asset configure workflow contract: PASS.
-- 16.23.0 canonical asset action-boundary regression: PASS.
-- Exact production database query causing the live inventory failure is not confirmed; live authenticated runtime evidence is still required.
-- Sector save failure remains unresolved pending authenticated request/response evidence and deployed endpoint diagnosis.
-- Full build, full release suite, cross-surface canonical identity certification, and live production certification have not been completed.
-- Do not deploy until Node.js 24.18.0 build and required release gates pass.
+- Focused 16.32.0 persistent inventory-health contract: PASS.
+- 16.31.0 inventory resilience contract: PASS.
+- Full build, full release suite, cross-surface canonical identity certification, live inventory database diagnosis, Sector save repair, permanent deletion certification, and production runtime certification remain open.
+- Build/deploy is performed by the project owner through Cloudflare; successful Cloudflare build must be confirmed there.
+
+- 16.30.0 canonical asset verification contract: PASS.

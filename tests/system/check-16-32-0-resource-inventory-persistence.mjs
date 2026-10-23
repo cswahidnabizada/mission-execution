@@ -1,0 +1,13 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const root=process.cwd();
+const ui=fs.readFileSync(`${root}/public/assets/js/frontend/admin/resource-management.js`,'utf8');
+const service=fs.readFileSync(`${root}/src/worker/security/platform-resource-explorer.service.js`,'utf8');
+assert.match(ui,/let inventoryHealth=\{state:'UNKNOWN',unavailableAuthorities:\[\]\}/,'inventory health has explicit UI state');
+assert.match(ui,/inventoryHealth=\{state:r\.inventoryState==='PARTIAL'\?'PARTIAL'/,'health is sourced from canonical inventory response');
+assert.match(ui,/data-inventory-health/,'inventory health banner is rendered in the result surface');
+assert.match(ui,/RETRY INVENTORY/,'partial inventory exposes a retry action');
+assert.match(ui,/function applyInventoryFilters\(\)[\s\S]*?inventoryHealth\.state==='PARTIAL'/,'warning persists after filtering and search result rerenders');
+assert.match(service,/Promise\.allSettled\(sources\.map\(\(\[,read\]\)=>read\(\)\)\)/,'source failures remain isolated');
+assert.match(service,/inventoryState:unavailableAuthorities\.length\?'PARTIAL':'COMPLETE'/,'server explicitly reports inventory completeness');
+console.log('16.32.0 persistent inventory health contract: PASS');
