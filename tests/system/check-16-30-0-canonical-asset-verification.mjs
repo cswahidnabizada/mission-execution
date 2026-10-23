@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const studio=fs.readFileSync('src/worker/security/platform-data-studio.service.js','utf8');
+const ui=fs.readFileSync('public/assets/js/frontend/admin/data-studio.js','utf8');
+const routes=fs.readFileSync('src/worker/modules/admin-control/admin-build-data.routes.js','utf8');
+const reusable=fs.readFileSync('src/worker/security/platform-reusable-data.service.js','utf8');
+assert.match(studio,/const evidenceStatus=!readAfterWriteVerified/,'commit explicitly classifies unverified canonical writes');
+assert.match(studio,/committed:true,verified:readAfterWriteVerified&&evidenceStatus==='complete'/,'commit result distinguishes committed from verified');
+assert.match(studio,/DATA_STUDIO_STALE_RECORD/,'concurrent stale writes are rejected');
+assert.match(studio,/prepareCriticalAudit/,'canonical mutation requires critical audit evidence');
+assert.match(studio,/withPlatformMutationLease/,'canonical mutation is serialized by mutation lease');
+assert.match(ui,/Change was submitted to the canonical authority, but verification evidence is incomplete/,'UI avoids claiming a write is verified when evidence is pending');
+assert.match(ui,/Do not retry the mutation/,'UI warns against duplicate retries after commit with pending evidence');
+assert.match(routes,/requirePlatformSuperAdminStepUp\(request,env\)/,'governed resource actions require platform step-up');
+assert.match(routes,/\['stop','trash','purge','warn'\]/,'resource action route has an explicit supported action allowlist');
+assert.match(reusable,/export async function deactivateReusableData/,'reusable lifecycle has a canonical deactivation service');
+console.log('16.30.0 canonical asset verification contract: PASS');

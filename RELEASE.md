@@ -1,4 +1,4 @@
-# Mission Execution 16.29.0 — Canonical Asset Identity and Verified Persistence
+# Mission Execution 16.30.0 — Canonical Asset Verification and Evidence Honesty
 
 Status: protected hardening candidate. Production build, complete cumulative release gates, authenticated browser/runtime certification and deployed pilot proof must pass before deployment.
 
@@ -1343,3 +1343,11 @@ This release does not claim completed tenant integration/AI/device settings, ful
 - No schema migration; high-water mark remains 0163.
 
 Status: hardening candidate. Full authenticated browser and deployed API verification is still required.
+
+
+## 16.30.0 — Canonical Asset Verification and Evidence Honesty
+- Commit responses now explicitly distinguish a canonical mutation that committed from one whose read-after-write and audit evidence are fully verified.
+- The editor no longer reports “Saved and verified” when the server indicates pending reconciliation; it warns operators not to retry a mutation that may already have committed.
+- Added focused contract checks for mutation leases, stale-write protection, step-up, supported lifecycle actions, and pending evidence UX.
+- No database migration added.
+- Not production-certified: live Sector mutation failure and cross-surface canonical identity convergence require authenticated runtime proof.

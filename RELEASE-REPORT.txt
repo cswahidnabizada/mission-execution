@@ -1,30 +1,20 @@
-ON MISSION RELEASE REPORT — 16.29.0
-Release: Canonical Asset Identity and Verified Persistence
-Baseline: 16.28.0
+ON MISSION RELEASE REPORT — 16.30.0
+Release: Canonical Asset Verification and Evidence Honesty
+Baseline: 16.29.0
 Status: HARDENING CANDIDATE — DO NOT DEPLOY UNTIL REQUIRED BUILD, FULL RELEASE GATES, AND LIVE RUNTIME CERTIFICATION PASS
 
 DELIVERED
-- Enforced immutable canonical codes for code-keyed reusable asset edits in the shared Data Studio commit path; editing a label/description cannot accidentally create a second record under a changed code.
-- Applied the same immutable identity behavior in the shared editor for code-keyed reusable asset types.
-- Strengthened read-after-write verification: it now checks submitted canonical fields after rereading the record instead of accepting mere record existence as proof.
-- Improved editor mutation error feedback with HTTP status and stable error code where available.
-- Preserved existing canonical authorities, authorization/step-up, optimistic concurrency, Data Entry validation, lifecycle evidence and audit paths.
-- No database migration. Existing schema and migration history preserved.
+- Commit result explicitly separates committed state from verified state.
+- UI displays a reconciliation warning rather than claiming verified success when read-after-write or audit evidence is incomplete.
+- Warning instructs operators not to retry a potentially committed mutation.
+- Added focused contract test for verification status, stale writes, mutation lease, critical audit, step-up, and supported lifecycle actions.
+- No database migration added.
 
-CHECKS
-- 16.28.0 unified workspace contract: PASS.
-- Product Country edit contract, extended for immutable reusable identities and persistence verification: PASS.
-- 16.26.0 configure workflow contract: PASS.
-- JavaScript syntax checks: PASS.
-- Dependency lock contract: PASS.
-- Full release integrity and production cleanliness: pending final execution.
-- Full cumulative release suite: pending.
-- Node.js 24.18.0 production build: blocked in current environment (Node.js 22.16.0).
-- Authenticated live API mutation and cross-asset certification: pending; cannot be proven from source-only tests.
-- No deployment performed.
-
-REMAINING
-1. Reproduce the live Sector save failure with its real request/response and fix the confirmed backend cause.
-2. Certify create/list/reopen/edit/preview/validate/save/reload and lifecycle operations for every registered asset type against each real authority.
-3. Trace and reconcile canonical identities across Resources, Records, Data Studio, Data Control, Product Factory and Market Studio; verify counts and IDs against live data.
-4. Run full release and security gates under Node.js 24.18.0, then authenticated browser/runtime certification before deployment.
+VERIFICATION
+- Focused asset workspace, Product Country, configure workflow, and canonical asset action tests pass.
+- New 16.30.0 verification contract test passes.
+- Dependency lock check passes.
+- Release integrity check must be rerun after release metadata update.
+- Full build blocked in this environment: runtime Node.js 22.16.0; project requires Node.js 24.18.0.
+- Live Sector save endpoint/status/root cause not established because authenticated production request/response evidence is unavailable in this workspace.
+- Cross-surface canonical identity convergence and all-asset lifecycle certification remain unproven.

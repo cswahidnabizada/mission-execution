@@ -178,7 +178,8 @@ export async function commitDataStudioEdit(env,actor,{resourceType,resourceId,pa
         await env.DB.prepare(`UPDATE platform_data_entry_records SET commit_recovery_status='evidence_required',rejection_code=?,rejection_message=?,updated_at=CURRENT_TIMESTAMP WHERE entry_id=? AND status='committed'`).bind('DATA_STUDIO_AUDIT_COMPLETION_REQUIRED','Critical audit completion requires reconciliation.',entry.entry_id).run();
       }
       const finalEntry=await getDataEntry(env,entry.entry_id);
-      return {success:true,version:PLATFORM_DATA_STUDIO_VERSION,entry:finalEntry,result,resourceType,resourceId:canonicalId,revision:(current.record.revision||1)+1,reason,evidenceStatus:!readAfterWriteVerified||evidence.evidenceStatus==='pending_reconciliation'||auditStatus==='pending_reconciliation'?'pending_reconciliation':'complete',readAfterWriteVerified};
+      const evidenceStatus=!readAfterWriteVerified||evidence.evidenceStatus==='pending_reconciliation'||auditStatus==='pending_reconciliation'?'pending_reconciliation':'complete';
+      return {success:true,committed:true,verified:readAfterWriteVerified&&evidenceStatus==='complete',version:PLATFORM_DATA_STUDIO_VERSION,entry:finalEntry,result,resourceType,resourceId:canonicalId,revision:(current.record.revision||1)+1,reason,evidenceStatus,readAfterWriteVerified};
     }catch(error){
       try{await completeCriticalAudit(env,auditEventId,{success:false,errorCode:error?.code||'DATA_STUDIO_COMMIT_FAILED'});}catch{}
       throw error;
