@@ -4,7 +4,7 @@
 import { setAdminShow, adminPanelRenderers as oversightRenderers, refreshAdminData } from './oversight-panels.js?v=16.32.0';
 import { setGovernanceShow, renderDataControl, renderDataEntry, renderTrash } from './data-governance.js?v=16.32.0';
 import {renderOperations,renderActionMatrix,renderReleaseCenter,renderLaunchCenter,renderDependencyImpact,renderAgenticControl} from './operating-system.js?v=16.32.0';
-import {renderResourceManagement} from './resource-management.js?v=16.32.0';
+import {renderResourceManagement} from './resource-management.js?v=16.34.0';
 import {renderUserExperienceLab} from './user-experience-lab.js?v=16.32.0';
 import {renderDemoProduct} from './demo-product.js?v=16.32.0';
 import {renderProductExperience} from './product-experience.js?v=16.32.0';

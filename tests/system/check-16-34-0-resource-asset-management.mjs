@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const ui=fs.readFileSync('public/assets/js/frontend/admin/resource-management.js','utf8');
+const ds=fs.readFileSync('src/worker/security/platform-data-studio.service.js','utf8');
+assert.match(ui,/configureCapabilityState='UNVERIFIED'/);
+assert.match(ui,/CAPABILITY_INSPECTION_FAILED/);
+assert.match(ui,/Edit capability could not be verified/);
+assert.match(ui,/This authority did not grant the edit capability/);
+assert.match(ui,/data-rw-action="purge"/);
+assert.match(ui,/DEPENDENCIES & USAGE/);
+assert.match(ds,/const DATA_STUDIO_EDIT_TYPES=new Set\(\['country_blueprint'.*?'sector'.*?'provider'/s);
+console.log('16.34.0 Resource & Asset capability diagnostics: PASS');

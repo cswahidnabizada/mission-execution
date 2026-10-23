@@ -1,16 +1,22 @@
-ON MISSION RELEASE REPORT — 16.33.0
-Release: Resource & Asset Workspace — Organization Inventory Schema Fix
-Baseline: 16.32.0
-Status: ENGINEERING CANDIDATE — Cloudflare build and remaining release gates must pass before production certification.
+ON MISSION RELEASE REPORT — 16.34.0
+Release: Resource & Asset Management — Explicit Edit Capability Diagnostics
+Baseline: 16.33.0
+Status: ENGINEERING CANDIDATE — Cloudflare build and end-to-end lifecycle gates must pass before production certification.
 
 DELIVERED
-- Fixed the organizations inventory query to match the canonical schema: companies has created_at but no updated_at; updated_at is read from company_management_profiles when present, falling back to companies.created_at.
-- Preserved organization identity and lifecycle status from the companies authority.
-- Added a regression test guarding the query against reintroducing the nonexistent companies.updated_at column.
-- Preserved partial-inventory reporting for other authorities; failures remain visible and are not hidden by fallback data.
+- Resource selection now distinguishes edit capability AVAILABLE, NOT_GRANTED, and UNVERIFIED.
+- If Data Studio capability inspection fails, the workspace surfaces the sanitized error and HTTP status/code rather than silently hiding the edit workflow.
+- If the authority explicitly denies edit capability, the workspace explains that editing is not supported for that record rather than showing a nonfunctional control.
+- Updated cache-busting references for the shared Resource Management, Resource Explorer, and Data Studio runtime modules.
+- Added a focused source-contract regression test.
+
+NOT CLAIMED
+- This release does not fix a domain API's failed save or create unsupported delete/purge behavior.
+- No cross-surface canonical identity certification is claimed.
+- No permanent deletion eligibility is inferred without authoritative dependency checks.
 
 VERIFICATION
-- Focused schema-contract test: pending execution in package environment.
-- Cloudflare build/deploy: pending owner deployment.
-- Production confirmation that organizations warning is resolved: pending runtime check.
-- Sector save failure, full cross-surface identity convergence, dependency-aware permanent deletion, full release suite: remain open.
+- Focused source-contract test: executed separately where available.
+- Cloudflare deployment: pending owner deployment.
+- Sector save failure: remains open until request/response and owning authority path are verified.
+- Full lifecycle (edit/save/reload, stop, trash, restore, purge), dependency-aware permanent deletion, all authority checks, and full release suite: remain open.
