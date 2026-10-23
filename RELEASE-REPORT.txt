@@ -1,6 +1,5 @@
-ON Mission 16.42.0 — Data Studio Canonical Identity Fix
-Status: candidate packaged; source-level checks only.
-Root cause: Data Studio response wrapper stores resourceType/resourceId at the wrapper level; editor incorrectly read them from current.record (the underlying domain row), sending missing identifiers to preview/commit/trash actions.
-Fix: use current.resourceType and current.resourceId for preview, commit, and governed Trash requests. No validation bypass.
-Focused checks: changed JavaScript syntax and identifier-source contract.
-Not certified: live Cloudflare behavior, successful edit persistence, lifecycle operations, cross-surface identity, full release suite.
+ON Mission 16.43.0 — Resource Save Workflow Fix
+
+Change: Validated Data Studio preview now presents a governed COMMIT CHANGE action when validation passes and dependency blockers are absent. Commit is routed through the existing canonical Data Studio commit endpoint, step-up authorization, optimistic concurrency, audit and read-after-write verification.
+
+Verification: focused source contract, JavaScript syntax, archive integrity. Production save/reload remains pending Cloudflare deployment.
