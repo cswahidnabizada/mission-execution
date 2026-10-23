@@ -87,7 +87,16 @@ export async function prepareDataStudioEdit(env,actor,{resourceType,resourceId,p
   if(!clean(reason,1000))throw fail('DATA_STUDIO_CHANGE_REASON_REQUIRED',422,'DATA_STUDIO_CHANGE_REASON_REQUIRED');
   const input={...payload};
   if(resourceType==='country_blueprint')input.countryCode=input.countryCode||inspected.record.record.country_code;
-  if(resourceType==='product_country')input.code=input.code||inspected.record.record.code;
+  // Preview and commit must validate the same canonical identity. The basic editor
+  // intentionally renders identity codes read-only and therefore omits them from
+  // form payloads. Derive the immutable code from the owning record, never from a
+  // renamed display name (which could otherwise validate as a different resource).
+  const immutableCodeTypes=new Set(['product_country','sector','language','currency','region','classification','policy','residency','retention','role','capability','responsibility','storage','provider','page','feature','guidance','eligibility','pricing']);
+  if(immutableCodeTypes.has(resourceType)){
+    const canonicalCode=String(inspected.record.record.code??inspected.record.record.role_code??inspected.record.resourceId??'');
+    if(!canonicalCode)throw fail('DATA_STUDIO_CANONICAL_IDENTITY_MISSING',409,'DATA_STUDIO_CANONICAL_IDENTITY_MISSING');
+    input.code=resourceType==='product_country'?canonicalCode.toUpperCase():canonicalCode;
+  }
   const entry=await prepareDataEntry(env,actor,{entryType:resourceType,payload:input,purpose:'configuration',classification:'CONFIGURATION',sourceType:'super_admin',sourceId:`data-studio:${resourceType}:${resourceId}`,countryScope:input.countryCode||inspected.record.record.country_code||null,idempotencyKey:`studio_preview_${crypto.randomUUID()}`});
   return {success:true,version:PLATFORM_DATA_STUDIO_VERSION,record:inspected.record,entry,reason};
 }

@@ -1,22 +1,18 @@
-ON MISSION RELEASE REPORT — 16.34.0
-Release: Resource & Asset Management — Explicit Edit Capability Diagnostics
-Baseline: 16.33.0
-Status: ENGINEERING CANDIDATE — Cloudflare build and end-to-end lifecycle gates must pass before production certification.
+ON Mission 16.35.0 — Resource & Asset Edit Identity and Lifecycle Capability Fix
 
-DELIVERED
-- Resource selection now distinguishes edit capability AVAILABLE, NOT_GRANTED, and UNVERIFIED.
-- If Data Studio capability inspection fails, the workspace surfaces the sanitized error and HTTP status/code rather than silently hiding the edit workflow.
-- If the authority explicitly denies edit capability, the workspace explains that editing is not supported for that record rather than showing a nonfunctional control.
-- Updated cache-busting references for the shared Resource Management, Resource Explorer, and Data Studio runtime modules.
-- Added a focused source-contract regression test.
+Changes
+- Data Studio preview now preserves immutable canonical codes for code-keyed resources, matching commit behavior. Renaming a sector display name no longer derives a different code during validation.
+- Resource Explorer advertises STOP only for reusable resource types handled by canonical Data Control. Generic TRASH/PURGE remain unavailable until a type-specific dependency-safe deletion contract exists.
+- Updated the project release identity to 16.35.0 and frontend module cache versions.
 
-NOT CLAIMED
-- This release does not fix a domain API's failed save or create unsupported delete/purge behavior.
-- No cross-surface canonical identity certification is claimed.
-- No permanent deletion eligibility is inferred without authoritative dependency checks.
+Verification performed in this environment
+- 16.35.0 canonical edit identity/lifecycle capability contract: PASS.
+- 16.34.0 capability diagnostics contract: PASS.
+- 16.28.0 unified resource workspace contract: PASS.
+- JavaScript syntax checks for modified service and frontend modules: PASS.
+- ZIP integrity: will be verified after packaging.
 
-VERIFICATION
-- Focused source-contract test: executed separately where available.
-- Cloudflare deployment: pending owner deployment.
-- Sector save failure: remains open until request/response and owning authority path are verified.
-- Full lifecycle (edit/save/reload, stop, trash, restore, purge), dependency-aware permanent deletion, all authority checks, and full release suite: remain open.
+Not certified
+- Full Cloudflare build/deployment: not run here; deploy through the user's Cloudflare workflow.
+- Live sector edit and read-after-write: must be confirmed after deployment.
+- Trash/restore/purge/permanent delete for reusable assets: not implemented as a complete safe lifecycle. Purge remains intentionally unavailable without authoritative dependency and retention checks.
