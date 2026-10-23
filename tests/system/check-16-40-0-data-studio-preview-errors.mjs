@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const routes=fs.readFileSync('src/worker/modules/admin-control/admin-build-data.routes.js','utf8');
+const ui=fs.readFileSync('public/assets/js/frontend/admin/data-studio.js','utf8');
+assert.match(routes,/stage:'preview'/);
+assert.match(routes,/DATA_STUDIO_PREVIEW_REJECTED/);
+assert.match(routes,/details:e\?\.details&&typeof e\.details==='object'\?e\.details:null/);
+assert.match(routes,/The proposed change was blocked by canonical data validation or policy/);
+assert.match(ui,/describeFailure/);
+assert.match(ui,/e\?\.code/);
+console.log('16.40.0 Data Studio preview error contract: PASS');

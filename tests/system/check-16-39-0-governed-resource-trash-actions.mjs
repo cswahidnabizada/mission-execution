@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const explorer=fs.readFileSync('src/worker/security/platform-resource-explorer.service.js','utf8');
+const trash=fs.readFileSync('src/worker/security/platform-trash.service.js','utf8');
+assert.match(explorer,/Expose quarantine only for types explicitly supported by platform-trash\.service/);
+assert.match(explorer,/sector:\['MANAGE','EDIT','STOP','TRASH'\]/);
+assert.match(explorer,/policy:\['MANAGE','EDIT','TRASH'\]/);
+assert.doesNotMatch(explorer,/sector:\['MANAGE','EDIT','STOP','TRASH','PURGE'\]/);
+assert.match(trash,/const REUSABLE_TRASH_DEFS=Object\.freeze/);
+assert.match(trash,/TRASH_PURGE_PROVENANCE_PROTECTED/);
+console.log('16.39.0 governed resource trash actions: PASS');

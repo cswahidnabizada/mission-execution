@@ -33,6 +33,22 @@ async function entryHistory(env,resourceType,resourceId){
   return rows.map((r,i)=>({id:Number(r.id),entry_id:r.entry_id,entry_type:r.entry_type,status:r.status,actor_type:r.actor_type,actor_id:r.actor_id,classification:r.classification,purpose:r.purpose,risk_level:r.risk_level,created_at:r.created_at,updated_at:r.updated_at,committed_at:r.committed_at,revision:rows.length-i,payload:json(r.payload_json),validation:json(r.validation_json),dependencies:json(r.dependency_json),impact:json(r.impact_json)}));
 }
 function definitionFor(type){return listReusableDataDefinitions().find(x=>x.entryType===type)||null;}
+// Basic and Advanced are two views over the same record. A request may contain
+// only the fields visible in the active view, so merge it with the owning
+// authority's current schema fields before validating. This prevents hidden
+// advanced fields from being accidentally dropped or treated as missing.
+function mergeCanonicalFields(type,record,payload){
+  const def=definitionFor(type);const out={};
+  for(const field of (def?.fields||[])){
+    const snake=String(field).replace(/[A-Z]/g,m=>`_${m.toLowerCase()}`);
+    let value=record?.[field];if(value===undefined)value=record?.[snake];
+    if(value===undefined&&field==='payload')value=record?.payload_json;
+    if(value===undefined&&field==='configuration')value=record?.configuration_json;
+    if(value===undefined&&field==='rule')value=record?.rule_json;
+    if(value!==undefined){if(typeof value==='string'&&['payload','configuration','rule','states','transitions','prerequisites','evidenceRequirements','recoveryPaths','translations'].includes(field)){try{value=JSON.parse(value)}catch{}}out[field]=value;}
+  }
+  return {...out,...(payload&&typeof payload==='object'?payload:{})};
+}
 function capabilitiesFor(type){const editable=DATA_STUDIO_EDIT_TYPES.has(type);const versioned=['configuration','sector_lifecycle','translation_bundle'].includes(type);const supportedControl=['tenant','user','country','sector','ui','content','country_blueprint','product_definition','country_product_launch','expansion_case','data_entry'].includes(type);return {inspect:true,edit:editable,preview:editable,json:true,history:true,dependencies:true,governance:true,mutationMode:versioned?'NEW_IMMUTABLE_VERSION':editable?'CANONICAL_OWNER_UPDATE':'INSPECT_ONLY',actions:[...(editable?['EDIT','VALIDATE','SAVE']:[]),'PREVIEW','DEPENDENCIES','HISTORY',...(type==='page'||type==='component'?['LAYOUT_STUDIO']:[]),...(type==='product_country'||type==='country_blueprint'||type==='sector'||type==='sector_lifecycle'||type==='translation_bundle'?['MARKET_STUDIO']:[]),...(supportedControl?['OPEN_DATA_CONTROL']:[])],quarantine:false,purge:false,uiPreview:type==='page'||type==='component'};}
 
 async function currentReusable(env,type,id){
@@ -85,7 +101,7 @@ export async function prepareDataStudioEdit(env,actor,{resourceType,resourceId,p
   const inspected=await inspectDataStudioRecord(env,{resourceType,resourceId});
   if(!DATA_STUDIO_EDIT_TYPES.has(resourceType))throw fail('DATA_STUDIO_EDIT_OWNER_REQUIRED',409,'DATA_STUDIO_EDIT_OWNER_REQUIRED');
   if(!clean(reason,1000))throw fail('DATA_STUDIO_CHANGE_REASON_REQUIRED',422,'DATA_STUDIO_CHANGE_REASON_REQUIRED');
-  const input={...payload};
+  const input=mergeCanonicalFields(resourceType,inspected.record.record,payload);
   if(resourceType==='country_blueprint')input.countryCode=input.countryCode||inspected.record.record.country_code;
   // Preview and commit must validate the same canonical identity. The basic editor
   // intentionally renders identity codes read-only and therefore omits them from
@@ -129,7 +145,7 @@ export async function commitDataStudioEdit(env,actor,{resourceType,resourceId,pa
     const canonicalUpdatedAt=String(current.record.record.updated_at||'');
     const expected=expectedUpdatedAt==null?canonicalUpdatedAt:String(expectedUpdatedAt);
     if(expected&&canonicalUpdatedAt!==expected)throw fail('DATA_STUDIO_STALE_RECORD',409,'DATA_STUDIO_STALE_RECORD');
-    const input={...payload};
+    const input=mergeCanonicalFields(resourceType,current.record.record,payload);
     if(resourceType==='country_blueprint')input.countryCode=input.countryCode||current.record.record.country_code;
     // Code-keyed reusable assets must keep their canonical identity during edits.
     // A changed code would otherwise upsert a second row and leave the original behind.

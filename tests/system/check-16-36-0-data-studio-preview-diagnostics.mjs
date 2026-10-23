@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const route=fs.readFileSync('src/worker/modules/admin-control/admin-route-context.js','utf8');
+const ui=fs.readFileSync('public/assets/js/frontend/admin/data-studio.js','utf8');
+assert.match(route,/const code=String\(e\?\.code\|\|e\?\.name\|\|'PLATFORM_ADMIN_REQUEST_FAILED'\)/);
+assert.match(route,/\.\.\.\(details\?\{details\}:\{\}\)/);
+assert.match(ui,/e\?\.payload\?\.details/);
+assert.match(ui,/detail\?\.validation\?\.errors/);
+assert.match(ui,/detail\?\.dependencies\?\.blockers/);
+console.log('16.36.0 Data Studio preview diagnostics: PASS');
