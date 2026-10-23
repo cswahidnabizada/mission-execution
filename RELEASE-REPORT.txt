@@ -1,19 +1,16 @@
-ON MISSION RELEASE REPORT — 16.32.0
-Release: Resource & Asset Workspace — Persistent Inventory Health
-Baseline: 16.31.0 candidate
-Status: ENGINEERING CANDIDATE — DEPLOY ONLY AFTER CLOUDFLARE BUILD AND REQUIRED RELEASE GATES PASS
+ON MISSION RELEASE REPORT — 16.33.0
+Release: Resource & Asset Workspace — Organization Inventory Schema Fix
+Baseline: 16.32.0
+Status: ENGINEERING CANDIDATE — Cloudflare build and remaining release gates must pass before production certification.
 
 DELIVERED
-- Preserve canonical inventory completeness state in the Resource & Asset Workspace.
-- Keep the PARTIAL inventory warning visible through search result rendering and filter changes instead of removing it when the list rerenders.
-- Show the authorities that failed in the last inventory response and provide a retry-inventory action.
-- Preserve source authority boundaries: no fallback records, inferred completeness, or fabricated counts.
-- Added focused 16.32.0 persistent inventory-health contract test.
+- Fixed the organizations inventory query to match the canonical schema: companies has created_at but no updated_at; updated_at is read from company_management_profiles when present, falling back to companies.created_at.
+- Preserved organization identity and lifecycle status from the companies authority.
+- Added a regression test guarding the query against reintroducing the nonexistent companies.updated_at column.
+- Preserved partial-inventory reporting for other authorities; failures remain visible and are not hidden by fallback data.
 
 VERIFICATION
-- Focused 16.32.0 persistent inventory-health contract: PASS.
-- 16.31.0 inventory resilience contract: PASS.
-- Full build, full release suite, cross-surface canonical identity certification, live inventory database diagnosis, Sector save repair, permanent deletion certification, and production runtime certification remain open.
-- Build/deploy is performed by the project owner through Cloudflare; successful Cloudflare build must be confirmed there.
-
-- 16.30.0 canonical asset verification contract: PASS.
+- Focused schema-contract test: pending execution in package environment.
+- Cloudflare build/deploy: pending owner deployment.
+- Production confirmation that organizations warning is resolved: pending runtime check.
+- Sector save failure, full cross-surface identity convergence, dependency-aware permanent deletion, full release suite: remain open.

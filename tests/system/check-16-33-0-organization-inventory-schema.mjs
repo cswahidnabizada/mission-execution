@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const root=process.cwd();
+const service=fs.readFileSync(`${root}/src/worker/security/platform-resource-explorer.service.js`,'utf8');
+const schema=fs.readFileSync(`${root}/database/schema.current.sql`,'utf8');
+const companies=schema.match(/CREATE TABLE companies \(([\s\S]*?)\);/i)?.[1] || '';
+assert.match(companies,/created_at TEXT NOT NULL/i,'companies has canonical created_at');
+assert.doesNotMatch(companies,/\bupdated_at\b/i,'companies does not define updated_at');
+assert.match(service,/SELECT c\.id,c\.name,c\.deletion_status AS status,COALESCE\(cmp\.updated_at,c\.created_at\) AS updated_at,c\.created_at FROM companies c LEFT JOIN company_management_profiles cmp ON cmp\.company_id=c\.id ORDER BY COALESCE\(cmp\.updated_at,c\.created_at\) DESC,c\.id DESC LIMIT \?/,'organization inventory query uses profile updated_at and company created_at');
+assert.match(service,/Promise\.allSettled\(sources\.map\(\(\[,read\]\)=>read\(\)\)\)/,'inventory continues to report independent source failures');
+console.log('16.33.0 organization inventory schema contract: PASS');

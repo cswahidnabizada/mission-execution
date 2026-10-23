@@ -51,7 +51,8 @@
     "deploy:production": "npm run build && npm run check:release && npm run check:production-certification && npm run migrate:production && wrangler deploy",
     "check:product-publisher-resilience": "node tests/system/check-10-46-2-publisher-workspace-resilience.mjs",
     "migrate:production": "node scripts/apply-production-migrations.mjs",
-    "inventory:layout": "node scripts/generate-layout-inventory.mjs"
+    "inventory:layout": "node scripts/generate-layout-inventory.mjs",
+    "check:resource-inventory-16-33": "node tests/system/check-16-33-0-organization-inventory-schema.mjs && node tests/system/check-16-31-0-resource-inventory-resilience.mjs"
   },
   "devDependencies": {
     "wrangler": "4.123.0",

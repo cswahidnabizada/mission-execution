@@ -200,7 +200,7 @@ export async function listRecentResourceExplorer(env,{limit=24}={}){
   const out=[];
   const push=(type,row,name,status,id,updatedAt,subtitle)=>{if(id==null)return;out.push({type,id:String(id),name:clean(name||`${type} ${id}`,180),status:clean(status||'UNKNOWN',80),updatedAt:updatedAt||null,subtitle:clean(subtitle||type,180)});};
   const sources=[
-    ['organizations',()=>all(env,`SELECT id,name,deletion_status AS status,updated_at,created_at FROM companies ORDER BY COALESCE(updated_at,created_at) DESC,id DESC LIMIT ?`,max)],
+    ['organizations',()=>all(env,`SELECT c.id,c.name,c.deletion_status AS status,COALESCE(cmp.updated_at,c.created_at) AS updated_at,c.created_at FROM companies c LEFT JOIN company_management_profiles cmp ON cmp.company_id=c.id ORDER BY COALESCE(cmp.updated_at,c.created_at) DESC,c.id DESC LIMIT ?`,max)],
     ['missions',()=>all(env,`SELECT id,reference,status,updated_at,created_at,country_code,sector_code FROM missions ORDER BY COALESCE(updated_at,created_at) DESC,id DESC LIMIT ?`,max)],
     ['products',()=>all(env,`SELECT id,product_key,name,status,updated_at,created_at,country_code,sector_code FROM platform_product_definitions ORDER BY COALESCE(updated_at,created_at) DESC,id DESC LIMIT ?`,max)],
     ['market_launches',()=>all(env,`SELECT id,country_code,version,status,updated_at,created_at FROM country_product_launches ORDER BY COALESCE(updated_at,created_at) DESC,id DESC LIMIT ?`,max)],
