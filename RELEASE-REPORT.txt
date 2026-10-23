@@ -1,8 +1,6 @@
-ON Mission 16.41.0 — Data Studio Preview Contract Diagnostics
-
-Changes:
-- Preview validation responses include bounded resource type and submitted field names, never field values, to diagnose HTTP 400 validation failures safely.
-- Preserves structured validation/policy details and preview stage marker.
-- Version-pinned admin runtime references advanced to 16.41.0.
-
-Verification: focused source-contract tests and syntax checks only. Cloudflare deployment, live save/reload, lifecycle, deletion safety, and cross-surface certification remain pending.
+ON Mission 16.42.0 — Data Studio Canonical Identity Fix
+Status: candidate packaged; source-level checks only.
+Root cause: Data Studio response wrapper stores resourceType/resourceId at the wrapper level; editor incorrectly read them from current.record (the underlying domain row), sending missing identifiers to preview/commit/trash actions.
+Fix: use current.resourceType and current.resourceId for preview, commit, and governed Trash requests. No validation bypass.
+Focused checks: changed JavaScript syntax and identifier-source contract.
+Not certified: live Cloudflare behavior, successful edit persistence, lifecycle operations, cross-surface identity, full release suite.

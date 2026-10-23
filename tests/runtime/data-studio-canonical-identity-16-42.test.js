@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const source = fs.readFileSync(new URL('../../public/assets/js/frontend/admin/data-studio.js', import.meta.url), 'utf8');
+assert.ok(source.includes('resourceType:current.resourceType'), 'preview must use wrapper resourceType');
+assert.ok(source.includes('resourceId:current.resourceId'), 'preview must use wrapper resourceId');
+assert.ok(!source.includes('resourceType:current.record.resourceType'), 'must not read resourceType from domain row');
+assert.ok(!source.includes('resourceId:current.record.resourceId'), 'must not read resourceId from domain row');
+assert.ok(source.includes("'/api/platform/admin/data-studio/preview'"), 'preview endpoint remains governed');
+assert.ok(source.includes("'/api/platform/admin/data-studio/commit'"), 'commit endpoint remains governed');
+console.log('PASS Data Studio canonical identity contract');
