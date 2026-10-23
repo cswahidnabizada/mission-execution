@@ -1,20 +1,21 @@
-ON MISSION RELEASE REPORT — 16.30.0
-Release: Canonical Asset Verification and Evidence Honesty
-Baseline: 16.29.0
+ON MISSION RELEASE REPORT — 16.31.0
+Release: Resource & Asset Workspace — Inventory Resilience Candidate
+Baseline: 16.30.0
 Status: HARDENING CANDIDATE — DO NOT DEPLOY UNTIL REQUIRED BUILD, FULL RELEASE GATES, AND LIVE RUNTIME CERTIFICATION PASS
 
 DELIVERED
-- Commit result explicitly separates committed state from verified state.
-- UI displays a reconciliation warning rather than claiming verified success when read-after-write or audit evidence is incomplete.
-- Warning instructs operators not to retry a potentially committed mutation.
-- Added focused contract test for verification status, stale writes, mutation lease, critical audit, step-up, and supported lifecycle actions.
-- No database migration added.
+- Canonical Resource & Asset Workspace remains the primary surface for resource discovery and management.
+- Recent inventory aggregation now isolates source failures instead of failing the entire inventory when any one source is unavailable.
+- API response reports COMPLETE or PARTIAL inventory state and identifies unavailable source authorities without substituting an alternate record source.
+- UI displays a visible warning when inventory results are partial, including a reminder that counts and search results may be incomplete.
+- Added focused 16.31.0 inventory-resilience contract test.
 
 VERIFICATION
-- Focused asset workspace, Product Country, configure workflow, and canonical asset action tests pass.
-- New 16.30.0 verification contract test passes.
-- Dependency lock check passes.
-- Release integrity check must be rerun after release metadata update.
-- Full build blocked in this environment: runtime Node.js 22.16.0; project requires Node.js 24.18.0.
-- Live Sector save endpoint/status/root cause not established because authenticated production request/response evidence is unavailable in this workspace.
-- Cross-surface canonical identity convergence and all-asset lifecycle certification remain unproven.
+- 16.31.0 inventory-resilience contract: PASS.
+- 16.28.0 unified Resource & Asset Workspace contract: PASS.
+- 16.26.0 unified asset configure workflow contract: PASS.
+- 16.23.0 canonical asset action-boundary regression: PASS.
+- Exact production database query causing the live inventory failure is not confirmed; live authenticated runtime evidence is still required.
+- Sector save failure remains unresolved pending authenticated request/response evidence and deployed endpoint diagnosis.
+- Full build, full release suite, cross-surface canonical identity certification, and live production certification have not been completed.
+- Do not deploy until Node.js 24.18.0 build and required release gates pass.

@@ -199,18 +199,24 @@ export async function listRecentResourceExplorer(env,{limit=24}={}){
   const max=Math.min(60,Math.max(1,n(limit)||24));
   const out=[];
   const push=(type,row,name,status,id,updatedAt,subtitle)=>{if(id==null)return;out.push({type,id:String(id),name:clean(name||`${type} ${id}`,180),status:clean(status||'UNKNOWN',80),updatedAt:updatedAt||null,subtitle:clean(subtitle||type,180)});};
-  const [companies,missions,products,launches,operations,subscriptions,billing,reusable,plans,evaluations]=await Promise.all([
-    all(env,`SELECT id,name,deletion_status AS status,updated_at,created_at FROM companies ORDER BY COALESCE(updated_at,created_at) DESC,id DESC LIMIT ?`,max),
-    all(env,`SELECT id,reference,status,updated_at,created_at,country_code,sector_code FROM missions ORDER BY COALESCE(updated_at,created_at) DESC,id DESC LIMIT ?`,max),
-    all(env,`SELECT id,product_key,name,status,updated_at,created_at,country_code,sector_code FROM platform_product_definitions ORDER BY COALESCE(updated_at,created_at) DESC,id DESC LIMIT ?`,max),
-    all(env,`SELECT id,country_code,version,status,updated_at,created_at FROM country_product_launches ORDER BY COALESCE(updated_at,created_at) DESC,id DESC LIMIT ?`,max),
-    all(env,`SELECT id,operation_key,status,updated_at,created_at FROM platform_admin_operations ORDER BY COALESCE(updated_at,created_at) DESC,id DESC LIMIT ?`,max),
-    all(env,`SELECT id,status,updated_at,created_at FROM subscriptions ORDER BY COALESCE(updated_at,created_at) DESC,id DESC LIMIT ?`,max),
-    all(env,`SELECT id,status,updated_at,created_at FROM billing_identities ORDER BY COALESCE(updated_at,created_at) DESC,id DESC LIMIT ?`,max),
-    listReusableData(env,{limit:max}),
-    all(env,`SELECT id,plan_key,status,updated_at,created_at,mission_id FROM mission_plans ORDER BY COALESCE(updated_at,created_at) DESC,id DESC LIMIT ?`,max),
-    all(env,`SELECT id,status,created_at,mission_id,plan_id FROM mission_plan_evaluations ORDER BY created_at DESC,id DESC LIMIT ?`,max)
-  ]);
+  const sources=[
+    ['organizations',()=>all(env,`SELECT id,name,deletion_status AS status,updated_at,created_at FROM companies ORDER BY COALESCE(updated_at,created_at) DESC,id DESC LIMIT ?`,max)],
+    ['missions',()=>all(env,`SELECT id,reference,status,updated_at,created_at,country_code,sector_code FROM missions ORDER BY COALESCE(updated_at,created_at) DESC,id DESC LIMIT ?`,max)],
+    ['products',()=>all(env,`SELECT id,product_key,name,status,updated_at,created_at,country_code,sector_code FROM platform_product_definitions ORDER BY COALESCE(updated_at,created_at) DESC,id DESC LIMIT ?`,max)],
+    ['market_launches',()=>all(env,`SELECT id,country_code,version,status,updated_at,created_at FROM country_product_launches ORDER BY COALESCE(updated_at,created_at) DESC,id DESC LIMIT ?`,max)],
+    ['admin_operations',()=>all(env,`SELECT id,operation_key,status,updated_at,created_at FROM platform_admin_operations ORDER BY COALESCE(updated_at,created_at) DESC,id DESC LIMIT ?`,max)],
+    ['subscriptions',()=>all(env,`SELECT id,status,updated_at,created_at FROM subscriptions ORDER BY COALESCE(updated_at,created_at) DESC,id DESC LIMIT ?`,max)],
+    ['billing',()=>all(env,`SELECT id,status,updated_at,created_at FROM billing_identities ORDER BY COALESCE(updated_at,created_at) DESC,id DESC LIMIT ?`,max)],
+    ['reusable_data',()=>listReusableData(env,{limit:max})],
+    ['mission_plans',()=>all(env,`SELECT id,plan_key,status,updated_at,created_at,mission_id FROM mission_plans ORDER BY COALESCE(updated_at,created_at) DESC,id DESC LIMIT ?`,max)],
+    ['plan_evaluations',()=>all(env,`SELECT id,status,created_at,mission_id,plan_id FROM mission_plan_evaluations ORDER BY created_at DESC,id DESC LIMIT ?`,max)]
+  ];
+  // A failed source must not erase all healthy inventory, but must be explicitly reported.
+  // No fallback authority is queried and partial results are never represented as complete.
+  const settled=await Promise.allSettled(sources.map(([,read])=>read()));
+  const unavailableAuthorities=[];
+  const values=settled.map((result,index)=>{if(result.status==='fulfilled')return result.value;unavailableAuthorities.push({authority:sources[index][0],code:clean(result.reason?.code||result.reason?.message||'AUTHORITY_UNAVAILABLE',120)});return index===7?{data:{}}:[];});
+  const [companies,missions,products,launches,operations,subscriptions,billing,reusable,plans,evaluations]=values;
   for(const r of companies)push('tenant',r,r.name,r.status,r.id,r.updated_at||r.created_at,'Organization');
   for(const r of missions)push('mission',r,r.reference||`Mission #${r.id}`,r.status,r.id,r.updated_at||r.created_at,`Mission · ${r.country_code||'—'} · ${r.sector_code||'—'}`);
   for(const r of products)push('product',r,r.name||r.product_key,r.status,r.id,r.updated_at||r.created_at,`Product · ${r.country_code||'—'} · ${r.sector_code||'—'}`);
@@ -222,7 +228,7 @@ export async function listRecentResourceExplorer(env,{limit=24}={}){
   for(const r of (plans||[]))push('mission_plan',r,r.plan_key||`Mission Plan #${r.id}`,r.status,r.id,r.updated_at||r.created_at,`Mission Plan · mission ${r.mission_id}`);
   for(const r of (evaluations||[]))push('mission_plan_evaluation',r,`Evaluation #${r.id}`,r.status,r.id,r.created_at,`Plan Evaluation · plan ${r.plan_id}`);
   out.sort((a,b)=>String(b.updatedAt||'').localeCompare(String(a.updatedAt||'')));
-  return {version:PLATFORM_RESOURCE_EXPLORER_VERSION,resources:out.slice(0,max)};
+  return {version:PLATFORM_RESOURCE_EXPLORER_VERSION,resources:out.slice(0,max),inventoryState:unavailableAuthorities.length?'PARTIAL':'COMPLETE',unavailableAuthorities};
 }
 function labelForRecent(type){return clean(String(type||'resource').replaceAll('_',' '),120);}
 
