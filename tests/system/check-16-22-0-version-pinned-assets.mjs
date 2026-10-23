@@ -5,7 +5,7 @@ const market=read('public/assets/js/frontend/admin/market-factory.js');
 const service=read('src/worker/security/market-factory.service.js');
 const renderer=read('public/assets/js/frontend/admin/layout-studio-renderer.js');
 const pkg=JSON.parse(read('package.json'));
-assert.equal(pkg.version,'16.27.0');
+assert.equal(pkg.version,'16.29.0');
 assert.match(market,/Market asset bindings/,'Market Launch Studio must expose pinned Resource Studio assets');
 assert.match(market,/resource-search\?q=/,'asset selection must use canonical resource search');
 assert.match(market,/PIN REVISION/,'market workflow must pin a specific asset revision');

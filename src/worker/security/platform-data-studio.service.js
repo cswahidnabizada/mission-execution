@@ -122,7 +122,14 @@ export async function commitDataStudioEdit(env,actor,{resourceType,resourceId,pa
     if(expected&&canonicalUpdatedAt!==expected)throw fail('DATA_STUDIO_STALE_RECORD',409,'DATA_STUDIO_STALE_RECORD');
     const input={...payload};
     if(resourceType==='country_blueprint')input.countryCode=input.countryCode||current.record.record.country_code;
-    if(resourceType==='product_country')input.code=input.code||current.record.record.code;
+    // Code-keyed reusable assets must keep their canonical identity during edits.
+    // A changed code would otherwise upsert a second row and leave the original behind.
+    const immutableCodeTypes=new Set(['product_country','sector','language','currency','region','classification','policy','residency','retention','role','capability','responsibility','storage','provider','page','feature','guidance','eligibility','pricing']);
+    if(immutableCodeTypes.has(resourceType)){
+      const canonicalCode=String(current.record.record.code??current.record.record.role_code??current.record.resourceId??'');
+      if(!canonicalCode)throw fail('DATA_STUDIO_CANONICAL_IDENTITY_MISSING',409,'DATA_STUDIO_CANONICAL_IDENTITY_MISSING');
+      input.code=resourceType==='product_country'?canonicalCode.toUpperCase():canonicalCode;
+    }
     const entry=await prepareDataEntry(env,actor,{entryType:resourceType,payload:input,purpose:'configuration',classification:'CONFIGURATION',sourceType:'super_admin',sourceId:`data-studio:${resourceType}:${resourceId}`,countryScope:input.countryCode||current.record.record.country_code||null,idempotencyKey:`studio_edit_${crypto.randomUUID()}`});
     const auditEventId=await prepareCriticalAudit(env,{session:actor,action:'platform.data_studio.edit',resourceType,resourceId:String(resourceId),requestId,metadata:{entryId:entry.entry_id,expectedUpdatedAt:expected||null}});
     let result;
@@ -135,7 +142,26 @@ export async function commitDataStudioEdit(env,actor,{resourceType,resourceId,pa
       let readAfterWriteVerified=false;
       try {
         const reread=await inspectDataStudioRecord(env,{resourceType,resourceId:canonicalId});
-        readAfterWriteVerified=Boolean(reread?.record&&String(reread.record.resourceId)===canonicalId);
+        const canonicalRecord=reread?.record?.record||{};
+        const sameIdentity=Boolean(reread?.record&&String(reread.record.resourceId)===canonicalId);
+        // Verify persisted values, not merely that a record with this ID exists.
+        const fieldMap={requiresReview:'requires_review',defaultSubscriptionClass:'default_subscription_class',description:'description',name:'name',code:'code',symbol:'symbol',countryCode:'country_code',domain:'domain',scopeType:'scope_type',providerCode:'provider_code',regionCode:'region_code',purpose:'purpose',residencyMode:'residency_mode',providerType:'provider_type',pageType:'page_type',languageCode:'language_code',body:'body',rule:'rule_json',currency:'currency',priceMinor:'price_minor',billingInterval:'billing_interval'};
+        const checkedFields=Object.keys(input).filter(k=>fieldMap[k]||Object.prototype.hasOwnProperty.call(canonicalRecord,k));
+        const valueMatches=(a,b)=>{
+          if(a===undefined||b===undefined||a===null||b===null)return a==null&&b==null;
+          if(typeof a==='boolean')return Number(b)===Number(a)||String(b)===String(a);
+          if(typeof a==='object')return JSON.stringify(a)===JSON.stringify(typeof b==='string'?json(b):b);
+          if(typeof a==='number')return Number(a)===Number(b);
+          return String(a).trim()===String(b).trim();
+        };
+        const fieldsMatch=checkedFields.every(k=>{
+          const col=(k==='code'&&resourceType==='role'?'role_code':fieldMap[k]||k);let expected=input[k],actual=canonicalRecord[col];
+          if(k==='requiresReview'){expected=expected?1:0;actual=actual===undefined?canonicalRecord.requiresReview:actual;}
+          if(k==='rule'&&typeof actual==='string')actual=json(actual);
+          if(k==='code'&&resourceType==='product_country'){expected=String(expected).toUpperCase();actual=String(actual||'').toUpperCase();}
+          return valueMatches(expected,actual);
+        });
+        readAfterWriteVerified=sameIdentity&&fieldsMatch;
       } catch { readAfterWriteVerified=false; }
       const evidence=await markEditEntry(env,entry,resourceType,canonicalId,actor,requestId,result?.country||result?.blueprint||result);
       if(!readAfterWriteVerified){

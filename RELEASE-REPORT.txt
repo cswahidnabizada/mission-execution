@@ -1,32 +1,30 @@
-ON MISSION RELEASE REPORT — 16.10.91
-Release: Guided Launch Next-Action Navigation
-Baseline: 16.10.90
-Status: PROTECTED SOURCE CANDIDATE — DO NOT DEPLOY UNTIL NODE.JS 24 BUILD AND RUNTIME CERTIFICATION PASS
+ON MISSION RELEASE REPORT — 16.29.0
+Release: Canonical Asset Identity and Verified Persistence
+Baseline: 16.28.0
+Status: HARDENING CANDIDATE — DO NOT DEPLOY UNTIL REQUIRED BUILD, FULL RELEASE GATES, AND LIVE RUNTIME CERTIFICATION PASS
 
 DELIVERED
-- Added previous/next stage controls to the canonical Market Factory guided launch workbench.
-- Added an accessible next-required-task status derived from canonical workbench tasks returned by the owning authority.
-- The next-task action searches all stages, switches to the relevant stage, opens its existing evidence editor and scrolls the task into view.
-- No incomplete task is marked complete, no readiness is inferred, and no alternate workflow authority is introduced.
-- Existing step-up authorization, canonical evidence writes, market publication gates and immutable release lifecycle preserved.
-- Updated release identity, package lock, manifest, runtime identity, cache-busting references, roadmap and historical version compatibility tests.
-- No database migration; 163 migrations preserved, high-water mark 0163.
+- Enforced immutable canonical codes for code-keyed reusable asset edits in the shared Data Studio commit path; editing a label/description cannot accidentally create a second record under a changed code.
+- Applied the same immutable identity behavior in the shared editor for code-keyed reusable asset types.
+- Strengthened read-after-write verification: it now checks submitted canonical fields after rereading the record instead of accepting mere record existence as proof.
+- Improved editor mutation error feedback with HTTP status and stable error code where available.
+- Preserved existing canonical authorities, authorization/step-up, optimistic concurrency, Data Entry validation, lifecycle evidence and audit paths.
+- No database migration. Existing schema and migration history preserved.
 
 CHECKS
-- New 16.10.91 regression: PASS.
-- Full cumulative npm run check:release: PASS.
-- npm run check:health: PASS.
-- Migration contract: PASS (163 migrations).
-- Schema gate: PASS (253 tables, 463 indexes).
+- 16.28.0 unified workspace contract: PASS.
+- Product Country edit contract, extended for immutable reusable identities and persistence verification: PASS.
+- 16.26.0 configure workflow contract: PASS.
 - JavaScript syntax checks: PASS.
-- Exact production build: NOT CERTIFIED; local Node.js is 22.16.0 but repository requires Node.js 24.x.
-- Browser/deployed runtime certification: PENDING.
-- Germany Logistics live operational proof and pilot approval: PENDING.
+- Dependency lock contract: PASS.
+- Full release integrity and production cleanliness: pending final execution.
+- Full cumulative release suite: pending.
+- Node.js 24.18.0 production build: blocked in current environment (Node.js 22.16.0).
+- Authenticated live API mutation and cross-asset certification: pending; cannot be proven from source-only tests.
+- No deployment performed.
 
-NEXT
-1. Build exact candidate under Node.js 24.
-2. Browser-test stage navigation, next task, evidence form, step-up denial, refresh and error paths.
-3. Complete Resource Explorer server-backed lifecycle and impact analysis.
-4. Complete market readiness, authorization, publication, verification, activation and live proof.
-5. Certify integrations, database migration/cutover/rollback and tenant/developer boundaries.
-6. Complete Germany Logistics end-to-end mission and recovery evidence; obtain explicit pilot approval.
+REMAINING
+1. Reproduce the live Sector save failure with its real request/response and fix the confirmed backend cause.
+2. Certify create/list/reopen/edit/preview/validate/save/reload and lifecycle operations for every registered asset type against each real authority.
+3. Trace and reconcile canonical identities across Resources, Records, Data Studio, Data Control, Product Factory and Market Studio; verify counts and IDs against live data.
+4. Run full release and security gates under Node.js 24.18.0, then authenticated browser/runtime certification before deployment.

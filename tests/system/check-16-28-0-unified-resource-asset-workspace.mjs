@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const root=process.cwd();
+const ui=fs.readFileSync(`${root}/public/assets/js/frontend/admin/resource-management.js`,'utf8');
+const studio=fs.readFileSync(`${root}/public/assets/js/frontend/admin/data-studio.js`,'utf8');
+const routes=fs.readFileSync(`${root}/src/worker/modules/admin-control/admin-build-data.routes.js`,'utf8');
+assert.match(ui,/<h1 class="title">Resources &amp; Assets<\/h1>/,'inventory is named Resources & Assets');
+assert.match(ui,/id="resourceCreateAsset"/,'inventory exposes one primary Create Asset action');
+assert.match(ui,/\$\('#resourceCreateAsset'\)\.onclick=\(\)=>showResourceView\('create'\)/,'Create Asset opens the governed create flow');
+assert.match(ui,/api\('\/api\/platform\/admin\/resource-management\/recent\?limit=100'\)/,'inventory reads from the canonical resource inventory');
+assert.doesNotMatch(ui,/api\('\/api\/platform\/admin\/data-entry\/reusable\?limit=250'\)/,'inventory does not silently substitute Data Entry as a second inventory authority');
+assert.match(ui,/No alternate record source is substituted/,'inventory failure explains that no fallback source is mixed in');
+assert.match(ui,/renderDataStudio\(\{api,esc,state:\{\.\.\.state,dataStudioSelection:\{type:editType,id:String\(r\.id\)\}\},ensureStepUp,show:\(\)=>\{\},mountId,compact:true,startInEdit:true/,'selected asset opens schema-driven Data Studio edit mode');
+assert.match(studio,/function renderEdit\(r,defs\)/,'configuration fields are derived from canonical definitions');
+assert.match(routes,/\/api\/platform\/admin\/resource-management\/action/,'lifecycle actions use governed resource-management route');
+assert.match(routes,/\/api\/platform\/admin\/data-control\/action/,'data-control operations retain canonical control route');
+console.log('16.28.0 unified Resource & Asset Workspace contract: PASS');

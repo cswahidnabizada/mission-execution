@@ -1,4 +1,4 @@
-# Mission Execution 16.26.0 — Canonical Asset Authority Actions and Verified Mutation
+# Mission Execution 16.29.0 — Canonical Asset Identity and Verified Persistence
 
 Status: protected hardening candidate. Production build, complete cumulative release gates, authenticated browser/runtime certification and deployed pilot proof must pass before deployment.
 

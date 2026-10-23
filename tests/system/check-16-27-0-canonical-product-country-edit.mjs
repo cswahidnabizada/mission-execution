@@ -7,9 +7,11 @@ const country=fs.readFileSync(`${root}/src/worker/security/product-country-catal
 const routes=fs.readFileSync(`${root}/src/worker/modules/admin-control/admin-build-data.routes.js`,'utf8');
 assert.match(studio,/key==='requiresReview'/,'Product Country review policy is rendered as an explicit boolean choice');
 assert.match(studio,/payload\.code=String\(current\.record\.record\?\.code/ ,'Edit payload retains canonical country code');
-assert.match(studio,/key==='code'&&current\?\.record\?\.resourceType==='product_country'/,'Canonical ISO identity is immutable in edit mode');
+assert.match(studio,/key==='code'&&\['product_country','sector','language','currency'/,'Canonical reusable asset identities are immutable in edit mode');
 assert.match(service,/updateProductCountry\(env,actor,String\(resourceId\)/,'Data Studio commits through Product Country owning authority');
 assert.match(service,/expectedUpdatedAt:expected/,'Data Studio passes optimistic concurrency fence');
+assert.match(service,/const immutableCodeTypes=new Set/,'Code-keyed assets preserve canonical identity on edit');
+assert.match(service,/const fieldsMatch=checkedFields.every/,'Commit verifies persisted field values, not only record existence');
 assert.match(country,/PRODUCT_COUNTRY_CODE_INVALID/,'Owning authority validates ISO code');
 assert.match(country,/PRODUCT_COUNTRY_NAME_REQUIRED/,'Owning authority validates country name');
 assert.match(routes,/requirePlatformSuperAdminStepUp/,'Commit endpoint requires step-up authorization');
