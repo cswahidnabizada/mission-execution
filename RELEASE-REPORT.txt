@@ -1,5 +1,17 @@
-ON Mission 16.43.0 — Resource Save Workflow Fix
+ON Mission 16.44.0 - Resource Workspace Hardening
 
-Change: Validated Data Studio preview now presents a governed COMMIT CHANGE action when validation passes and dependency blockers are absent. Commit is routed through the existing canonical Data Studio commit endpoint, step-up authorization, optimistic concurrency, audit and read-after-write verification.
+Changes:
+- Hardened Data Studio Preview COMMIT CHANGE event binding using a stable delegated listener, so re-rendered preview controls remain wired to the governed commit handler.
+- Updated touched admin runtime version pins to 16.44.0.
+- Preserved canonical commit endpoint, step-up authorization, validation/dependency gates, optimistic concurrency, audit and read-after-write handling.
 
-Verification: focused source contract, JavaScript syntax, archive integrity. Production save/reload remains pending Cloudflare deployment.
+Verification performed in this packaging environment:
+- ZIP integrity check.
+- JavaScript syntax check for modified files.
+- Source contract check for delegated commit handler.
+
+Not certified by this package alone:
+- Live Sector/Product Country save and reload.
+- Lifecycle authority support for reactivate, Trash/Restore and permanent purge.
+- Cross-surface canonical identity.
+- Full Cloudflare deployment/runtime regression suite.
