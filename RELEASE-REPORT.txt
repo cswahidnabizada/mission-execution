@@ -1,17 +1,16 @@
-ON Mission 16.44.0 - Resource Workspace Hardening
+ON Mission 16.45.0 — Resource Lifecycle Capability UI
 
 Changes:
-- Hardened Data Studio Preview COMMIT CHANGE event binding using a stable delegated listener, so re-rendered preview controls remain wired to the governed commit handler.
-- Updated touched admin runtime version pins to 16.44.0.
-- Preserved canonical commit endpoint, step-up authorization, validation/dependency gates, optimistic concurrency, audit and read-after-write handling.
+- Resource Management and Resource Explorer now render START / REACTIVATE controls only when the canonical authority advertises START or REACTIVATE for the selected resource.
+- Actions use the existing governed resource action bridge, including step-up authorization and idempotency key. No lifecycle capability is inferred or fabricated.
+- Updated touched admin runtime references to 16.45.0.
 
-Verification performed in this packaging environment:
-- ZIP integrity check.
-- JavaScript syntax check for modified files.
-- Source contract check for delegated commit handler.
+Verification performed:
+- JavaScript syntax checks for modified modules.
+- Source-contract test confirms lifecycle controls are gated by authority-provided actions.
+- ZIP integrity and single .txt release-report checks.
 
 Not certified by this package alone:
-- Live Sector/Product Country save and reload.
-- Lifecycle authority support for reactivate, Trash/Restore and permanent purge.
-- Cross-surface canonical identity.
-- Full Cloudflare deployment/runtime regression suite.
+- Live reactivation, Trash/Restore or purge behavior against production authorities.
+- Sector/Product Country save and reload persistence.
+- Cross-surface canonical identity and full end-to-end lifecycle certification.

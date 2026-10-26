@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const rm=fs.readFileSync(new URL('../../public/assets/js/frontend/admin/resource-management.js', import.meta.url),'utf8');
+const explorer=fs.readFileSync(new URL('../../public/assets/js/frontend/admin/resource-explorer.js', import.meta.url),'utf8');
+assert.match(rm,/actions\.includes\('START'\).*data-rw-action=\"start\"/s);
+assert.match(rm,/actions\.includes\('REACTIVATE'\).*data-rw-action=\"reactivate\"/s);
+assert.match(explorer,/actions\.includes\('START'\).*data-action=\"start\"/s);
+assert.match(explorer,/actions\.includes\('REACTIVATE'\).*data-action=\"reactivate\"/s);
+assert.match(explorer,/ensureStepUp/);
+assert.match(explorer,/Idempotency-Key/);
+console.log('16.45.0 resource lifecycle capability UI: PASS');
