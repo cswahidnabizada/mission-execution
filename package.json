@@ -52,6 +52,7 @@
     "check:product-publisher-resilience": "node tests/system/check-10-46-2-publisher-workspace-resilience.mjs",
     "migrate:production": "node scripts/apply-production-migrations.mjs",
     "inventory:layout": "node scripts/generate-layout-inventory.mjs",
+    "check:resource-create-16-47": "node tests/system/check-16-47-0-resource-create-classification.mjs",
     "check:resource-inventory-16-33": "node tests/system/check-16-33-0-organization-inventory-schema.mjs && node tests/system/check-16-31-0-resource-inventory-resilience.mjs"
   },
   "devDependencies": {
@@ -63,6 +64,6 @@
     "node": "24.x",
     "npm": ">=10 <12"
   },
-  "version": "16.42.0",
+  "version": "16.47.0",
   "packageManager": "npm@10.9.2"
 }

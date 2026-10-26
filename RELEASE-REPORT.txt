@@ -1,12 +1,5 @@
-ON Mission 16.46.0 — Release Report
+ON Mission 16.47.0 — Unified Resource Create and Action Flow
 
-Scope: unified release identity and Data Studio commit metadata safety.
+Fix: Resource creation sent classification labels GOVERNED/PLATFORM, which are not accepted by the canonical Data Entry classification contract. The client now sends a valid classification enum, defaulting to CONFIGURATION, while preserving an explicit valid classification from the resource definition. Create errors display stable error codes/details when available. Release identity updated to 16.47.0.
 
-Implemented:
-- Canonical record guard before reading update metadata.
-- Supports snake_case and camelCase update timestamps.
-- Safe client handling when update metadata is absent.
-- Runtime version identity generated from /VERSION.
-
-Focused regression: tests/runtime/data-studio-commit-metadata-16-46.test.js
-Production verification: pending Cloudflare deployment and live workflow checks.
+Checks: targeted regression contract, JavaScript syntax, ZIP integrity, and single release report. Production create/save and lifecycle flows require Cloudflare deployment and live verification.
