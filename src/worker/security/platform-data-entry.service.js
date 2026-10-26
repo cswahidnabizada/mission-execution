@@ -162,13 +162,14 @@ async function persistPreview(env,entry){
 }
 
 export async function prepareDataEntry(env,actor,{entryType,payload,sourceType='super_admin',sourceId=null,tenantScope=null,countryScope=null,purpose='configuration',classification=null,idempotencyKey=null,entryId=null}={}){
-  const type=clean(entryType,80);if(!String(idempotencyKey||'').trim())throw fail('DATA_ENTRY_IDEMPOTENCY_REQUIRED',400,'DATA_ENTRY_IDEMPOTENCY_REQUIRED');if(!entryDefinition(type))throw fail('DATA_ENTRY_TYPE_NOT_SUPPORTED',422,'DATA_ENTRY_TYPE_NOT_SUPPORTED');
+  const type=clean(entryType,80);if(!String(idempotencyKey||'').trim())throw fail('DATA_ENTRY_IDEMPOTENCY_REQUIRED',400,'DATA_ENTRY_IDEMPOTENCY_REQUIRED');const definition=entryDefinition(type);if(!definition)throw fail('DATA_ENTRY_TYPE_NOT_SUPPORTED',422,'DATA_ENTRY_TYPE_NOT_SUPPORTED');
   if(!DATA_ENTRY_SOURCE_TYPES.includes(sourceType))throw fail('DATA_ENTRY_SOURCE_TYPE_INVALID',400,'DATA_ENTRY_SOURCE_TYPE_INVALID');
-  const normalized=validatePayload(type,normalizePayload(type,payload));forbiddenSecrets(normalized);
+  const input=ensureObject(payload);const unknownFields=Object.keys(input).filter(key=>!Object.hasOwn(definition.schema,key));if(unknownFields.length){const error=fail('DATA_ENTRY_UNKNOWN_FIELDS',422,'DATA_ENTRY_UNKNOWN_FIELDS');error.details={entryType:type,unknownFields:unknownFields.sort(),allowedFields:Object.keys(definition.schema).sort()};throw error;}
+  const normalized=validatePayload(type,normalizePayload(type,input));forbiddenSecrets(normalized);
   const selectedClassification=classify({payload:normalized,purpose,sourceType,requestedClassification:classification});
   const def=entryDefinition(type);
   const riskLevel=def.risk;
-  const validation={valid:true,schemaVersion:DATA_ENTRY_SCHEMA_VERSION,checkedAt:now(),required:diffRequired(def.required,normalized),unknownFields:Object.keys(ensureObject(payload)).filter(k=>!Object.hasOwn(def.schema,k))};
+  const validation={valid:true,schemaVersion:DATA_ENTRY_SCHEMA_VERSION,checkedAt:now(),required:diffRequired(def.required,normalized),unknownFields:[]};
   const dependencies=await dependencyCheck(env,type,normalized);
   const policy=policyCheck({entryType:type,purpose,classification:selectedClassification,riskLevel,sourceType});
   validation.valid=validation.required.length===0&&dependencies.blockers.length===0;

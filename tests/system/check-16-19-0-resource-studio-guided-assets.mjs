@@ -4,7 +4,7 @@ const read=p=>fs.readFileSync(p,'utf8');
 const ui=read('public/assets/js/frontend/admin/resource-management.js');
 const css=read('public/assets/css/admin-control.css');
 const pkg=JSON.parse(read('package.json'));
-assert.equal(pkg.version,'16.29.0');
+assert.equal(pkg.version,fs.readFileSync('VERSION','utf8').trim());
 assert.match(ui,/Resource Studio/);
 assert.match(ui,/SINGLE CONTROL SURFACE/);
 assert.match(ui,/function samplePayload\(d\)/);

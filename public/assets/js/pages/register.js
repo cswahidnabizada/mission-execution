@@ -1,5 +1,5 @@
-import {attachLayoutStudioRouteAdapter} from '../frontend/admin/layout-studio-production-adapter.js?v=16.46.0';
-import {renderComponent, STUDIO_RENDERER_VERSION} from '../frontend/admin/layout-studio-renderer.js?v=16.46.0';
+import {attachLayoutStudioRouteAdapter} from '../frontend/admin/layout-studio-production-adapter.js?v=16.50.0';
+import {renderComponent, STUDIO_RENDERER_VERSION} from '../frontend/admin/layout-studio-renderer.js?v=16.50.0';
 import { api, jsonOptions } from "../core/api.js";
 import { saveAccessSession } from "../core/session.js";
 const $=s=>document.querySelector(s);

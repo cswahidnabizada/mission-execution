@@ -1,7 +1,24 @@
-ON Mission 16.48.0 — Resource Creation Idempotency Fix
+ON Mission 16.50.0 — Typed Resource Contract Integrity and Status Truth
+Base: 16.49.0
+Status: hardening candidate; NOT production-certified
 
-Root cause: the Resources & Assets create form called /api/platform/admin/data-entry/reusable/preview without an Idempotency-Key header or body idempotencyKey. The server requires an idempotency key for prepareDataEntry and returned HTTP 400 DATA_ENTRY_IDEMPOTENCY_REQUIRED.
+Implemented:
+- Strict server-side rejection of unknown Data Entry payload fields before normalization.
+- Stable diagnostic code DATA_ENTRY_UNKNOWN_FIELDS, including allowed/rejected field lists.
+- Source audit covering all 26 reusable resource definitions against the canonical server schemas.
+- Resource Studio status projection no longer assumes missing status means active.
+- Preserved governed create, idempotency, canonical commit, read-back verification, and recovery from prior releases.
+- Aligned the Layout Studio renderer and route adapter version identity with the canonical release version.
 
-Fix: each create submission now generates a UUID idempotency key and sends it in both the Idempotency-Key header and request body. The same governed preview → step-up → commit → canonical reload workflow is retained. Release references are aligned to 16.48.0.
+Focused checks run:
+- 16.50.0 typed resource contract integrity: PASS (26 reusable resource types)
+- 16.49.0 resource create read-back and retry recovery contract: PASS
+- 16.48.0 resource create idempotency contract: PASS
+- 16.47.0 resource create classification contract: PASS
 
-Checks: focused source-contract regression, JavaScript syntax, archive integrity, and single release-report checks. Live Cloudflare creation and persistence still require deployment verification.
+Not certified:
+- Full cumulative npm run check:release suite.
+- Production build in required Node.js 24.x environment (current execution environment is Node.js 22.16.0).
+- Live Cloudflare deployment, live D1 persistence, all-type authenticated E2E, cross-tenant isolation, concurrent edit conflicts, and Germany Logistics mission certification.
+
+Do not describe this release as production-certified until these gates pass. No live deployment is claimed.

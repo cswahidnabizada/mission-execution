@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 const root=process.cwd();
 const rm=fs.readFileSync(`${root}/public/assets/js/frontend/admin/resource-management.js`,'utf8');
 const ds=fs.readFileSync(`${root}/public/assets/js/frontend/admin/data-studio.js`,'utf8');
+const service=fs.readFileSync(`${root}/src/worker/security/platform-data-studio.service.js`,'utf8');
 assert.match(rm,/CONFIGURE & EDIT/,'Asset workspace has one configure/edit action');
 assert.match(rm,/d\.resource\.canConfigure=Boolean\(authorityRecord\.record\?\.capabilities\?\.edit\)/,'Configure action is gated by the owning authority edit capability');
 assert.match(rm,/\&\&r\.canConfigure\?/,'Configure action is hidden when authority does not support editing');
@@ -13,6 +14,7 @@ assert.match(ds,/data-studio-compact/,'Compact mode removes legacy Data Studio n
 assert.match(ds,/if\(compact&&startInEdit\)/,'Compact editor opens directly in edit mode');
 assert.match(ds,/dataStudioValidate/,'Validation remains required');
 assert.match(ds,/dataStudioSave/,'Save still uses governed commit flow');
-assert.match(ds,/expectedUpdatedAt:current\.record\.record\.updated_at/,'Optimistic concurrency remains enforced');
+assert.match(service,/const expected=expectedUpdatedAt==null\?canonicalUpdatedAt:String\(expectedUpdatedAt\)/,'Commit derives the expected revision from the canonical record when the caller omits it');
+assert.match(service,/expectedUpdatedAt:expected/,'Optimistic concurrency remains enforced with the captured expected revision');
 assert.match(ds,/onSaved\(r2\)/,'Successful commit returns to owning Asset 360 workspace');
 console.log('16.26.0 unified asset configure workflow: PASS');

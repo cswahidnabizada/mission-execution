@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const ui=fs.readFileSync(new URL('../../public/assets/js/frontend/admin/resource-management.js',import.meta.url),'utf8');
+const service=fs.readFileSync(new URL('../../src/worker/security/platform-data-entry.service.js',import.meta.url),'utf8');
+const routes=fs.readFileSync(new URL('../../src/worker/modules/admin-control/admin-build-data.routes.js',import.meta.url),'utf8');
+assert.match(ui,/let createAttempt=\{key:null,fingerprint:null,entryId:null\}/,'attempt identity must survive retries while the create form remains mounted');
+assert.match(ui,/createAttempt\.fingerprint!==fingerprint/,'changed payload must start a new logical create attempt');
+assert.match(ui,/const idempotencyKey=createAttempt\.key/,'preview retries must reuse the same key for the same payload');
+assert.match(ui,/result\.canonical_resource_id\?\?result\.entry\?\.canonical_resource_id/,'commit reconciliation must recover identity from committed entry metadata');
+assert.match(ui,/resource-explorer\/\$\{encodeURIComponent\(canonicalType\)\}\/\$\{encodeURIComponent\(id\)\}/,'creation must read the canonical record back');
+assert.match(ui,/RESOURCE CREATED & VERIFIED/,'success state must be reserved for commit plus read-back');
+assert.doesNotMatch(ui,/const created=\{type,id,name:resourceName\(type,result\.result\|\|result\),status:'active'\}/,'must not invent active status for a newly created resource');
+assert.match(service,/if\(!String\(idempotencyKey\|\|''\)\.trim\(\)\)throw fail\('DATA_ENTRY_IDEMPOTENCY_REQUIRED',400/,'canonical Data Entry must require idempotency');
+assert.ok(routes.includes('data-entry\\/(?<entryId>[^/]+)\\/commit'),'canonical commit route must remain present');
+console.log('16.49.0 resource create read-back and retry recovery contract: PASS');

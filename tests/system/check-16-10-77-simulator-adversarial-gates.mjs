@@ -9,9 +9,9 @@ const routes=read('src/worker/modules/admin-control/admin-launch-config.routes.j
 const migration=read('database/migrations/0161_simulation_run_records.sql');
 const uiAdmin=read('public/assets/js/frontend/admin/simulation-lab.js');
 const uiTenant=read('public/assets/js/frontend/admin/simulation-lab.js');
-assert.ok(['16.10.80','16.10.81','16.10.82','16.10.83','16.10.84','16.10.85','16.10.86','16.10.87','16.10.89','16.10.90','16.10.91','16.10.92','16.10.93','16.10.94','16.10.95','16.10.96','16.10.97','16.10.98','16.12.0','16.14.0','16.26.0','16.20.0','16.26.0'].includes(pkg.version));
+assert.ok(['16.10.80','16.10.81','16.10.82','16.10.83','16.10.84','16.10.85','16.10.86','16.10.87','16.10.89','16.10.90','16.10.91','16.10.92','16.10.93','16.10.94','16.10.95','16.10.96','16.10.97','16.10.98','16.12.0','16.14.0','16.26.0','16.20.0','16.26.0','16.49.0','16.50.0'].includes(pkg.version));
 assert.equal(lock.version,pkg.version); assert.equal(lock.packages[''].version,pkg.version);
-assert.equal(read('VERSION').trim(),pkg.version); assert.equal(manifest.version,pkg.version); assert.ok(['16.10.79','16.10.80','16.10.81','16.10.82','16.10.83','16.10.84','16.10.85','16.10.86','16.10.87','16.10.88','16.10.89','16.10.90','16.10.91','16.10.92','16.10.93','16.10.94','16.10.95','16.10.96','16.10.97','16.10.98','16.16.0','16.17.0','16.18.0','16.19.0','16.26.0','16.26.0','16.20.0','16.21.0','16.26.0'].includes(manifest.base));
+assert.equal(read('VERSION').trim(),pkg.version); assert.equal(manifest.version,pkg.version); assert.ok(['16.10.79','16.10.80','16.10.81','16.10.82','16.10.83','16.10.84','16.10.85','16.10.86','16.10.87','16.10.88','16.10.89','16.10.90','16.10.91','16.10.92','16.10.93','16.10.94','16.10.95','16.10.96','16.10.97','16.10.98','16.16.0','16.17.0','16.18.0','16.19.0','16.26.0','16.26.0','16.20.0','16.21.0','16.26.0','16.48.0','16.49.0','16.50.0'].includes(manifest.base));
 assert.match(routes,/router\.get\('\/api\/tenant\/simulation\/runs'/);
 assert.match(routes,/router\.post\('\/api\/tenant\/simulation\/runs'/);
 assert.match(routes,/requireRole\(request,env,\['admin'\]\)/);

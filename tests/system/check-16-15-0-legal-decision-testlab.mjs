@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 const service=fs.readFileSync('src/worker/security/market-factory.service.js','utf8');
 const routes=fs.readFileSync('src/worker/modules/admin-control/admin-build-data.routes.js','utf8');
 const ui=fs.readFileSync('public/assets/js/frontend/admin/market-factory.js','utf8');
-assert.equal(fs.readFileSync('VERSION','utf8').trim(),'16.26.0');
+assert.equal(fs.readFileSync('VERSION','utf8').trim(),JSON.parse(fs.readFileSync('package.json','utf8')).version);
 assert.match(service,/'market\.legal\.review': async/);
 assert.match(service,/MARKET_LAUNCH_LEGAL_DECISION_REQUIRED/);
 assert.match(service,/MARKET_LAUNCH_LEGAL_SOURCE_REQUIRED/);
