@@ -142,20 +142,22 @@ export async function commitDataStudioEdit(env,actor,{resourceType,resourceId,pa
   return withPlatformMutationLease(env,{scopeKey,actorType:actor?.role||actor?.type||'platform_super_administrator',actorId:actor?.id||actor?.identityId||null},async()=>{
     // Re-read after acquiring the lease. This closes the check-then-write race.
     const current=await inspectDataStudioRecord(env,{resourceType,resourceId});
-    const canonicalUpdatedAt=String(current.record.record.updated_at||'');
+    const canonicalRecord=current?.record?.record;
+    if(!canonicalRecord||typeof canonicalRecord!=='object')throw fail('DATA_STUDIO_CANONICAL_RECORD_UNAVAILABLE',503,'DATA_STUDIO_CANONICAL_RECORD_UNAVAILABLE');
+    const canonicalUpdatedAt=String(canonicalRecord.updated_at??canonicalRecord.updatedAt??current?.record?.updatedAt??current?.record?.updated_at??'');
     const expected=expectedUpdatedAt==null?canonicalUpdatedAt:String(expectedUpdatedAt);
     if(expected&&canonicalUpdatedAt!==expected)throw fail('DATA_STUDIO_STALE_RECORD',409,'DATA_STUDIO_STALE_RECORD');
-    const input=mergeCanonicalFields(resourceType,current.record.record,payload);
+    const input=mergeCanonicalFields(resourceType,canonicalRecord,payload);
     if(resourceType==='country_blueprint')input.countryCode=input.countryCode||current.record.record.country_code;
     // Code-keyed reusable assets must keep their canonical identity during edits.
     // A changed code would otherwise upsert a second row and leave the original behind.
     const immutableCodeTypes=new Set(['product_country','sector','language','currency','region','classification','policy','residency','retention','role','capability','responsibility','storage','provider','page','feature','guidance','eligibility','pricing']);
     if(immutableCodeTypes.has(resourceType)){
-      const canonicalCode=String(current.record.record.code??current.record.record.role_code??current.record.resourceId??'');
+      const canonicalCode=String(canonicalRecord.code??canonicalRecord.role_code??current.record.resourceId??'');
       if(!canonicalCode)throw fail('DATA_STUDIO_CANONICAL_IDENTITY_MISSING',409,'DATA_STUDIO_CANONICAL_IDENTITY_MISSING');
       input.code=resourceType==='product_country'?canonicalCode.toUpperCase():canonicalCode;
     }
-    const entry=await prepareDataEntry(env,actor,{entryType:resourceType,payload:input,purpose:'configuration',classification:'CONFIGURATION',sourceType:'super_admin',sourceId:`data-studio:${resourceType}:${resourceId}`,countryScope:input.countryCode||current.record.record.country_code||null,idempotencyKey:`studio_edit_${crypto.randomUUID()}`});
+    const entry=await prepareDataEntry(env,actor,{entryType:resourceType,payload:input,purpose:'configuration',classification:'CONFIGURATION',sourceType:'super_admin',sourceId:`data-studio:${resourceType}:${resourceId}`,countryScope:input.countryCode||canonicalRecord.country_code||canonicalRecord.countryCode||null,idempotencyKey:`studio_edit_${crypto.randomUUID()}`});
     const auditEventId=await prepareCriticalAudit(env,{session:actor,action:'platform.data_studio.edit',resourceType,resourceId:String(resourceId),requestId,metadata:{entryId:entry.entry_id,expectedUpdatedAt:expected||null}});
     let result;
     try{

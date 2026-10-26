@@ -1,5 +1,5 @@
 {
-  "version": "16.39.0",
+  "version": "16.46.0",
   "release": "RELEASE.md",
   "base": "16.25.0",
   "migrationHighWaterMark": "0163",
@@ -9,7 +9,7 @@
     "sha256": "34e1befacc2e8b94aa0127dc1458be4f1db3177395a5594957b64dbbfd2456ac"
   },
   "generatedFrom": "deterministic-release-pipeline",
-  "releaseName": "Canonical Organization Inventory Schema Fix",
+  "releaseName": "Unified Release Identity and Commit Metadata Guard",
   "certificationControl": "config/certification/controlled-pilot-readiness.json",
-  "baseVersion": "16.32.0"
+  "baseVersion": "16.45.0"
 }

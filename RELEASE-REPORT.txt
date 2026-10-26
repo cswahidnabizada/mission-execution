@@ -1,16 +1,12 @@
-ON Mission 16.45.0 — Resource Lifecycle Capability UI
+ON Mission 16.46.0 — Release Report
 
-Changes:
-- Resource Management and Resource Explorer now render START / REACTIVATE controls only when the canonical authority advertises START or REACTIVATE for the selected resource.
-- Actions use the existing governed resource action bridge, including step-up authorization and idempotency key. No lifecycle capability is inferred or fabricated.
-- Updated touched admin runtime references to 16.45.0.
+Scope: unified release identity and Data Studio commit metadata safety.
 
-Verification performed:
-- JavaScript syntax checks for modified modules.
-- Source-contract test confirms lifecycle controls are gated by authority-provided actions.
-- ZIP integrity and single .txt release-report checks.
+Implemented:
+- Canonical record guard before reading update metadata.
+- Supports snake_case and camelCase update timestamps.
+- Safe client handling when update metadata is absent.
+- Runtime version identity generated from /VERSION.
 
-Not certified by this package alone:
-- Live reactivation, Trash/Restore or purge behavior against production authorities.
-- Sector/Product Country save and reload persistence.
-- Cross-surface canonical identity and full end-to-end lifecycle certification.
+Focused regression: tests/runtime/data-studio-commit-metadata-16-46.test.js
+Production verification: pending Cloudflare deployment and live workflow checks.
