@@ -1,5 +1,5 @@
 /* ON Mission 12.3.0 — unified Super Admin Resource Explorer. */
-import {api,rawApi,ensureStepUp,esc} from './admin-runtime.js?v=16.47.0';
+import {api,rawApi,ensureStepUp,esc} from './admin-runtime.js?v=16.48.0';
 
 const ACTION_TYPE={tenant:'tenant',user:'user',country:'country',sector:'sector',component:'ui',data_entry:'data_entry',launch:'country_product_launch',expansion:'expansion_case'};
 const ACTION_LABEL={STOP:'STOP',START:'START / REACTIVATE',REACTIVATE:'REACTIVATE',TRASH:'TRASH',PURGE:'PURGE'};

@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const ui=fs.readFileSync(new URL('../../public/assets/js/frontend/admin/resource-management.js',import.meta.url),'utf8');
+const service=fs.readFileSync(new URL('../../src/worker/security/platform-data-entry.service.js',import.meta.url),'utf8');
+const route=fs.readFileSync(new URL('../../src/worker/modules/admin-control/admin-build-data.routes.js',import.meta.url),'utf8');
+assert.match(ui,/const idempotencyKey=crypto\.randomUUID\(\)/,'create submission must mint a unique idempotency key');
+assert.match(ui,/headers:\{[^}]*'Idempotency-Key':idempotencyKey/,'preview request must send idempotency header');
+assert.match(ui,/body:\{entryType:type,payload,purpose:'configuration',idempotencyKey/,'preview request body must carry idempotency key');
+assert.match(service,/if\(!String\(idempotencyKey\|\|''\)\.trim\(\)\)throw fail\('DATA_ENTRY_IDEMPOTENCY_REQUIRED',400/,'canonical Data Entry requires idempotency');
+assert.match(route,/reusable\/preview[\s\S]{0,500}idempotencyKey:idem\(request,b\)/,'reusable preview route passes idempotency to canonical preparation');
+console.log('16.48.0 resource create idempotency contract: PASS');

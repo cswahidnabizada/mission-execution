@@ -1,5 +1,7 @@
-ON Mission 16.47.0 — Unified Resource Create and Action Flow
+ON Mission 16.48.0 — Resource Creation Idempotency Fix
 
-Fix: Resource creation sent classification labels GOVERNED/PLATFORM, which are not accepted by the canonical Data Entry classification contract. The client now sends a valid classification enum, defaulting to CONFIGURATION, while preserving an explicit valid classification from the resource definition. Create errors display stable error codes/details when available. Release identity updated to 16.47.0.
+Root cause: the Resources & Assets create form called /api/platform/admin/data-entry/reusable/preview without an Idempotency-Key header or body idempotencyKey. The server requires an idempotency key for prepareDataEntry and returned HTTP 400 DATA_ENTRY_IDEMPOTENCY_REQUIRED.
 
-Checks: targeted regression contract, JavaScript syntax, ZIP integrity, and single release report. Production create/save and lifecycle flows require Cloudflare deployment and live verification.
+Fix: each create submission now generates a UUID idempotency key and sends it in both the Idempotency-Key header and request body. The same governed preview → step-up → commit → canonical reload workflow is retained. Release references are aligned to 16.48.0.
+
+Checks: focused source-contract regression, JavaScript syntax, archive integrity, and single release-report checks. Live Cloudflare creation and persistence still require deployment verification.
