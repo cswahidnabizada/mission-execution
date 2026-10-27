@@ -33,6 +33,32 @@ async function entryHistory(env,resourceType,resourceId){
   return rows.map((r,i)=>({id:Number(r.id),entry_id:r.entry_id,entry_type:r.entry_type,status:r.status,actor_type:r.actor_type,actor_id:r.actor_id,classification:r.classification,purpose:r.purpose,risk_level:r.risk_level,created_at:r.created_at,updated_at:r.updated_at,committed_at:r.committed_at,revision:rows.length-i,payload:json(r.payload_json),validation:json(r.validation_json),dependencies:json(r.dependency_json),impact:json(r.impact_json)}));
 }
 function definitionFor(type){return listReusableDataDefinitions().find(x=>x.entryType===type)||null;}
+// Server-authoritative allow-list enforcement for Data Studio mutations. UI contracts
+// are advisory; only the owning service's registered field definition is trusted here.
+const IMMUTABLE_IDENTITY_FIELDS=new Set(['id','canonical_resource_id','tenant_id','tenantId','company_id','companyId','created_at','createdAt','created_by','createdBy']);
+function enforceSubmittedAssetContract(type,payload,canonicalRecord=null){
+  if(!payload||typeof payload!=='object'||Array.isArray(payload))throw fail('DATA_STUDIO_PAYLOAD_INVALID',422,'DATA_STUDIO_PAYLOAD_INVALID');
+  const def=definitionFor(type);if(!def)throw fail('DATA_STUDIO_CONTRACT_UNAVAILABLE',503,'DATA_STUDIO_CONTRACT_UNAVAILABLE');
+  const allowed=new Set(def.fields||[]);
+  // Identity and scope are supplied by server context, never accepted as client authority.
+  for(const key of Object.keys(payload)){
+    if(IMMUTABLE_IDENTITY_FIELDS.has(key))throw fail('DATA_STUDIO_IMMUTABLE_FIELD',422,'DATA_STUDIO_IMMUTABLE_FIELD');
+    if(!allowed.has(key))throw Object.assign(fail('DATA_STUDIO_FIELD_NOT_IN_CONTRACT',422,'DATA_STUDIO_FIELD_NOT_IN_CONTRACT'),{details:{field:key,resourceType:type}});
+  }
+  if(canonicalRecord){
+    const identityField=type==='role'?'role_code':'code';
+    if(Object.prototype.hasOwnProperty.call(payload,identityField)){
+      const current=String(canonicalRecord[identityField]??canonicalRecord.code??canonicalRecord.role_code??'');
+      if(String(payload[identityField]??'')!==current)throw fail('DATA_STUDIO_CANONICAL_IDENTITY_IMMUTABLE',409,'DATA_STUDIO_CANONICAL_IDENTITY_IMMUTABLE');
+    }
+    for(const key of ['tenantId','tenant_id','companyId','company_id','countryCode','country_code']){
+      if(Object.prototype.hasOwnProperty.call(payload,key)){
+        const current=canonicalRecord[key]??canonicalRecord[key.replace(/[A-Z]/g,m=>'_'+m.toLowerCase())];
+        if(current!=null&&String(payload[key])!==String(current))throw fail('DATA_STUDIO_SCOPE_CHANGE_REQUIRES_OWNER',409,'DATA_STUDIO_SCOPE_CHANGE_REQUIRES_OWNER');
+      }
+    }
+  }
+}
 // Basic and Advanced are two views over the same record. A request may contain
 // only the fields visible in the active view, so merge it with the owning
 // authority's current schema fields before validating. This prevents hidden
@@ -101,6 +127,7 @@ export async function prepareDataStudioEdit(env,actor,{resourceType,resourceId,p
   const inspected=await inspectDataStudioRecord(env,{resourceType,resourceId});
   if(!DATA_STUDIO_EDIT_TYPES.has(resourceType))throw fail('DATA_STUDIO_EDIT_OWNER_REQUIRED',409,'DATA_STUDIO_EDIT_OWNER_REQUIRED');
   if(!clean(reason,1000))throw fail('DATA_STUDIO_CHANGE_REASON_REQUIRED',422,'DATA_STUDIO_CHANGE_REASON_REQUIRED');
+  enforceSubmittedAssetContract(resourceType,payload,inspected.record.record);
   const input=mergeCanonicalFields(resourceType,inspected.record.record,payload);
   if(resourceType==='country_blueprint')input.countryCode=input.countryCode||inspected.record.record.country_code;
   // Preview and commit must validate the same canonical identity. The basic editor
@@ -137,6 +164,7 @@ async function markEditEntry(env,entry,resourceType,resourceId,actor,requestId,r
 export async function commitDataStudioEdit(env,actor,{resourceType,resourceId,payload,reason='',requestId='',expectedUpdatedAt=null}={}){
   const inspected=await inspectDataStudioRecord(env,{resourceType,resourceId});
   if(!clean(reason,1000))throw fail('DATA_STUDIO_CHANGE_REASON_REQUIRED',422,'DATA_STUDIO_CHANGE_REASON_REQUIRED');
+  enforceSubmittedAssetContract(resourceType,payload,inspected.record.record);
   if(!DATA_STUDIO_EDIT_TYPES.has(resourceType))throw fail('DATA_STUDIO_EDIT_OWNER_REQUIRED',409,'DATA_STUDIO_EDIT_OWNER_REQUIRED');
   const scopeKey=`data-studio:${clean(resourceType,100)}:${String(resourceId??'')}`;
   return withPlatformMutationLease(env,{scopeKey,actorType:actor?.role||actor?.type||'platform_super_administrator',actorId:actor?.id||actor?.identityId||null},async()=>{

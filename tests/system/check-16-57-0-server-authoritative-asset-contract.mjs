@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const service=fs.readFileSync(new URL('../../src/worker/security/platform-data-studio.service.js',import.meta.url),'utf8');
+assert.match(service,/function enforceSubmittedAssetContract\(/);
+assert.match(service,/DATA_STUDIO_FIELD_NOT_IN_CONTRACT/);
+assert.match(service,/DATA_STUDIO_IMMUTABLE_FIELD/);
+assert.match(service,/DATA_STUDIO_CANONICAL_IDENTITY_IMMUTABLE/);
+assert.match(service,/DATA_STUDIO_SCOPE_CHANGE_REQUIRES_OWNER/);
+assert.match(service,/enforceSubmittedAssetContract\(resourceType,payload,inspected\.record\.record\)/);
+assert.match(service,/prepareDataEntry\(env,actor/);
+assert.match(service,/withPlatformMutationLease/);
+assert.match(service,/expectedUpdatedAt/);
+console.log('16.57.0 server-authoritative asset contract enforcement: PASS');

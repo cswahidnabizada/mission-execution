@@ -29,3 +29,19 @@ Base: 16.55.0 Unified Asset Studio Create/Edit Convergence.
 - No live Cloudflare deployment, authenticated browser test, tenant-isolation matrix, or production commit/recovery test was performed.
 
 Status: source candidate only; not production-certified.
+
+# Mission Execution 16.57.0 — Server-Authoritative Asset Contract Enforcement
+
+Status: hardening candidate
+
+## 16.57.0 changes
+- Enforces the registered server-side reusable-data field allow-list for Data Studio preview and commit requests.
+- Rejects client-supplied immutable identity metadata and attempts to change canonical identity or tenant/market scope through ordinary edits.
+- Keeps Data Entry validation, mutation lease, canonical owner mutation, lifecycle/audit evidence, and read-after-write verification in the existing path.
+- Adds a focused regression test for the server enforcement boundary.
+
+## 16.57.0 verification limits
+- Focused contract tests, JavaScript syntax checks, schema gate, migration contract, dependency-lock gate, and ZIP integrity were run.
+- Full cumulative release suite and release-engineering gate are not green in this environment; older release documentation/version assertions remain inconsistent.
+- Node 24 build and authenticated production browser tests were not run. This environment has Node 22.16.0 and no installed node_modules.
+- No production deployment was performed. Relationship resolution, lifecycle enforcement, cross-workspace revision convergence, and adversarial tenant isolation still require runtime certification.
