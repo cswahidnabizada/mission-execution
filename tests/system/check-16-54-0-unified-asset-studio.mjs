@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const read=p=>fs.readFileSync(new URL(p,import.meta.url),'utf8');
+const studio=read('../../public/assets/js/frontend/admin/resource-management.js');
+assert.match(studio, /function assetFamily\(d\)/, 'asset family classification must be present');
+for (const family of ['Data assets','Logical assets','Visible assets','Operational assets','Service & integration assets','Governance & release assets']) assert.ok(studio.includes(family), `missing asset family ${family}`);
+assert.match(studio, /class="form-grid asset-studio-form"/, 'contract fields must share one form');
+assert.match(studio, /fields\.forEach\(w=>w\.hidden=false\)/, 'all type-specific fields must be visible together');
+assert.match(studio, /VALIDATE & CREATE ASSET/, 'one primary create action must be present');
+assert.match(studio, /data-entry\/reusable\/preview/, 'creation must continue through governed server preview');
+assert.match(studio, /ensureStepUp\(`POST:\$\{commitPath\}`\)/, 'commit must retain exact route-bound step-up');
+assert.match(studio, /resource-explorer\/\$\{encodeURIComponent\(canonicalType\)\}\/\$\{encodeURIComponent\(id\)\}/, 'creation must read back canonical record');
+assert.match(studio, /one unified workspace · one canonical truth/, 'workspace must state canonical architecture');
+console.log('16.54.0 unified Asset Studio contract: PASS');
