@@ -53,8 +53,13 @@ function enforceSubmittedAssetContract(type,payload,canonicalRecord=null){
     }
     for(const key of ['tenantId','tenant_id','companyId','company_id','countryCode','country_code']){
       if(Object.prototype.hasOwnProperty.call(payload,key)){
-        const current=canonicalRecord[key]??canonicalRecord[key.replace(/[A-Z]/g,m=>'_'+m.toLowerCase())];
-        if(current!=null&&String(payload[key])!==String(current))throw fail('DATA_STUDIO_SCOPE_CHANGE_REQUIRES_OWNER',409,'DATA_STUDIO_SCOPE_CHANGE_REQUIRES_OWNER');
+        const snake=key.replace(/[A-Z]/g,m=>'_'+m.toLowerCase());
+        const current=Object.prototype.hasOwnProperty.call(canonicalRecord,key)?canonicalRecord[key]:canonicalRecord[snake];
+        const submitted=payload[key];
+        // Null/absent scope is a real scope value too: do not let a client
+        // silently attach an unscoped record to a tenant/market (or detach it).
+        const normalizeScope=v=>v===undefined||v===null||v===''?null:String(v).trim();
+        if(normalizeScope(submitted)!==normalizeScope(current))throw fail('DATA_STUDIO_SCOPE_CHANGE_REQUIRES_OWNER',409,'DATA_STUDIO_SCOPE_CHANGE_REQUIRES_OWNER');
       }
     }
   }
