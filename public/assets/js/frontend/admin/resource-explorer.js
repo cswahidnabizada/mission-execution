@@ -1,5 +1,5 @@
 /* ON Mission 12.3.0 — unified Super Admin Resource Explorer. */
-import {api,rawApi,ensureStepUp,esc} from './admin-runtime.js?v=16.50.0';
+import {api,rawApi,ensureStepUp,esc} from './admin-runtime.js?v=16.52.0';
 
 const ACTION_TYPE={tenant:'tenant',user:'user',country:'country',sector:'sector',component:'ui',data_entry:'data_entry',launch:'country_product_launch',expansion:'expansion_case'};
 const ACTION_LABEL={STOP:'STOP',START:'START / REACTIVATE',REACTIVATE:'REACTIVATE',TRASH:'TRASH',PURGE:'PURGE'};
@@ -22,14 +22,16 @@ export async function runResourceAction(resource,action){
   const r=resource||{};
   const mapped=ACTION_TYPE[r.type]||r.type;
   if(!mapped)throw new Error('RESOURCE_ACTION_UNAVAILABLE');
-  if(!await ensureStepUp(`resource-${action}:${mapped}:${r.id}`))return {cancelled:true};
-  return api('/api/platform/admin/resource-management/action',{method:'POST',headers:{'X-ONM-Explicit-Governed-Action':'1','Idempotency-Key':crypto.randomUUID()},body:{resourceType:mapped,resourceId:r.id,action,reason:`Super Admin Resources: ${String(action).toUpperCase()}`}});
+  const actionPath='/api/platform/admin/resource-management/action';
+  if(!await ensureStepUp(`POST:${actionPath}`))return {cancelled:true};
+  return api(actionPath,{method:'POST',headers:{'X-ONM-Explicit-Governed-Action':'1','Idempotency-Key':crypto.randomUUID()},body:{resourceType:mapped,resourceId:r.id,action,reason:`Super Admin Resources: ${String(action).toUpperCase()}`}});
 }
 
 export async function restoreResource(resource,trashId){
   if(!trashId)throw new Error('NO_ACTIVE_TRASH_RECORD');
-  if(!await ensureStepUp(`resource-restore:${resource?.type}:${resource?.id}`))return {cancelled:true};
-  return api(`/api/platform/admin/trash/${encodeURIComponent(trashId)}/restore`,{method:'POST',headers:{'X-ONM-Explicit-Governed-Action':'1'},body:{}});
+  const restorePath=`/api/platform/admin/trash/${encodeURIComponent(trashId)}/restore`;
+  if(!await ensureStepUp(`POST:${restorePath}`))return {cancelled:true};
+  return api(restorePath,{method:'POST',headers:{'X-ONM-Explicit-Governed-Action':'1'},body:{}});
 }
 
 function render(host,data,close){
@@ -55,7 +57,7 @@ function render(host,data,close){
 async function restore(host,data,close){
  const r=data.resource||{},trashId=r.trashState?.id;if(!trashId){alert('No active Trash record is attached to this resource.');return}
  if(!confirm(`RESTORE ${r.name}? The canonical Trash authority will re-check the snapshot and lifecycle evidence.`))return;
- try{if(!await ensureStepUp(`resource-restore:${r.type}:${r.id}`))return;await api(`/api/platform/admin/trash/${encodeURIComponent(trashId)}/restore`,{method:'POST',headers:{'X-ONM-Explicit-Governed-Action':'1'},body:{}});await openResourceExplorer(r)}catch(e){alert(e.message||'Restore failed. No successful mutation was confirmed.')}
+ try{const restorePath=`/api/platform/admin/trash/${encodeURIComponent(trashId)}/restore`;if(!await ensureStepUp(`POST:${restorePath}`))return;await api(restorePath,{method:'POST',headers:{'X-ONM-Explicit-Governed-Action':'1'},body:{}});await openResourceExplorer(r)}catch(e){alert(e.message||'Restore failed. No successful mutation was confirmed.')}
 }
 function graphMarkup(g){
  const root=g.root||{};const deps=(g.nodes||[]).filter(n=>n.id!==root.id);if(!deps.length)return '<div class="resource-graph-empty">No connected dependencies. The record is currently isolated in the exposed canonical graph.</div>';
@@ -72,11 +74,11 @@ function renderEdit(host,data,close){
  const title=`<header class="resource-explorer-head"><div><span class="eyebrow">RESOURCE EXPLORER · EDIT</span><h2>Edit ${esc(r.name)}</h2><p class="mini">Changes are submitted to Data Control's canonical authority.</p></div><button class="btn muted" data-resource-back>BACK</button></header>`;
  host.querySelector('.admin-resource-explorer').innerHTML=title+`<section class="resource-edit-body"><form id="resourceEditForm" class="card section"><div class="resource-edit-grid">${fields.map(k=>`<label class="field"><span>${esc(k.replaceAll('_',' '))}</span><input class="input" name="${escAttr(k)}" value="${escAttr(record[k]??'')}" maxlength="240"></label>`).join('')}</div><div class="actions"><button class="btn primary" type="submit">SAVE CHANGE</button><button class="btn muted" type="button" data-resource-back>CANCEL</button></div></form></section>`;
  host.querySelectorAll('[data-resource-back]').forEach(b=>b.onclick=()=>openResourceExplorer(r));
- host.querySelector('#resourceEditForm').onsubmit=async e=>{e.preventDefault();const payload=Object.fromEntries(new FormData(e.currentTarget).entries());try{if(!await ensureStepUp(`resource-edit:${r.type}:${r.id}`))return;await api('/api/platform/admin/data-control/action',{method:'POST',headers:{'X-ONM-Explicit-Governed-Action':'1'},body:{resourceType:r.type,resourceId:r.id,action:'edit',payload,reason:'Super Admin Resource Explorer edit'}});await openResourceExplorer(r)}catch(x){alert(x.message||'Update failed. No mutation was confirmed.')}};
+ host.querySelector('#resourceEditForm').onsubmit=async e=>{e.preventDefault();const payload=Object.fromEntries(new FormData(e.currentTarget).entries());try{const actionPath='/api/platform/admin/data-control/action';if(!await ensureStepUp(`POST:${actionPath}`))return;await api(actionPath,{method:'POST',headers:{'X-ONM-Explicit-Governed-Action':'1'},body:{resourceType:r.type,resourceId:r.id,action:'edit',payload,reason:'Super Admin Resource Explorer edit'}});await openResourceExplorer(r)}catch(x){alert(x.message||'Update failed. No mutation was confirmed.')}};
 }
 
 async function mutate(host,data,action,close){
  const r=data.resource||{};const mapped=ACTION_TYPE[r.type]||r.type;if(!ACTION_TYPE[r.type]){alert('This resource uses a domain-specific lifecycle authority. Open MANAGE to perform its governed action.');return}
  const verb=ACTION_LABEL[action]||action.toUpperCase();if(!confirm(`${verb} ${r.name}? The canonical authority will re-check dependencies and policy before mutation.`))return;
- try{if(!await ensureStepUp(`resource-${action}:${mapped}:${r.id}`))return;await api('/api/platform/admin/data-control/action',{method:'POST',headers:{'X-ONM-Explicit-Governed-Action':'1'},body:{resourceType:mapped,resourceId:r.id,action,reason:`Super Admin Resource Explorer: ${verb}`}});await openResourceExplorer(r)}catch(e){alert(e.message||`${verb} failed. No successful mutation was confirmed.`)}
+ try{const actionPath='/api/platform/admin/data-control/action';if(!await ensureStepUp(`POST:${actionPath}`))return;await api(actionPath,{method:'POST',headers:{'X-ONM-Explicit-Governed-Action':'1'},body:{resourceType:mapped,resourceId:r.id,action,reason:`Super Admin Resource Explorer: ${verb}`}});await openResourceExplorer(r)}catch(e){alert(e.message||`${verb} failed. No successful mutation was confirmed.`)}
 }

@@ -1,5 +1,5 @@
 {
-  "version": "16.50.0",
+  "version": "16.52.0",
   "release": "RELEASE.md",
   "base": "16.49.0",
   "migrationHighWaterMark": "0163",
@@ -9,7 +9,7 @@
     "sha256": "34e1befacc2e8b94aa0127dc1458be4f1db3177395a5594957b64dbbfd2456ac"
   },
   "generatedFrom": "deterministic-release-pipeline",
-  "releaseName": "Typed Resource Contract Integrity and Status Truth",
+  "releaseName": "Asset Journey Integrity and Step-up Diagnostics",
   "certificationControl": "config/certification/controlled-pilot-readiness.json",
   "baseVersion": "16.49.0"
 }

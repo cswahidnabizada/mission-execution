@@ -1,0 +1,33 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {REUSABLE_DATA_DEFINITIONS} from '../../src/worker/security/platform-reusable-data.service.js';
+import {dataEntryDefinition} from '../../src/worker/security/platform-data-entry.service.js';
+const read=p=>fs.readFileSync(new URL(p,import.meta.url),'utf8');
+const ui=read('../../public/assets/js/frontend/admin/resource-management.js');
+const runtime=read('../../public/assets/js/frontend/admin/admin-runtime.js');
+const routes=read('../../src/worker/modules/admin-control/admin-build-data.routes.js');
+const security=read('../../src/worker/security/platform-super-administrator.js');
+const explorer=read('../../src/worker/security/platform-resource-explorer.service.js');
+const dataEntry=read('../../src/worker/security/platform-data-entry.service.js');
+assert.equal(Object.keys(REUSABLE_DATA_DEFINITIONS).length,26,'expected current reusable resource catalogue');
+for(const [type,d] of Object.entries(REUSABLE_DATA_DEFINITIONS)){
+  const c=dataEntryDefinition(type); assert.ok(c,`${type} must have a canonical Data Entry contract`);
+  for(const f of d.fields||[])assert.ok(Object.hasOwn(c.schema,f),`${type}.${f} must map to a server-owned schema`);
+  for(const f of c.required||[])assert.ok(Object.hasOwn(c.schema,f),`${type}.${f} required field must be schema-defined`);
+}
+assert.match(ui,/data-entry\/reusable\/preview/,'creation must use governed preview');
+assert.match(ui,/Idempotency-Key/,'creation preview must carry idempotency key');
+assert.match(ui,/ensureStepUp\(`POST:\$\{commitPath\}`\)/,'commit authorization must bind to exact commit route');
+assert.match(ui,/resource-explorer\/\$\{encodeURIComponent\(canonicalType\)\}\/\$\{encodeURIComponent\(id\)\}/,'create must read back from Resource Explorer');
+assert.match(ui,/read-back verification did not confirm the same resource/,'create must refuse unverified read-back');
+assert.match(runtime,/const stepUpPromises=new Map\(\)/,'step-up prompts must be isolated by scope');
+assert.match(runtime,/e\.code=d\.code\|\|d\.error\|\|fallback/,'machine-readable backend error codes must not be discarded');
+assert.match(runtime,/genericError\?\(d\.code\|\|fallback\):d\.error/,'generic public error text must not mask specific backend cause');
+const commitRoutes=routes.split('\n').filter(line=>line.includes('(?<entryId>[^/]+)')&&line.includes('/commit$')); assert.equal(commitRoutes.length,1,'Data Entry commit route must be registered exactly once');
+assert.match(routes,/platform\.data_entry\.commit/,'canonical commit must produce audit evidence');
+assert.match(routes,/requirePlatformSuperAdminStepUp\(request,env\)/,'canonical commit must enforce route-bound step-up');
+assert.match(security,/PLATFORM_SUPER_ADMIN_STEP_UP_SCOPE_INVALID/,'invalid scopes must fail closed with a stable error code');
+assert.match(dataEntry,/DATA_ENTRY_UNKNOWN_FIELDS/,'unknown fields must be rejected, not silently dropped');
+assert.match(dataEntry,/DATA_ENTRY_COMMIT_RECOVERY_REQUIRED/,'ambiguous recovery must fail closed');
+assert.match(explorer,/export async function getResourceExplorer/,'Resource Explorer remains canonical read-back authority');
+console.log('16.52.0 asset journey integrity: PASS (26 typed definitions; route, auth, diagnostics, audit, read-back and recovery contracts)');

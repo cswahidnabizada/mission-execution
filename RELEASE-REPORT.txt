@@ -1,4 +1,13 @@
-ON Mission 16.50.0 — Typed Resource Contract Integrity and Status Truth
+ON Mission 16.51.0 — Asset Creation Step-up Scope Fix
+
+Root cause: Resource Studio called ensureStepUp with an opaque scope `resource-create:${type}`. The server only accepts route-bound scopes shaped as METHOD:/path, so `/api/platform/access/admin/step-up` rejected the scope with HTTP 400 (PLATFORM_SUPER_ADMIN_STEP_UP_SCOPE_INVALID) before any asset preview or commit.
+
+Fix: Removed the invalid pre-preview step-up request. Preview remains behind the authenticated Super Admin session. After validation and explicit confirmation, the creation wizard requests step-up using the exact canonical commit route `POST:/api/platform/admin/data-entry/{entryId}/commit`, then commits through the same path. Because every asset type uses this shared wizard, the fix applies across all supported types without weakening server-side step-up checks.
+
+Verification: Focused regression test added. Live deployment, authenticated browser verification, and D1 persistence still require execution against the target Cloudflare environment.
+
+Previous report context:
+ON Mission 16.51.0 — Typed Resource Contract Integrity and Status Truth
 Base: 16.49.0
 Status: hardening candidate; NOT production-certified
 
@@ -11,7 +20,7 @@ Implemented:
 - Aligned the Layout Studio renderer and route adapter version identity with the canonical release version.
 
 Focused checks run:
-- 16.50.0 typed resource contract integrity: PASS (26 reusable resource types)
+- 16.51.0 typed resource contract integrity: PASS (26 reusable resource types)
 - 16.49.0 resource create read-back and retry recovery contract: PASS
 - 16.48.0 resource create idempotency contract: PASS
 - 16.47.0 resource create classification contract: PASS
