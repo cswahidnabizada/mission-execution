@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const read=p=>fs.readFileSync(new URL(p,import.meta.url),'utf8');
+const studio=read('../../public/assets/js/frontend/admin/resource-management.js');
+const dataStudio=read('../../public/assets/js/frontend/admin/data-studio.js');
+assert.match(studio, /<h1 class="title">Asset Studio<\/h1>/, 'Asset Studio is the canonical workspace identity');
+assert.match(studio, /asset-studio-edit-shell/, 'edit mode uses the shared Asset Studio shell');
+assert.match(studio, /same Asset Studio workspace handles creation and updates/, 'create/update convergence is explicit');
+assert.match(studio, /resourceDataStudioMount/, 'edit form remains mounted through the existing data studio authority');
+assert.match(studio, /startInEdit:true/, 'editing reuses the existing governed editor');
+assert.match(dataStudio, /ensureStepUp/, 'edit path must preserve step-up authorization');
+assert.match(dataStudio, /data-studio\/commit/, 'edit path must commit through canonical Data Studio endpoint');
+assert.match(studio, /canonical identity is preserved/, 'editing must not create a new identity');
+assert.match(studio, /One unified workspace · one canonical truth/, 'single truth invariant remains visible');
+console.log('16.55.0 unified Asset Studio create/edit convergence: PASS');

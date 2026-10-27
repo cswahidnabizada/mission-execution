@@ -10,5 +10,5 @@ assert.match(studio, /VALIDATE & CREATE ASSET/, 'one primary create action must 
 assert.match(studio, /data-entry\/reusable\/preview/, 'creation must continue through governed server preview');
 assert.match(studio, /ensureStepUp\(`POST:\$\{commitPath\}`\)/, 'commit must retain exact route-bound step-up');
 assert.match(studio, /resource-explorer\/\$\{encodeURIComponent\(canonicalType\)\}\/\$\{encodeURIComponent\(id\)\}/, 'creation must read back canonical record');
-assert.match(studio, /one unified workspace · one canonical truth/, 'workspace must state canonical architecture');
+assert.match(studio, /One unified workspace · one canonical truth/, 'workspace must state canonical architecture');
 console.log('16.54.0 unified Asset Studio contract: PASS');

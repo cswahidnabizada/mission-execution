@@ -1,31 +1,3 @@
-ON Mission 16.53.0 — Governed Asset Update and Canonical Commit Authorization
-Base: 16.52.0
-Status: cumulative hardening candidate; live production verification still required
-
-User-reported failure:
-Editing a canonical asset in Data Studio, validating, then clicking Commit Changes returned HTTP 403.
-
-Source finding and fix:
-- The Data Studio commit handler performed an unscoped ensureStepUp() preflight. That only checked whether the Super Admin session was authenticated; it did not establish step-up for the exact protected commit route.
-- Commit now explicitly requests step-up for POST:/api/platform/admin/data-studio/commit before sending the governed mutation.
-- Server-side requirePlatformSuperAdminStepUp remains enforced. This is not an authorization bypass.
-- Asset 360's primary action is renamed from CONFIGURE & EDIT to UPDATE ASSET.
-- Resource Explorer's duplicate MANAGE and EDIT entry points are consolidated into one MANAGE ASSET action.
-- Updated the legacy UI regression assertion to match the new single-action label.
-
-Preserved invariants:
-Security -> Truth -> Liveness -> Stability -> Experience -> Scale.
-Canonical domain authority owns mutations. Validation and reason are required. Optimistic concurrency remains enforced. Lifecycle transitions remain governed by the owning service; editable business fields do not authorize arbitrary lifecycle changes.
-
-Focused verification:
-- 16.53.0 governed asset update regression: PASS
-- 16.52.0 asset journey integrity: PASS
-- 16.51.0 step-up scope and typed resource contract checks: PASS
-- 16.50.0 typed resource contract integrity: PASS
-- 16.26.0 updated single-action workflow regression: PASS
-- Modified JavaScript syntax checks: PASS
-
-Not certified:
-- Full cumulative release suite was attempted and initially failed on a legacy test that still expected the old CONFIGURE & EDIT label. The assertion has been updated; rerun the full suite to establish the next complete result.
-- Production build/deploy has not been run from this environment.
-- Live authenticated update, D1 persistence, cross-tenant denial, and lifecycle-specific update behavior still require verification against the deployed Cloudflare Worker.
+ON Mission 16.56.0 — Canonical Asset Contract Engine
+Base: 16.55.0
+Candidate source release. See RELEASE.md for implementation boundaries and verification status.

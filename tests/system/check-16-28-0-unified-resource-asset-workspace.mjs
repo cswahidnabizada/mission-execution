@@ -4,7 +4,7 @@ const root=process.cwd();
 const ui=fs.readFileSync(`${root}/public/assets/js/frontend/admin/resource-management.js`,'utf8');
 const studio=fs.readFileSync(`${root}/public/assets/js/frontend/admin/data-studio.js`,'utf8');
 const routes=fs.readFileSync(`${root}/src/worker/modules/admin-control/admin-build-data.routes.js`,'utf8');
-assert.match(ui,/<h1 class="title">Resources &amp; Assets<\/h1>/,'inventory is named Resources & Assets');
+assert.match(ui,/<h1 class="title">Asset Studio<\/h1>/,'inventory is named Asset Studio after workspace convergence');
 assert.match(ui,/id="resourceCreateAsset"/,'inventory exposes one primary Create Asset action');
 assert.match(ui,/\$\('#resourceCreateAsset'\)\.onclick=\(\)=>showResourceView\('create'\)/,'Create Asset opens the governed create flow');
 assert.match(ui,/api\('\/api\/platform\/admin\/resource-management\/recent\?limit=100'\)/,'inventory reads from the canonical resource inventory');

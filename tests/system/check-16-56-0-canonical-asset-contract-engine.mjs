@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {buildAssetContract,validateAssetContractInput,assetContractCommitPlan,ASSET_FAMILIES} from '../../public/assets/js/frontend/admin/asset-contract-engine.js';
+const definition={entryType:'vehicle',label:'Vehicle',authority:'fleet-service',risk:'high',fields:['name','code','capacity','companyCode'],fieldSchemas:{name:{required:true},code:{required:true,immutable:true},capacity:{type:'integer',min:1},companyCode:{relation:'company',required:true}}};
+const create=buildAssetContract(definition,'create');
+assert.equal(create.family,'Operational assets'); assert.equal(create.identity.canonicalIdOwnedByServer,true); assert.equal(create.scope.tenantIsolationRequired,true);
+assert.deepEqual(create.relationships.map(x=>x.targetType),['company']);
+assert.equal(validateAssetContractInput(create,{name:'Van',code:'V1',capacity:4,companyCode:'C1'}).valid,true);
+assert.equal(validateAssetContractInput(create,{name:' ',code:'V1',capacity:0,companyCode:''}).valid,false);
+const update=buildAssetContract(definition,'update'); assert.equal(update.fields.find(x=>x.name==='code').immutable,true);
+assert.equal(validateAssetContractInput(update,{name:'Van',code:'V1',capacity:4,companyCode:'C1'}).errors.some(x=>x.code==='FIELD_IMMUTABLE'),true);
+assert.equal(validateAssetContractInput(create,{name:'Van',code:'V1',capacity:4,companyCode:'C1',tenant_id:'other'}).errors[0].code,'FIELD_NOT_IN_CONTRACT');
+assert.deepEqual(assetContractCommitPlan(create),['local_contract_validation','server_preview_and_dependency_validation','route_bound_authorization','canonical_owner_commit','canonical_readback_verification']);
+assert.equal(ASSET_FAMILIES.length,6);
+const ui=fs.readFileSync(new URL('../../public/assets/js/frontend/admin/resource-management.js',import.meta.url),'utf8');
+assert.match(ui,/buildAssetContract\(d,'create'\)/); assert.match(ui,/buildAssetContract\(editDefinition,'update'\)/);
+console.log('16.56.0 canonical asset contract engine: PASS');

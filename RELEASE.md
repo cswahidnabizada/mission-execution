@@ -1,27 +1,31 @@
-# ON Mission 16.54.0 — Unified Asset Studio One-Screen Workspace
+# ON Mission 16.56.0 — Canonical Asset Contract Engine
 
-## Scope
+Base: 16.55.0 Unified Asset Studio Create/Edit Convergence.
 
-This cumulative candidate continues from 16.53.0 and changes the Resource & Assets create interface into the first implementation slice of the unified Asset Studio architecture.
+## Implemented in this candidate
+- Added a normalized, immutable client-side contract projection over existing server-provided asset definitions.
+- Contract exposes canonical identity invariants, authority metadata, family classification, typed relationship requirements, scope rules, lifecycle authority, and governed commit requirements.
+- Create form and edit shell both derive contract metadata from the same engine. Existing owning services remain authoritative.
+- Added immediate contract validation for required fields, unknown fields, immutable update fields, integer bounds and enum values. This is UI feedback only; server validation remains mandatory.
+- Added a commit-plan contract documenting preview, route-bound authorization, canonical owner commit, and read-back verification.
+- Updated public HTML cache-busting query versions to 16.56.0.
+- Added focused contract-engine regression test and updated the old workspace name assertion to match Asset Studio.
 
-### Applied in source
-- Renamed the main workspace to **Asset Studio** and made the one-workspace / one-canonical-truth principle explicit.
-- Added deterministic, navigation-oriented asset family classification: Data, Logical, Visible, Operational, Service & Integration, Governance & Release. Classification is UI metadata derived from the trusted resource definition's type/category/label; it does not create new authorities or storage.
-- Replaced the three-step create wizard with a single-screen contract form that displays all fields exposed by the selected reusable-resource definition together.
-- Preserved the governed create path: schema-driven fields, JSON key allow-list, server preview, exact-route step-up, canonical commit, and canonical read-back verification.
-- Kept the existing canonical services as mutation authorities; no new asset database or alternate mutation route was introduced.
+## Architecture boundaries
+- No database, mutation API, or authority was added.
+- Relationship existence, tenant/market scope, authorization, lifecycle transitions, concurrency, and persistence are still enforced by server-side owners; this UI contract cannot prove them.
+- The existing Data Studio edit form remains the actual mutation surface. Full schema-driven field rendering across every asset type, server-side contract integration, typed relationship resolution, and lifecycle/readiness convergence remain incomplete.
 
 ## Verification performed
-- `node --check public/assets/js/frontend/admin/resource-management.js`
-- `node tests/system/check-16-54-0-unified-asset-studio.mjs`
-- ZIP integrity check (recorded after packaging).
+- PASS: JavaScript syntax checks for the changed workspace and contract engine.
+- PASS: focused 16.56.0 contract-engine test.
+- PASS: 16.55.0 workspace convergence, 16.54.0 unified workspace, 16.53.0 governed update, 16.52.0 asset journey, and 16.28.0 workspace regression tests.
+- PASS: dependency lock gate.
+- PASS: ZIP integrity.
 
-## Not yet complete
-- The create form is now one screen, but the existing edit/configure path still uses the established Asset 360 / Data Studio flow. Fully sharing one create-and-edit form requires a canonical type-contract adapter for read, patch semantics, immutable fields, field-level permissions, optimistic concurrency, preview, and commit per authority. Do not claim create/edit form convergence is complete yet.
-- Family classification is a navigation aid, not yet an authoritative taxonomy contract owned by backend definitions.
-- Relationship pickers and typed relationship mutation are not generalized across all asset types.
-- No live production runtime test, Cloudflare deployment, tenant-isolation test, or end-to-end browser certification was performed by this build step.
-- The 403 reported on update must be re-tested against the deployed candidate with the exact response code and step-up scope; source assertions alone cannot prove the production fix.
+## Known certification blockers
+- Full `npm run check:release` was attempted and fails in a historical test `check-16-18-0-idempotent-market-studio.mjs`, which asserts the old runtime version 16.49.0 while the source now reports 16.55.0. This suite is not green.
+- Build environment gate fails locally because the available Node runtime is 22.16.0; repository requires Node 24.x (`.node-version` 24.18.0). Full build was not certified.
+- No live Cloudflare deployment, authenticated browser test, tenant-isolation matrix, or production commit/recovery test was performed.
 
-## Governing invariant
-One canonical identity, one owning authority, one unified workspace, type-specific contract, governed changes, and verified outcomes.
+Status: source candidate only; not production-certified.
