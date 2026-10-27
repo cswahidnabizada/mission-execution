@@ -1,4 +1,5 @@
-# Mission Execution 16.52.0 — Asset Journey Integrity and Step-up Diagnostics
+# Mission Execution 16.53.0 — Asset Journey Integrity and Step-up Diagnostics
+Historical architecture baseline 10.86.0 remains part of the release lineage. The platform preserves the reconciliation fence for ambiguous canonical mutations.
 **DO NOT DEPLOY** until certification gates pass.
 Status: hardening candidate
 Base: ON MISSION 16.51.0
@@ -72,3 +73,12 @@ ONE Mission Truth · ONE Lifecycle Writer · ONE Action Registry · ONE Authoriz
 Journey completion matrix: EXECUTE → EFFECT → VERIFY, with effect and physical execution evidence kept distinct from simulation evidence.
 Legacy schema retirement ledger: `missions.driver_id` is historical compatibility debt and must not be treated as a second assignment authority; canonical assignment ownership and Executor vocabulary remain governed.
 The canonical assignment authority is the only source of assignment truth; resource creation must reference existing canonical identities and must never create shadow assignment records.
+
+## 16.53.0 — Governed Asset Update and Canonical Commit Authorization
+
+- Fix Data Studio's commit preflight to request step-up for the exact `POST:/api/platform/admin/data-studio/commit` route.
+- Keep backend route-bound step-up enforcement enabled; this is not an authorization bypass.
+- Replace Asset 360's duplicate-sounding `CONFIGURE & EDIT` label with the single `UPDATE ASSET` action.
+- Consolidate Resource Explorer's duplicate `MANAGE` and `EDIT` entry points into one `MANAGE ASSET` action.
+- Add a focused regression test for update authorization scope and the single-action UI contract.
+- Source-level checks pass; live Cloudflare update/persistence and full release certification remain outstanding.

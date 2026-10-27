@@ -1,33 +1,31 @@
-ON Mission 16.51.0 — Asset Creation Step-up Scope Fix
+ON Mission 16.53.0 — Governed Asset Update and Canonical Commit Authorization
+Base: 16.52.0
+Status: cumulative hardening candidate; live production verification still required
 
-Root cause: Resource Studio called ensureStepUp with an opaque scope `resource-create:${type}`. The server only accepts route-bound scopes shaped as METHOD:/path, so `/api/platform/access/admin/step-up` rejected the scope with HTTP 400 (PLATFORM_SUPER_ADMIN_STEP_UP_SCOPE_INVALID) before any asset preview or commit.
+User-reported failure:
+Editing a canonical asset in Data Studio, validating, then clicking Commit Changes returned HTTP 403.
 
-Fix: Removed the invalid pre-preview step-up request. Preview remains behind the authenticated Super Admin session. After validation and explicit confirmation, the creation wizard requests step-up using the exact canonical commit route `POST:/api/platform/admin/data-entry/{entryId}/commit`, then commits through the same path. Because every asset type uses this shared wizard, the fix applies across all supported types without weakening server-side step-up checks.
+Source finding and fix:
+- The Data Studio commit handler performed an unscoped ensureStepUp() preflight. That only checked whether the Super Admin session was authenticated; it did not establish step-up for the exact protected commit route.
+- Commit now explicitly requests step-up for POST:/api/platform/admin/data-studio/commit before sending the governed mutation.
+- Server-side requirePlatformSuperAdminStepUp remains enforced. This is not an authorization bypass.
+- Asset 360's primary action is renamed from CONFIGURE & EDIT to UPDATE ASSET.
+- Resource Explorer's duplicate MANAGE and EDIT entry points are consolidated into one MANAGE ASSET action.
+- Updated the legacy UI regression assertion to match the new single-action label.
 
-Verification: Focused regression test added. Live deployment, authenticated browser verification, and D1 persistence still require execution against the target Cloudflare environment.
+Preserved invariants:
+Security -> Truth -> Liveness -> Stability -> Experience -> Scale.
+Canonical domain authority owns mutations. Validation and reason are required. Optimistic concurrency remains enforced. Lifecycle transitions remain governed by the owning service; editable business fields do not authorize arbitrary lifecycle changes.
 
-Previous report context:
-ON Mission 16.51.0 — Typed Resource Contract Integrity and Status Truth
-Base: 16.49.0
-Status: hardening candidate; NOT production-certified
-
-Implemented:
-- Strict server-side rejection of unknown Data Entry payload fields before normalization.
-- Stable diagnostic code DATA_ENTRY_UNKNOWN_FIELDS, including allowed/rejected field lists.
-- Source audit covering all 26 reusable resource definitions against the canonical server schemas.
-- Resource Studio status projection no longer assumes missing status means active.
-- Preserved governed create, idempotency, canonical commit, read-back verification, and recovery from prior releases.
-- Aligned the Layout Studio renderer and route adapter version identity with the canonical release version.
-
-Focused checks run:
-- 16.51.0 typed resource contract integrity: PASS (26 reusable resource types)
-- 16.49.0 resource create read-back and retry recovery contract: PASS
-- 16.48.0 resource create idempotency contract: PASS
-- 16.47.0 resource create classification contract: PASS
+Focused verification:
+- 16.53.0 governed asset update regression: PASS
+- 16.52.0 asset journey integrity: PASS
+- 16.51.0 step-up scope and typed resource contract checks: PASS
+- 16.50.0 typed resource contract integrity: PASS
+- 16.26.0 updated single-action workflow regression: PASS
+- Modified JavaScript syntax checks: PASS
 
 Not certified:
-- Full cumulative npm run check:release suite.
-- Production build in required Node.js 24.x environment (current execution environment is Node.js 22.16.0).
-- Live Cloudflare deployment, live D1 persistence, all-type authenticated E2E, cross-tenant isolation, concurrent edit conflicts, and Germany Logistics mission certification.
-
-Do not describe this release as production-certified until these gates pass. No live deployment is claimed.
+- Full cumulative release suite was attempted and initially failed on a legacy test that still expected the old CONFIGURE & EDIT label. The assertion has been updated; rerun the full suite to establish the next complete result.
+- Production build/deploy has not been run from this environment.
+- Live authenticated update, D1 persistence, cross-tenant denial, and lifecycle-specific update behavior still require verification against the deployed Cloudflare Worker.

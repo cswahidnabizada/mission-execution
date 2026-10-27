@@ -4,12 +4,12 @@ const studio=fs.readFileSync('public/assets/js/frontend/admin/layout-studio.js',
 const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
 const lock=JSON.parse(fs.readFileSync('package-lock.json','utf8'));
 const manifest=JSON.parse(fs.readFileSync('RELEASE-MANIFEST.json','utf8'));
-assert.ok(['16.10.80','16.10.81','16.10.82','16.10.83','16.10.84','16.10.85','16.10.86','16.10.87','16.10.89','16.10.90','16.10.91','16.10.92','16.10.93','16.10.94','16.10.95','16.10.96','16.10.97','16.10.98','16.12.0','16.14.0','16.26.0','16.20.0','16.26.0','16.49.0','16.51.0','16.52.0'].includes(pkg.version));
+assert.ok(['16.10.80','16.10.81','16.10.82','16.10.83','16.10.84','16.10.85','16.10.86','16.10.87','16.10.89','16.10.90','16.10.91','16.10.92','16.10.93','16.10.94','16.10.95','16.10.96','16.10.97','16.10.98','16.12.0','16.14.0','16.26.0','16.20.0','16.26.0','16.49.0','16.51.0','16.52.0','16.53.0'].includes(pkg.version));
 assert.equal(lock.version,pkg.version);
 assert.equal(lock.packages[''].version,pkg.version);
 assert.equal(fs.readFileSync('VERSION','utf8').trim(),pkg.version);
 assert.equal(manifest.version,pkg.version);
-assert.ok(['16.10.79','16.10.80','16.10.81','16.10.82','16.10.83','16.10.84','16.10.85','16.10.86','16.10.87','16.10.88','16.10.89','16.10.90','16.10.91','16.10.92','16.10.93','16.10.94','16.10.95','16.10.96','16.10.97','16.10.98','16.16.0','16.17.0','16.18.0','16.19.0','16.20.0','16.21.0','16.26.0','16.48.0','16.49.0','16.51.0','16.52.0'].includes(manifest.base));
+assert.ok(['16.10.79','16.10.80','16.10.81','16.10.82','16.10.83','16.10.84','16.10.85','16.10.86','16.10.87','16.10.88','16.10.89','16.10.90','16.10.91','16.10.92','16.10.93','16.10.94','16.10.95','16.10.96','16.10.97','16.10.98','16.16.0','16.17.0','16.18.0','16.19.0','16.20.0','16.21.0','16.26.0','16.48.0','16.49.0','16.51.0','16.52.0','16.53.0'].includes(manifest.base));
 assert.match(studio,/function reconcileRouteCompositions\(source\)/);
 assert.match(studio,/Missing route compositions added to local draft; review and save to persist/);
 assert.match(studio,/REQUIRED_ROUTE_PAGES/);

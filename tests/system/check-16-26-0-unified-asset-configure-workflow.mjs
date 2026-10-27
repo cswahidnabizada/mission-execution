@@ -4,7 +4,7 @@ const root=process.cwd();
 const rm=fs.readFileSync(`${root}/public/assets/js/frontend/admin/resource-management.js`,'utf8');
 const ds=fs.readFileSync(`${root}/public/assets/js/frontend/admin/data-studio.js`,'utf8');
 const service=fs.readFileSync(`${root}/src/worker/security/platform-data-studio.service.js`,'utf8');
-assert.match(rm,/CONFIGURE & EDIT/,'Asset workspace has one configure/edit action');
+assert.match(rm,/UPDATE ASSET/,'Asset workspace has one configure/edit action');
 assert.match(rm,/d\.resource\.canConfigure=Boolean\(authorityRecord\.record\?\.capabilities\?\.edit\)/,'Configure action is gated by the owning authority edit capability');
 assert.match(rm,/\&\&r\.canConfigure\?/,'Configure action is hidden when authority does not support editing');
 assert.doesNotMatch(rm,/data-rw-manage|data-rw-edit/,'Separate ambiguous Manage/Edit buttons are retired');

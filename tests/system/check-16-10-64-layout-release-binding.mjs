@@ -5,7 +5,7 @@ const routes=fs.readFileSync('src/worker/modules/admin-control/layout-studio.rou
 const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
 const manifest=JSON.parse(fs.readFileSync('RELEASE-MANIFEST.json','utf8'));
 assert.equal(manifest.version,pkg.version);
-assert.match(manifest.base,/^(?:16\.10\.(6[3456789]|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98)|16\.16\.0|16\.17\.0|16\.18\.0|16\.19\.0|16\.20\.0|16\.21\.0|16\.23\.0|16\.49\.0|16\.50\.0|16\.51\.0|16\.52\.0)$/); // historical contract must remain valid as later candidates advance
+assert.match(manifest.base,/^(?:16\.10\.(6[3456789]|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98)|16\.16\.0|16\.17\.0|16\.18\.0|16\.19\.0|16\.20\.0|16\.21\.0|16\.23\.0|16\.49\.0|16\.50\.0|16\.51\.0|16\.52\.0|16\.53\.0)$/); // historical contract must remain valid as later candidates advance
 assert.match(lifecycle,/layoutArtifactBindingRequired/);
 assert.match(lifecycle,/PRODUCT_RELEASE_LAYOUT_BINDING_REQUIRED/);
 assert.match(lifecycle,/PRODUCT_RELEASE_LAYOUT_ARTIFACT_INTEGRITY_FAILED/);
