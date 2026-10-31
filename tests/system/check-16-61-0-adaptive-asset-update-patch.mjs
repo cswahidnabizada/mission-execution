@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const root=new URL('../../',import.meta.url);
+const studio=fs.readFileSync(new URL('public/assets/js/frontend/admin/data-studio.js',root),'utf8');
+const service=fs.readFileSync(new URL('src/worker/security/platform-data-studio.service.js',root),'utf8');
+assert.match(studio,/IMMUTABLE_EDIT_FIELDS=new Set\(\['id','code','role_code','canonical_resource_id','tenant_id','tenantId','company_id','companyId','countryCode','country_code'/);
+assert.match(studio,/if\(safeJson\(value\)!==safeJson\(original\)\)payload\[field\]=value/);
+assert.ok(studio.includes('No editable fields have changed'),'empty patches must not be previewed or committed');
+assert.match(service,/enforceSubmittedAssetContract\(resourceType,payload,inspected\.record\.record\)/,'server must enforce the submitted patch contract');
+assert.match(service,/withPlatformMutationLease/,'server must serialize canonical mutations');
+assert.match(service,/expectedUpdatedAt/,'server must enforce stale-write protection');
+console.log('16.61.0 adaptive asset update sparse-patch contract: PASS');

@@ -6,7 +6,7 @@ const service=fs.readFileSync(`${root}/src/worker/security/platform-data-studio.
 const country=fs.readFileSync(`${root}/src/worker/security/product-country-catalog.service.js`,'utf8');
 const routes=fs.readFileSync(`${root}/src/worker/modules/admin-control/admin-build-data.routes.js`,'utf8');
 assert.match(studio,/key==='requiresReview'/,'Product Country review policy is rendered as an explicit boolean choice');
-assert.match(studio,/if\(el\.dataset\.field==='code'\|\|el\.dataset\.field==='role_code'\)return/ ,'Edit payload omits immutable identity; server derives it from canonical record');
+assert.match(studio,/IMMUTABLE_EDIT_FIELDS=new Set\(/ ,'Edit payload omits immutable identity and scope; server derives them from canonical record');
 assert.match(studio,/key==='code'&&\['product_country','sector','language','currency'/,'Canonical reusable asset identities are immutable in edit mode');
 assert.match(service,/updateProductCountry\(env,actor,String\(resourceId\)/,'Data Studio commits through Product Country owning authority');
 assert.match(service,/expectedUpdatedAt:expected/,'Data Studio passes optimistic concurrency fence');

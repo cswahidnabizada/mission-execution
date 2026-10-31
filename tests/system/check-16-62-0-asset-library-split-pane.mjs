@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const read=p=>fs.readFileSync(new URL(p,new URL('../../',import.meta.url)),'utf8');
+const ui=read('public/assets/js/frontend/admin/resource-management.js');
+const css=read('public/assets/css/admin-control.css');
+assert.match(ui,/id="resourceFamilyChips"/,'family filter chips are present in the library');
+assert.match(ui,/function renderResourceFamilyChips\(/,'family chips are derived from returned canonical inventory');
+assert.match(ui,/data-family-chip=/,'family chips are interactive');
+assert.match(ui,/ASSET LIBRARY/,'inventory is presented as the asset library');
+assert.match(ui,/ASSET CONFIGURATION/,'the adjacent pane is the asset configuration workspace');
+assert.match(ui,/resourceSelection\?\.type===r\.type/,'selected canonical asset is visually identified in the list');
+assert.match(css,/data-resource-panel="assets"\]\{\s*display:grid;grid-template-columns:minmax\(300px,\.82fr\) minmax\(0,1\.18fr\)/,'asset library uses a persistent two-pane layout');
+assert.match(css,/\.resource-family-chip\.active/,'selected family filter is visually distinct');
+assert.match(css,/@media\(max-width:760px\)/,'the split-pane layout adapts to narrow screens');
+console.log('16.62.0 reference-inspired split-pane Asset Library: PASS');

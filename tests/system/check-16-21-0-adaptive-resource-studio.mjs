@@ -7,7 +7,7 @@ const html=read('public/platform/access/admin/index.html');
 assert.match(ui,/data-resource-view="assets"/,'Assets surface must be available');
 assert.match(ui,/data-resource-view="create"/,'Create surface must be available');
 assert.match(ui,/data-resource-view="monitor"/,'Monitor surface must be available');
-assert.match(ui,/Last updated assets/,'inventory should be asset-first and last-updated oriented');
+assert.match(ui,/ASSET LIBRARY/,'inventory should use the searchable asset-library workspace');
 assert.match(ui,/renderResourceMonitor/,'monitoring view should be driven by canonical inventory');
 assert.match(ui,/data-rw-impact/,'selected asset must expose impact preview');
 assert.match(ui,/data-rw-tab="dependencies"/,'selected asset must expose dependency graph');

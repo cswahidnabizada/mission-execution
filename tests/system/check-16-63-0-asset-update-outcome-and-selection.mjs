@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const read=p=>fs.readFileSync(new URL(p,new URL('../../',import.meta.url)),'utf8');
+const studio=read('public/assets/js/frontend/admin/data-studio.js');
+const resources=read('public/assets/js/frontend/admin/resource-management.js');
+assert.match(studio,/const verificationPending=r2\.verified!==true\|\|r2\.readAfterWriteVerified===false\|\|r2\.evidenceStatus==='pending_reconciliation'/,'unverified commits must be treated as pending, including missing verified flag');
+assert.match(studio,/if\(compact&&typeof onSaved==='function'\)\{await onSaved\(r2\);if\(verificationPending\)alert/,'compact Asset 360 editor must surface incomplete commit evidence');
+assert.match(studio,/Do not retry/,'ambiguous commit outcome must prevent duplicate retry');
+assert.match(resources,/data-resource-type="\$\{text\(r\.type\)\}" data-resource-id="\$\{text\(r\.id\)\}"/,'inventory rows must retain canonical identity for selection state');
+assert.ok(resources.includes("document.querySelectorAll('#resourceResults [data-result-index]')"),'selection updates visible library row without requiring another search');
+console.log('16.63.0 Asset Update outcome and selection continuity: PASS');

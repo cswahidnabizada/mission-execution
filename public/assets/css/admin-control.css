@@ -242,3 +242,71 @@ body{background:var(--admin-bg);color:var(--admin-ink)}.shell{min-height:100vh;b
 
 /* 16.23.0 — immutable market-to-asset bindings */
 .mf-resource-bindings{display:grid;gap:14px}.mf-resource-binding-list{display:grid;gap:8px}.mf-resource-binding,.mf-resource-binding-result{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px;border:1px solid var(--border-color,#d8dee8);border-radius:12px;min-width:0}.mf-resource-binding>div,.mf-resource-binding-result>div{min-width:0;overflow-wrap:anywhere}.mf-resource-binding-result button{flex-shrink:0}.mf-resource-binding .mini,.mf-resource-binding-result .mini{margin-top:4px}.mf-resource-bindings #mfResourceBindingSearchForm{display:flex;gap:8px}.mf-resource-bindings #mfResourceBindingQuery{flex:1;min-width:0}@media(max-width:560px){.mf-resource-binding,.mf-resource-binding-result{align-items:stretch;flex-direction:column}.mf-resource-binding-result button{width:100%}.mf-resource-bindings #mfResourceBindingSearchForm{flex-direction:column}}
+
+
+/* 16.63.0 — Reference-inspired split-pane Asset Library */
+.resource-studio-v2 .resource-studio-panel[data-resource-panel="assets"]{
+ display:grid;grid-template-columns:minmax(300px,.82fr) minmax(0,1.18fr);
+ gap:14px;align-items:start;min-width:0
+}
+.resource-studio-v2 .resource-studio-panel[data-resource-panel="assets"]>.card{
+ min-width:0;margin:0;border-radius:16px;border:1px solid #e8e4df;background:#fff
+}
+.resource-studio-v2 .resource-studio-panel[data-resource-panel="assets"]>.card:first-child{
+ position:sticky;top:10px;max-height:calc(100vh - 125px);overflow:auto;padding:16px
+}
+.resource-studio-v2 .resource-studio-panel[data-resource-panel="assets"]>.resource-workspace-card{
+ position:sticky;top:10px;max-height:calc(100vh - 125px);overflow:auto;padding:16px
+}
+.resource-studio-v2 .resource-studio-panel[data-resource-panel="assets"] .section-head{
+ align-items:center;margin-bottom:12px
+}
+.resource-studio-v2 .resource-library-search{grid-template-columns:minmax(0,1fr) 42px;gap:7px;margin:12px 0 9px}
+.resource-studio-v2 .resource-library-search input{border-radius:999px;min-height:42px;padding-inline:16px;background:#fbfaf8}
+.resource-studio-v2 .resource-library-search button{border-radius:999px;font-size:19px;padding:0}
+.resource-family-chips{display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:thin}
+.resource-family-chip{display:inline-flex;align-items:center;gap:8px;white-space:nowrap;border:1px solid #e9e5df;border-radius:999px;background:#fff;padding:7px 10px;color:#625e59;font-size:10px;cursor:pointer}
+.resource-family-chip b{display:grid;place-items:center;min-width:17px;height:17px;border-radius:99px;background:#f2f0ed;font-size:9px}
+.resource-family-chip.active{border-color:#b18a72;background:#faf5f1;color:#754a32;font-weight:800}
+.resource-family-chip.active b{background:#eadbd0;color:#754a32}
+.resource-studio-v2 .resource-inventory-controls{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:0 0 9px;border-bottom:1px solid #eeeae5}
+.resource-studio-v2 .resource-inventory-controls label{display:none}
+.resource-studio-v2 #resourceClearFilters{min-height:30px;padding:5px 9px;font-size:9px}
+.resource-studio-v2 #resourceFilterSummary{font-size:9px}
+.resource-studio-v2 .resource-studio-panel[data-resource-panel="assets"] .resource-results{
+ display:grid;grid-template-columns:minmax(0,1fr);gap:6px;padding-top:9px
+}
+.resource-studio-v2 .resource-result-row{
+ grid-template-columns:34px minmax(0,1fr) auto;gap:9px;padding:10px;border-radius:12px;border-color:#efede9;background:#fff
+}
+.resource-studio-v2 .resource-result-row:hover{border-color:#c8aa98;background:#fcfaf8}
+.resource-studio-v2 .resource-result-row.selected{border-color:#a77a5f;background:#faf6f2;box-shadow:inset 0 0 0 1px #eadbd0}
+.resource-studio-v2 .resource-result-icon{border-radius:10px;background:#f1efeb;color:#716b64}
+.resource-studio-v2 .resource-result-row.selected .resource-result-icon{background:#8b5e43;color:#fff}
+.resource-studio-v2 .resource-workspace-card .asset360-head{padding:0 0 13px}
+.resource-studio-v2 .resource-workspace-card .asset360-title h3{font-size:17px}
+.resource-studio-v2 .resource-workspace-card .asset360-title p{font-size:10px}
+.resource-studio-v2 .resource-workspace-card .asset360-actions{gap:6px;padding:10px 0}
+.resource-studio-v2 .resource-workspace-card .asset360-actions .btn{min-height:32px;border-radius:999px;font-size:9px}
+.resource-studio-v2 .resource-workspace-card #resourceWorkspaceBody{padding-top:8px}
+.resource-studio-v2 .resource-workspace-card #resourceWorkspaceBody .asset360-summary{font-size:12px}
+.resource-studio-v2 .resource-workspace-card #resourceWorkspaceBody .asset360-help{font-size:10px}
+.resource-studio-v2 .resource-workspace-card #resourceWorkspaceBody .asset-studio-editor,
+.resource-studio-v2 .resource-workspace-card #resourceWorkspaceBody .card{border-radius:12px}
+.resource-studio-v2 .resource-workspace-card #resourceWorkspaceBody .field{min-width:0}
+.resource-studio-v2 .resource-workspace-card #resourceWorkspaceBody input,
+.resource-studio-v2 .resource-workspace-card #resourceWorkspaceBody textarea,
+.resource-studio-v2 .resource-workspace-card #resourceWorkspaceBody select{max-width:100%}
+.resource-studio-v2 .resource-studio-nav{display:flex;gap:6px;width:max-content;max-width:100%;padding:4px;border-radius:12px}
+.resource-studio-v2 .resource-studio-nav button{display:flex;align-items:center;gap:7px;padding:9px 13px;border-radius:9px;font-size:10px}
+.resource-studio-v2 .resource-studio-nav button span{font-size:9px}
+@media(max-width:1050px){
+ .resource-studio-v2 .resource-studio-panel[data-resource-panel="assets"]{grid-template-columns:minmax(260px,.8fr) minmax(0,1.2fr)}
+}
+@media(max-width:760px){
+ .resource-studio-v2 .resource-studio-panel[data-resource-panel="assets"]{grid-template-columns:minmax(0,1fr)}
+ .resource-studio-v2 .resource-studio-panel[data-resource-panel="assets"]>.card:first-child,
+ .resource-studio-v2 .resource-studio-panel[data-resource-panel="assets"]>.resource-workspace-card{position:static;max-height:none;overflow:visible}
+ .resource-studio-v2 .resource-studio-nav{width:100%}
+ .resource-studio-v2 .resource-studio-nav button{flex:1;justify-content:center}
+}

@@ -6,7 +6,7 @@ const css=read('public/assets/css/admin-control.css');
 const pkg=JSON.parse(read('package.json'));
 assert.equal(pkg.version,fs.readFileSync('VERSION','utf8').trim());
 assert.match(ui,/Resource Studio/);
-assert.match(ui,/SINGLE CONTROL SURFACE/);
+assert.match(ui,/ASSET CONFIGURATION/);
 assert.match(ui,/function samplePayload\(d\)/);
 assert.match(ui,/resourceCopySample/);
 assert.match(ui,/resourceApplyJson/);

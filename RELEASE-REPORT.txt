@@ -1,32 +1,27 @@
-ON MISSION 16.60.0 — UNIFIED RESOURCE & ASSET CONTROL PLANE
-Status: hardening candidate; not deployed
-Base: 16.59.0
+ON Mission 16.63.0 — Asset Flow Audit & Outcome Continuity
+Base: 16.62.0
 
-IMPLEMENTED
-- Unified Resource workspace navigation for Inventory, Asset Studio, Overview, Dependencies, Lifecycle and Changes & Audit.
-- Six-family inventory filtering remains based on the existing trusted asset type contracts; no shadow asset store or invented inventory rows.
-- Asset 360 now exposes scope and operational readiness separately from lifecycle where returned by the owner.
-- Dependency, lifecycle and audit context panels are populated only from canonical resource responses; missing evidence is explicitly reported as unavailable, not fabricated.
-- Lifecycle actions continue through the existing canonical action adapter, with owner-side validation and read-back after non-purge actions.
-- Data Studio no longer submits immutable code/role_code identity fields in edit payloads. The server merges canonical values from the owner record and enforces identity immutability.
-- Product Definition resources bypass unsupported generic Data Studio inspection and route to Product Factory, their owning workspace.
-- Release identity, package version, lockfile and manifest advanced to 16.60.0.
+Implemented:
+- Compact Asset 360 updates now surface unverified/pending evidence outcomes after parent workspace refresh.
+- Missing verified=true is treated as pending, not success.
+- Inventory selection state updates immediately and is keyed by canonical type + ID.
 
-VERIFICATION
-- npm run check:release: PASS (asset/control-plane focused cumulative suite, release source gate, dependency lock gate, lifecycle contract gate, architecture boundary gate).
-- JavaScript syntax checks: PASS for resource-management.js and data-studio.js.
-- Build: NOT RUN TO COMPLETION. Build environment gate rejected Node 22.16.0; project requires Node 24.x (repository .node-version is 24.18.0).
-- Authenticated browser verification, production API mutation/read-back, Cloudflare deployment and Germany Logistics pilot: NOT performed.
+Audited flow:
+Resource Library → capability/owner inspection → Asset Studio/Data Studio → sparse patch → contract/scope validation → mutation lease + optimistic concurrency → canonical authority mutation → read-after-write verification → lifecycle/audit evidence.
 
-REMAINING / LIMITATIONS
-- Asset family is still derived client-side from trusted type definitions; a server-owned family field/registry is not yet implemented.
-- Cross-authority dependency completeness is not proven. Graphs remain owner-reported.
-- Product Definition owner routing is implemented in UI but needs authenticated browser confirmation against the actual Product Factory route.
-- Sector 409 mitigation is implemented by omitting immutable identity from client payload; production validation of the exact sector edit is still required.
-- Full production lifecycle/recovery certification and authenticated E2E remain open.
+Verification PASS:
+- npm run check:release
+- npm run check:security
+- npm run check:data-integrity
+- npm run check:production-readiness
+- npm run check:production-hardening
+- npm run check:lifecycle-contract
+- npm run check:current-architecture-convergence
+- JS syntax checks for changed files
+- architecture boundaries (0 import cycles; 1 canonical mission lifecycle writer)
 
-SAFE DEPLOYMENT REQUIREMENTS
-- Use Node.js 24.18.0 or compatible Node 24.x in Cloudflare build.
-- Run the full release and runtime certification gates in the deployment environment.
-- Verify Sector description-only edit and Product Definition owner-workspace routing with authenticated requests.
-- Deploy only after the above gates pass; reconcile live version identity after deployment.
+Limitations / NOT VERIFIED:
+- Production build blocked: local Node 22.16.0; required Node 24.x.
+- Migration 0036 must be applied before relying on its new indexes (per production-readiness gate).
+- No authenticated browser run, live D1 mutation test, Cloudflare deployment, or Germany Logistics pilot run.
+- Universal searchable relationship picker and every asset-family lifecycle transition are not complete/certified.
