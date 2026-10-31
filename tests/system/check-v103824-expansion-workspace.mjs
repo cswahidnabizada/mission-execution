@@ -1,7 +1,7 @@
 import fs from 'node:fs';import path from 'node:path';
 const root=process.cwd();const read=p=>fs.readFileSync(path.join(root,p),'utf8');const fail=m=>{throw new Error(m)};
 const version=read('VERSION').trim();if(!['10.38.24','10.38.25','10.38.26','10.38.27','10.38.28','10.38.28','10.38.29','10.40.0','10.40.1','16.20.0','16.26.0','16.49.0','16.51.0','16.52.0','16.53.0'].includes(version))fail(`VERSION expected 10.38.24, got ${version}`);
-const pkg=JSON.parse(read('package.json'));if(!['10.38.24','10.38.25','10.38.26','10.38.27','10.38.28','10.38.28','10.38.29','10.40.0','10.40.1','16.20.0','16.26.0','16.49.0','16.51.0','16.52.0','16.53.0'].includes(pkg.version))fail('package version mismatch');
+const pkg=JSON.parse(read('package.json'));if(!['10.38.24','10.38.25','10.38.26','10.38.27','10.38.28','10.38.28','10.38.29','10.40.0','10.40.1','16.20.0','16.26.0','16.49.0','16.51.0','16.52.0','16.53.0','16.60.0'].includes(pkg.version))fail('package version mismatch');
 const migration=read('database/migrations/0092_product_expansion_workspace.sql');
 if(!migration.includes("INSERT OR IGNORE INTO processing_purposes") || !migration.includes("'product_expansion'"))fail('Expansion migration must seed its processing purpose before classification rows');
 if(!migration.includes("INSERT OR IGNORE INTO retention_policies") || !migration.includes("'DE_PRODUCT_EXPANSION_REVIEW'"))fail('Expansion migration must seed its retention policy before classification rows');

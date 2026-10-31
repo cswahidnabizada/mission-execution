@@ -1,30 +1,27 @@
-# ON Mission 16.58.0 — Asset Scope and Authority Fence
+# Mission Execution 16.60.0 — Unified Resource Control Plane and Lifecycle UX
 
-Status: source hardening candidate; not production-certified.
-Base: 16.57.0 Server-Authoritative Asset Contract Enforcement.
+Status: hardening candidate
 
-## Implemented
-- Hardened the Data Studio server boundary so supplied tenant/company/market scope fields must match the canonical record exactly, including null/empty scope. This closes the case where an unscoped canonical record could be silently attached to a scope through an ordinary edit.
-- Preserved server-owned field allow-lists, immutable canonical identity checks, Data Entry validation and dependency resolution, mutation lease, optimistic concurrency, canonical owner mutation, lifecycle/audit evidence, and canonical read-back verification.
-- Added a regression contract test for scope normalization and the retained relationship, concurrency, lifecycle-evidence and read-back fences.
-- Bumped the canonical release identity to 16.58.0. No database, new mutation API, or parallel asset authority was introduced.
+Base: 16.59.0
 
-## Verification performed
-- Focused 16.58.0 scope/authority-fence test.
-- 16.57.0 server-authoritative contract test.
-- 16.56.0 contract engine test.
-- 16.55.0 Asset Studio convergence test.
-- 16.54.0 unified workspace test.
-- 16.53.0 governed update test.
-- 16.52.0 asset journey integrity test.
-- JavaScript syntax checks for changed service/test files.
-- Dependency lock gate, schema/migration gates where runnable, and ZIP integrity.
+## Changes
+- Added an asset-family filter to canonical Resource Management inventory, using the existing asset contract family classifier. This is a presentation filter only; it creates no records or alternate authority.
+- Reorganized the single Resource shell around Inventory, Asset Studio, Overview, Dependencies, Lifecycle and Changes & Audit. Added contextual workspaces populated only from the selected asset response.
+- Replaced generic lifecycle confirmation copy with action-specific consequences for stop, start, reactivate, quarantine, restore and permanent purge. The confirmation includes canonical type, identity and revision when available.
+- Kept lifecycle mutation routed through the existing canonical resource action adapter. Non-purge actions re-read the resource and refresh inventory after the owner responds.
+- Preserved the existing owner capability checks, step-up authorization, dependency checks, concurrency fences, canonical read-back and audit paths.
 
-## Known limitations
-- This increment closes one concrete scope-bypass edge case. It does not certify every asset type's relationship matrix or lifecycle transition policy.
-- The local environment uses Node 22.16.0 while the repository requires Node 24.x; therefore the Node 24 build and CSS build were not certified here.
-- Full cumulative release suite and authenticated Cloudflare browser/runtime tests have not been certified. No production deployment was performed.
-- Production 403 recovery, cross-tenant adversarial tests, concurrent edit races, duplicate retry behavior and uncertain partial-commit recovery still require controlled runtime certification.
+- Added regression checks for identity omission and Product Factory owner routing.
 
-## Release decision
-Candidate only. Do not label production-certified until Node 24 build, cumulative release suite, and authenticated runtime/adversarial tests pass.
+## Explicit boundaries
+- Asset family remains a client-side classification derived from the current trusted type definitions; it is not yet explicit server-owned family metadata.
+- This release does not introduce generic cross-domain deletion, cascade deletion, new lifecycle authority, or a parallel asset database.
+- Relationship graphs and impact previews show only evidence exposed by the canonical owner; they are not a universal dependency proof.
+- The earlier unsupported Product Definition edit and Sector HTTP 409 must still be diagnosed against authenticated request/response traces. Removed immutable code fields from client edit payloads so the server merges canonical identity from the owner record. Product Definition records bypass unsupported generic Data Studio inspection and route to Product Factory. These changes address the known failure paths at source level; live authenticated confirmation is still required.
+
+## Verification
+- See the 16.60.0 release check for source-level assertions.
+- Production deployment, authenticated browser tests, live mutation/read-back checks, Node.js 24 full build and Germany Logistics pilot certification remain unverified in this environment.
+
+## Historical cumulative milestones
+- 16.17.0 — Market Cleanup and Guided Intake

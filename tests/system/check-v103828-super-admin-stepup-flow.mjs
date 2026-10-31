@@ -2,7 +2,7 @@ import fs from 'node:fs';
 const read=p=>fs.readFileSync(p,'utf8');
 const version=read('VERSION').trim();
 if(!['10.38.28','10.38.29','10.39.0','10.39.1','10.40.0','10.40.1','16.20.0','16.26.0','16.49.0','16.51.0','16.52.0','16.53.0'].includes(version))throw new Error(`VERSION ${version}`);
-const pkg=JSON.parse(read('package.json')); if(!['10.38.28','10.38.29','10.39.0','10.39.1','10.40.0','10.40.1','16.20.0','16.26.0','16.49.0','16.51.0','16.52.0','16.53.0'].includes(pkg.version))throw new Error('package version mismatch');
+const pkg=JSON.parse(read('package.json')); if(!['10.38.28','10.38.29','10.39.0','10.39.1','10.40.0','10.40.1','16.20.0','16.26.0','16.49.0','16.51.0','16.52.0','16.53.0','16.60.0'].includes(pkg.version))throw new Error('package version mismatch');
 const admin=read('public/assets/js/frontend/admin/admin.js');
 for(const x of ["let stepUpPromise=null","const rawApi=async","PLATFORM_SUPER_ADMIN_STEP_UP_REQUIRED","if(await ensureStepUp())return await rawApi(path,request)","request.body=JSON.stringify(request.body)","rawApi('/api/platform/access/admin/status')","rawApi('/api/platform/access/admin/step-up"])if(!admin.includes(x))throw new Error(`step-up flow missing ${x}`);
 const routes=read('src/worker/modules/admin-control/admin-control.routes.js');

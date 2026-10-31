@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const root=new URL('../../',import.meta.url);
+const ui=fs.readFileSync(new URL('public/assets/js/frontend/admin/resource-management.js',root),'utf8');
+const contract=fs.readFileSync(new URL('public/assets/js/frontend/admin/asset-contract-engine.js',root),'utf8');
+assert.match(ui,/ASSET FAMILY/,'inventory must expose asset-family filtering');
+assert.match(ui,/function familyForResource\(r\)/,'family classification must reuse the existing asset contract');
+assert.match(ui,/inventoryFilters\.family/,'family filter must affect the visible inventory');
+assert.match(ui,/OVERVIEW/,'monitoring area must be presented as the Control Center');
+for(const action of ['stop','start','reactivate','trash','restore','purge']) assert.match(ui,new RegExp(`${action}:'`),`lifecycle confirmation must explain ${action}`);
+assert.match(ui,/canonical authority will validate this action/,'lifecycle actions remain owner-authoritative');
+assert.match(ui,/runResourceAction\(r,action\)/,'lifecycle mutation must continue through the existing canonical action adapter');
+assert.match(ui,/await selectResource\(r\)/,'non-purge lifecycle actions must re-read canonical state');
+assert.match(ui,/await loadRecent\(\)/,'lifecycle completion must refresh canonical inventory');
+assert.match(contract,/canonicalIdOwnedByServer:true/,'canonical identity remains server-owned');
+assert.match(contract,/tenantIsolationRequired:true/,'tenant scope remains server-authoritative');
+console.log('16.59.0 unified resource control plane: PASS');

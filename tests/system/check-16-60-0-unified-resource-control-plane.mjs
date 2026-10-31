@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const root=new URL('../../',import.meta.url);
+const ui=fs.readFileSync(new URL('public/assets/js/frontend/admin/resource-management.js',root),'utf8');
+const pkg=JSON.parse(fs.readFileSync(new URL('package.json',root),'utf8'));
+assert.equal(pkg.version,'16.60.0');
+for(const view of ['assets','create','monitor','dependencies','lifecycle','changes']) assert.match(ui,new RegExp(`data-resource-panel="${view}"`),`missing ${view} workspace`);
+for(const family of ['Data assets','Logical assets','Visible assets','Operational assets','Service & integration assets','Governance & release assets']) assert.ok(ui.includes(family)||ui.includes(family.replaceAll(' ','')),`missing asset family ${family}`);
+assert.match(ui,/function familyForResource\(r\)/);
+assert.match(ui,/inventoryFilters\.family/);
+assert.match(ui,/Operational readiness/,'readiness must remain separate from lifecycle');
+assert.match(ui,/runResourceAction\(r,action\)/,'lifecycle mutations must use canonical action adapter');
+assert.match(ui,/await selectResource\(r\)/,'post-action state must be read back');
+assert.match(ui,/No history was returned/,'missing audit evidence must not be fabricated');
+assert.match(ui,/canonical authority will validate this action/);
+console.log('16.60.0 unified resource control plane: PASS');
