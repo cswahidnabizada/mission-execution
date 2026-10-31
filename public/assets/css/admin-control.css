@@ -244,7 +244,7 @@ body{background:var(--admin-bg);color:var(--admin-ink)}.shell{min-height:100vh;b
 .mf-resource-bindings{display:grid;gap:14px}.mf-resource-binding-list{display:grid;gap:8px}.mf-resource-binding,.mf-resource-binding-result{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px;border:1px solid var(--border-color,#d8dee8);border-radius:12px;min-width:0}.mf-resource-binding>div,.mf-resource-binding-result>div{min-width:0;overflow-wrap:anywhere}.mf-resource-binding-result button{flex-shrink:0}.mf-resource-binding .mini,.mf-resource-binding-result .mini{margin-top:4px}.mf-resource-bindings #mfResourceBindingSearchForm{display:flex;gap:8px}.mf-resource-bindings #mfResourceBindingQuery{flex:1;min-width:0}@media(max-width:560px){.mf-resource-binding,.mf-resource-binding-result{align-items:stretch;flex-direction:column}.mf-resource-binding-result button{width:100%}.mf-resource-bindings #mfResourceBindingSearchForm{flex-direction:column}}
 
 
-/* 16.63.0 — Reference-inspired split-pane Asset Library */
+/* 16.64.0 — Reference-inspired split-pane Asset Library */
 .resource-studio-v2 .resource-studio-panel[data-resource-panel="assets"]{
  display:grid;grid-template-columns:minmax(300px,.82fr) minmax(0,1.18fr);
  gap:14px;align-items:start;min-width:0
@@ -310,3 +310,12 @@ body{background:var(--admin-bg);color:var(--admin-ink)}.shell{min-height:100vh;b
  .resource-studio-v2 .resource-studio-nav{width:100%}
  .resource-studio-v2 .resource-studio-nav button{flex:1;justify-content:center}
 }
+
+/* 16.66.0 canonical relationship selector */
+.resource-relationship-results{display:grid;gap:7px;margin-top:10px;min-width:0}
+.resource-search-result{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px;border:1px solid var(--admin-line);border-radius:10px;background:var(--surface,#fff)}
+.resource-search-result>div{display:grid;gap:3px;min-width:0}
+.resource-search-result b{font-size:10px;overflow-wrap:anywhere}
+.resource-search-result small{font-size:8px;color:var(--muted,#64748b);overflow-wrap:anywhere}
+.resource-search-result .btn{flex:0 0 auto}
+@media(max-width:600px){.resource-search-result{align-items:flex-start;flex-direction:column}.resource-search-result .btn{width:100%}}

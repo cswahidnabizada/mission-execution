@@ -238,6 +238,27 @@ function labelForRecent(type){return clean(String(type||'resource').replaceAll('
 export async function getResourceExplorer(env,{resourceType,resourceId}={}){
  const root=await baseResource(env,clean(resourceType,60),resourceId);if(!root)throw Object.assign(new Error('RESOURCE_NOT_FOUND'),{status:404,code:'RESOURCE_NOT_FOUND'});
  const graph=root.type==='tenant'?await tenantGraph(env,resourceId):root.type==='user'?await userGraph(env,resourceId):await genericGraph(env,root.type,resourceId,root);
+ // Merge governed platform relationship edges into the existing read-only Asset 360 graph.
+ // The relationship table is additive evidence; domain-owned graph edges remain untouched.
+ try{
+  const relationType=root.type==='product'?'product_definition':root.type;
+  const rows=await all(env,`SELECT from_resource_type,from_resource_id,to_resource_type,to_resource_id,relation_type,status,reason,updated_at FROM platform_resource_relationships WHERE status='active' AND ((from_resource_type=? AND from_resource_id=?) OR (to_resource_type=? AND to_resource_id=?)) ORDER BY id DESC LIMIT 500`,relationType,String(resourceId),relationType,String(resourceId));
+  const nodes=new Map((graph.nodes||[]).map(x=>[x.id,x])),edges=new Map((graph.edges||[]).map(x=>[x.id,x]));
+  for(const row of rows){
+   const fromType=row.from_resource_type==='product_definition'?'product':row.from_resource_type;
+   const toType=row.to_resource_type==='product_definition'?'product':row.to_resource_type;
+   const from=node(fromType,row.from_resource_id,`${fromType} ${row.from_resource_id}`);
+   const to=node(toType,row.to_resource_id,`${toType} ${row.to_resource_id}`);
+   nodes.set(from.id,from);nodes.set(to.id,to);
+   const e=edge(from,to,row.relation_type,row.reason,{source:'platform_resource_relationships',updatedAt:row.updated_at});
+   edges.set(e.id,e);
+  }
+  graph.nodes=[...nodes.values()];graph.edges=[...edges.values()];
+  graph.summary={...(graph.summary||{}),directDependencies:Math.max(0,graph.nodes.length-1),persistedRelationshipCount:rows.length};
+ }catch(error){
+  graph.unavailableAuthorities=[...(graph.unavailableAuthorities||[]),{type:'resource_relationships',authority:'Canonical Resource Relationship Engine',status:'AUTHORITY_UNAVAILABLE',code:error?.code||'RESOURCE_RELATIONSHIP_STORAGE_UNAVAILABLE'}];
+  graph.completeness='DEGRADED';
+ }
  const dependencyState=graph.edges.map(e=>({relation:e.relation,target:e.to.id===graph.root.id?e.from:e.to,label:e.label}));
  const trashType=root.type==='component'?'ui':root.type;
  const trash=await canonicalFirst(env,`SELECT id,trashed_at,evidence_status,legal_hold,restored_at,purged_at,reason_code FROM platform_trash_items WHERE resource_type=? AND resource_id=? ORDER BY id DESC LIMIT 1`,[trashType,String(resourceId)],'resource_explorer_trash_state');

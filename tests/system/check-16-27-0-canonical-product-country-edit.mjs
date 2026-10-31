@@ -5,7 +5,7 @@ const studio=fs.readFileSync(`${root}/public/assets/js/frontend/admin/data-studi
 const service=fs.readFileSync(`${root}/src/worker/security/platform-data-studio.service.js`,'utf8');
 const country=fs.readFileSync(`${root}/src/worker/security/product-country-catalog.service.js`,'utf8');
 const routes=fs.readFileSync(`${root}/src/worker/modules/admin-control/admin-build-data.routes.js`,'utf8');
-assert.match(studio,/key==='requiresReview'/,'Product Country review policy is rendered as an explicit boolean choice');
+assert.match(studio,/if\(type==='boolean'\)/,'Boolean fields, including Product Country review policy, are rendered from the canonical field schema');
 assert.match(studio,/IMMUTABLE_EDIT_FIELDS=new Set\(/ ,'Edit payload omits immutable identity and scope; server derives them from canonical record');
 assert.match(studio,/key==='code'&&\['product_country','sector','language','currency'/,'Canonical reusable asset identities are immutable in edit mode');
 assert.match(service,/updateProductCountry\(env,actor,String\(resourceId\)/,'Data Studio commits through Product Country owning authority');

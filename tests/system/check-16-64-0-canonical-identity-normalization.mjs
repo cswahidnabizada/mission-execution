@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const service=fs.readFileSync(new URL('../../src/worker/security/platform-data-studio.service.js',import.meta.url),'utf8');
+assert.match(service,/const submitted=String\(payload\[identityField\]\?\?''\)\.trim\(\)/);
+assert.match(service,/const normalizeIdentity=value=>value\.toLocaleUpperCase\('en-US'\)/);
+assert.match(service,/DATA_STUDIO_CANONICAL_IDENTITY_IMMUTABLE/);
+assert.match(service,/details:\{field:identityField,resourceType:type/);
+assert.match(service,/input\.code=resourceType==='product_country'\?canonicalCode\.toUpperCase\(\):canonicalCode/);
+assert.match(service,/const canonicalCode=String\(canonicalRecord\.code\?\?canonicalRecord\.role_code/);
+console.log('16.64.0 canonical identity normalization and owner-held identity preservation: PASS');

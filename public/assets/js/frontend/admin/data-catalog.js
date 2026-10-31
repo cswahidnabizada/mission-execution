@@ -1,5 +1,5 @@
 /* ON Mission 10.72.0 — Data Catalog: canonical read / inspect / reuse surface */
-import {$} from './admin-runtime.js?v=16.63.0';
+import {$} from './admin-runtime.js?v=16.70.0';
 
 export async function renderDataCatalog({api,esc,state,ensureStepUp,show}){
  const box=document.querySelector('#view-data-catalog');if(!box)return;

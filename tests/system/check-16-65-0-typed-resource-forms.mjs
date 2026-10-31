@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const source=fs.readFileSync(new URL('../../public/assets/js/frontend/admin/data-studio.js',import.meta.url),'utf8');
+assert.match(source,/function parseFieldValue\(field,value,schema=\{\}\)/);
+assert.match(source,/type==='boolean'\|\|field==='requiresReview'/);
+assert.match(source,/type==='integer'\|\|type==='number'/);
+assert.match(source,/type==='json'\|\|OBJECT_FIELDS\.has\(field\)/);
+assert.match(source,/if\(type==='enum'\)/);
+assert.match(source,/if\(type==='text'\)/);
+assert.match(source,/if\(type==='relationship'\)/);
+assert.match(source,/schemas\[f\]\?\.required===true/);
+assert.match(source,/inputFor\(f,payload\[f\],meta\.required\.has\(f\),meta\.schemas\[f\]\|\|\{\}\)/);
+assert.match(source,/Canonical reference field/);
+console.log('16.65.0 schema-aware typed resource form contract: PASS');

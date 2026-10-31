@@ -48,8 +48,14 @@ function enforceSubmittedAssetContract(type,payload,canonicalRecord=null){
   if(canonicalRecord){
     const identityField=type==='role'?'role_code':'code';
     if(Object.prototype.hasOwnProperty.call(payload,identityField)){
-      const current=String(canonicalRecord[identityField]??canonicalRecord.code??canonicalRecord.role_code??'');
-      if(String(payload[identityField]??'')!==current)throw fail('DATA_STUDIO_CANONICAL_IDENTITY_IMMUTABLE',409,'DATA_STUDIO_CANONICAL_IDENTITY_IMMUTABLE');
+      const current=String(canonicalRecord[identityField]??canonicalRecord.code??canonicalRecord.role_code??'').trim();
+      const submitted=String(payload[identityField]??'').trim();
+      // Codes are canonical identifiers, not editable configuration. Compare their
+      // normalized representation so harmless casing/whitespace differences do not
+      // reject an otherwise valid description/name update. The commit path below
+      // always re-injects the exact owner-held canonical code before mutation.
+      const normalizeIdentity=value=>value.toLocaleUpperCase('en-US');
+      if(normalizeIdentity(submitted)!==normalizeIdentity(current))throw Object.assign(fail('DATA_STUDIO_CANONICAL_IDENTITY_IMMUTABLE',409,'DATA_STUDIO_CANONICAL_IDENTITY_IMMUTABLE'),{details:{field:identityField,resourceType:type,reason:'Canonical identity cannot be changed through configuration editing.'}});
     }
     for(const key of ['tenantId','tenant_id','companyId','company_id','countryCode','country_code']){
       if(Object.prototype.hasOwnProperty.call(payload,key)){

@@ -6,7 +6,7 @@ import {canonicalMissionStatus,lifecycleSuccessors} from "../js/core/lifecycle-r
 import {api} from "../js/core/api.js";
 import {normalizeActionId,hasCanonicalAction,ACTION_GROUPS} from "../js/core/action-registry.js";
 import {lifecycleComponent,livenessBadge,statusBadge} from "./components.js";
-import {executeAction} from "../js/extensions/secured-action-execution.js?v=16.63.0";
+import {executeAction} from "../js/extensions/secured-action-execution.js?v=16.70.0";
 
 const VIEWS=Object.freeze(["situation","plan","execution","evidence","history","actions","mission-tv"]);
 const LABELS=Object.freeze({situation:"Situation",plan:"Plan",execution:"Execution",evidence:"Evidence",history:"History",actions:"Actions","mission-tv":"Mission TV"});

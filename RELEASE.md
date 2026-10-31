@@ -1,72 +1,86 @@
-# Mission Execution 16.61.0 — Unified Resource Control Plane and Lifecycle UX
+# ON Mission 16.66.0 — Canonical Resource Relationship Engine · Cumulative Candidate
 
-Status: hardening candidate
+Base: 16.65.0
 
-Base: 16.59.0
+## Implemented
+- Added a canonical relationship authority for `depends_on` edges between already-existing canonical resources.
+- Endpoints are resolved through Data Studio's canonical inspection path; unsupported resource types are rejected instead of accepted as unverified text.
+- Relationship previews re-resolve both endpoints, enforce supported relationship types, reject self-references, and compare tenant and country/market scope when those scopes are present.
+- Dependency cycle detection blocks a new edge when it would introduce a cycle.
+- Added read/list API for active relationships on either endpoint.
+- Added Asset 360 search-and-select UI using the canonical Resource Search endpoint, plus governed connect and disconnect actions.
+- Merged persisted relationship edges into the Resource Explorer graph so refresh shows the committed relationship.
+- Added a read-only canonical Product Definition endpoint lookup for relationship edges; Product Factory remains the edit authority.
+- Added step-up protected commit and removal operations, critical audit intent/completion, unique edge identity, and independent row read-back.
+- Removal is a durable `removed` state, not destructive deletion.
+- Added migration 0164 and current-schema snapshot update.
+- Relationship operations create no endpoint assets and preserve canonical owner authority.
 
-## Changes
-- Added an asset-family filter to canonical Resource Management inventory, using the existing asset contract family classifier. This is a presentation filter only; it creates no records or alternate authority.
-- Reorganized the single Resource shell around Inventory, Asset Studio, Overview, Dependencies, Lifecycle and Changes & Audit. Added contextual workspaces populated only from the selected asset response.
-- Replaced generic lifecycle confirmation copy with action-specific consequences for stop, start, reactivate, quarantine, restore and permanent purge. The confirmation includes canonical type, identity and revision when available.
-- Kept lifecycle mutation routed through the existing canonical resource action adapter. Non-purge actions re-read the resource and refresh inventory after the owner responds.
-- Preserved the existing owner capability checks, step-up authorization, dependency checks, concurrency fences, canonical read-back and audit paths.
-
-- Added regression checks for identity omission and Product Factory owner routing.
-
-## Explicit boundaries
-- Asset family remains a client-side classification derived from the current trusted type definitions; it is not yet explicit server-owned family metadata.
-- This release does not introduce generic cross-domain deletion, cascade deletion, new lifecycle authority, or a parallel asset database.
-- Relationship graphs and impact previews show only evidence exposed by the canonical owner; they are not a universal dependency proof.
-- The earlier unsupported Product Definition edit and Sector HTTP 409 must still be diagnosed against authenticated request/response traces. Removed immutable code fields from client edit payloads so the server merges canonical identity from the owner record. Product Definition records bypass unsupported generic Data Studio inspection and route to Product Factory. These changes address the known failure paths at source level; live authenticated confirmation is still required.
+## Deliberate scope boundaries
+- This release currently supports the generic `depends_on` relationship only.
+- Product Definitions are supported as read-only relationship endpoints through the Product Definition owner query. Product Factory edit routing and full Product Factory/Market Studio convergence remain open for 16.69.0.
+- The first relationship schema is platform-scoped; tenant/market scope compatibility is checked from owner-returned endpoint records. More nuanced cross-market relationship policy requires owner-specific contracts.
+- Existing Product Launch dependency graph remains separate; convergence is part of Asset 360 / Market Studio work.
 
 ## Verification
-- See the 16.61.0 release check for source-level assertions.
-- Production deployment, authenticated browser tests, live mutation/read-back checks, Node.js 24 full build and Germany Logistics pilot certification remain unverified in this environment.
+- See `RELEASE-REPORT.txt`.
+- Source candidate only; not deployed or live-certified.
 
-## Historical cumulative milestones
-- 16.17.0 — Market Cleanup and Guided Intake
+## Protected platform baseline continuity
+This resource-management release preserves the established ON Mission platform boundaries:
+- Global Compliance Context, Consent & Privacy, and Data Subject Rights remain governed platform concerns; this release does not replace their owning authorities.
+- Private ForYou remains a distinct product experience and is not treated as a resource identity or tenant boundary.
+- Canonical domain ownership, canonical capability contracts and canonical vocabulary remain server-authoritative.
+- Logistics remains the pilot sector. Historical Cargo terminology is not introduced as a new authority; the current product vocabulary remains Object.
+- `database/schema.current.sql` is updated alongside ordered migrations. The deterministic release pipeline and migration contract checker remain required release controls.
 
-## 16.61.0 — Adaptive Asset Update Patch Safety
+The **canonical domain** owns resource truth. A governed **Capability** is an explicit contract and is not inferred from a UI control.
 
-- Asset Update now submits a sparse patch containing only fields whose normalized values differ from the canonical record.
-- Immutable identity and scope fields are excluded from generic edit payloads.
-- Empty changes are blocked before preview, preventing no-op commits.
-- Numeric and boolean fields are normalized against the server-provided field schema before dirty-field comparison.
-- Existing server-side contract enforcement, mutation lease, optimistic concurrency, owning-authority commit and read-back verification remain in place.
-- This release does not claim to implement all six asset-family workspaces or all cross-authority relationship operations; those require per-authority contracts and runtime certification.
-- Verification: full configured `npm run check:release` chain passed under Node 22.16.0. Production build remains blocked by the repository's Node 24.x build gate in this local environment.
+---
 
-## 16.62.0 — Reference-Inspired Split-Pane Asset Library
+# ON Mission 16.70.0 — Resource Management Completion Integration · Final Source Candidate
 
-- Reworked the Resource Management inventory into a persistent two-pane Asset Library and Asset Configuration workspace.
-- Added family filter chips with counts derived only from the currently returned canonical inventory; filters remain scoped to the returned result set.
-- Kept the existing type and lifecycle filters available in the underlying controls, while presenting the common family navigation as compact chips.
-- Added selected-asset highlighting and clearer library/configuration headings.
-- Applied a responsive layout: side-by-side on wide screens and stacked on narrow screens.
-- Preserved canonical resource search, authority capability inspection, owner-workspace routing, dependency/impact inspection, governed edit, lifecycle action gates, and existing create/preview/commit flows.
-- No sample asset records were inserted; displayed counts are computed from the actual inventory response.
-- Verification: full configured `npm run check:release` chain passed under Node 22.16.0; Resource Management JavaScript syntax check passed.
-- Production build was blocked at the Node version gate: local runtime 22.16.0, required Node 24.x. Browser, D1, and production deployment verification remain outstanding.
+Base: 16.66.0
 
-## 16.63.0 — Asset Flow Audit & Outcome Continuity
+## Implemented in this cumulative candidate
+- Preserved the 16.64 canonical identity normalization, 16.65 schema-driven typed resource forms, and 16.66 canonical relationship engine.
+- Added a permission-checked Asset 360 lifecycle-history endpoint. The route first resolves the resource through Resource Explorer, then returns owner-associated lifecycle events.
+- Connected Asset 360 Changes & Audit to the lifecycle history endpoint. The UI distinguishes returned lifecycle evidence from missing evidence and does not interpret an empty history as proof that no changes occurred.
+- Removed generic START / REACTIVATE buttons from the Resource Management surface because the generic action route does not implement those transitions through a registered owner adapter. This prevents presenting unsupported controls as operational.
+- Added a cumulative integration regression test for lifecycle history routing, authorization, UI evidence rendering, relationship scope/cycle protections, and release identity.
+- Retained existing Market Factory, Product Factory, controlled launch, product readiness and mission lifecycle capabilities without creating parallel market or product records.
+- Updated release identity, cache-busting references, release manifest and release verification documentation.
 
-### Audit findings and fixes
-- Confirmed the canonical edit path: Resource Library selection → capability inspection → owner-routed Asset Studio/Data Studio → sparse dirty-field patch → contract and scope validation → mutation lease and optimistic concurrency check → canonical owner mutation → independent read-after-write comparison → lifecycle/audit evidence.
-- Fixed compact Asset 360 update handling so a commit with missing verification, failed read-back, or pending evidence is surfaced to the administrator even when the parent Asset 360 view refreshes. The message explicitly says not to retry an ambiguous mutation.
-- Fixed selected-asset continuity: the library row now carries canonical type and ID and updates its selected visual state immediately when selected, without requiring another search/filter cycle.
-- Preserved owner routing for Product Definition and capability-gated editing for other supported types.
-- Confirmed the 25 resource types listed in the Data Studio edit capability set; other asset authorities remain owner-workspace only or inspect-only where not granted.
+## Verification performed for this candidate
+- 16.70 integration regression test.
+- Cumulative 16.66 release suite.
+- Security, data integrity, production readiness, production hardening, lifecycle contract and architecture convergence checks.
+- Migration contract, release engineering, dependency lock and single-release-source checks.
+- JavaScript syntax checks for changed files.
+- SQLite migration smoke test for migration 0164 was already part of the 16.66 baseline; no production D1 application is claimed.
 
-### Verification
-- Full configured `npm run check:release`: PASS.
-- `check:security`, `check:data-integrity`, `check:production-readiness`, `check:production-hardening`, `check:lifecycle-contract`, and `check:current-architecture-convergence`: PASS.
-- Architecture: 0 local import cycles; one canonical mission lifecycle writer.
-- Data integrity output retains protected deletion policies for mission and executor identity records.
-- Production-readiness gate notes migration 0036 must be applied before relying on its new indexes.
-- Build remains blocked locally by Node 22.16.0 versus required Node 24.x.
-- Authenticated browser, live D1 mutation, production deployment, and Germany Logistics pilot verification were not run in this environment.
+## Explicitly not certified
+- Production Node 24 build. This environment has Node 22.16.0; the repository requires Node 24.22.1.
+- Authenticated browser tests against the deployed Worker.
+- Live Cloudflare D1 mutations or independent read-after-write verification.
+- Production application/verification of migrations 0036 and 0164.
+- Germany Logistics pilot launch and real mission execution.
+- Every resource-family create/edit path and all owner-specific lifecycle adapters.
+- Sector HTTP 409 reproduction and Product Definition HTTP 422 correction against authenticated live request traces.
+- Generic activate/resume transitions. They must be implemented by explicit canonical owner adapters; the UI no longer exposes generic unsupported start controls.
 
-### Explicit remaining gaps
-- Typed relationship selection/editing is not yet a complete universal workflow; current editors expose contract fields and some relation hints, but this release does not certify a searchable multi-select reference picker for every asset family.
-- Lifecycle actions are offered only from authority-reported capabilities; this release does not certify every transition for every asset type.
-- Production runtime and database outcomes remain unverified until deployed and exercised against the target D1 environment.
+## Remaining programme
+1. Resolve Sector canonical edit HTTP 409 using authenticated request/response traces.
+2. Route Product Definition edits through Product Factory and certify preview/commit/read-back.
+3. Certify create/edit/read-back for every resource family and every typed schema.
+4. Expand relationship semantics only with explicit owner contracts; certify scope policies and cross-tenant denial.
+5. Complete owner-specific activate/publish, suspend, resume/restore, retire/archive and safe deletion transitions with audit, legal holds, dependency checks and idempotent recovery.
+6. Complete dependency impact analysis across all canonical owners and audit/activity convergence.
+7. Complete Germany Logistics Product Factory → Market Studio → Test Lab → approval → signed release → launch → operations journey.
+8. Apply and verify migrations 0036 and 0164 in production.
+9. Run Node 24.22.1 production build, authenticated browser tests, live D1 mutation/read-back and recovery tests.
+10. Complete end-to-end tenant isolation, market scope, authorization, concurrency and Germany pilot certification.
+
+## Permanent engineering rules
+Security → Truth → Liveness → Stability → Experience → Scale.
+Canonical mission journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
