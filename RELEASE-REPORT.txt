@@ -1,41 +1,21 @@
-ON MISSION 16.71.0 — OWNER BOUNDARY & CANONICAL IDENTITY HARDENING
-Base: 16.70.0
-Status: cumulative source candidate; not production-certified.
+ON MISSION 16.72.0 — SAFE RELATIONSHIP-AWARE DELETION GUARD
+Base: 16.71.0
+Status: SOURCE CANDIDATE; NOT DEPLOYED
 
-IMPLEMENTED
-- Product Definition Asset 360 edit route is explicitly owner-routed to Product Factory. The generic Data Studio editor is not mounted and generic preview/commit requests are not sent.
-- Canonical identity validation now uses owner-held resource identity fallback fields (`resourceId`, `resource_id`, `id`) when a reusable resource projection does not expose its canonical key as `code`/`role_code`.
-- Build-environment failure guidance now points to the exact `.node-version` (24.22.1) rather than a stale 24.18.0 instruction.
-- Added focused regression coverage and advanced release identity to 16.71.0.
+CHANGES
+- Quarantine now checks active inbound/outbound canonical relationship edges before changing resource state.
+- Permanent purge repeats the relationship check immediately before deletion.
+- Legal-hold check remains in force.
+- No database migration; schema high-water remains 0164.
+- Release gate includes a focused regression contract.
 
-SOURCE VERIFICATION — PASS
-- `npm run check:release` — PASS, including cumulative Resource Management tests, owner boundary regression, lifecycle contract, dependency lock and architecture scan.
-- `npm run check:security` — PASS.
-- `npm run check:data-integrity` — PASS.
-- `npm run check:production-readiness` — PASS for source/schema checks; script still emits its standing note that production D1 migration 0036 must be applied before relying on indexes.
-- `npm run check:production-hardening` — PASS.
-- `node scripts/check-migration-contract.mjs` — PASS: 164 ordered migrations, high-water mark 0164.
-- `node scripts/check-release-engineering.mjs` — PASS.
-- `node --check` on modified JavaScript modules — PASS.
-- Architecture scan — PASS: 427 JavaScript files, 1,615 local imports, zero cycles, one canonical mission lifecycle writer.
-- ZIP integrity and SHA-256 recorded in delivery.
+VERIFICATION
+- Cumulative source release suite: PASS (all configured checks, including the new deletion relationship guard).
+- Security baseline: PASS. Data integrity: PASS. Production-readiness architecture/data checks: PASS (production D1 migration 0036 still requires live verification). Production hardening: PASS.
+- Node 24.22.1 production build: BLOCKED in this packaging environment (runtime Node 22.16.0; repository requires Node 24.x). CSS compilation did not run.
+- Live D1/browser/API/Germany pilot: not run. Production D1 migration state remains user-reported, not independently queried.
 
-BUILD
-- `npm run build` attempted and BLOCKED at the environment gate: this build runner has Node 22.16.0; the project requires Node 24.x and `.node-version` is 24.22.1. CSS compilation did not run.
-- User's earlier Cloudflare logs showed Node 24.22.1, but this exact 16.71.0 candidate has not yet been built by Cloudflare.
-
-NOT VERIFIED / STILL REQUIRES USER ENVIRONMENT
-- Exact Sector 409 production request/response and live mutation/read-back.
-- Product Factory authenticated save/reload in production.
-- Every resource-family create/edit/reload certification.
-- Full semantic owner-approved relationship contracts.
-- Owner-specific lifecycle adapters for activate/suspend/resume/retire/restore.
-- Complete dependency-aware deletion, legal-hold and retention enforcement.
-- Full Asset 360 dependency, audit and activity convergence.
-- Germany Logistics market configuration and Test Lab.
-- Product Factory → Market Studio → approval → signed release → launch end-to-end.
-- Independent production D1 verification of migrations 0036 and 0164. User reports migrations succeeded; no live D1 query was available here.
-- Authenticated browser/API/D1 mutation, recovery and tenant-isolation tests.
-- Germany Logistics pilot certification.
-
-NO PRODUCTION DATA OR DATABASE WAS CHANGED BY THIS SOURCE BUILD.
+LIMITATIONS
+- Sector 409 still requires the real production request trace to confirm exact behavior.
+- Owner-specific lifecycle adapters and full owner-approved semantic relationship catalog remain incomplete.
+- Germany Logistics Test Lab and signed launch journey require live configuration/evidence.

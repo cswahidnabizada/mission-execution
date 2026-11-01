@@ -132,6 +132,14 @@ function display(type,row){
  return String(row?.id||'');
 }
 
+async function activeRelationshipDependencies(env,type,id){
+ const canonicalType=type==='product'?'product_definition':String(type||'');
+ const resourceId=String(id??'');
+ if(!canonicalType||!resourceId)return {total:0};
+ const row=await one(env,`SELECT COUNT(*) count FROM platform_resource_relationships WHERE status='active' AND ((from_resource_type=? AND from_resource_id=?) OR (to_resource_type=? AND to_resource_id=?))`,canonicalType,resourceId,canonicalType,resourceId);
+ return {total:int(row?.count)};
+}
+
 async function dependencies(env,type,row){
  if(type==='tenant'){const qs=[['users',`SELECT COUNT(*) count FROM auth_identities WHERE company_id=?`],['drivers',`SELECT COUNT(*) count FROM drivers WHERE company_id=?`],['missions',`SELECT COUNT(*) count FROM mission_canonical_projection WHERE company_id=?`],['files',`SELECT COUNT(*) count FROM mission_files WHERE company_id=?`],['subscriptions',`SELECT COUNT(*) count FROM subscriptions WHERE company_id=?`],['billing',`SELECT COUNT(*) count FROM billing_identities WHERE company_id=?`]];const byTable={};let total=0;for(const [k,q] of qs){const r=await one(env,q,row.id);byTable[k]=int(r?.count);total+=byTable[k]}return {total,byTable,disposable:false};}
  if(type==='user'){const qs=[['missions',`SELECT COUNT(*) count FROM mission_canonical_projection m JOIN mission_active_assignment_projection a ON a.mission_id=m.id AND a.company_id=m.company_id AND a.assignment_type='owner_driver' AND a.assignee_type='driver' AND a.assignee_id=(SELECT driver_id FROM auth_identities WHERE id=?) WHERE m.company_id=?`],['driver',`SELECT COUNT(*) count FROM drivers WHERE id=(SELECT driver_id FROM auth_identities WHERE id=?)`],['platform_users',`SELECT COUNT(*) count FROM platform_users WHERE principal_type='tenant' AND principal_id=?`],['verification',`SELECT COUNT(*) count FROM verification_profiles WHERE (identity_type='tenant' AND identity_id=?)`]];const byTable={};let total=0;for(const [k,q] of qs){const r=k==='missions'?await one(env,q,row.id,row.company_id):await one(env,q,row.id);byTable[k]=int(r?.count);total+=byTable[k]}return {total,byTable,disposable:total===0};}
@@ -209,7 +217,11 @@ export async function trashResource(env,actor,{resourceType,resourceId,reasonCod
  const scopeKey=`trash-resource:${clean(resourceType,100)}:${String(resourceId??'')}`;
  return withPlatformMutationLease(env,{scopeKey,actorType:actor?.role||actor?.type||'platform_super_administrator',actorId:actor?.id||actor?.identityId||null},async()=>{
  const row=await loadResource(env,resourceType,resourceId);if(!row)throw fail('TRASH_RESOURCE_NOT_FOUND',404,'TRASH_RESOURCE_NOT_FOUND');
- const deps=await dependencies(env,resourceType,row);const decision=await canTrash(env,resourceType,row,deps);if(!decision.ok)throw fail(`Cannot move to trash: ${decision.reason}`,409,'TRASH_BLOCKED');
+ const deps=await dependencies(env,resourceType,row);
+ const relationships=await activeRelationshipDependencies(env,resourceType,resourceId);
+ if(relationships.total>0)throw fail('Resource is connected to active canonical relationships. Remove or reassign those relationships through their owning contracts before quarantine.',409,'TRASH_RELATIONSHIP_DEPENDENCIES');
+ deps.relationships=relationships;
+ const decision=await canTrash(env,resourceType,row,deps);if(!decision.ok)throw fail(`Cannot move to trash: ${decision.reason}`,409,'TRASH_BLOCKED');
  const existing=await one(env,`SELECT id FROM platform_trash_items WHERE resource_type=? AND resource_id=? AND purged_at IS NULL AND restored_at IS NULL ORDER BY id DESC LIMIT 1`,resourceType,String(resourceId));if(existing)throw fail('RESOURCE_ALREADY_IN_TRASH',409,'RESOURCE_ALREADY_IN_TRASH');
  const snapshot=JSON.stringify(row);const depJson=JSON.stringify({...deps,decision,candidateReason});const key=`trash_${resourceType}_${String(resourceId)}_${crypto.randomUUID()}`;
  if(resourceType==='tenant'){await transitionOrganizationLifecycle(env,{companyId:Number(resourceId),toStatus:'SUSPENDED',reasonCode:reasonCode||'manual_cleanup',reason:candidateReason||'Moved to governed Trash',requestId,actor});await env.DB.prepare(`UPDATE auth_identities SET active=0,updated_at=CURRENT_TIMESTAMP WHERE company_id=?`).bind(Number(resourceId)).run();}
@@ -237,7 +249,11 @@ export async function trashResource(env,actor,{resourceType,resourceId,reasonCod
 }
 async function purgeSafe(env,item){
  const row=await loadResource(env,item.resource_type,item.resource_id);if(!row){if(item.resource_type==='country_sector')return {deleted:true,alreadyAbsent:true};return {deleted:false,alreadyAbsent:true};}
- const deps=await dependencies(env,item.resource_type,row);const decision=await canTrash(env,item.resource_type,row,deps);if(!decision.ok)throw fail(`Permanent deletion blocked: ${decision.reason}`,409,'TRASH_PURGE_BLOCKED');
+ const deps=await dependencies(env,item.resource_type,row);
+ const relationships=await activeRelationshipDependencies(env,item.resource_type,item.resource_id);
+ if(relationships.total>0)throw fail('Permanent deletion blocked: active canonical relationships still reference this resource.',409,'TRASH_RELATIONSHIP_DEPENDENCIES');
+ deps.relationships=relationships;
+ const decision=await canTrash(env,item.resource_type,row,deps);if(!decision.ok)throw fail(`Permanent deletion blocked: ${decision.reason}`,409,'TRASH_PURGE_BLOCKED');
  if(item.resource_type==='tenant') throw fail('Permanent tenant deletion is handled by the canonical privacy erasure authority; historical operational Truth is policy-preserved.',409,'TENANT_PURGE_REQUIRES_PRIVACY_ERASURE');
  else if(item.resource_type==='user'){const dep=await dependencies(env,'user',row);if(dep.total)throw fail('Permanent deletion blocked: user still has dependent records.',409,'TRASH_PURGE_BLOCKED');await env.DB.prepare("DELETE FROM platform_users WHERE principal_type='tenant' AND principal_id=?").bind(Number(item.resource_id)).run();await env.DB.prepare('DELETE FROM auth_identities WHERE id=? AND active=0').bind(Number(item.resource_id)).run();}
  else if(item.resource_type==='country') await env.DB.prepare('DELETE FROM country_catalog WHERE code=? AND active=0').bind(String(item.resource_id).toUpperCase()).run();

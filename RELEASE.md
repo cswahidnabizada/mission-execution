@@ -85,7 +85,7 @@ Base: 16.66.0
 Security → Truth → Liveness → Stability → Experience → Scale.
 Canonical mission journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
 
-## 16.71.0 — Owner Boundary & Canonical Identity Hardening
+## 16.72.0 — Owner Boundary & Canonical Identity Hardening
 
 Base: 16.70.0
 
@@ -97,3 +97,17 @@ Implemented:
 Limitations:
 - This source-level change does not prove the exact production Sector HTTP 409 is resolved; the production request trace remains necessary to establish its actual payload and database projection shape.
 - Owner-specific lifecycle adapters, complete semantic relationship contracts, legal-hold deletion, full Asset 360 convergence, Germany Logistics Test Lab and signed launch, and authenticated production certification remain separate outstanding work. No live production changes are claimed.
+
+
+## 16.72.0 — Safe Relationship-Aware Deletion Guard
+
+Base: 16.71.0.
+
+- Added a canonical active-relationship dependency check to governed quarantine and permanent purge paths.
+- A resource with active inbound or outbound canonical relationships is blocked from quarantine and purge with `TRASH_RELATIONSHIP_DEPENDENCIES`; relationships must be disconnected through the relationship authority first.
+- The relationship check is repeated at purge time to close the gap between initial quarantine and later permanent deletion.
+- Preserved legal-hold enforcement and existing owner-specific deletion behavior.
+- No schema migration added; migration high-water remains 0164.
+- Added a cumulative regression contract for both deletion gates.
+
+This release does not claim to implement missing owner-specific lifecycle adapters, all semantic relationship types, or production certification.

@@ -1,8 +1,8 @@
 {
-  "version": "16.71.0",
+  "version": "16.72.0",
   "release": "RELEASE.md",
-  "base": "16.70.0",
-  "baseVersion": "16.70.0",
+  "base": "16.71.0",
+  "baseVersion": "16.71.0",
   "migrationHighWaterMark": "0164",
   "migrationCount": 164,
   "schemaSnapshot": {

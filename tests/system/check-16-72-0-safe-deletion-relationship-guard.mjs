@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const read=p=>fs.readFileSync(new URL(`../../${p}`,import.meta.url),'utf8');
+const trash=read('src/worker/security/platform-trash.service.js');
+const manifest=JSON.parse(read('RELEASE-MANIFEST.json'));
+assert.ok(trash.includes('async function activeRelationshipDependencies(env,type,id)'));
+assert.ok(trash.includes('TRASH_RELATIONSHIP_DEPENDENCIES'));
+assert.ok(trash.includes('active canonical relationships'));
+assert.ok(trash.includes("status='active' AND ((from_resource_type=? AND from_resource_id=?) OR (to_resource_type=? AND to_resource_id=?))"));
+assert.ok(trash.indexOf('activeRelationshipDependencies(env,resourceType,resourceId)') < trash.indexOf('const decision=await canTrash(env,resourceType,row,deps)'));
+assert.ok(trash.indexOf('activeRelationshipDependencies(env,item.resource_type,item.resource_id)') < trash.indexOf('const decision=await canTrash(env,item.resource_type,row,deps)', trash.indexOf('async function purgeSafe')));
+assert.equal(manifest.version,'16.72.0');
+assert.equal(manifest.baseVersion,'16.71.0');
+console.log('16.72.0 safe deletion relationship guard: PASS');
