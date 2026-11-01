@@ -69,3 +69,6 @@ The new read-only endpoint is `GET /api/platform/admin/resource-management/capab
 - Added a regression assertion for the route authorization context.
 - No migration required.
 - Owner-specific lifecycle adapters remain planned for 16.74.0.
+
+16.80.0 — Germany Logistics Market & Super Admin Completion Candidate
+Implemented owner lifecycle adapter registry and step-up protected owner command endpoint for supported owner operations; added read-only Germany Logistics extraction snapshot; added fail-closed contract regression test. Sector and Policy mutations remain unsupported and explicitly unadvertised. Germany extraction does not mutate canonical data or publish a market. Regional placement, production certification, signed release, tenant provisioning and physical pilot remain gated on independent evidence.

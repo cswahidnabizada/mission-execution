@@ -162,3 +162,25 @@ The new read-only endpoint is `GET /api/platform/admin/resource-management/capab
 - Strengthened the 16.73.1 capability-registry regression test to assert the route receives `{request, env}` and passes that environment to `requirePlatformAdministrator`.
 - No database migration or data mutation is introduced by this hotfix.
 - This is a targeted production hotfix; it does not implement the owner-specific lifecycle adapters planned for 16.74.0.
+
+## 16.80.0 — Germany Logistics Market & Super Admin Completion Candidate
+
+This cumulative candidate advances the existing Market Factory rather than creating a parallel market system.
+
+### Implemented in this candidate
+- Added an owner lifecycle adapter registry for Sector, Product Country, Country Blueprint, Product Definition, Policy and Configuration. The registry lists only owner commands that have a concrete implementation; unsupported Sector and Policy transitions remain fail-closed.
+- Added a step-up protected owner-command endpoint. Product Country activation/deactivation checks the expected record revision and refuses deactivation while an active product launch depends on that country. Country Blueprint preparation delegates to its owner readiness service. Product Definition compilation delegates to Product Factory and requires a draft plus expected revision. Configuration transitions delegate to the configuration authority, including expected active-version guards for activation.
+- Added a read-only Germany Logistics extraction snapshot endpoint. It inspects canonical Product Country, Sector, Blueprint, Product Definition, Product Launch, Policy, Configuration, Market Package and Germany regional-placement authorities. Unavailable authorities are represented explicitly; missing data is not inferred from failed reads.
+- Extraction is canonical-reference-only and does not create duplicate countries, sectors, policies, configurations, definitions or releases.
+- Added regression coverage for the six-owner registry, fail-closed unsupported commands and read-only Germany extraction.
+
+### Explicit remaining gates
+- Sector, Country Blueprint, Product Definition and Policy owner lifecycle mutation contracts remain incomplete; they are intentionally not advertised as executable.
+- Configuration owner transitions and Product Country transitions still need full durable idempotency records, audit reconciliation and recovery certification before production certification.
+- The extraction snapshot is an inventory/readiness diagnostic, not an automatically imported or published Market Package.
+- Germany regional placement remains blocked until independent infrastructure, residency, security and recovery evidence is supplied and approved.
+- Full resource-family browser certification, semantic relationship contracts, signed Market Release, tenant provisioning, authenticated production tests and physical Germany Logistics pilot remain open.
+- System Health certification-authority availability requires separate diagnosis.
+
+### Verification boundary
+Source-level checks do not establish live D1 migration state, deployed route behavior, public-domain routing, production isolation, backup/restore, legal approval or physical delivery. Those require deployment and authenticated production evidence.

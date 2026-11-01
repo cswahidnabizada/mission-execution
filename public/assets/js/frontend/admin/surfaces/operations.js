@@ -1,7 +1,7 @@
 /* ON Mission 10.82.0 — OPERATIONS support surface composition. */
-import { renderProductEcosystem, renderSupportingGovernance } from '../oversight/product-factory.js?v=16.73.1';
-import { renderCompanies, renderRoles } from '../oversight/platform-governance.js?v=16.73.1';
-import { renderSubscriptions, renderBilling } from '../oversight/product-operations.js?v=16.73.1';
+import { renderProductEcosystem, renderSupportingGovernance } from '../oversight/product-factory.js?v=16.80.0';
+import { renderCompanies, renderRoles } from '../oversight/platform-governance.js?v=16.80.0';
+import { renderSubscriptions, renderBilling } from '../oversight/product-operations.js?v=16.80.0';
 
 export const operationsSurface = Object.freeze({
   'product-ecosystem': renderProductEcosystem,
