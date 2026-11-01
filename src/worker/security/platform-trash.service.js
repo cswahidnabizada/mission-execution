@@ -38,6 +38,30 @@ const REUSABLE_TRASH_DEFS=Object.freeze({
 });
 const isReusableTrashType=t=>Object.hasOwn(REUSABLE_TRASH_DEFS,t);
 
+// Read-only capability description for the Control Plane. This reports only
+// operations implemented by this service; it does not imply generic activation,
+// suspension, publication or retirement authority.
+export function getResourceTrashCapabilities(resourceType){
+ const type=String(resourceType||'').trim();
+ const reusable=Object.hasOwn(REUSABLE_TRASH_DEFS,type);
+ const ownerMapped=new Set(['tenant','user','country','country_blueprint','product_definition','country_product_launch','expansion_case','country_sector','ui','content','data_entry']);
+ const supported=reusable||ownerMapped.has(type);
+ const purgeExcluded=new Set(['tenant','country_sector']);
+ return {
+  resourceType:type,
+  quarantine:supported,
+  restore:supported,
+  permanentDelete:supported&&!purgeExcluded.has(type),
+  permanentDeletePolicy:type==='tenant'?'PRIVACY_ERASURE_AUTHORITY_REQUIRED':type==='country_sector'?'OWNER_DELETE_NOT_IMPLEMENTED':supported?'DEPENDENCY_RETENTION_PROVENANCE_AND_LEGAL_HOLD_CHECKS':'UNSUPPORTED',
+  ownerSpecificActivation:false,
+  ownerSpecificSuspension:false,
+  ownerSpecificResume:false,
+  ownerSpecificRetirement:false,
+  note:supported?'Quarantine/restore/purge are implemented through governed Trash paths; additional lifecycle transitions require a registered domain-owner adapter.':'No Trash adapter is registered for this resource type.'
+ };
+}
+
+
 
 async function one(env,sql,...args){return canonicalFirst(env,sql,args,'platform_trash')}
 async function all(env,sql,...args){return canonicalAll(env,sql,args,'platform_trash')}
