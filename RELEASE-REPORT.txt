@@ -1,57 +1,41 @@
-ON Mission 16.70.0 — Resource Management Completion Integration
-Base: 16.66.0
-Status: cumulative final source candidate; NOT production-deployed or live-certified.
+ON MISSION 16.71.0 — OWNER BOUNDARY & CANONICAL IDENTITY HARDENING
+Base: 16.70.0
+Status: cumulative source candidate; not production-certified.
 
-IMPLEMENTED IN THIS RELEASE
-- Permission-checked Asset 360 lifecycle history endpoint. It first resolves the requested resource through Resource Explorer and then returns its lifecycle event history.
-- Asset 360 Changes & Audit now requests and displays canonical lifecycle evidence, including action, stage, timestamp and reason. Empty evidence is not presented as proof that no change occurred.
-- Removed generic START / REACTIVATE controls from Resource Management and Resource Explorer because the generic action API does not implement those transitions through registered owner adapters. This prevents unsupported actions being presented to administrators.
-- Added cumulative integration regression coverage.
-- Preserved the 16.64 canonical identity mutation hardening, 16.65 typed forms and 16.66 canonical relationship engine.
-- Preserved canonical owner boundaries and Product Factory / Market Factory capabilities.
-- Updated package version, package lock, VERSION, runtime release identity, cache-busting references, release manifest and release documentation.
+IMPLEMENTED
+- Product Definition Asset 360 edit route is explicitly owner-routed to Product Factory. The generic Data Studio editor is not mounted and generic preview/commit requests are not sent.
+- Canonical identity validation now uses owner-held resource identity fallback fields (`resourceId`, `resource_id`, `id`) when a reusable resource projection does not expose its canonical key as `code`/`role_code`.
+- Build-environment failure guidance now points to the exact `.node-version` (24.22.1) rather than a stale 24.18.0 instruction.
+- Added focused regression coverage and advanced release identity to 16.71.0.
 
-VERIFICATION — PASS
-- npm run check:release — PASS (all cumulative release tests, lifecycle contract, dependency lock, architecture boundaries)
-- npm run check:security — PASS
-- npm run check:data-integrity — PASS
-- npm run check:production-readiness — PASS (includes note that migration 0036 must be applied in production)
-- npm run check:production-hardening — PASS
-- node scripts/check-migration-contract.mjs — PASS (164 ordered migrations; high-water mark 0164)
-- node scripts/check-release-engineering.mjs — PASS
-- node --check on changed route, Resource Management UI, Resource Explorer UI and new regression test — PASS
-- Architecture scan — 427 JavaScript files, 1,615 local imports, zero cycles; one canonical mission lifecycle writer.
+SOURCE VERIFICATION — PASS
+- `npm run check:release` — PASS, including cumulative Resource Management tests, owner boundary regression, lifecycle contract, dependency lock and architecture scan.
+- `npm run check:security` — PASS.
+- `npm run check:data-integrity` — PASS.
+- `npm run check:production-readiness` — PASS for source/schema checks; script still emits its standing note that production D1 migration 0036 must be applied before relying on indexes.
+- `npm run check:production-hardening` — PASS.
+- `node scripts/check-migration-contract.mjs` — PASS: 164 ordered migrations, high-water mark 0164.
+- `node scripts/check-release-engineering.mjs` — PASS.
+- `node --check` on modified JavaScript modules — PASS.
+- Architecture scan — PASS: 427 JavaScript files, 1,615 local imports, zero cycles, one canonical mission lifecycle writer.
+- ZIP integrity and SHA-256 recorded in delivery.
 
-BUILD BLOCKED
-- npm run build — BLOCKED at build environment gate.
-- Runtime available: Node 22.16.0.
-- Required: Node 24.x; repository .node-version is 24.22.1.
-- CSS build did not run because environment gate stopped first.
+BUILD
+- `npm run build` attempted and BLOCKED at the environment gate: this build runner has Node 22.16.0; the project requires Node 24.x and `.node-version` is 24.22.1. CSS compilation did not run.
+- User's earlier Cloudflare logs showed Node 24.22.1, but this exact 16.71.0 candidate has not yet been built by Cloudflare.
 
-NOT VERIFIED / NOT CLOSED
-- Authenticated browser tests against deployed Cloudflare Worker.
-- Live D1 preview/commit/read-after-write and recovery tests.
-- Production application and verification of migrations 0036 and 0164.
-- Production deployment or Germany Logistics pilot.
-- Actual Sector HTTP 409 reproduction and resolution using authenticated live request/response traces.
-- Product Definition HTTP 422 correction through Product Factory and read-back.
-- Full create/edit/read-back certification for every resource family.
-- Owner-specific activate/publish, suspend, resume/restore, retire/archive and safe deletion adapters for every applicable resource type.
-- Full dependency impact and audit convergence across all canonical owners.
-- End-to-end Germany Logistics market launch and real mission execution.
+NOT VERIFIED / STILL REQUIRES USER ENVIRONMENT
+- Exact Sector 409 production request/response and live mutation/read-back.
+- Product Factory authenticated save/reload in production.
+- Every resource-family create/edit/reload certification.
+- Full semantic owner-approved relationship contracts.
+- Owner-specific lifecycle adapters for activate/suspend/resume/retire/restore.
+- Complete dependency-aware deletion, legal-hold and retention enforcement.
+- Full Asset 360 dependency, audit and activity convergence.
+- Germany Logistics market configuration and Test Lab.
+- Product Factory → Market Studio → approval → signed release → launch end-to-end.
+- Independent production D1 verification of migrations 0036 and 0164. User reports migrations succeeded; no live D1 query was available here.
+- Authenticated browser/API/D1 mutation, recovery and tenant-isolation tests.
+- Germany Logistics pilot certification.
 
-REMAINING WORK
-1. Resolve Sector 409 and Product Definition 422 using real authenticated traces.
-2. Complete resource-family create/edit/read-back certification.
-3. Expand semantic relationship types only with owner-approved contracts.
-4. Complete owner-specific lifecycle transitions, legal holds, dependency protection, audit and idempotent recovery.
-5. Complete full Asset 360 dependency impact and activity convergence.
-6. Complete Product Factory → Market Studio → Test Lab → approval → signed release → launch → operations for Germany Logistics.
-7. Apply and verify migrations 0036 and 0164 in production.
-8. Build with Node 24.22.1, run authenticated browser/API/D1/concurrency/recovery tests, then certify the Germany pilot.
-
-Permanent engineering order:
-Security → Truth → Liveness → Stability → Experience → Scale.
-
-Canonical mission journey:
-OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+NO PRODUCTION DATA OR DATABASE WAS CHANGED BY THIS SOURCE BUILD.

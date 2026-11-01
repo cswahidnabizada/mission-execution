@@ -48,7 +48,7 @@ function enforceSubmittedAssetContract(type,payload,canonicalRecord=null){
   if(canonicalRecord){
     const identityField=type==='role'?'role_code':'code';
     if(Object.prototype.hasOwnProperty.call(payload,identityField)){
-      const current=String(canonicalRecord[identityField]??canonicalRecord.code??canonicalRecord.role_code??'').trim();
+      const current=String(canonicalRecord[identityField]??canonicalRecord.code??canonicalRecord.role_code??canonicalRecord.resourceId??canonicalRecord.resource_id??canonicalRecord.id??'').trim();
       const submitted=String(payload[identityField]??'').trim();
       // Codes are canonical identifiers, not editable configuration. Compare their
       // normalized representation so harmless casing/whitespace differences do not

@@ -84,3 +84,16 @@ Base: 16.66.0
 ## Permanent engineering rules
 Security → Truth → Liveness → Stability → Experience → Scale.
 Canonical mission journey: OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE.
+
+## 16.71.0 — Owner Boundary & Canonical Identity Hardening
+
+Base: 16.70.0
+
+Implemented:
+- Product Definition's Asset 360 "Edit Configuration" route now explicitly returns an owner-workspace instruction and opens Product Factory. It does not mount the generic Data Studio editor or send generic preview/commit requests.
+- Sector and other code-keyed resource identity validation now recognizes the owner-held canonical key when the projection exposes it as `resourceId`, `resource_id`, or `id` rather than a `code` column. This avoids comparing a valid canonical key against an empty projected code while retaining rejection of an actual changed identity.
+- Added a focused regression contract for the Product Factory owner boundary and canonical identity fallback.
+
+Limitations:
+- This source-level change does not prove the exact production Sector HTTP 409 is resolved; the production request trace remains necessary to establish its actual payload and database projection shape.
+- Owner-specific lifecycle adapters, complete semantic relationship contracts, legal-hold deletion, full Asset 360 convergence, Germany Logistics Test Lab and signed launch, and authenticated production certification remain separate outstanding work. No live production changes are claimed.
