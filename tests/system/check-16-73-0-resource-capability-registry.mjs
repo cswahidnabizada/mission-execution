@@ -17,6 +17,7 @@ for(const type of types) assert.ok(reusable.includes(`${type}:[`),`Missing canon
 assert.match(trash,/export function getResourceTrashCapabilities\(resourceType\)/);
 for(const capability of ['Activation','Suspension','Resume','Retirement']) assert.ok(trash.includes(`ownerSpecific${capability}:false`),`Unsupported ${capability} must fail closed.`);
 assert.ok(routes.includes('/api/platform/admin/resource-management/capabilities'));
+assert.match(routes,/router\.get\('\/api\/platform\/admin\/resource-management\/capabilities',async\(\{request,env\}\)=>\{try\{await requirePlatformAdministrator\(request,env\)/,'Capability registry route must receive the request environment before authorization.');
 assert.ok(routes.includes('getResourceTrashCapabilities'));
 assert.match(relationships,/const RELATION_TYPES=new Set\(\['depends_on'\]\)/);
 assert.ok(routes.includes('semanticTypesPendingOwnerApproval:true'));
@@ -28,4 +29,4 @@ assert.equal(scenario.realWorldCertified,false);
 const pilot=JSON.parse(read('config/certification/controlled-pilot-readiness.json'));
 assert.equal(pilot.approvalPolicy.explicitHumanApprovalRequired,true);
 assert.equal(pilot.approvalPolicy.productionExecutionEnabled,false);
-console.log(`16.73.0 resource capability registry: PASS (${types.length} reusable resource families; unsupported lifecycle actions fail closed; Germany pilot remains evidence-gated).`);
+console.log(`16.73.1 resource capability registry: PASS (${types.length} reusable resource families; unsupported lifecycle actions fail closed; Germany pilot remains evidence-gated).`);

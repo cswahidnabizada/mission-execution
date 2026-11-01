@@ -113,7 +113,7 @@ Base: 16.71.0.
 This release does not claim to implement missing owner-specific lifecycle adapters, all semantic relationship types, or production certification.
 
 
-ON MISSION 16.73.0 — RESOURCE CAPABILITY REGISTRY & CERTIFICATION BOUNDARIES
+ON MISSION 16.73.1 — RESOURCE CAPABILITY REGISTRY & CERTIFICATION BOUNDARIES
 Base: 16.72.0
 Status: cumulative source candidate; production deployment and authenticated runtime certification remain pending.
 
@@ -126,7 +126,7 @@ IMPLEMENTED
 - No database migration added; existing 164-migration lineage retained.
 
 VERIFICATION
-- New 16.73.0 capability registry contract: PASS.
+- New 16.73.1 capability registry contract: PASS.
 - Cumulative release suite: to be run in this build session.
 - Node 24 production build: environment-dependent; runner currently provides Node 22.16.0 while .node-version requires 24.22.1.
 - Production D1, authenticated browser, live API, Germany Logistics pilot: not run from this source build.
@@ -137,15 +137,15 @@ IMPORTANT LIMITATIONS
 - Germany Logistics remains a simulation fixture; simulation cannot certify physical delivery or authorize production execution.
 
 
-16.73.0 VERIFICATION ADDENDUM
+16.73.1 VERIFICATION ADDENDUM
 - `node tests/system/check-16-73-0-resource-capability-registry.mjs`: PASS (26 reusable resource families checked; capability reporting fails closed for unimplemented generic lifecycle actions; Germany simulation/pilot policy flags retained).
-- `npm run check:release`: PASS (cumulative suite; includes 16.73.0, 16.72.0, 16.71.0 and historical resource contracts).
+- `npm run check:release`: PASS (cumulative suite; includes 16.73.1, 16.72.0, 16.71.0 and historical resource contracts).
 - `npm run check:security`: PASS.
 - `npm run check:data-integrity`: PASS.
 - `npm run check:production-readiness`: PASS (source/data/index contracts); script notes production migration 0036 must be applied before relying on indexes.
 - `npm run check:production-hardening`: PASS.
 - `node scripts/check-migration-contract.mjs`: PASS (164 ordered migrations; high-water 0164).
-- `node scripts/check-release-engineering.mjs`: PASS (version 16.73.0; schema snapshot retained).
+- `node scripts/check-release-engineering.mjs`: PASS (version 16.73.1; schema snapshot retained).
 - `node scripts/check-dependency-lock.mjs`: PASS.
 - `node --check` changed route and Trash service: PASS.
 - Architecture scan in cumulative release gate: PASS (427 JS files, 1,617 local imports, zero cycles; one canonical mission lifecycle writer).
@@ -154,3 +154,11 @@ IMPORTANT LIMITATIONS
 
 DEPLOYMENT NOTE
 The new read-only endpoint is `GET /api/platform/admin/resource-management/capabilities`. It requires platform-administrator authentication. It reports current canonical owner/edit field metadata, actual Trash capabilities, and explicitly marks generic activation/suspension/resume/retirement as unsupported. It also states that semantic relationship types beyond `depends_on` are pending owner-approved contracts.
+
+
+## 16.73.1 — Resource Capability Registry 500 Hotfix
+
+- Fixed the capability-registry route handler to receive the request environment (`env`) from the router context before platform-administrator authorization. The previous handler referenced an out-of-scope `env`, causing an HTTP 500 for authenticated requests.
+- Strengthened the 16.73.1 capability-registry regression test to assert the route receives `{request, env}` and passes that environment to `requirePlatformAdministrator`.
+- No database migration or data mutation is introduced by this hotfix.
+- This is a targeted production hotfix; it does not implement the owner-specific lifecycle adapters planned for 16.74.0.

@@ -70,6 +70,6 @@
     "node": "24.x",
     "npm": ">=10 <12"
   },
-  "version": "16.73.0",
+  "version": "16.73.1",
   "packageManager": "npm@10.9.2"
 }
