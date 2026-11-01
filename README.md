@@ -1,5 +1,20 @@
-# ON Mission 16.61.0 — Unified Resource Control Plane and Lifecycle UX
+# ON Mission 16.87.0 — Germany Logistics Market Platform
 
-This is a cumulative source candidate based on 16.58.0. Resource Management now supports asset-family filtering over canonical inventory, presents monitoring as the Control Center, and gives lifecycle confirmations action-specific consequences while retaining existing owning-authority mutation and read-back paths.
+Cumulative release candidate based on the deployed 16.80.0 Germany Logistics / Super Admin baseline. This release consolidates owner lifecycle completion, durable mutation idempotency and reconciliation, 26-family resource certification contracts, Asset 360/dependency governance, a staged Germany Logistics Market Package, versioned onboarding legal acknowledgements, and adversarial production-certification gates.
 
-**This is not a production-certified deployment.** The 16.61.0 source check is not a substitute for authenticated browser/runtime verification, a complete Node.js 24 build, live lifecycle mutation tests, or Germany Logistics pilot proof. See `RELEASE.md` for exact scope and limitations.
+The bundled Germany Logistics package is available at `config/markets/germany-logistics-market.json` and can be staged directly from **Super Admin → Market Factory → Stage Germany Logistics**. Staging is draft-only. It does not create duplicate canonical resources, publish a market, activate public onboarding, prove Germany data residency, or approve legal text.
+
+**Release status: cumulative source candidate.** Deploying the Worker is not equivalent to legal approval, a LIVE Market Release, verified regional placement, tenant-isolation proof, or a real customer pilot. See `RELEASE.md`, `RELEASE-REPORT.txt`, and `docs/markets/GERMANY-LOGISTICS-OPERATIONS.md` for exact boundaries and operator steps.
+
+## Build and checks
+
+- Node.js: 24.22.1 (`.node-version`)
+- `npm ci`
+- `npm run build`
+- `npm run check:release`
+- `npm run check:health`
+- `npm run check:migrations`
+- `npm run check:production-certification`
+- `npm run deploy:production`
+
+The production deploy script runs build, release and certification gates, applies ordered D1 migrations from `database/migrations` (configured as the D1 `migrations_dir`), then deploys the Worker. If deploying with a bare `npx wrangler deploy`, run `npm run migrate:production` first: Worker deployment does not apply D1 migrations. Review migration output and production backups before deployment.

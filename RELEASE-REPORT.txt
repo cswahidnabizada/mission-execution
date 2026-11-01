@@ -1,74 +1,53 @@
-ON MISSION 16.72.0 — SAFE RELATIONSHIP-AWARE DELETION GUARD
-Base: 16.71.0
-Status: SOURCE CANDIDATE; NOT DEPLOYED
+ON MISSION 16.87.0 — COMPLETE GERMANY LOGISTICS MARKET PLATFORM
+Base: 16.80.0 deployed Germany Logistics / Super Admin candidate
+Status: cumulative source candidate; deployment and independent production certification are separate gates.
 
-CHANGES
-- Quarantine now checks active inbound/outbound canonical relationship edges before changing resource state.
-- Permanent purge repeats the relationship check immediately before deletion.
-- Legal-hold check remains in force.
-- No database migration; schema high-water remains 0164.
-- Release gate includes a focused regression contract.
+IMPLEMENTED IN SOURCE
+- Owner lifecycle adapter expansion for Sector, Product Country, Country Blueprint, Product Definition, Policy and Configuration.
+- Revision-fenced Sector and Policy activation/deactivation with dependent-resource guards.
+- Owner-delegated Country Blueprint preparation and Product Definition compilation with read-back.
+- Durable owner lifecycle idempotency/reconciliation journal (migration 0165) and operation lookup API.
+- Bundled Germany Logistics Market Package with German/English onboarding, privacy, terms, imprint, consent and support content.
+- Super Admin Market Factory action to stage the complete Germany package as a draft.
+- Editable German/English page language assignment, privacy/terms/imprint/consent body content and canonical provider-code requirements.
+- Required email provider gate with canonical Connections provider status, region, contract, residency and active-capability checks; real connection-test evidence is separately required.
+- Market Launch stage contracts distinguish canonical authority verification from human attestation; parent task evidence preserves the complete stage-contract record.
+- Product Factory creates typed Product Definition components for identity, vocabulary, localized content, capabilities, workflow, roles, experience, policies, integrations and dependencies with package-version idempotency fences.
+- Public market-content endpoint reads only the active LIVE release.
+- Homepage directs users to Germany Logistics onboarding only when the canonical launch is active, the Market Package is LIVE and onboarding is OPEN.
+- Germany onboarding records the exact Terms version accepted and Privacy Notice version acknowledged (migration 0166).
+- Existing 26-family capability registry, Asset 360, canonical resource relationships, deletion protection, market publication lifecycle, Test Lab and mission execution stack retained.
 
-VERIFICATION
-- Cumulative source release suite: PASS (all configured checks, including the new deletion relationship guard).
-- Security baseline: PASS. Data integrity: PASS. Production-readiness architecture/data checks: PASS (production D1 migration 0036 still requires live verification). Production hardening: PASS.
-- Node 24.22.1 production build: BLOCKED in this packaging environment (runtime Node 22.16.0; repository requires Node 24.x). CSS compilation did not run.
-- Live D1/browser/API/Germany pilot: not run. Production D1 migration state remains user-reported, not independently queried.
+IMPORTANT SAFETY BOUNDARIES
+- Staging the Germany package does not create or activate canonical market records.
+- Legal content is intentionally draft/researching and must be completed and reviewed by qualified German counsel.
+- Required email provider is intentionally NOT_CONFIGURED; select and verify a real Germany-resident provider in Connections and attach an actual connection-test report.
+- Product Preparation Workspace research and operational tasks require real human evidence. Publication may safely pause at VALIDATING_LAUNCH; complete the canonical workspace and use explicit publication recovery, never re-import the package.
+- Residency and provider statements are requirements, not proof of actual storage/processing locations.
+- No customer tenant is created by this release build.
+- Simulation cannot prove physical delivery; human authorization and independent verification remain required.
+- Physical actuation remains disabled in the Germany package.
 
-LIMITATIONS
-- Sector 409 still requires the real production request trace to confirm exact behavior.
-- Owner-specific lifecycle adapters and full owner-approved semantic relationship catalog remain incomplete.
-- Germany Logistics Test Lab and signed launch journey require live configuration/evidence.
+NEW MIGRATIONS
+- 0165_owner_lifecycle_idempotency_and_reconciliation.sql
+- 0166_germany_market_onboarding_legal_acceptance.sql
 
+VERIFICATION TO RUN IN THIS ENVIRONMENT
+- Syntax checks for all changed JavaScript modules.
+- 16.87.0 Germany market platform contract.
+- Cumulative release suite.
+- Security, data integrity, architecture, production-readiness and hardening suites.
+- Migration contract and schema snapshot checks.
+- Node.js 24.22.1 build and CSS compilation.
 
-ON MISSION 16.73.1 — RESOURCE CAPABILITY REGISTRY & CERTIFICATION BOUNDARIES
-Base: 16.72.0
-Status: cumulative source candidate; production deployment and authenticated runtime certification remain pending.
+PRODUCTION EVIDENCE STILL REQUIRED
+- Apply 0165/0166 to production D1 and verify migration high-water 0166.
+- Authenticated browser tests for Super Admin market staging/editing/release and customer onboarding.
+- Live D1 mutations with authoritative read-back and audit reconciliation.
+- Cross-tenant isolation, authorization, step-up, concurrency, stale revision and interruption/recovery tests.
+- Backup and restore proof.
+- Germany/EU regional placement and subprocessor evidence for D1, KV, R2, Vectorize, logs, backups, support, AI, email and integrations.
+- Legal approval of Privacy Notice, Terms, Imprint, consent text, DPA and retention schedule.
+- Signed and verified Market Release, deliberate onboarding OPEN approval, real tenant provisioning and Germany Logistics pilot certification.
 
-IMPLEMENTED
-- Added an authenticated read-only Resource Management capability endpoint: GET /api/platform/admin/resource-management/capabilities.
-- Capability output is derived from the canonical reusable resource definitions and existing Trash owner mappings; it exposes owner authority, editable fields, quarantine/restore/permanent-delete support and deletion policy.
-- Explicitly reports that generic activate/suspend/resume/retire operations are NOT implemented by the Trash adapter; the UI/API must not infer those capabilities.
-- Explicitly reports that semantic relationship types remain limited to depends_on pending owner-approved semantic contracts.
-- Added a cumulative contract test covering all reusable resource-family definitions, owner-table mapping, fail-closed lifecycle capability reporting and Germany Logistics simulation/pilot approval boundaries.
-- No database migration added; existing 164-migration lineage retained.
-
-VERIFICATION
-- New 16.73.1 capability registry contract: PASS.
-- Cumulative release suite: to be run in this build session.
-- Node 24 production build: environment-dependent; runner currently provides Node 22.16.0 while .node-version requires 24.22.1.
-- Production D1, authenticated browser, live API, Germany Logistics pilot: not run from this source build.
-
-IMPORTANT LIMITATIONS
-- This release makes lifecycle capability boundaries explicit; it does not invent missing owner-specific activate/suspend/resume/retire adapters.
-- Semantic relationships beyond depends_on remain blocked until their canonical owners register and validate endpoint contracts.
-- Germany Logistics remains a simulation fixture; simulation cannot certify physical delivery or authorize production execution.
-
-
-16.73.1 VERIFICATION ADDENDUM
-- `node tests/system/check-16-73-0-resource-capability-registry.mjs`: PASS (26 reusable resource families checked; capability reporting fails closed for unimplemented generic lifecycle actions; Germany simulation/pilot policy flags retained).
-- `npm run check:release`: PASS (cumulative suite; includes 16.73.1, 16.72.0, 16.71.0 and historical resource contracts).
-- `npm run check:security`: PASS.
-- `npm run check:data-integrity`: PASS.
-- `npm run check:production-readiness`: PASS (source/data/index contracts); script notes production migration 0036 must be applied before relying on indexes.
-- `npm run check:production-hardening`: PASS.
-- `node scripts/check-migration-contract.mjs`: PASS (164 ordered migrations; high-water 0164).
-- `node scripts/check-release-engineering.mjs`: PASS (version 16.73.1; schema snapshot retained).
-- `node scripts/check-dependency-lock.mjs`: PASS.
-- `node --check` changed route and Trash service: PASS.
-- Architecture scan in cumulative release gate: PASS (427 JS files, 1,617 local imports, zero cycles; one canonical mission lifecycle writer).
-- `npm run build`: BLOCKED before CSS compilation because this runner is Node 22.16.0; project `.node-version` requires Node 24.22.1.
-- No live Cloudflare/D1/authenticated browser/physical Germany Logistics pilot tests were run.
-
-DEPLOYMENT NOTE
-The new read-only endpoint is `GET /api/platform/admin/resource-management/capabilities`. It requires platform-administrator authentication. It reports current canonical owner/edit field metadata, actual Trash capabilities, and explicitly marks generic activation/suspension/resume/retirement as unsupported. It also states that semantic relationship types beyond `depends_on` are pending owner-approved contracts.
-
-
-16.73.1 HOTFIX
-- Fixed missing `env` destructuring in GET /api/platform/admin/resource-management/capabilities.
-- Added a regression assertion for the route authorization context.
-- No migration required.
-- Owner-specific lifecycle adapters remain planned for 16.74.0.
-
-16.80.0 — Germany Logistics Market & Super Admin Completion Candidate
-Implemented owner lifecycle adapter registry and step-up protected owner command endpoint for supported owner operations; added read-only Germany Logistics extraction snapshot; added fail-closed contract regression test. Sector and Policy mutations remain unsupported and explicitly unadvertised. Germany extraction does not mutate canonical data or publish a market. Regional placement, production certification, signed release, tenant provisioning and physical pilot remain gated on independent evidence.
+No production or pilot status is inferred from source checks or a successful Cloudflare deployment.

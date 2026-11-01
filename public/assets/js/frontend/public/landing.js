@@ -1,5 +1,5 @@
-import {attachLayoutStudioRouteAdapter} from '../admin/layout-studio-production-adapter.js?v=16.80.0';
-import {renderPage} from '../admin/layout-studio-renderer.js?v=16.80.0';
+import {attachLayoutStudioRouteAdapter} from '../admin/layout-studio-production-adapter.js?v=16.87.0';
+import {renderPage} from '../admin/layout-studio-renderer.js?v=16.87.0';
 import {api,esc} from '../core/api.js';
 const root=document.getElementById('root');
 attachLayoutStudioRouteAdapter({root,routeId:'public-homepage'});
@@ -29,12 +29,13 @@ async function boot(){
  if(availability.status!=='start'){unavailable(availability.message,session);return}
  if(session){location.replace('/app/');return}
  const components=[header(),
-  {id:'hero-main',type:'hero',tokenRefs:['color.primary','color.text'],properties:{eyebrow:'MISSION EXECUTION',title:'One governed workspace for operational missions.',description:'Create, assign, execute, prove and complete work around one mission truth—with responsibility, custody, action and evidence kept together.',cta:'START',href:'/register.html'},required:true},
+  {id:'hero-main',type:'hero',tokenRefs:['color.primary','color.text'],properties:{eyebrow:availability.market?'GERMANY LOGISTICS MARKET':'MISSION EXECUTION',title:availability.market?'Start your Germany logistics onboarding.':'One governed workspace for operational missions.',description:availability.market?'Register your logistics organization in Germany, configure your team and begin managing missions through one governed operating platform.':'Create, assign, execute, prove and complete work around one mission truth—with responsibility, custody, action and evidence kept together.',cta:'START ORGANIZATION ONBOARDING',href:availability.market?'/register.html?market=DE-logistics&country=DE&sector=logistics':'/register.html'},required:true},
   {id:'executor-entry',type:'button',tokenRefs:['color.primary'],properties:{label:'FOR EXECUTORS',href:'/driver/'},required:true},
   card('organizations','ORGANIZATIONS','Run governed work','Build organization context, people and mission flow.'),
   card('executors','EXECUTORS','Act on the next valid action','Receive only the responsibility and evidence needed to execute.'),
   card('participants','PARTICIPANTS','Stay in controlled context','Participate without inheriting unauthorized responsibility.'),
   {id:'availability-status',type:'status-panel',tokenRefs:['color.text','color.surface'],properties:{label:'PRODUCT AVAILABILITY',state:'AVAILABLE',description:`${availability.countries?.length||0} launched countries. ${availability.message||'Country availability is governed by the active product launch.'}`},required:true},footer()];
+ if(availability.market){components.push({id:'market-privacy-link',type:'button',tokenRefs:['color.primary'],properties:{label:'PRIVACY NOTICE',href:'/legal/?code=privacy&lang=de'},required:true},{id:'market-terms-link',type:'button',tokenRefs:['color.primary'],properties:{label:'TERMS & CONDITIONS',href:'/legal/?code=terms&lang=de'},required:true},{id:'market-imprint-link',type:'button',tokenRefs:['color.primary'],properties:{label:'IMPRINT',href:'/legal/?code=imprint&lang=de'},required:true},{id:'market-consent-link',type:'button',tokenRefs:['color.primary'],properties:{label:'CONSENT SETTINGS',href:'/legal/?code=consent&lang=de'},required:true});}
  root.innerHTML=shell(page(components));
 }
 boot();

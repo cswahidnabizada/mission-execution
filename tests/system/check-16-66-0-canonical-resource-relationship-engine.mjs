@@ -33,6 +33,6 @@ assert.match(ui,/data-rw-disconnect-from/,'Asset 360 must expose governed discon
 assert.match(migration,/UNIQUE \(from_resource_type, from_resource_id, to_resource_type, to_resource_id, relation_type\)/);
 assert.match(migration,/CHECK \(status IN \('active','removed'\)\)/);
 assert.match(migration,/platform_resource_relationship_leases/);
-assert.match(schema,/CREATE TABLE IF NOT EXISTS platform_resource_relationships/);
+assert.match(schema,/CREATE TABLE(?: IF NOT EXISTS)? platform_resource_relationships/);
 assert.match(pkg.scripts['check:release'],/check-16-66-0-canonical-resource-relationship-engine\.mjs/);
 console.log('16.66.0 canonical resource relationship engine: PASS');

@@ -75,7 +75,7 @@ export async function prepareCountryBlueprintForLaunch(env,actor,id){
  const requiredLegal2=refreshed.legalRequirements.filter(x=>x.required);
  const missing=[...requiredSectors2.filter(x=>x.status!=='ready').map(x=>`sector:${x.sector_code}`),...requiredContents2.filter(x=>!String(x.body||'').trim()||x.status!=='ready').map(x=>`content:${x.content_key}:${x.language_code}`),...requiredLegal2.filter(x=>x.status!=='reviewed').map(x=>`legal:${x.requirement_key}`),...(!refreshed.languages.some(x=>x.is_primary)?['language:primary']:[])];
  const ready=missing.length===0&&refreshed.languages.some(x=>x.enabled&&x.is_primary);
- await env.DB.prepare(`UPDATE platform_country_product_blueprints SET status=?,updated_at=CURRENT_TIMESTAMP WHERE id=?`).bind(ready?'ready':'preparing',Number(id)).run();
+ await env.DB.prepare(`UPDATE platform_country_product_blueprints SET status=?,updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE id=?`).bind(ready?'ready':'preparing',Number(id)).run();
  return {...(await getCountryBlueprint(env,id)),readiness:{ready,missing}};
 }
 

@@ -22,7 +22,8 @@
     {
       "binding": "DB",
       "database_name": "onmission-db",
-      "database_id": "73f56b45-ddb7-4b44-89de-12ce79d72a92"
+      "database_id": "73f56b45-ddb7-4b44-89de-12ce79d72a92",
+      "migrations_dir": "database/migrations"
     }
   ],
   "r2_buckets": [

@@ -1,0 +1,657 @@
+{
+  "schemaVersion": "1.0",
+  "packageType": "market-package",
+  "metadata": {
+    "id": "DE-logistics-onmission",
+    "name": "Germany Logistics",
+    "version": "1.0.0",
+    "productKey": "on-mission"
+  },
+  "country": {
+    "iso": "DE",
+    "name": "Deutschland"
+  },
+  "languages": [
+    {
+      "code": "de",
+      "name": "Deutsch",
+      "primary": true
+    },
+    {
+      "code": "en",
+      "name": "English",
+      "primary": false
+    }
+  ],
+  "sectors": [
+    {
+      "code": "logistics",
+      "name": "Logistik",
+      "description": "Straßenlogistik, Transport, Zustellung, Abholung, Umschlag und missionsbezogene operative Dienstleistungen in Deutschland.",
+      "required": true
+    }
+  ],
+  "policies": [
+    {
+      "code": "de-gdpr-data-protection",
+      "name": "Datenschutz und DSGVO",
+      "policyType": "privacy",
+      "scope": "DE-logistics",
+      "configuration": {
+        "frameworks": [
+          "GDPR",
+          "BDSG"
+        ],
+        "dataMinimization": true,
+        "purposeLimitation": true,
+        "processorAgreementsRequired": true,
+        "internationalTransferReviewRequired": true,
+        "legalReviewRequired": true
+      }
+    },
+    {
+      "code": "de-data-residency",
+      "name": "Deutschland / EU Datenresidenz",
+      "policyType": "residency",
+      "scope": "DE-logistics",
+      "configuration": {
+        "primaryJurisdiction": "DE",
+        "requiredResidency": "DE",
+        "regionEvidenceRequired": true,
+        "backupRegionEvidenceRequired": true,
+        "crossBorderTransferDefault": "deny-until-reviewed"
+      }
+    },
+    {
+      "code": "de-logistics-operational-safety",
+      "name": "Operative Sicherheits- und Nachweispflicht",
+      "policyType": "operational_safety",
+      "scope": "DE-logistics",
+      "configuration": {
+        "humanAuthorizationRequired": true,
+        "physicalEvidenceRequired": true,
+        "simulationCannotProveDelivery": true,
+        "unknownEffectRequiresReconciliation": true
+      }
+    },
+    {
+      "code": "de-consent-governance",
+      "name": "Einwilligungsverwaltung",
+      "policyType": "consent",
+      "scope": "DE-logistics",
+      "configuration": {
+        "granularOptionalPurposes": true,
+        "noPreselectedOptionalConsent": true,
+        "withdrawalSupported": true,
+        "versionedTextRequired": true
+      }
+    },
+    {
+      "code": "de-retention-governance",
+      "name": "Aufbewahrung und Löschung",
+      "policyType": "retention",
+      "scope": "DE-logistics",
+      "configuration": {
+        "purposeSpecificRetention": true,
+        "legalHoldSupported": true,
+        "deletionRequiresDependencyCheck": true,
+        "legalReviewRequired": true
+      }
+    }
+  ],
+  "content": [
+    {
+      "code": "de-welcome",
+      "name": "Willkommen bei ON Mission",
+      "pageType": "onboarding",
+      "languageCode": "de",
+      "body": "Willkommen bei ON Mission. Führen Sie Ihre Logistikmissionen in einem gemeinsamen, nachvollziehbaren Arbeitsbereich aus. Registrieren Sie Ihr Unternehmen, vervollständigen Sie die Unternehmensprüfung und laden Sie anschließend Ihre Mitarbeitenden und Ausführenden ein. Jede Mission erhält einen verantwortlichen Eigentümer, einen gültigen nächsten Schritt und nachvollziehbare Ausführungsnachweise.",
+      "status": "draft"
+    },
+    {
+      "code": "en-welcome",
+      "name": "Welcome to ON Mission",
+      "pageType": "onboarding",
+      "languageCode": "en",
+      "body": "Welcome to ON Mission. Run logistics missions in one governed workspace. Register your organization, complete organization verification, then invite your team and executors. Every mission has an accountable owner, a valid next action and traceable execution evidence.",
+      "status": "draft"
+    },
+    {
+      "code": "de-privacy",
+      "name": "Datenschutzhinweise – Deutschland",
+      "pageType": "legal",
+      "languageCode": "de",
+      "body": "ENTWURF – vor Veröffentlichung durch den Verantwortlichen und eine qualifizierte Datenschutzberatung zu prüfen.\n\n1. Verantwortlicher: [VOLLSTÄNDIGER RECHTLICHER NAME, ANSCHRIFT, KONTAKT].\n2. Datenschutzkontakt: [DATENSCHUTZKONTAKT / DATENSCHUTZBEAUFTRAGTER, FALLS BENANNT].\n3. Zwecke: Bereitstellung und Absicherung der ON-Mission-Plattform; Verwaltung von Organisationen, Benutzern und Berechtigungen; Planung, Zuweisung, Durchführung und Nachweis von Logistikmissionen; Kundensupport; Abrechnung; Betrugs- und Sicherheitsprävention; Erfüllung gesetzlicher Pflichten.\n4. Datenkategorien: Identitäts- und Kontaktdaten, Organisations- und Registerdaten, Rollen und Berechtigungen, Missions- und Zuweisungsdaten, Status- und Zeitstempel, Kommunikations- und Nachweisdaten, technische Sicherheits- und Protokolldaten sowie Abrechnungsdaten. Besondere Kategorien personenbezogener Daten sollen nicht eingegeben werden, sofern dies nicht ausdrücklich geprüft und freigegeben wurde.\n5. Rechtsgrundlagen: Je Verarbeitungsvorgang insbesondere Art. 6 Abs. 1 lit. b, c oder f DSGVO; eine Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO wird nur für tatsächlich optionale Zwecke eingesetzt und kann jederzeit mit Wirkung für die Zukunft widerrufen werden.\n6. Empfänger und Auftragsverarbeiter: [KONKRETE HOSTING-, E-MAIL-, ZAHLUNGS-, SUPPORT- UND INTEGRATIONSDIENSTLEISTER EINTRAGEN]. Mit Auftragsverarbeitern werden erforderliche Vereinbarungen nach Art. 28 DSGVO geschlossen.\n7. Drittlandübermittlungen: [TATSÄCHLICHE DIENSTE, REGIONEN, TRANSFERMECHANISMEN UND GARANTIEN PRÜFEN UND EINTRAGEN]. Eine Deutschland-/EU-Residency-Konfiguration ersetzt diese Prüfung nicht.\n8. Speicherdauer: Nach dokumentiertem Lösch- und Aufbewahrungskonzept je Datenkategorie; gesetzliche handels- und steuerrechtliche Aufbewahrungspflichten bleiben unberührt. Konkrete Fristen sind in der freigegebenen Aufbewahrungsmatrix auszuweisen.\n9. Betroffenenrechte: Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit, Widerspruch sowie Beschwerde bei einer zuständigen Datenschutzaufsichtsbehörde nach Maßgabe der DSGVO.\n10. Sicherheit: Rollen- und Mandantentrennung, Zugriffskontrollen, Protokollierung, Verschlüsselung und Wiederherstellungsverfahren entsprechend dem jeweils nachgewiesenen technischen und organisatorischen Maßnahmenkonzept.\n11. Pflicht zur Bereitstellung: Erforderliche Konto- und Organisationsdaten sind notwendig, um den Dienst bereitzustellen. Optionale Einwilligungen sind freiwillig und nicht Voraussetzung für Kernfunktionen.\n12. Änderungen: Diese Hinweise werden versioniert; maßgeblich ist die zum jeweiligen Zeitpunkt veröffentlichte Fassung.\n\nVor Freigabe sind alle eckigen Klammern zu ersetzen und tatsächliche Datenflüsse, Rechtsgrundlagen, Dienstleister, Regionen und Fristen zu bestätigen.",
+      "status": "draft"
+    },
+    {
+      "code": "en-privacy",
+      "name": "Privacy Notice – Germany",
+      "pageType": "legal",
+      "languageCode": "en",
+      "body": "DRAFT – must be reviewed by the controller and qualified privacy counsel before publication.\n\n1. Controller: [FULL LEGAL NAME, ADDRESS AND CONTACT DETAILS].\n2. Privacy contact: [PRIVACY CONTACT / DATA PROTECTION OFFICER IF APPOINTED].\n3. Purposes: providing and securing ON Mission; managing organizations, users and permissions; planning, assigning, executing and evidencing logistics missions; customer support; billing; fraud and security prevention; and legal compliance.\n4. Data categories: identity and contact details, organization and registry details, roles and permissions, mission and assignment data, status and timestamps, communications and evidence, technical security logs and billing data. Do not submit special-category personal data unless expressly assessed and approved.\n5. Legal bases: depending on the processing activity, GDPR Article 6(1)(b), (c) or (f). Consent under Article 6(1)(a) is used only for genuinely optional purposes and may be withdrawn prospectively.\n6. Recipients/processors: [LIST ACTUAL HOSTING, EMAIL, PAYMENT, SUPPORT AND INTEGRATION PROVIDERS]. Execute Article 28 processor agreements where required.\n7. International transfers: [VERIFY ACTUAL PROVIDERS, REGIONS, TRANSFER MECHANISMS AND SAFEGUARDS]. A Germany/EU residency setting alone does not establish transfer compliance.\n8. Retention: according to an approved category-specific retention and deletion schedule, subject to statutory retention duties. Publish the actual approved periods in the retention matrix.\n9. Rights: access, rectification, erasure, restriction, portability, objection and complaint to the competent supervisory authority, subject to GDPR conditions.\n10. Security: role and tenant isolation, access controls, audit logging, encryption and recovery procedures according to verified technical and organizational measures.\n11. Required data: account and organization data needed to provide the service are required. Optional consent is voluntary and is not a condition of core functionality.\n12. Changes: notices are versioned; the published version applicable at the relevant time governs.\n\nReplace all bracketed fields and verify real data flows, legal bases, providers, regions and retention periods before approval.",
+      "status": "draft"
+    },
+    {
+      "code": "de-terms",
+      "name": "Nutzungsbedingungen – Deutschland",
+      "pageType": "legal",
+      "languageCode": "de",
+      "body": "ENTWURF – keine Rechtsberatung; vor Veröffentlichung rechtlich prüfen und Parteien-/Unternehmensdaten ergänzen.\n\n1. Anbieter und Vertragspartner: [VOLLSTÄNDIGER RECHTLICHER NAME, RECHTSFORM, ANSCHRIFT, REGISTERDATEN, VERTRETUNGSBERECHTIGTE].\n2. Leistungsumfang: ON Mission stellt eine Softwareplattform zur koordinierten, rollenbasierten Verwaltung und Ausführung von Logistikmissionen bereit. Der konkrete Leistungsumfang ergibt sich aus dem gebuchten Produkt, der freigegebenen Marktversion und dem jeweiligen Vertrag.\n3. Konto und Berechtigung: Nutzer müssen korrekte Angaben machen, Zugangsdaten schützen und dürfen nur innerhalb ihrer zugewiesenen Rolle und Organisation handeln. Konten dürfen nicht geteilt werden.\n4. Organisationsverantwortung: Der Kunde verwaltet seine Nutzer, Rollen, Weisungen, Einsatzberechtigungen und Daten. Der Kunde stellt sicher, dass er erforderliche Rechte und Rechtsgrundlagen für hochgeladene Daten und Nachweise besitzt.\n5. Missionen und Nachweise: ON Mission unterstützt Planung, Zuweisung, Statusführung, Nachweis und Verifikation. Ein digitaler Status oder simuliertes Ereignis ersetzt keinen tatsächlichen physischen Leistungsnachweis.\n6. Verbotene Nutzung: Keine rechtswidrige Nutzung, Umgehung von Sicherheitsmaßnahmen, unberechtigte Datenzugriffe, Manipulation von Nachweisen oder Eingabe nicht erforderlicher sensibler Daten.\n7. Verfügbarkeit und Änderungen: Wartung, Sicherheitsmaßnahmen und Weiterentwicklung können Änderungen oder vorübergehende Einschränkungen erfordern. Wesentliche Änderungen werden nach Vertrag und geltendem Recht kommuniziert.\n8. Preise und Zahlung: Es gelten ausschließlich die im individuellen Angebot bzw. im freigegebenen Bestellprozess ausgewiesenen Preise, Steuern, Laufzeiten und Zahlungsbedingungen.\n9. Datenschutz und Vertraulichkeit: Ergänzend gelten die veröffentlichten Datenschutzhinweise und gegebenenfalls der Auftragsverarbeitungsvertrag.\n10. Haftung, Gewährleistung, Kündigung und anwendbares Recht: [VON DEUTSCHER RECHTSBERATUNG FÜR DAS KONKRETE GESCHÄFTSMODELL AUSZUFORMULIEREN].\n11. Kontakt und Beschwerden: [VERTRAGLICHE KONTAKTADRESSE].\n\nVor Freigabe insbesondere Anbieteridentität, Haftung, Gewährleistung, B2B/B2C-Anwendungsbereich, Kündigung, Gerichtsstand und Preisangaben vervollständigen.",
+      "status": "draft"
+    },
+    {
+      "code": "en-terms",
+      "name": "Terms of Service – Germany",
+      "pageType": "legal",
+      "languageCode": "en",
+      "body": "DRAFT – not legal advice. Complete provider details and obtain legal review before publication.\n\n1. Provider and contracting party: [FULL LEGAL NAME, LEGAL FORM, ADDRESS, REGISTER DETAILS AND REPRESENTATIVES].\n2. Service: ON Mission provides software for coordinated, role-based management and execution of logistics missions. The applicable scope is defined by the purchased product, approved market release and customer agreement.\n3. Accounts and permissions: Users must provide accurate information, protect credentials and act only within their assigned organization and role. Accounts must not be shared.\n4. Customer responsibilities: The customer manages its users, roles, instructions, operational permissions and data, and warrants that it has the rights and lawful bases required for submitted data and evidence.\n5. Missions and evidence: ON Mission supports planning, assignment, status management, evidence and verification. A digital status or simulated event is not proof of physical performance.\n6. Acceptable use: No unlawful use, security bypass, unauthorized access, evidence manipulation or unnecessary submission of sensitive data.\n7. Availability and changes: Maintenance, security measures and product evolution may require changes or temporary restrictions. Material changes are communicated as required by contract and law.\n8. Fees and payment: Only the prices, taxes, terms and payment conditions shown in the applicable signed offer or approved checkout apply.\n9. Privacy and confidentiality: The published privacy notice and, where applicable, the data processing agreement apply.\n10. Liability, warranties, termination and governing law: [DRAFT WITH GERMAN COUNSEL FOR THE ACTUAL BUSINESS MODEL].\n11. Contact: [CONTRACTUAL CONTACT ADDRESS].\n\nComplete provider identity, liability, warranties, B2B/B2C scope, termination, jurisdiction and pricing disclosures before approval.",
+      "status": "draft"
+    },
+    {
+      "code": "de-imprint",
+      "name": "Impressum",
+      "pageType": "legal",
+      "languageCode": "de",
+      "body": "ENTWURF – Veröffentlichung erst nach vollständiger Anbieterprüfung.\n\nAnbieter: [VOLLSTÄNDIGER NAME / FIRMA]\nRechtsform: [RECHTSFORM]\nVertreten durch: [VERTRETUNGSBERECHTIGTE PERSON]\nAnschrift: [LADUNGSFÄHIGE ANSCHRIFT]\nRegistergericht und Registernummer: [ANGABEN, FALLS VORHANDEN]\nUmsatzsteuer-Identifikationsnummer: [UST-ID, FALLS VORHANDEN]\nKontakt: [E-MAIL UND TELEFON]\nVerantwortlich für den Inhalt: [NAME UND ANSCHRIFT, SOWEIT ERFORDERLICH]\nBerufsrechtliche Angaben / Aufsichtsbehörde: [FALLS EINSCHLÄGIG]\n\nDie Angaben sind anhand der tatsächlichen Anbieterstruktur und der anwendbaren gesetzlichen Informationspflichten zu vervollständigen.",
+      "status": "draft"
+    },
+    {
+      "code": "en-imprint",
+      "name": "Legal Notice / Provider Information",
+      "pageType": "legal",
+      "languageCode": "en",
+      "body": "DRAFT – publish only after provider identity review.\n\nProvider: [FULL LEGAL NAME]\nLegal form: [LEGAL FORM]\nRepresented by: [AUTHORIZED REPRESENTATIVE]\nAddress: [SERVICEABLE POSTAL ADDRESS]\nCommercial register and number: [IF APPLICABLE]\nVAT identification number: [IF APPLICABLE]\nContact: [EMAIL AND TELEPHONE]\nResponsible for content: [NAME AND ADDRESS IF REQUIRED]\nSupervisory/professional details: [IF APPLICABLE]\n\nComplete these details against the actual provider structure and applicable statutory disclosure requirements.",
+      "status": "draft"
+    },
+    {
+      "code": "de-consent",
+      "name": "Einwilligungen und optionale Einstellungen",
+      "pageType": "legal",
+      "languageCode": "de",
+      "body": "Erforderliche Verarbeitung für Konto, Sicherheit und die angeforderten Missionsfunktionen erfolgt auf der jeweils dokumentierten Rechtsgrundlage und wird nicht pauschal als Einwilligung behandelt.\n\nOptionale Analyse: „Ich willige ein, dass ON Mission pseudonymisierte Nutzungsdaten zur Produktverbesserung analysiert. Diese Einwilligung ist freiwillig und kann jederzeit mit Wirkung für die Zukunft widerrufen werden.“\n\nOptionale Produktinformationen: „Ich möchte optionale Produktneuigkeiten und Informationen erhalten. Ich kann diese Einwilligung jederzeit widerrufen.“\n\nNicht vorausgewählte Kontrollfelder; Zweck, Daten, Empfänger, Speicherdauer und Widerrufsweg sind vor Aktivierung konkret zu erläutern.",
+      "status": "draft"
+    },
+    {
+      "code": "en-consent",
+      "name": "Consent and optional preferences",
+      "pageType": "legal",
+      "languageCode": "en",
+      "body": "Processing necessary for accounts, security and requested mission functions relies on the documented legal basis for each purpose and is not treated as blanket consent.\n\nOptional analytics: “I consent to ON Mission analysing pseudonymised usage data to improve the product. This consent is voluntary and may be withdrawn at any time for the future.”\n\nOptional product updates: “I would like to receive optional product news and information. I may withdraw this consent at any time.”\n\nOptional checkboxes must not be preselected. Explain the specific purpose, data, recipients, retention and withdrawal method before enabling each option.",
+      "status": "draft"
+    },
+    {
+      "code": "de-support",
+      "name": "Support und Kontakt",
+      "pageType": "support",
+      "languageCode": "de",
+      "body": "Für Unterstützung wenden Sie sich an [SUPPORT-E-MAIL / SUPPORT-PORTAL]. Bitte übermitteln Sie keine Passwörter oder unnötigen personenbezogenen Daten. Geben Sie bei einer Supportanfrage eine Missionsreferenz und eine kurze Beschreibung des Problems an.",
+      "status": "draft"
+    },
+    {
+      "code": "en-support",
+      "name": "Support and contact",
+      "pageType": "support",
+      "languageCode": "en",
+      "body": "For support, contact [SUPPORT EMAIL / SUPPORT PORTAL]. Do not send passwords or unnecessary personal data. Include a mission reference and a concise description of the issue.",
+      "status": "draft"
+    }
+  ],
+  "legal": [
+    {
+      "key": "privacy-notice",
+      "title": "Datenschutzhinweise / Privacy Notice",
+      "description": "DSGVO-Informationspflichten; Verantwortlicher, Zwecke, Rechtsgrundlagen, Empfänger, Übermittlungen, Fristen, Rechte und TOM. Anbieter- und Datenflussprüfung erforderlich.",
+      "required": true,
+      "status": "researching"
+    },
+    {
+      "key": "terms-of-service",
+      "title": "Nutzungsbedingungen / Terms of Service",
+      "description": "Vertragspartner, B2B/B2C-Anwendungsbereich, Leistungsumfang, Preise, Haftung, Gewährleistung, Laufzeit und Kündigung rechtlich abstimmen.",
+      "required": true,
+      "status": "researching"
+    },
+    {
+      "key": "imprint",
+      "title": "Impressum / Provider Information",
+      "description": "Anbieterkennzeichnung und gesetzlich erforderliche Pflichtangaben anhand der tatsächlichen Unternehmensdaten vervollständigen.",
+      "required": true,
+      "status": "researching"
+    },
+    {
+      "key": "cookie-and-analytics",
+      "title": "Cookie- und Analysehinweise",
+      "description": "Tatsächliche Cookies, lokale Speicher, Drittanbieter, Einwilligungsmanagement und technische Notwendigkeit prüfen.",
+      "required": true,
+      "status": "researching"
+    },
+    {
+      "key": "data-processing-agreement",
+      "title": "Auftragsverarbeitungsvertrag",
+      "description": "Art. 28 DSGVO: Gegenstand, Dauer, Weisungen, TOM, Unterauftragsverarbeiter, Unterstützung, Löschung und Audit-Rechte.",
+      "required": true,
+      "status": "researching"
+    },
+    {
+      "key": "retention-schedule",
+      "title": "Aufbewahrungs- und Löschkonzept",
+      "description": "Reale gesetzliche und vertragliche Fristen je Datenkategorie durch Verantwortlichen und Rechtsberatung freigeben.",
+      "required": true,
+      "status": "researching"
+    }
+  ],
+  "providers": [],
+  "capabilities": [
+    "mission_intake",
+    "mission_truth",
+    "situation_intelligence",
+    "responsibility",
+    "mission_assignment",
+    "readiness",
+    "planning",
+    "authorization",
+    "execution",
+    "provider_integration",
+    "verification",
+    "recovery",
+    "outcome",
+    "learning",
+    "communication",
+    "resource_governance",
+    "platform_control",
+    "continuity"
+  ],
+  "actions": [
+    "open_mission",
+    "check_assignment",
+    "edit_mission",
+    "assign_driver",
+    "advance_execution",
+    "confirm_arrival",
+    "confirm_pickup",
+    "start_transit",
+    "capture_delivery_proof",
+    "confirm_delivery",
+    "complete_mission",
+    "report_exception",
+    "resolve_exception",
+    "cancel_mission",
+    "start_custody_recovery",
+    "start_custody_resolution",
+    "confirm_custody_release",
+    "finalize_custody_transfer"
+  ],
+  "eligibility": {
+    "organizationTypes": [
+      "company"
+    ],
+    "sectorCodes": [
+      "logistics"
+    ],
+    "countryCode": "DE",
+    "organizationVerificationRequired": true,
+    "humanExecutorFirst": true,
+    "publicRegistrationEnabledOnlyAfterMarketActivation": true
+  },
+  "residency": {
+    "countryCode": "DE",
+    "primaryJurisdiction": "DE",
+    "required": true,
+    "regionKey": "eu-germany",
+    "regionEvidenceRequired": true,
+    "backupRestoreEvidenceRequired": true,
+    "crossBorderTransfers": "deny-until-approved"
+  },
+  "execution": {
+    "mode": "human_executor_first",
+    "physicalActuationEnabled": false,
+    "humanAuthorizationRequired": true,
+    "tenantScopeServerDerived": true,
+    "missionJourney": [
+      "OBSERVE",
+      "UNDERSTAND",
+      "PLAN",
+      "EVALUATE",
+      "ACCEPT",
+      "AUTHORIZE",
+      "PREPARE",
+      "ASSIGN",
+      "EXECUTE",
+      "EFFECT",
+      "VERIFY",
+      "RECOVER",
+      "OUTCOME",
+      "LEARN",
+      "NEXT SITUATION"
+    ],
+    "livenessGuard": {
+      "nonTerminalRequiresNextActionOrWaiting": true,
+      "waitingRequiresOwnerAndDueAt": true,
+      "escalationRequiredOnBreach": true
+    }
+  },
+  "subscriptions": [
+    {
+      "code": "de-logistics-standard",
+      "name": "Logistics Standard",
+      "status": "draft",
+      "priceMode": "contract_or_admin_configured",
+      "currency": "EUR",
+      "taxMode": "German VAT configuration required before billing"
+    }
+  ],
+  "billing": [
+    {
+      "jurisdictionCode": "DE",
+      "currency": "EUR",
+      "taxConfigurationCode": "de-vat-review-required",
+      "invoiceRequirements": {
+        "countryCode": "DE",
+        "currency": "EUR",
+        "taxIdCollection": "as-applicable",
+        "invoiceAddressRequired": true,
+        "taxRate": "admin_or_accountant_configured",
+        "status": "draft"
+      }
+    }
+  ],
+  "product": {
+    "productKey": "on-mission",
+    "name": "ON Mission – Germany Logistics",
+    "description": "Governed logistics mission execution for organizations operating in Germany."
+  },
+  "governance": {
+    "jurisdiction": {
+      "code": "DE-GDPR",
+      "countryCode": "DE",
+      "regionCode": "eu-germany",
+      "frameworkCode": "GDPR_BDSG",
+      "dataResidencyMode": "required",
+      "retentionProfile": "de-logistics-retention-review",
+      "deletionProfile": "dependency-and-legal-hold",
+      "identityProfile": "verified-organization-and-user",
+      "auditProfile": "365-day-minimum-subject-to-approved-schedule",
+      "effectiveVersion": "1.0.0",
+      "status": "active"
+    },
+    "sectorPolicies": [
+      {
+        "code": "de-logistics-sector-policy",
+        "sectorCode": "logistics",
+        "regulatoryProfile": "de-logistics-regulatory-review",
+        "dataProfile": "operational-and-personal-data-minimization",
+        "effectiveVersion": "1.0.0",
+        "status": "active"
+      }
+    ],
+    "residency": {
+      "code": "de-primary-residency",
+      "jurisdictionCode": "DE-GDPR",
+      "primaryRegion": "eu-germany",
+      "primaryProvider": "cloudflare",
+      "mode": "required",
+      "fallbackAllowed": false,
+      "version": "1.0.0",
+      "active": true
+    },
+    "retention": [
+      {
+        "code": "de-retention-operational-communications",
+        "purposeCode": "operational_communications",
+        "jurisdictionCode": "DE-GDPR",
+        "sectorCode": "logistics",
+        "actionAfterExpiry": "review",
+        "legalHoldAllowed": true,
+        "version": "1.0.0"
+      },
+      {
+        "code": "de-retention-mission-execution",
+        "purposeCode": "mission_execution",
+        "jurisdictionCode": "DE-GDPR",
+        "sectorCode": "logistics",
+        "actionAfterExpiry": "review",
+        "legalHoldAllowed": true,
+        "version": "1.0.0"
+      },
+      {
+        "code": "de-retention-security-audit",
+        "purposeCode": "security_audit",
+        "jurisdictionCode": "DE-GDPR",
+        "sectorCode": "logistics",
+        "actionAfterExpiry": "review",
+        "legalHoldAllowed": true,
+        "version": "1.0.0"
+      },
+      {
+        "code": "de-retention-account-management",
+        "purposeCode": "account_management",
+        "jurisdictionCode": "DE-GDPR",
+        "sectorCode": "logistics",
+        "actionAfterExpiry": "review",
+        "legalHoldAllowed": true,
+        "version": "1.0.0"
+      },
+      {
+        "code": "de-retention-billing",
+        "purposeCode": "billing",
+        "jurisdictionCode": "DE-GDPR",
+        "sectorCode": "logistics",
+        "actionAfterExpiry": "review",
+        "legalHoldAllowed": true,
+        "version": "1.0.0"
+      }
+    ],
+    "billing": [
+      {
+        "jurisdictionCode": "DE",
+        "currency": "EUR",
+        "taxConfigurationCode": "de-vat-review-required",
+        "invoiceRequirements": {
+          "invoiceAddressRequired": true,
+          "taxRate": "accountant-configured",
+          "status": "draft"
+        },
+        "status": "draft",
+        "version": "1.0.0"
+      }
+    ],
+    "notifications": [
+      {
+        "notificationType": "mission_assignment",
+        "purposeCode": "mission_execution",
+        "classification": "INTERNAL",
+        "providerCode": "in_app",
+        "retentionPolicyCode": "de-retention-mission-execution",
+        "allowedRecipientRoles": [
+          "admin",
+          "manager",
+          "executor"
+        ],
+        "maxTitleLength": 160,
+        "maxBodyLength": 600,
+        "minimize": true,
+        "auditRequired": true,
+        "version": "1.0.0"
+      }
+    ],
+    "roles": [
+      {
+        "roleCode": "owner",
+        "label": "Inhaber",
+        "labelEn": "Owner",
+        "scope": "tenant",
+        "systemManaged": true,
+        "purpose": "Verantwortung für das Organisationskonto und die übergeordnete Verwaltung."
+      },
+      {
+        "roleCode": "admin",
+        "label": "Administrator",
+        "labelEn": "Administrator",
+        "scope": "tenant",
+        "systemManaged": true,
+        "purpose": "Verwaltung von Organisation, Personen, Einstellungen und operativen Berechtigungen."
+      },
+      {
+        "roleCode": "manager",
+        "label": "Disposition / Manager",
+        "labelEn": "Dispatcher / Manager",
+        "scope": "tenant",
+        "systemManaged": false,
+        "purpose": "Delegierte Planung, Koordination und Überwachung von Logistikmissionen."
+      },
+      {
+        "roleCode": "operator",
+        "label": "Operator",
+        "labelEn": "Operator",
+        "scope": "tenant",
+        "systemManaged": false,
+        "purpose": "Ausführung ausdrücklich zugewiesener operativer Aufgaben."
+      },
+      {
+        "roleCode": "driver",
+        "label": "Ausführender (Executor)",
+        "labelEn": "Executor",
+        "scope": "tenant",
+        "systemManaged": true,
+        "purpose": "Bestehender kanonischer Rollencode für organisationsverwaltete Ausführung; die sichtbare Produktbezeichnung ist Executor."
+      },
+      {
+        "roleCode": "developer",
+        "label": "Technischer Entwickler",
+        "labelEn": "Developer",
+        "scope": "tenant",
+        "systemManaged": false,
+        "purpose": "Begrenzter technischer Zugriff nach expliziter Berechtigung."
+      }
+    ],
+    "onboarding": {
+      "defaultLanguageCode": "de",
+      "supportedLanguageCodes": [
+        "de",
+        "en"
+      ],
+      "organizationTypes": [
+        "company"
+      ],
+      "requiredStages": [
+        "account",
+        "organization_details",
+        "organization_verification",
+        "owner_access",
+        "team_setup",
+        "operational_configuration",
+        "first_mission",
+        "executor_assignment",
+        "mission_execution",
+        "outcome_verification"
+      ],
+      "publicMode": "CLOSED_UNTIL_MARKET_RELEASE_OPEN",
+      "organizationVerificationRequired": true,
+      "termsAcceptanceRequiredForLiveRelease": true,
+      "privacyNoticeAcknowledgementRequiredForLiveRelease": true,
+      "optionalConsentsPreselected": false,
+      "tenantProvisioningMustBeVerified": true
+    },
+    "integrations": [
+      {
+        "code": "platform-email",
+        "label": "E-Mail und Systembenachrichtigungen",
+        "required": true,
+        "status": "NOT_CONFIGURED",
+        "owner": "connections_integrations",
+        "purpose": "Transaktions- und missionsbezogene Benachrichtigungen",
+        "approvalRequired": true,
+        "providerCode": null,
+        "requiredCapabilityCodes": []
+      },
+      {
+        "code": "maps-routing",
+        "label": "Karten und Routenplanung",
+        "required": false,
+        "status": "NOT_CONFIGURED",
+        "owner": "connections_integrations",
+        "purpose": "Routen- und Entfernungsinformationen",
+        "approvalRequired": true,
+        "providerCode": null,
+        "requiredCapabilityCodes": []
+      },
+      {
+        "code": "microsoft-365",
+        "label": "Microsoft 365",
+        "required": false,
+        "status": "NOT_CONFIGURED",
+        "owner": "connections_integrations",
+        "purpose": "Optionale Identitäts-, Kalender- und Dokumentenintegrationen",
+        "approvalRequired": true,
+        "providerCode": null,
+        "requiredCapabilityCodes": []
+      },
+      {
+        "code": "erp-sap",
+        "label": "ERP / SAP",
+        "required": false,
+        "status": "NOT_CONFIGURED",
+        "owner": "connections_integrations",
+        "purpose": "Optionale Kunden- und Auftragsdatenintegration",
+        "approvalRequired": true,
+        "providerCode": null,
+        "requiredCapabilityCodes": []
+      },
+      {
+        "code": "billing-provider",
+        "label": "Zahlungs- und Rechnungsanbieter",
+        "required": false,
+        "status": "NOT_CONFIGURED",
+        "owner": "connections_integrations",
+        "purpose": "Abrechnung nach freigegebenem Vertrag und Steuerkonfiguration",
+        "approvalRequired": true,
+        "providerCode": null,
+        "requiredCapabilityCodes": []
+      },
+      {
+        "code": "ai-provider",
+        "label": "KI-Anbieter",
+        "required": false,
+        "status": "DISABLED_BY_DEFAULT",
+        "owner": "ai_agents_devices",
+        "purpose": "Nur begrenzte Assistenz; keine Autorisierung oder autonome externe Wirkung",
+        "approvalRequired": true,
+        "providerCode": null,
+        "requiredCapabilityCodes": []
+      }
+    ]
+  },
+  "certification": {
+    "status": "NOT_CERTIFIED",
+    "requiredEvidence": [
+      "legal-review-approval",
+      "provider-and-subprocessor-inventory",
+      "DE-region-location-evidence",
+      "backup-restore-evidence",
+      "tenant-isolation-tests",
+      "authenticated-browser-tests",
+      "real-customer-pilot-approval",
+      "physical-mission-evidence"
+    ]
+  },
+  "dependencies": {
+    "canonicalAuthoritiesOnly": true,
+    "noDuplicateCountryOrSector": true,
+    "marketPackageIsVersionedReleaseInput": true
+  },
+  "regionalPlacement": {
+    "regionKey": "eu-germany",
+    "jurisdictionCode": "EU",
+    "residencyPolicyCode": "de-primary-residency",
+    "retentionPolicyCode": "de-retention-mission-evidence",
+    "requiredEvidence": [
+      "primary-data-region-proof",
+      "backup-region-proof",
+      "restore-test-proof",
+      "subprocessor-region-inventory",
+      "cross-border-transfer-assessment"
+    ],
+    "policyVersion": "regional-placement-v1"
+  }
+}

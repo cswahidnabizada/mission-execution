@@ -8,13 +8,13 @@ assert.deepEqual(adapters.map(x=>x.resourceType),['sector','product_country','co
 for(const adapter of adapters){assert.ok(adapter.ownerAuthority);assert.ok(adapter.adapter);assert.ok(Array.isArray(adapter.supportedCommands));assert.ok(Array.isArray(adapter.unsupportedCommands));}
 assert.ok(adapters.find(x=>x.resourceType==='product_definition').ownerAuthority==='Product Factory');
 assert.ok(adapters.find(x=>x.resourceType==='sector').supportedCommands.includes('inspect'));
-assert.ok(!adapters.find(x=>x.resourceType==='sector').supportedCommands.includes('activate'));
-assert.ok(!adapters.find(x=>x.resourceType==='policy').supportedCommands.includes('activate'));
+assert.ok(adapters.find(x=>x.resourceType==='sector').supportedCommands.includes('activate'));
+assert.ok(adapters.find(x=>x.resourceType==='policy').supportedCommands.includes('activate'));
 assert.ok(adapters.find(x=>x.resourceType==='product_country').supportedCommands.includes('deactivate'));
 assert.ok(adapters.find(x=>x.resourceType==='configuration').supportedCommands.includes('activate'));
-assert.ok(!adapters.find(x=>x.resourceType==='country_blueprint').supportedCommands.includes('prepare_for_launch'));
-assert.ok(!adapters.find(x=>x.resourceType==='product_definition').supportedCommands.includes('compile'));
-await assert.rejects(()=>executeOwnerLifecycleCommand({}, {}, {resourceType:'sector',resourceId:'logistics',command:'activate'},'test'),e=>e.code==='OWNER_LIFECYCLE_COMMAND_NOT_SUPPORTED');
+assert.ok(adapters.find(x=>x.resourceType==='country_blueprint').supportedCommands.includes('prepare_for_launch'));
+assert.ok(adapters.find(x=>x.resourceType==='product_definition').supportedCommands.includes('compile'));
+await assert.rejects(()=>executeOwnerLifecycleCommand({}, {}, {resourceType:'sector',resourceId:'logistics',command:'retire'},'test'),e=>e.code==='OWNER_LIFECYCLE_COMMAND_NOT_SUPPORTED');
 
 const sql=[];
 const db={prepare(query){return {bind(...args){return {first:async()=>{sql.push({query,args});return null;},all:async()=>({results:[]})}}}}};

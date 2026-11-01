@@ -1,5 +1,5 @@
 -- ON Mission current database schema snapshot
--- Generated from the complete ordered migration chain through 0159.
+-- Generated from the complete ordered migration chain through 0166.
 -- This is the canonical schema snapshot for fresh/recovery environments.
 -- Production evolution remains migration-first: apply database/migrations/*.sql in order.
 -- Do not edit manually; regenerate with scripts/generate-schema-current.mjs.
@@ -2203,7 +2203,7 @@ CREATE TABLE organization_onboarding_records (
   last_error_message TEXT,
   attempt_count INTEGER NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, terms_accepted_version TEXT, privacy_notice_acknowledged_version TEXT, legal_acknowledged_at TEXT,
   FOREIGN KEY(company_id) REFERENCES companies(id) ON DELETE CASCADE,
   FOREIGN KEY(country_code) REFERENCES country_catalog(code),
   FOREIGN KEY(jurisdiction_code) REFERENCES jurisdiction_policies(code),
@@ -2840,6 +2840,42 @@ CREATE TABLE platform_infrastructure_roadmap (
   updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+-- table: platform_layout_draft_events
+CREATE TABLE platform_layout_draft_events (
+  event_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  experience_id TEXT NOT NULL,
+  revision INTEGER NOT NULL,
+  event_type TEXT NOT NULL CHECK(event_type IN ('DRAFT_CREATED','DRAFT_SAVED','DRAFT_CONFLICT')),
+  actor_id TEXT NOT NULL,
+  details_json TEXT NOT NULL DEFAULT '{}',
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- table: platform_layout_draft_versions
+CREATE TABLE platform_layout_draft_versions (
+  version_id TEXT PRIMARY KEY,
+  experience_id TEXT NOT NULL REFERENCES platform_layout_drafts(experience_id),
+  revision INTEGER NOT NULL,
+  draft_json TEXT NOT NULL CHECK(length(draft_json) BETWEEN 2 AND 500000),
+  content_sha256 TEXT NOT NULL,
+  actor_id TEXT NOT NULL,
+  change_reason TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(experience_id, revision)
+);
+
+-- table: platform_layout_drafts
+CREATE TABLE platform_layout_drafts (
+  experience_id TEXT PRIMARY KEY CHECK(length(experience_id) BETWEEN 3 AND 80),
+  draft_json TEXT NOT NULL CHECK(length(draft_json) BETWEEN 2 AND 500000),
+  revision INTEGER NOT NULL DEFAULT 1 CHECK(revision >= 1),
+  schema_version INTEGER NOT NULL DEFAULT 1,
+  created_by TEXT NOT NULL,
+  updated_by TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 -- table: platform_lifecycle_definitions
 CREATE TABLE platform_lifecycle_definitions (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -3132,6 +3168,26 @@ CREATE TABLE platform_objectives (
   actor_id TEXT NOT NULL,
   revision INTEGER NOT NULL DEFAULT 1,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- table: platform_owner_lifecycle_operations
+CREATE TABLE platform_owner_lifecycle_operations (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  idempotency_key TEXT NOT NULL UNIQUE,
+  operation_hash TEXT NOT NULL,
+  resource_type TEXT NOT NULL,
+  resource_id TEXT NOT NULL,
+  command TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'IN_PROGRESS' CHECK(status IN ('IN_PROGRESS','COMPLETED','FAILED','RECOVERY_REQUIRED')),
+  result_json TEXT NOT NULL DEFAULT '{}',
+  error_code TEXT,
+  error_message TEXT,
+  actor_type TEXT,
+  actor_id TEXT,
+  request_id TEXT,
+  started_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  completed_at TEXT,
   updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -3553,6 +3609,31 @@ CREATE TABLE platform_region_placements (
   CHECK(status != 'ACTIVE' OR activation_allowed = 1)
 );
 
+-- table: platform_resource_relationship_leases
+CREATE TABLE platform_resource_relationship_leases (
+  lock_key TEXT PRIMARY KEY,
+  lease_token TEXT NOT NULL,
+  expires_at TEXT NOT NULL
+);
+
+-- table: platform_resource_relationships
+CREATE TABLE platform_resource_relationships (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  from_resource_type TEXT NOT NULL,
+  from_resource_id TEXT NOT NULL,
+  to_resource_type TEXT NOT NULL,
+  to_resource_id TEXT NOT NULL,
+  relation_type TEXT NOT NULL CHECK (relation_type IN ('depends_on')),
+  status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active','removed')),
+  reason TEXT NOT NULL,
+  created_by TEXT NOT NULL,
+  request_id TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CHECK (NOT (from_resource_type = to_resource_type AND from_resource_id = to_resource_id)),
+  UNIQUE (from_resource_type, from_resource_id, to_resource_type, to_resource_id, relation_type)
+);
+
 -- table: platform_reusable_classifications
 CREATE TABLE platform_reusable_classifications (code TEXT PRIMARY KEY,name TEXT NOT NULL,domain TEXT NOT NULL DEFAULT 'general',active INTEGER NOT NULL DEFAULT 1,created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, data_entry_id TEXT);
 
@@ -3588,6 +3669,23 @@ CREATE TABLE platform_reusable_responsibilities (code TEXT PRIMARY KEY,name TEXT
 
 -- table: platform_reusable_sectors
 CREATE TABLE platform_reusable_sectors (code TEXT PRIMARY KEY,name TEXT NOT NULL,description TEXT NOT NULL DEFAULT '',active INTEGER NOT NULL DEFAULT 1,created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, data_entry_id TEXT);
+
+-- table: platform_simulation_runs
+CREATE TABLE platform_simulation_runs (
+  run_id TEXT PRIMARY KEY CHECK(length(run_id) BETWEEN 8 AND 100),
+  owner_scope TEXT NOT NULL CHECK(owner_scope IN ('platform','tenant')),
+  tenant_id INTEGER,
+  actor_id TEXT NOT NULL CHECK(length(actor_id) BETWEEN 1 AND 160),
+  scenario_id TEXT NOT NULL CHECK(length(scenario_id) BETWEEN 1 AND 80),
+  scenario_version TEXT NOT NULL DEFAULT '1',
+  executor_id TEXT NOT NULL CHECK(length(executor_id) BETWEEN 1 AND 80),
+  status TEXT NOT NULL CHECK(status IN ('PASS','RECOVERED','BLOCKED','FAILED')),
+  schema_version TEXT NOT NULL,
+  run_json TEXT NOT NULL CHECK(length(run_json) BETWEEN 2 AND 1000000),
+  content_sha256 TEXT NOT NULL CHECK(length(content_sha256)=64),
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CHECK((owner_scope='platform' AND tenant_id IS NULL) OR (owner_scope='tenant' AND tenant_id IS NOT NULL))
+);
 
 -- table: platform_storage_registry
 CREATE TABLE platform_storage_registry (code TEXT PRIMARY KEY,name TEXT NOT NULL,provider_code TEXT NOT NULL,region_code TEXT,purpose TEXT NOT NULL DEFAULT 'general',residency_mode TEXT NOT NULL DEFAULT 'policy',active INTEGER NOT NULL DEFAULT 1,created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, data_entry_id TEXT,FOREIGN KEY(provider_code) REFERENCES external_provider_registry(code));
@@ -5180,6 +5278,14 @@ CREATE INDEX idx_org_onboarding_status ON organization_onboarding_records(provis
 -- index: idx_org_provision_events_company
 CREATE INDEX idx_org_provision_events_company ON organization_provisioning_events(company_id,created_at DESC,id DESC);
 
+-- index: idx_owner_lifecycle_operations_resource
+CREATE INDEX idx_owner_lifecycle_operations_resource
+  ON platform_owner_lifecycle_operations(resource_type, resource_id, started_at DESC);
+
+-- index: idx_owner_lifecycle_operations_status
+CREATE INDEX idx_owner_lifecycle_operations_status
+  ON platform_owner_lifecycle_operations(status, updated_at);
+
 -- index: idx_password_reset_expiry
 CREATE INDEX idx_password_reset_expiry
 ON password_reset_tokens(expires_at, used_at);
@@ -5269,6 +5375,12 @@ CREATE INDEX idx_platform_entry_cert_resource ON platform_data_entry_certificati
 -- index: idx_platform_infrastructure_roadmap_status
 CREATE INDEX idx_platform_infrastructure_roadmap_status ON platform_infrastructure_roadmap(status, priority, task_key);
 
+-- index: idx_platform_layout_draft_events_experience
+CREATE INDEX idx_platform_layout_draft_events_experience ON platform_layout_draft_events(experience_id, event_id DESC);
+
+-- index: idx_platform_layout_draft_versions_experience
+CREATE INDEX idx_platform_layout_draft_versions_experience ON platform_layout_draft_versions(experience_id, revision DESC);
+
 -- index: idx_platform_mutation_leases_expiry
 CREATE INDEX idx_platform_mutation_leases_expiry
   ON platform_mutation_leases(expires_at);
@@ -5325,6 +5437,14 @@ CREATE INDEX idx_platform_region_placements_market ON platform_region_placements
 -- index: idx_platform_region_placements_status
 CREATE INDEX idx_platform_region_placements_status ON platform_region_placements(status, updated_at DESC);
 
+-- index: idx_platform_resource_relationships_from
+CREATE INDEX idx_platform_resource_relationships_from
+  ON platform_resource_relationships(from_resource_type, from_resource_id, status);
+
+-- index: idx_platform_resource_relationships_to
+CREATE INDEX idx_platform_resource_relationships_to
+  ON platform_resource_relationships(to_resource_type, to_resource_id, status);
+
 -- index: idx_platform_responsibilities_role
 CREATE INDEX idx_platform_responsibilities_role ON platform_reusable_responsibilities(role_code,active);
 
@@ -5333,6 +5453,12 @@ CREATE INDEX idx_platform_reusable_pages_country ON platform_reusable_pages(coun
 
 -- index: idx_platform_reusable_pages_language
 CREATE INDEX idx_platform_reusable_pages_language ON platform_reusable_pages(language_code,status);
+
+-- index: idx_platform_simulation_runs_scenario_created
+CREATE INDEX idx_platform_simulation_runs_scenario_created ON platform_simulation_runs(scenario_id,created_at DESC);
+
+-- index: idx_platform_simulation_runs_scope_created
+CREATE INDEX idx_platform_simulation_runs_scope_created ON platform_simulation_runs(owner_scope,tenant_id,created_at DESC);
 
 -- index: idx_platform_storage_provider
 CREATE INDEX idx_platform_storage_provider ON platform_storage_registry(provider_code,active);
@@ -5737,112 +5863,3 @@ CREATE UNIQUE INDEX ux_expansion_case_data_entry ON platform_product_expansion_c
 
 -- index: ux_product_definition_data_entry
 CREATE UNIQUE INDEX ux_product_definition_data_entry ON platform_product_definitions(data_entry_id) WHERE data_entry_id IS NOT NULL;
-
-
--- Canonical schema snapshot: 0160 Layout Studio server drafts
--- Layout Studio server-owned draft/version foundation. Drafts are not active releases.
-CREATE TABLE IF NOT EXISTS platform_layout_drafts (
-  experience_id TEXT PRIMARY KEY CHECK(length(experience_id) BETWEEN 3 AND 80),
-  draft_json TEXT NOT NULL CHECK(length(draft_json) BETWEEN 2 AND 500000),
-  revision INTEGER NOT NULL DEFAULT 1 CHECK(revision >= 1),
-  schema_version INTEGER NOT NULL DEFAULT 1,
-  created_by TEXT NOT NULL,
-  updated_by TEXT NOT NULL,
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-CREATE TABLE IF NOT EXISTS platform_layout_draft_versions (
-  version_id TEXT PRIMARY KEY,
-  experience_id TEXT NOT NULL REFERENCES platform_layout_drafts(experience_id),
-  revision INTEGER NOT NULL,
-  draft_json TEXT NOT NULL CHECK(length(draft_json) BETWEEN 2 AND 500000),
-  content_sha256 TEXT NOT NULL,
-  actor_id TEXT NOT NULL,
-  change_reason TEXT NOT NULL,
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE(experience_id, revision)
-);
-CREATE INDEX IF NOT EXISTS idx_platform_layout_draft_versions_experience ON platform_layout_draft_versions(experience_id, revision DESC);
-CREATE TABLE IF NOT EXISTS platform_layout_draft_events (
-  event_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  experience_id TEXT NOT NULL,
-  revision INTEGER NOT NULL,
-  event_type TEXT NOT NULL CHECK(event_type IN ('DRAFT_CREATED','DRAFT_SAVED','DRAFT_CONFLICT')),
-  actor_id TEXT NOT NULL,
-  details_json TEXT NOT NULL DEFAULT '{}',
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-CREATE INDEX IF NOT EXISTS idx_platform_layout_draft_events_experience ON platform_layout_draft_events(experience_id, event_id DESC);
-
-
--- Immutable draft revision guards from migration 0160.
-CREATE TRIGGER IF NOT EXISTS trg_platform_layout_draft_versions_no_update
-BEFORE UPDATE ON platform_layout_draft_versions
-BEGIN SELECT RAISE(ABORT, 'LAYOUT_DRAFT_VERSIONS_IMMUTABLE'); END;
-CREATE TRIGGER IF NOT EXISTS trg_platform_layout_draft_versions_no_delete
-BEFORE DELETE ON platform_layout_draft_versions
-BEGIN SELECT RAISE(ABORT, 'LAYOUT_DRAFT_VERSIONS_IMMUTABLE'); END;
-
-
--- Canonical schema snapshot: 0161 immutable simulation run records
--- Simulation run records are append-only evidence and are never production mission truth.
-CREATE TABLE IF NOT EXISTS platform_simulation_runs (
-  run_id TEXT PRIMARY KEY CHECK(length(run_id) BETWEEN 8 AND 100),
-  owner_scope TEXT NOT NULL CHECK(owner_scope IN ('platform','tenant')),
-  tenant_id INTEGER,
-  actor_id TEXT NOT NULL CHECK(length(actor_id) BETWEEN 1 AND 160),
-  scenario_id TEXT NOT NULL CHECK(length(scenario_id) BETWEEN 1 AND 80),
-  scenario_version TEXT NOT NULL DEFAULT '1',
-  executor_id TEXT NOT NULL CHECK(length(executor_id) BETWEEN 1 AND 80),
-  status TEXT NOT NULL CHECK(status IN ('PASS','RECOVERED','BLOCKED','FAILED')),
-  schema_version TEXT NOT NULL,
-  run_json TEXT NOT NULL CHECK(length(run_json) BETWEEN 2 AND 1000000),
-  content_sha256 TEXT NOT NULL CHECK(length(content_sha256)=64),
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CHECK((owner_scope='platform' AND tenant_id IS NULL) OR (owner_scope='tenant' AND tenant_id IS NOT NULL))
-);
-CREATE INDEX IF NOT EXISTS idx_platform_simulation_runs_scope_created ON platform_simulation_runs(owner_scope,tenant_id,created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_platform_simulation_runs_scenario_created ON platform_simulation_runs(scenario_id,created_at DESC);
-CREATE TRIGGER IF NOT EXISTS trg_platform_simulation_runs_no_update BEFORE UPDATE ON platform_simulation_runs BEGIN SELECT RAISE(ABORT,'SIMULATION_RUNS_IMMUTABLE'); END;
-CREATE TRIGGER IF NOT EXISTS trg_platform_simulation_runs_no_delete BEFORE DELETE ON platform_simulation_runs BEGIN SELECT RAISE(ABORT,'SIMULATION_RUNS_IMMUTABLE'); END;
-
--- 0162 audit immutability
-CREATE TRIGGER IF NOT EXISTS trg_admin_control_audit_events_no_update BEFORE UPDATE ON admin_control_audit_events BEGIN SELECT RAISE(ABORT,'AUDIT_EVENTS_IMMUTABLE'); END;
-CREATE TRIGGER IF NOT EXISTS trg_admin_control_audit_events_no_delete BEFORE DELETE ON admin_control_audit_events BEGIN SELECT RAISE(ABORT,'AUDIT_EVENTS_IMMUTABLE'); END;
-CREATE TRIGGER IF NOT EXISTS trg_audit_logs_no_update BEFORE UPDATE ON audit_logs BEGIN SELECT RAISE(ABORT,'AUDIT_LOG_IMMUTABLE'); END;
-
--- 0163 audit retention policy alignment
-DROP TRIGGER IF EXISTS trg_audit_logs_no_early_delete;
-CREATE TRIGGER IF NOT EXISTS trg_audit_logs_no_early_delete BEFORE DELETE ON audit_logs WHEN OLD.created_at > datetime('now','-365 days') BEGIN SELECT RAISE(ABORT,'AUDIT_LOG_RETENTION_FLOOR'); END;
-
-
--- 0164 canonical resource relationship edges
--- Edges reference existing owner-held resource identities; they never duplicate endpoint assets.
-CREATE TABLE IF NOT EXISTS platform_resource_relationships (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  from_resource_type TEXT NOT NULL,
-  from_resource_id TEXT NOT NULL,
-  to_resource_type TEXT NOT NULL,
-  to_resource_id TEXT NOT NULL,
-  relation_type TEXT NOT NULL CHECK (relation_type IN ('depends_on')),
-  status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active','removed')),
-  reason TEXT NOT NULL,
-  created_by TEXT NOT NULL,
-  request_id TEXT NOT NULL,
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CHECK (NOT (from_resource_type = to_resource_type AND from_resource_id = to_resource_id)),
-  UNIQUE (from_resource_type, from_resource_id, to_resource_type, to_resource_id, relation_type)
-);
-CREATE INDEX IF NOT EXISTS idx_platform_resource_relationships_from
-  ON platform_resource_relationships(from_resource_type, from_resource_id, status);
-CREATE INDEX IF NOT EXISTS idx_platform_resource_relationships_to
-  ON platform_resource_relationships(to_resource_type, to_resource_id, status);
-
-
--- 0164 relationship mutation serialization lease
-CREATE TABLE IF NOT EXISTS platform_resource_relationship_leases (
-  lock_key TEXT PRIMARY KEY,
-  lease_token TEXT NOT NULL,
-  expires_at TEXT NOT NULL
-);
