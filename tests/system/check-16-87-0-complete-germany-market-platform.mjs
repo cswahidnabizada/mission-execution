@@ -69,7 +69,7 @@ assert.ok(adapters.every(x=>x.supportedCommands.includes('inspect')));
 await assert.rejects(()=>executeOwnerLifecycleCommand({}, {}, {resourceType:'sector',resourceId:'logistics',command:'retire'},'test'),e=>e.code==='OWNER_LIFECYCLE_COMMAND_NOT_SUPPORTED');
 
 const marketUi=fs.readFileSync('public/assets/js/frontend/admin/market-factory.js','utf8');
-assert.ok(marketUi.includes('STAGE GERMANY LOGISTICS'));
+assert.ok(marketUi.includes('INITIALIZE / OPEN GERMANY MARKET'));
 assert.ok(marketUi.includes('data-mf-content-language'));
 assert.ok(marketUi.includes('data-mf-content-body'));
 assert.ok(marketUi.includes('data-mf-integration-provider'));

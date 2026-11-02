@@ -1,5 +1,5 @@
-import {attachLayoutStudioRouteAdapter} from '../admin/layout-studio-production-adapter.js?v=16.87.0';
-import {renderPage} from '../admin/layout-studio-renderer.js?v=16.87.0';
+import {attachLayoutStudioRouteAdapter} from '../admin/layout-studio-production-adapter.js?v=16.88.0';
+import {renderPage} from '../admin/layout-studio-renderer.js?v=16.88.0';
 import {api,esc} from '../core/api.js';
 const root=document.getElementById('root');
 attachLayoutStudioRouteAdapter({root,routeId:'public-homepage'});
@@ -26,6 +26,16 @@ async function boot(){
   const retry=document.createElement('button');retry.className='ls-render-button';retry.textContent='Retry';retry.addEventListener('click',()=>location.reload());root.querySelector('[data-component-id="retry-availability"]')?.replaceChildren(retry);return;
  }
  let session=null;try{session=(await api('/api/auth/session?optional=1')).session}catch{}
+ if(session&&availability.status==='start'){location.replace('/app/');return}
+ if(availability.status!=='start'&&availability.marketPreview){
+  const market=availability.marketPreview;
+  const components=[header(),{id:'germany-market-hero',type:'hero',tokenRefs:['color.primary','color.text'],properties:{eyebrow:'ON MISSION · DEUTSCHLAND',title:'Germany Logistics',description:'Eine Plattform für gesteuerte Logistikmissionen: planen, zuweisen, ausführen, nachweisen und sicher abschließen. / One governed workspace to plan, assign, execute, prove and complete logistics missions.',cta:'CUSTOMER ONBOARDING NOT YET OPEN',href:'/status.html'},required:true},
+   {id:'germany-market-state',type:'status-panel',tokenRefs:['color.text','color.surface'],properties:{label:'GERMANY LOGISTICS MARKET',state:market.marketStatus+' · '+market.releaseStatus,description:'The Germany Logistics market is initialized and being prepared by ON Mission. Public registration remains closed until legal, security, residency, product and release checks are approved.'},required:true},
+   card('germany-organizations','ORGANIZATIONS','Organization workspace','Company setup, verified access and governed team administration.'),card('germany-execution','MISSION EXECUTION','One mission truth','Plan, assign, execute, verify and recover logistics work with accountable ownership and evidence.'),
+   {id:'germany-sign-in',type:'button',tokenRefs:['color.primary'],properties:{label:session?'OPEN YOUR WORKSPACE':'SIGN IN',href:session?'/app/':'/login.html'},required:true},
+   footer('Germany Logistics · Controlled market preparation')];
+  root.innerHTML=shell(page(components,'germany-logistics-market-preview'));return;
+ }
  if(availability.status!=='start'){unavailable(availability.message,session);return}
  if(session){location.replace('/app/');return}
  const components=[header(),

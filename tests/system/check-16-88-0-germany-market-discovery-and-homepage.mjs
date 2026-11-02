@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const routes=fs.readFileSync('src/worker/modules/admin-control/admin-build-data.routes.js','utf8');
+const studio=fs.readFileSync('public/assets/js/frontend/admin/market-factory.js','utf8');
+const publisher=fs.readFileSync('public/assets/js/frontend/admin/product-publisher.js','utf8');
+const availability=fs.readFileSync('src/worker/modules/product-availability.routes.js','utf8');
+const landing=fs.readFileSync('public/assets/js/frontend/public/landing.js','utf8');
+assert.ok(routes.includes("packageKey:'on-mission:DE'"),'Germany seed must resolve the canonical market identity');
+assert.ok(routes.includes('if(existing?.versions?.length)'),'Germany initialization must reuse the existing market');
+assert.ok(routes.includes('reused:true'),'existing market reuse must be explicit');
+assert.ok(studio.includes('INITIALIZE / OPEN GERMANY MARKET'),'Germany initialization must be visible in Market Launch Studio');
+assert.ok(studio.includes("#mfSeedGermany")&&studio.includes("/api/platform/admin/market-factory/germany-logistics/seed"),'Germany initialization control must invoke the governed step-up route');
+assert.ok(publisher.includes('market-factory.js?v=16.88.0'),'Market Factory module must be cache-busted for the release');
+assert.ok(availability.includes('const marketPreview=marketPackage?'),'public availability must expose safe Germany market preview metadata');
+assert.ok(landing.includes('germany-logistics-market-preview'),'homepage must render the Germany market preview while onboarding is gated');
+assert.ok(landing.includes('CUSTOMER ONBOARDING NOT YET OPEN'),'homepage must not bypass the live onboarding gate');
+assert.ok(landing.includes("href:session?'/app/':'/login.html'"),'homepage must preserve authenticated workspace and sign-in paths');
+console.log('16.88.0 Germany market discovery, idempotent initialization and homepage preview contract: PASS');

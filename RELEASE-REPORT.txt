@@ -1,53 +1,45 @@
-ON MISSION 16.87.0 — COMPLETE GERMANY LOGISTICS MARKET PLATFORM
-Base: 16.80.0 deployed Germany Logistics / Super Admin candidate
-Status: cumulative source candidate; deployment and independent production certification are separate gates.
+ON MISSION 16.88.0
+GERMANY LOGISTICS MARKET DISCOVERY & HOMEPAGE CONVERGENCE
 
-IMPLEMENTED IN SOURCE
-- Owner lifecycle adapter expansion for Sector, Product Country, Country Blueprint, Product Definition, Policy and Configuration.
-- Revision-fenced Sector and Policy activation/deactivation with dependent-resource guards.
-- Owner-delegated Country Blueprint preparation and Product Definition compilation with read-back.
-- Durable owner lifecycle idempotency/reconciliation journal (migration 0165) and operation lookup API.
-- Bundled Germany Logistics Market Package with German/English onboarding, privacy, terms, imprint, consent and support content.
-- Super Admin Market Factory action to stage the complete Germany package as a draft.
-- Editable German/English page language assignment, privacy/terms/imprint/consent body content and canonical provider-code requirements.
-- Required email provider gate with canonical Connections provider status, region, contract, residency and active-capability checks; real connection-test evidence is separately required.
-- Market Launch stage contracts distinguish canonical authority verification from human attestation; parent task evidence preserves the complete stage-contract record.
-- Product Factory creates typed Product Definition components for identity, vocabulary, localized content, capabilities, workflow, roles, experience, policies, integrations and dependencies with package-version idempotency fences.
-- Public market-content endpoint reads only the active LIVE release.
-- Homepage directs users to Germany Logistics onboarding only when the canonical launch is active, the Market Package is LIVE and onboarding is OPEN.
-- Germany onboarding records the exact Terms version accepted and Privacy Notice version acknowledged (migration 0166).
-- Existing 26-family capability registry, Asset 360, canonical resource relationships, deletion protection, market publication lifecycle, Test Lab and mission execution stack retained.
+BASELINE
+- Cumulative source baseline: deployed ON Mission 16.87.0 candidate.
+- Canonical market identity: on-mission:DE.
+- No database schema migration added; existing migration high-water remains 0166.
 
-IMPORTANT SAFETY BOUNDARIES
-- Staging the Germany package does not create or activate canonical market records.
-- Legal content is intentionally draft/researching and must be completed and reviewed by qualified German counsel.
-- Required email provider is intentionally NOT_CONFIGURED; select and verify a real Germany-resident provider in Connections and attach an actual connection-test report.
-- Product Preparation Workspace research and operational tasks require real human evidence. Publication may safely pause at VALIDATING_LAUNCH; complete the canonical workspace and use explicit publication recovery, never re-import the package.
-- Residency and provider statements are requirements, not proof of actual storage/processing locations.
-- No customer tenant is created by this release build.
-- Simulation cannot prove physical delivery; human authorization and independent verification remain required.
-- Physical actuation remains disabled in the Germany package.
+CHANGES
+1. Market Launch Studio now presents a Germany-first canonical starting point with the explicit INITIALIZE / OPEN GERMANY MARKET action.
+2. The action uses the existing Super Admin step-up protected Germany seed endpoint.
+3. Germany initialization is idempotent at the market level: if the canonical market already has versions, the endpoint returns the existing market and does not create another version or duplicate package.
+4. The Market Factory entry module and public static assets are cache-busted to 16.88.0 so an old browser module is not intentionally reused.
+5. Public product availability now exposes only safe Germany market preview metadata when a draft/staged package exists.
+6. Homepage renders a Germany Logistics market preview while preparation is underway. It clearly keeps customer registration closed until the canonical market is LIVE, the active version is LIVE, onboarding mode is OPEN, and the country launch is active.
+7. Once those canonical conditions are true, the existing Germany onboarding route remains the homepage CTA.
+8. Added regression coverage for canonical identity, idempotent initialization, Studio action wiring, cache version and homepage gate behavior.
 
-NEW MIGRATIONS
-- 0165_owner_lifecycle_idempotency_and_reconciliation.sql
-- 0166_germany_market_onboarding_legal_acceptance.sql
+GOVERNANCE
+- Initialization creates/reuses a DRAFT package only.
+- It does not publish, activate, open public onboarding, create provider credentials, provision a tenant or claim residency/legal certification.
+- Existing versions and release history are preserved.
 
-VERIFICATION TO RUN IN THIS ENVIRONMENT
-- Syntax checks for all changed JavaScript modules.
-- 16.87.0 Germany market platform contract.
-- Cumulative release suite.
-- Security, data integrity, architecture, production-readiness and hardening suites.
-- Migration contract and schema snapshot checks.
-- Node.js 24.22.1 build and CSS compilation.
+VERIFICATION
+- npm run check:release: PASS
+- npm run check:health: PASS
+- npm run check:migrations: PASS (166 ordered migrations; high-water 0166)
+- scripts/check-release-engineering.mjs: PASS
+- Architecture: 430 JS files, 1,626 local imports, zero cycles.
+- Production build: NOT RUN in this environment because local Node is 22.16.0; repository requires Node 24.22.1. Cloudflare deployment environment previously reported Node 24.22.1.
+- Production runtime/browser tests: NOT RUN; production credentials/runtime evidence not supplied.
 
-PRODUCTION EVIDENCE STILL REQUIRED
-- Apply 0165/0166 to production D1 and verify migration high-water 0166.
-- Authenticated browser tests for Super Admin market staging/editing/release and customer onboarding.
-- Live D1 mutations with authoritative read-back and audit reconciliation.
-- Cross-tenant isolation, authorization, step-up, concurrency, stale revision and interruption/recovery tests.
-- Backup and restore proof.
-- Germany/EU regional placement and subprocessor evidence for D1, KV, R2, Vectorize, logs, backups, support, AI, email and integrations.
-- Legal approval of Privacy Notice, Terms, Imprint, consent text, DPA and retention schedule.
-- Signed and verified Market Release, deliberate onboarding OPEN approval, real tenant provisioning and Germany Logistics pilot certification.
+DEPLOYMENT
+Use Cloudflare's Node 24.22.1 build environment. Existing migration high-water is 0166; this release adds no migrations. Do not run a migration merely because the release number changed. Deploy the artifact through the existing approved pipeline, then hard-refresh the browser and verify /assets/js/frontend/admin/market-factory.js?v=16.88.0 is loaded.
 
-No production or pilot status is inferred from source checks or a successful Cloudflare deployment.
+FIRST USE AFTER DEPLOYMENT
+1. Sign in as Platform Super Admin.
+2. Open Market Launch Studio.
+3. Select INITIALIZE / OPEN GERMANY MARKET and complete step-up authorization.
+4. Open the Germany Logistics market card and configure its draft version.
+5. Complete canonical reconciliation, legal/security/residency/integration review, Test Lab and release evidence.
+6. Only after release verification and activation should onboarding be opened.
+7. Confirm homepage changes from Germany market preview to the live onboarding entry when canonical availability conditions are satisfied.
+
+This is a source-verified release candidate, not a claim of production certification or legal approval.
