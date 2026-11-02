@@ -149,3 +149,38 @@ No database migration is added. Migration high-water remains 0166. The existing 
 ### Verification and deployment
 
 Use Node 24.22.1 and npm 10.9.2. Run `npm ci`, `npm run build`, `npm run check:release`, `npm run check:health`, `npm run check:migrations`, and `npm run check:production-certification`. Production runtime certification still requires configured credentials and live environment evidence. Back up production D1 before any required migration; this release adds none. Deploy the Worker through the approved Cloudflare pipeline, then hard-refresh and verify `market-factory.js?v=16.89.0` loads. Open Super Admin → Market Launch Studio → Germany Logistics → selected draft and click **PREPARE GERMANY** once. Review the returned operation summary and only act on the remaining genuine human/external gates.
+
+## ON Mission 16.90.0 — Germany Operational Readiness & Unified Public Experience
+
+Base: 16.89.0 (cumulative; no prior market or mission authority replaced).
+
+### Release objective
+
+Move the Germany Logistics market from package preparation toward operational proof while simplifying the public product experience. Preserve the canonical mission lifecycle and global Logistics sector. Keep every market transition evidence-gated.
+
+### Implemented in this source candidate
+
+- Rebuilt the public landing experience around a clear mission-execution value proposition, organization/executor/participant audiences, mission intelligence, execution control and verifiable outcomes.
+- Added a Germany Logistics market-preview experience with clear market state, an explanation of the governed mission journey, and an explicit public-onboarding-closed message when the canonical availability authority returns a market preview rather than an open market.
+- Kept the homepage dependent on `/api/product/availability`; it does not infer market launch from configuration files, environment variables or a local flag. Sign-in and workspace actions preserve session-aware routing.
+- Added responsive visual treatment for the public experience, including mobile layouts, typography, navigation, feature cards and market status presentation.
+- Preserved the Market Launch Studio's single `PREPARE GERMANY` action, canonical workbench, controlled launch supervisor, collapsed detailed task view and step-up protected operations from 16.89.0.
+- Added a cumulative public-experience and market-readiness regression contract.
+- Updated release identity and browser asset cache-busting to 16.90.0.
+- No new D1 migration. Migration high-water remains 0166.
+
+### Architecture and safety boundaries
+
+- No public onboarding is opened by this release. The canonical availability authority continues to decide whether registration is available.
+- No legal, tax, commercial, provider, residency, subprocessor, backup/restore or physical-pilot evidence is fabricated.
+- No physical action is autonomously actuated. Human authorization remains required.
+- The Germany preview is not a live-service claim. It displays the market/release state returned by the server.
+- Existing global Logistics identity, immutable Market Package versions, tenant isolation and mission truth authorities remain canonical.
+
+### Not claimed complete by this source release
+
+A full end-to-end production certification, real provider authorization, German legal approval, infrastructure residency proof, backup/restore proof, authenticated cross-tenant adversarial browser testing, live customer onboarding and a physical Germany Logistics pilot still require live environment evidence and authorized human decisions. The Test Lab and simulator remain bounded by the capabilities actually registered in their canonical authorities; this release does not claim all mission scenarios are production-certified.
+
+### Verification and deployment
+
+Use Node 24.22.1 and npm 10.9.2. Run `npm ci`, `npm run build`, `npm run check:release`, `npm run check:health`, `npm run check:migrations` and the required runtime/recovery certification in a configured live certification environment. No migration is introduced by 16.90.0. Deploy through the approved Cloudflare pipeline and verify the homepage, sign-in routing, market preview and Super Admin Market Launch Studio after deployment.

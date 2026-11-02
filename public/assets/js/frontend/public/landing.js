@@ -1,51 +1,42 @@
-import {attachLayoutStudioRouteAdapter} from '../admin/layout-studio-production-adapter.js?v=16.89.0';
-import {renderPage} from '../admin/layout-studio-renderer.js?v=16.89.0';
-import {api,esc} from '../core/api.js';
+import {attachLayoutStudioRouteAdapter} from '../admin/layout-studio-production-adapter.js?v=16.90.0';
+import {renderPage} from '../admin/layout-studio-renderer.js?v=16.90.0';
+import {api} from '../core/api.js';
 const root=document.getElementById('root');
 attachLayoutStudioRouteAdapter({root,routeId:'public-homepage'});
-const shell=content=>`<div class="public-experience"><div class="public-main">${content}</div></div>`;
-const baseTokens={'color.primary':'#2357d9','color.surface':'#ffffff','color.text':'#172033','color.muted':'#65718a','radius.card':'12px'};
-function page(components,ids='public-homepage'){
- const composition={id:ids,title:'Public homepage',kind:'public-homepage',componentIds:components.map(c=>c.id)};
- return renderPage(composition,components,{mode:'production',rendererVersion:'16.10.54'});
-}
-function header(){return {id:'global-header',type:'header',tokenRefs:['color.text','color.surface'],properties:{label:'ON MISSION'},required:true}}
-function footer(label='Governed mission execution · Verified outcomes'){return {id:'global-footer',type:'footer',tokenRefs:['color.muted'],properties:{label},required:true}}
-function card(id,label,title,description){return {id,type:'card',tokenRefs:['color.surface','radius.card'],properties:{label,title,description},required:false}}
-function unavailable(message,session){
- const components=[header(),{id:'availability-closed',type:'status-panel',tokenRefs:['color.text','color.surface'],properties:{label:'COUNTRY PRODUCT',state:'PUBLIC ACCESS CLOSED',description:'Mission Execution is not open for public access yet. '+String(message||'No country product is currently activated.')},required:true},{id:'status-action',type:'button',tokenRefs:['color.primary'],properties:{label:'VIEW STATUS',href:'/status.html'},required:true},footer('Availability and market launch are governed by the active product release.')];
- root.innerHTML=shell(page(components,'public-homepage-closed'));
- if(session){const actions=document.createElement('div');actions.className='onm-toolbar onm-space-top';actions.innerHTML='<button class="onm-btn" id="landingLogout">SIGN OUT CURRENT SESSION</button>';root.querySelector('.ls-renderer-page')?.append(actions);document.querySelector('#landingLogout')?.addEventListener('click',async()=>{const b=document.querySelector('#landingLogout');b.disabled=true;try{await api('/api/auth/logout',{method:'POST'});location.reload()}catch(e){b.disabled=false;b.textContent=e.message||'SIGN OUT FAILED'}})}
-}
+const shell=content=>`<div class="public-experience onm-home-v1690"><div class="public-main">${content}</div></div>`;
+function page(components,id='public-homepage'){return renderPage({id,title:'ON Mission',kind:'public-homepage',componentIds:components.map(c=>c.id)},components,{mode:'production',rendererVersion:'16.10.54'});}
+const header=()=>({id:'global-header',type:'header',properties:{label:'ON MISSION'},required:true});
+const footer=(label='Mission execution · One truth · Verified outcomes')=>({id:'global-footer',type:'footer',properties:{label},required:true});
+const card=(id,label,title,description)=>({id,type:'card',properties:{label,title,description},required:false});
+const section=(id,label,title,description)=>({id,type:'section',properties:{label,title,description},required:false});
+function render(components,id){root.innerHTML=shell(page(components,id));}
+function unavailable(message,session){const components=[header(),{id:'availability-closed',type:'status-panel',properties:{label:'PRODUCT AVAILABILITY',state:'PUBLIC ACCESS CLOSED',description:`ON Mission is not currently open for public onboarding. ${String(message||'No country product is currently activated.')}`},required:true},{id:'status-action',type:'button',properties:{label:'VIEW SERVICE STATUS',href:'/status.html'},required:true},footer('Public access follows the verified active market release.')];render(components,'public-homepage-closed');if(session){const actions=document.createElement('div');actions.className='onm-toolbar onm-space-top';actions.innerHTML='<a class="onm-home-secondary" href="/app/">OPEN WORKSPACE</a><button class="onm-btn" id="landingLogout">SIGN OUT</button>';root.querySelector('.ls-renderer-page')?.append(actions);document.querySelector('#landingLogout')?.addEventListener('click',async()=>{const b=document.querySelector('#landingLogout');b.disabled=true;try{await api('/api/auth/logout',{method:'POST'});location.reload()}catch(e){b.disabled=false;b.textContent=e.message||'SIGN OUT FAILED'}});}}
 async function boot(){
  let availability;
- try{availability=await api('/api/product/availability')}
- catch(e){
-  const components=[header(),{id:'availability-error',type:'status-panel',tokenRefs:['color.text','color.surface'],properties:{label:'PRODUCT AVAILABILITY',state:'TEMPORARILY UNAVAILABLE',description:e.message||'The product availability authority could not be reached.'},required:true},{id:'retry-availability',type:'button',tokenRefs:['color.primary'],properties:{label:'RETRY',href:'/status.html'},required:true},footer()];
-  root.innerHTML=shell(page(components,'public-homepage-error'));
-  const retry=document.createElement('button');retry.className='ls-render-button';retry.textContent='Retry';retry.addEventListener('click',()=>location.reload());root.querySelector('[data-component-id="retry-availability"]')?.replaceChildren(retry);return;
- }
- let session=null;try{session=(await api('/api/auth/session?optional=1')).session}catch{}
- if(session&&availability.status==='start'){location.replace('/app/');return}
+ try{availability=await api('/api/product/availability');}
+ catch(e){render([header(),{id:'availability-error',type:'status-panel',properties:{label:'PRODUCT AVAILABILITY',state:'TEMPORARILY UNAVAILABLE',description:e.message||'The availability authority could not be reached. No market availability is assumed.'},required:true},{id:'retry-availability',type:'button',properties:{label:'CHECK SERVICE STATUS',href:'/status.html'},required:true},footer()],'public-homepage-error');return;}
+ let session=null;try{session=(await api('/api/auth/session?optional=1')).session;}catch{}
+ if(session&&availability.status==='start'){location.replace('/app/');return;}
  if(availability.status!=='start'&&availability.marketPreview){
   const market=availability.marketPreview;
-  const components=[header(),{id:'germany-market-hero',type:'hero',tokenRefs:['color.primary','color.text'],properties:{eyebrow:'ON MISSION · DEUTSCHLAND',title:'Germany Logistics',description:'Eine Plattform für gesteuerte Logistikmissionen: planen, zuweisen, ausführen, nachweisen und sicher abschließen. / One governed workspace to plan, assign, execute, prove and complete logistics missions.',cta:'CUSTOMER ONBOARDING NOT YET OPEN',href:'/status.html'},required:true},
-   {id:'germany-market-state',type:'status-panel',tokenRefs:['color.text','color.surface'],properties:{label:'GERMANY LOGISTICS MARKET',state:market.marketStatus+' · '+market.releaseStatus,description:'The Germany Logistics market is initialized and being prepared by ON Mission. Public registration remains closed until legal, security, residency, product and release checks are approved.'},required:true},
-   card('germany-organizations','ORGANIZATIONS','Organization workspace','Company setup, verified access and governed team administration.'),card('germany-execution','MISSION EXECUTION','One mission truth','Plan, assign, execute, verify and recover logistics work with accountable ownership and evidence.'),
-   {id:'germany-sign-in',type:'button',tokenRefs:['color.primary'],properties:{label:session?'OPEN YOUR WORKSPACE':'SIGN IN',href:session?'/app/':'/login.html'},required:true},
-   footer('Germany Logistics · Controlled market preparation')];
-  root.innerHTML=shell(page(components,'germany-logistics-market-preview'));return;
+  const components=[header(),{id:'germany-market-hero',type:'hero',properties:{eyebrow:'GERMANY · LOGISTICS · CONTROLLED MARKET PREPARATION',title:'Logistics execution, with accountability built in.',description:'One governed operating platform to plan, assign, execute, verify and recover logistics missions. Mission truth, responsibility and evidence stay connected from start to outcome.',cta:'VIEW MARKET AVAILABILITY',href:'/status.html'},required:true},
+   {id:'germany-market-state',type:'status-panel',properties:{label:'GERMANY LOGISTICS',state:`${market.marketStatus||'PREPARATION'} · ${market.releaseStatus||'NOT LIVE'}`,description:'Germany is being prepared through controlled product, security, legal and residency gates. Public registration remains closed until the active market release explicitly opens onboarding.'},required:true},
+   section('how-it-works','THE OPERATING MODEL','One mission. One accountable journey.','ON Mission connects operational context, planning, responsibility, execution and verifiable outcomes—without allowing stale actions to overwrite current truth.'),
+   card('germany-plan','01 · PLAN','Understand the situation','Bring mission requirements, constraints and operational context into one governed plan.'),card('germany-assign','02 · ASSIGN','Make responsibility explicit','Assign work to an eligible human executor with clear ownership and authorization.'),card('germany-execute','03 · EXECUTE','Coordinate the real work','Guide each valid action while preserving mission state, custody and operational evidence.'),card('germany-verify','04 · VERIFY','Prove the outcome','Review delivery evidence, exceptions and recovery before recording a verified outcome.'),
+   section('trust-model','BUILT FOR CONTROL','Operational intelligence with human accountability','Security → Truth → Liveness → Stability → Experience → Scale. Physical actions remain human-authorized; simulations are never presented as real deliveries.'),
+   card('germany-organizations','ORGANIZATIONS','A governed company workspace','Organization setup, verified access, team responsibilities and operational configuration.'),card('germany-executors','EXECUTORS','A clear next action','Human executors receive the responsibility, context and evidence requirements needed for their assigned work.'),card('germany-evidence','EVIDENCE & RECOVERY','Traceable operations','Exceptions, waiting conditions, escalations, evidence and recovery are part of the mission lifecycle.'),
+   {id:'germany-sign-in',type:'button',properties:{label:session?'OPEN YOUR WORKSPACE':'SIGN IN',href:session?'/app/':'/login.html'},required:true},footer('Germany Logistics · Market preparation in progress · Public onboarding closed')];
+  render(components,'germany-logistics-market-preview');return;
  }
- if(availability.status!=='start'){unavailable(availability.message,session);return}
- if(session){location.replace('/app/');return}
- const components=[header(),
-  {id:'hero-main',type:'hero',tokenRefs:['color.primary','color.text'],properties:{eyebrow:availability.market?'GERMANY LOGISTICS MARKET':'MISSION EXECUTION',title:availability.market?'Start your Germany logistics onboarding.':'One governed workspace for operational missions.',description:availability.market?'Register your logistics organization in Germany, configure your team and begin managing missions through one governed operating platform.':'Create, assign, execute, prove and complete work around one mission truth—with responsibility, custody, action and evidence kept together.',cta:'START ORGANIZATION ONBOARDING',href:availability.market?'/register.html?market=DE-logistics&country=DE&sector=logistics':'/register.html'},required:true},
-  {id:'executor-entry',type:'button',tokenRefs:['color.primary'],properties:{label:'FOR EXECUTORS',href:'/driver/'},required:true},
-  card('organizations','ORGANIZATIONS','Run governed work','Build organization context, people and mission flow.'),
-  card('executors','EXECUTORS','Act on the next valid action','Receive only the responsibility and evidence needed to execute.'),
-  card('participants','PARTICIPANTS','Stay in controlled context','Participate without inheriting unauthorized responsibility.'),
-  {id:'availability-status',type:'status-panel',tokenRefs:['color.text','color.surface'],properties:{label:'PRODUCT AVAILABILITY',state:'AVAILABLE',description:`${availability.countries?.length||0} launched countries. ${availability.message||'Country availability is governed by the active product launch.'}`},required:true},footer()];
- if(availability.market){components.push({id:'market-privacy-link',type:'button',tokenRefs:['color.primary'],properties:{label:'PRIVACY NOTICE',href:'/legal/?code=privacy&lang=de'},required:true},{id:'market-terms-link',type:'button',tokenRefs:['color.primary'],properties:{label:'TERMS & CONDITIONS',href:'/legal/?code=terms&lang=de'},required:true},{id:'market-imprint-link',type:'button',tokenRefs:['color.primary'],properties:{label:'IMPRINT',href:'/legal/?code=imprint&lang=de'},required:true},{id:'market-consent-link',type:'button',tokenRefs:['color.primary'],properties:{label:'CONSENT SETTINGS',href:'/legal/?code=consent&lang=de'},required:true});}
- root.innerHTML=shell(page(components));
+ if(availability.status!=='start'){unavailable(availability.message,session);return;}
+ if(session){location.replace('/app/');return;}
+ const components=[header(),{id:'hero-main',type:'hero',properties:{eyebrow:'MISSION EXECUTION · GOVERNED BY DESIGN',title:'Move work forward. Keep every mission accountable.',description:'ON Mission brings operational context, decisions, people, actions and evidence into one intelligent execution platform—so teams know what happens next and why.',cta:'START ORGANIZATION ONBOARDING',href:'/register.html'},required:true},
+  section('platform-value','ONE CONNECTED OPERATING SYSTEM','From first signal to verified outcome.','A systematic mission journey that keeps the current truth, accountable owner and next valid action connected.'),
+  card('organizations','FOR ORGANIZATIONS','Coordinate operations','Configure teams, responsibilities and mission workflows around one canonical operating model.'),card('executors','FOR EXECUTORS','Act with clarity','Receive assigned work, the context needed to perform it and clear evidence requirements.'),card('participants','FOR PARTICIPANTS','Stay in the right role','Collaborate in a governed workspace without inheriting authority you were not granted.'),
+  card('mission-intelligence','MISSION INTELLIGENCE','Understand what happens next','Situation intelligence and governed recommendations help teams plan and respond to change.'),card('mission-control','EXECUTION CONTROL','Keep responsibility explicit','Authorization, assignment, execution, verification and recovery remain connected.'),card('mission-evidence','VERIFIABLE OUTCOMES','Prove what happened','Evidence and outcome checks help teams distinguish completed work from assumptions.'),
+  {id:'availability-status',type:'status-panel',properties:{label:'MARKET AVAILABILITY',state:'LIVE MARKETS ONLY',description:`${availability.countries?.length||0} launched countries. ${availability.message||'Registration is available only where an active market release explicitly permits it.'}`},required:true},
+  {id:'executor-entry',type:'button',properties:{label:'EXECUTOR WORKSPACE',href:'/driver/'},required:true},footer()];
+ if(availability.market){components.push({id:'market-privacy-link',type:'button',properties:{label:'PRIVACY NOTICE',href:'/legal/?code=privacy&lang=de'},required:true},{id:'market-terms-link',type:'button',properties:{label:'TERMS & CONDITIONS',href:'/legal/?code=terms&lang=de'},required:true},{id:'market-imprint-link',type:'button',properties:{label:'IMPRINT',href:'/legal/?code=imprint&lang=de'},required:true});}
+ render(components);
 }
 boot();
