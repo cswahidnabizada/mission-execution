@@ -9,8 +9,8 @@ assert.ok(landing.includes("availability.status!=='start'&&availability.marketPr
 assert.ok(landing.includes('Public registration remains closed')&&landing.includes('PUBLIC ACCESS CLOSED'),'Germany preview must not imply onboarding is open');
 assert.ok(landing.includes('href:session?\'/app/\':\'/login.html\''),'workspace CTA must route authenticated and unauthenticated users correctly');
 assert.ok(landing.includes('Physical actions remain human-authorized'),'public product copy must preserve human physical execution boundary');
-assert.ok(landing.includes('16.90.0'),'public assets must use current cache identity');
+assert.ok(landing.includes('16.91.0'),'public assets must use current cache identity');
 assert.ok(css.includes('.onm-home-v1690')&&css.includes('@media(max-width:520px)'),'modern responsive homepage styling must exist');
 assert.ok(renderer.includes("case 'hero'")&&renderer.includes("case 'status-panel'"),'homepage must use approved production renderer components');
 assert.ok(market.includes('PREPARE GERMANY')&&market.includes('CONTROLLED LAUNCH SUPERVISOR'),'Market Launch Studio must retain the primary preparation action and canonical supervisor');
-console.log('16.90.0 public experience and market readiness contract: PASS');
+console.log('16.91.0 public experience and market readiness contract: PASS');

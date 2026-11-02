@@ -1,4 +1,4 @@
-# ON Mission 16.87.0 — Complete Germany Logistics Market Platform
+# ON Mission 16.91.0 — Germany Pilot Simulation Completion
 
 Base: ON Mission 16.80.0
 Status: cumulative source candidate; production deployment, legal approval, regional placement evidence and real-world pilot certification remain external gates.
@@ -184,3 +184,29 @@ A full end-to-end production certification, real provider authorization, German 
 ### Verification and deployment
 
 Use Node 24.22.1 and npm 10.9.2. Run `npm ci`, `npm run build`, `npm run check:release`, `npm run check:health`, `npm run check:migrations` and the required runtime/recovery certification in a configured live certification environment. No migration is introduced by 16.90.0. Deploy through the approved Cloudflare pipeline and verify the homepage, sign-in routing, market preview and Super Admin Market Launch Studio after deployment.
+
+
+## 16.91.0 — Germany Pilot Simulation Completion
+
+This release is cumulative from 16.90.0. It corrects the release identity in VERSION, package metadata and RELEASE-MANIFEST.json, and expands the isolated simulation scenario catalog from five to eight scenarios.
+
+### Implemented in source
+
+- Added late-delivery and escalation simulation. It produces explicitly simulated deadline-breach evidence and a blocked/escalation-required result.
+- Added missing-delivery-proof simulation. Verification remains blocked and the simulated outcome is not certified.
+- Added cancellation-before-execution simulation. The scenario blocks before assignment/execution and records that no physical effect occurred.
+- Added the three scenarios to the simulator UI and expanded the existing simulation contract test.
+- Preserved simulation-only labeling, virtual executor profiles, no-production-mutation and no-device-command invariants.
+- Corrected release documentation identity to 16.91.0. Migration high-water remains 0166; no database migration is introduced.
+
+### Not claimed complete by this release
+
+- The simulator is deterministic and isolated; it is not a live customer pilot or production mission.
+- Provider OAuth/credential authorization and live connectivity are not completed by adding provider requirements to a market package.
+- Legal review, controller identity, VAT decisions, data residency/subprocessor proof and approvals remain external decisions.
+- Authenticated production browser testing, tenant-isolation runtime attacks, D1 restore drills, regional placement proof and real customer pilot certification remain outstanding.
+- A unified four-workspace Super Admin redesign and full Mission Operations Control Center are not certified as complete in this release.
+
+### Verification vocabulary
+
+Source tests and simulation evidence are not production evidence. The release may be called source-tested only after the cumulative release and health checks pass in the required Node 24.22.1 environment. Deployment, production verification, approvals and pilot certification remain separate gates.

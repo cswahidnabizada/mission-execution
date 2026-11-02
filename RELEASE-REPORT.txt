@@ -1,35 +1,23 @@
-ON MISSION 16.90.0
-GERMANY OPERATIONAL READINESS & UNIFIED PUBLIC EXPERIENCE
+ON MISSION 16.91.0
+Germany Pilot Simulation Completion
 
-BASELINE
-- Cumulative source baseline: 16.89.0
-- Release identity: 16.90.0
-- Migration high-water mark: 0166 (166 migrations)
-- New migrations: none
-- Global Logistics sector and canonical mission journey preserved.
+Cumulative baseline: 16.90.0
+Migration high-water mark: 0166
+New migrations: none
 
-IMPLEMENTED
-1. Rebuilt the public homepage content around governed mission execution, audiences, mission intelligence, execution control and verifiable outcomes.
-2. Added a Germany Logistics preview state that communicates actual market/release status and explicitly keeps public onboarding closed unless the canonical availability authority says otherwise.
-3. Kept public routing bound to /api/product/availability and session-aware sign-in/workspace routing.
-4. Added responsive homepage styling for desktop, tablet and mobile.
-5. Preserved the 16.89.0 Germany preparation command, controlled launch supervisor, canonical stage contracts and hidden-by-default task details.
-6. Added cumulative regression test for homepage availability gating, human execution boundaries, responsive styles and market preparation controls.
-7. Updated canonical release version and cache-busting identity.
+Implemented:
+- Release identity corrected to 16.91.0.
+- Added deterministic isolated scenarios: late delivery/escalation, missing delivery proof, cancellation before execution.
+- Updated simulator UI scenario selector.
+- Expanded simulation foundation regression coverage.
+- Preserved no-production-mutation and no-device-command simulation boundaries.
 
-NOT CLAIMED
-- No legal approval, provider credentials, regional placement, backup/restore, live tenant-isolation, authenticated browser certification or physical pilot evidence was fabricated.
-- No publication, activation or public onboarding transition was performed.
-- No full production certification or Cloudflare deployment was performed by this build process.
+Not included / not certified:
+- Live provider authorization or connectivity.
+- Legal approvals, real company/controller data, German VAT decisions.
+- Actual data residency, backup and subprocessor location evidence.
+- Complete unified Super Admin redesign.
+- Full live production tenant-isolation and authenticated browser certification.
+- Real customer pilot or physical mission evidence.
 
-VERIFICATION
-- Source regression tests and static checks are run separately and reported with their actual outcomes.
-- Build requires Node 24.22.1 and npm 10.9.2.
-- Production certification requires configured live runtime and recovery credentials.
-
-DEPLOYMENT
-- No new database migration; keep migration high-water mark 0166.
-- Use Cloudflare build environment with Node 24.22.1 and npm 10.9.2.
-- Run npm ci, npm run build, npm run check:release, npm run check:health, npm run check:migrations.
-- Deploy through approved Cloudflare pipeline.
-- Verify public homepage availability behavior and Super Admin → Market Launch Studio → Germany Logistics.
+No database migration. No automatic market publication, activation or public onboarding.
