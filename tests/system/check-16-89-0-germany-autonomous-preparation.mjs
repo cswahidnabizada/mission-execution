@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const routes=fs.readFileSync('src/worker/modules/admin-control/admin-build-data.routes.js','utf8');
+const studio=fs.readFileSync('public/assets/js/frontend/admin/market-factory.js','utf8');
+const publisher=fs.readFileSync('public/assets/js/frontend/admin/product-publisher.js','utf8');
+const service=fs.readFileSync('src/worker/security/market-factory.service.js','utf8');
+assert.ok(routes.includes('/prepare-germany'),'step-up protected autonomous Germany preparation endpoint must exist');
+assert.ok(routes.includes('GERMANY_PREPARATION_SCOPE_MISMATCH')&&routes.includes("initial.packageStatus||'').toUpperCase()))"),'runner must enforce Germany Logistics scope and mutable draft status');
+assert.ok(routes.includes("'resource.configure'")&&routes.includes("'market.relationship.create'")&&routes.includes("'certification.testlab.run'"),'runner must allow only registered canonical preparation commands');
+assert.ok(routes.includes('publicationAttempted:false')&&routes.includes('activationAttempted:false')&&routes.includes('onboardingOpened:false'),'runner must explicitly attest that release transitions were not attempted');
+assert.ok(studio.includes('id="mfPrepareGermany"')&&studio.includes('PREPARE GERMANY'),'Market Launch Studio must expose one primary preparation action');
+assert.ok(studio.includes('mf-task-details')&&studio.includes('VIEW TASK DETAILS'),'detailed task lists must be collapsed by default behind a single disclosure');
+assert.ok(studio.includes('/prepare-germany')&&studio.includes('GERMANY PREPARATION FINISHED'),'button must invoke server preparation and display real result summary');
+assert.ok(publisher.includes('market-factory.js?v=16.89.0'),'Market Factory browser module must be cache-busted');
+assert.ok(service.includes('CANONICAL_AUTHORITY_VERIFIED')&&service.includes('read-after-write verification'),'preparation must use persisted canonical verification');
+console.log('16.89.0 Germany autonomous preparation and safety contract: PASS');

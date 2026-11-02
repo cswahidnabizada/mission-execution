@@ -1,45 +1,44 @@
-ON MISSION 16.88.0
-GERMANY LOGISTICS MARKET DISCOVERY & HOMEPAGE CONVERGENCE
+ON MISSION 16.89.0
+GERMANY MARKET AUTONOMOUS PREPARATION
 
 BASELINE
-- Cumulative source baseline: deployed ON Mission 16.87.0 candidate.
-- Canonical market identity: on-mission:DE.
-- No database schema migration added; existing migration high-water remains 0166.
+- Cumulative source baseline: 16.88.0
+- Release identity: 16.89.0
+- Migration high-water mark: 0166 (166 migrations)
+- New migrations: none
+- Global Logistics sector remains canonical and reusable.
 
-CHANGES
-1. Market Launch Studio now presents a Germany-first canonical starting point with the explicit INITIALIZE / OPEN GERMANY MARKET action.
-2. The action uses the existing Super Admin step-up protected Germany seed endpoint.
-3. Germany initialization is idempotent at the market level: if the canonical market already has versions, the endpoint returns the existing market and does not create another version or duplicate package.
-4. The Market Factory entry module and public static assets are cache-busted to 16.88.0 so an old browser module is not intentionally reused.
-5. Public product availability now exposes only safe Germany market preview metadata when a draft/staged package exists.
-6. Homepage renders a Germany Logistics market preview while preparation is underway. It clearly keeps customer registration closed until the canonical market is LIVE, the active version is LIVE, onboarding mode is OPEN, and the country launch is active.
-7. Once those canonical conditions are true, the existing Germany onboarding route remains the homepage CTA.
-8. Added regression coverage for canonical identity, idempotent initialization, Studio action wiring, cache version and homepage gate behavior.
+IMPLEMENTED
+1. Added a step-up protected POST endpoint scoped to the canonical Germany / ON Mission / Logistics market and DRAFT or VALIDATED package versions.
+2. Added a bounded autonomous preparation runner (maximum 40 canonical commands per request).
+3. Runner executes only registered canonical commands on an explicit allowlist: canonical read/validation, sector search/selection/configuration, country-blueprint sector relationship creation, integration inspection/verification and canonical Product Test Lab execution.
+4. Runner uses the existing server-owned persisted stage contracts and owning-authority command adapters; it does not trust browser-supplied completion state.
+5. Each adapter result is persisted as CANONICAL_AUTHORITY_VERIFIED only after its command succeeds; failures remain blocked and are reported.
+6. Added PREPARE GERMANY to the selected Germany Logistics Launch Workbench, with real result summary and blockers.
+7. Added cumulative regression coverage and cache-busted the public assets to 16.89.0.
+8. Updated VERSION, package metadata, runtime release identity and generated release manifest.
 
-GOVERNANCE
-- Initialization creates/reuses a DRAFT package only.
-- It does not publish, activate, open public onboarding, create provider credentials, provision a tenant or claim residency/legal certification.
-- Existing versions and release history are preserved.
+EXPLICIT NON-AUTOMATION / SAFETY GATES
+- No fabricated legal, commercial, residency, subprocessor, provider or physical-pilot evidence.
+- No automatic legal approval or human attestation.
+- No credentials or external service authorization are created.
+- No publication, release authorization, verification, activation, tenant provisioning or public onboarding transition is attempted.
+- Readiness remains evidence-driven; blocked and remaining tasks are reported, not marked complete.
 
 VERIFICATION
-- npm run check:release: PASS
-- npm run check:health: PASS
-- npm run check:migrations: PASS (166 ordered migrations; high-water 0166)
-- scripts/check-release-engineering.mjs: PASS
-- Architecture: 430 JS files, 1,626 local imports, zero cycles.
-- Production build: NOT RUN in this environment because local Node is 22.16.0; repository requires Node 24.22.1. Cloudflare deployment environment previously reported Node 24.22.1.
-- Production runtime/browser tests: NOT RUN; production credentials/runtime evidence not supplied.
+PASS: npm run check:release (all cumulative release tests including 16.89.0 regression)
+PASS: npm run check:health (security, data integrity, architecture, production readiness, production hardening)
+PASS: npm run check:migrations (166 migrations, high-water 0166)
+PASS: npm run check:release-engineering
+PASS: npm run check:single-release
+PASS: npm run check:dependency-lock
+PASS: node scripts/check-schema-current.mjs (256 tables, 467 indexes)
+PASS: JavaScript syntax checks for modified route, service and UI modules
+
+NOT RUN / BLOCKED IN THIS BUILD CONTAINER
+- npm run build could not pass its environment gate because this container provides Node 22.16.0 while the repository requires Node 24.22.1. No claim of a completed production build is made.
+- npm run check:production-certification is blocked because live runtime certification credentials (runtime URL, country, admin credentials and adversarial credentials) are not configured in this container. No claim of production certification is made.
+- Cloudflare deployment and authenticated browser/runtime verification have not been performed by this build process.
 
 DEPLOYMENT
-Use Cloudflare's Node 24.22.1 build environment. Existing migration high-water is 0166; this release adds no migrations. Do not run a migration merely because the release number changed. Deploy the artifact through the existing approved pipeline, then hard-refresh the browser and verify /assets/js/frontend/admin/market-factory.js?v=16.88.0 is loaded.
-
-FIRST USE AFTER DEPLOYMENT
-1. Sign in as Platform Super Admin.
-2. Open Market Launch Studio.
-3. Select INITIALIZE / OPEN GERMANY MARKET and complete step-up authorization.
-4. Open the Germany Logistics market card and configure its draft version.
-5. Complete canonical reconciliation, legal/security/residency/integration review, Test Lab and release evidence.
-6. Only after release verification and activation should onboarding be opened.
-7. Confirm homepage changes from Germany market preview to the live onboarding entry when canonical availability conditions are satisfied.
-
-This is a source-verified release candidate, not a claim of production certification or legal approval.
+Use the Cloudflare build environment with Node 24.22.1 and npm 10.9.2. Run npm ci, npm run build, npm run check:release, npm run check:health and npm run check:migrations. Run required production certification only when its live credentials and test environment are configured. This release adds no migrations; do not apply migrations solely because the version changed. Deploy the generated Worker through the approved Cloudflare pipeline, hard-refresh the Super Admin app, open Market Launch Studio → Germany Logistics → selected draft, and click PREPARE GERMANY. Inspect the server-returned results and continue only with genuine external/human gates.

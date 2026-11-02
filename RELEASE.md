@@ -135,3 +135,17 @@ The cumulative release preserves the canonical domain model, canonical capabilit
 ## Deterministic release engineering and migration contract
 
 The deterministic release pipeline derives the runtime identity from `VERSION`, regenerates version-pinned assets, builds `RELEASE-MANIFEST.json` and hashes the canonical schema snapshot. The migration contract requires a gap-free ordered SQL migration chain and a regenerated `database/schema.current.sql` snapshot. The canonical domain and canonical vocabulary remain stable across releases. The canonical Capability registry is the authority for supported resource and mission capabilities; the UI must not infer capabilities that the server does not expose.
+
+## ON Mission 16.89.0 — Germany Market Autonomous Preparation
+
+Base: ON Mission 16.88.0
+
+This cumulative release adds a single **PREPARE GERMANY** action to the selected Germany Logistics draft in Market Launch Studio. The action is step-up protected and server-executed. It reads the selected immutable package's persisted stage contracts and runs only an explicit allowlist of registered canonical preparation commands: canonical reads and validation, Logistics resource search/selection/configuration, market-sector relationship creation, integration inspection/verification, and canonical Product Test Lab execution. Each command uses the existing owning-authority adapter, persisted stage contract, read-after-write verification, and audit trail.
+
+The runner is bounded to 40 commands per invocation, scoped to country DE and Logistics, and restricted to DRAFT/VALIDATED package versions. It reports exact per-step outcomes and blockers. It never fabricates evidence, marks human attestations complete, supplies provider credentials, approves legal/commercial/residency decisions, authorizes/publishes/verifies/activates a release, provisions a tenant, or opens public onboarding. Existing package and global Logistics identities are reused; no new Germany package or Logistics sector is created by the runner.
+
+No database migration is added. Migration high-water remains 0166. The existing canonical release lifecycle and public onboarding gates are unchanged.
+
+### Verification and deployment
+
+Use Node 24.22.1 and npm 10.9.2. Run `npm ci`, `npm run build`, `npm run check:release`, `npm run check:health`, `npm run check:migrations`, and `npm run check:production-certification`. Production runtime certification still requires configured credentials and live environment evidence. Back up production D1 before any required migration; this release adds none. Deploy the Worker through the approved Cloudflare pipeline, then hard-refresh and verify `market-factory.js?v=16.89.0` loads. Open Super Admin → Market Launch Studio → Germany Logistics → selected draft and click **PREPARE GERMANY** once. Review the returned operation summary and only act on the remaining genuine human/external gates.
