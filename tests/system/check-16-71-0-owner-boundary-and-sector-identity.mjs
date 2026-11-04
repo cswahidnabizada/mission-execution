@@ -15,5 +15,5 @@ assert.ok(guard>=0 && generic>guard);
 const ownerBranch=ui.slice(guard,generic);
 assert.ok(ownerBranch.includes("workspaceNavigator('product-publisher')"));
 assert.ok(ownerBranch.includes('No generic preview or commit request was sent'));
-assert.equal(manifest.version,'16.93.0');
+assert.equal(manifest.version,'16.94.0');
 console.log('16.72.0 owner boundary and Sector identity regression: PASS');

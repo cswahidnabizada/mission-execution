@@ -49,3 +49,11 @@ This release does not certify external legal, provider, residency, customer or p
 - In Super Admin, open **Markets**. Review the portfolio and use **Create Market** or open the existing Germany Logistics market.
 - In a market workspace, progress through the nine journeys, use the next required task and canonical typed resource tools, save only as new immutable package versions, and reassess readiness.
 - Do not publish, verify, activate or open public onboarding until the canonical release lifecycle and independent approvals authorize those transitions.
+
+## 16.94.0 — Nine-stage typed configuration
+
+This cumulative release adds a dedicated configuration form to each of the nine journeys. Typed scalar controls and repeatable collection editors cover market definition, sectors/capabilities, subscriptions/billing, policies/legal/content, provider and integration requirements, onboarding mode and mission operations. Each save uses the existing Market Factory import authority to create a new immutable package version, selects the server-returned version and reloads canonical workbench/certification state. Market country and product identity cannot be changed through a revision.
+
+Certification and activation remain evidence- and authorization-driven; they do not expose manual completion toggles. Package forms edit staged package data only. Canonical resource mutations, relationships, provider credentials, legal approval, actual region placement, tenant access and physical mission outcomes remain owned by their existing authorities or external reviewers.
+
+This release does not certify legal approval, provider authorization, actual data residency, production security, customer onboarding or real mission outcomes. Physical mission evidence must come from a real supervised customer pilot; simulation does not replace it. The supervisor does not publish, verify, activate or open public onboarding automatically.

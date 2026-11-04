@@ -10,7 +10,7 @@ assert.ok(routes.includes('if(existing?.versions?.length)'),'Germany initializat
 assert.ok(routes.includes('reused:true'),'existing market reuse must be explicit');
 assert.ok(studio.includes('INITIALIZE / OPEN GERMANY MARKET'),'Germany initialization must be visible in Market Launch Studio');
 assert.ok(studio.includes("#mfSeedGermany")&&studio.includes("/api/platform/admin/market-factory/germany-logistics/seed"),'Germany initialization control must invoke the governed step-up route');
-assert.ok(publisher.includes('market-factory.js?v=16.93.0'),'Market Factory module must be cache-busted for the release');
+assert.ok(publisher.includes('market-factory.js?v=16.94.0'),'Market Factory module must be cache-busted for the release');
 assert.ok(availability.includes('const marketPreview=marketPackage?'),'public availability must expose safe Germany market preview metadata');
 assert.ok(landing.includes('germany-logistics-market-preview'),'homepage must render the Germany market preview while onboarding is gated');
 assert.ok(landing.includes('Public registration remains closed'),'homepage must not bypass the live onboarding gate');

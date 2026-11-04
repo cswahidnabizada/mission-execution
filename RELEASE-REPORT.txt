@@ -1,25 +1,9 @@
-ON MISSION 16.93.0
-Unified Markets & Market Launch Studio
+ON MISSION 16.94.0 — NINE-STAGE MARKET CONFIGURATION
+Cumulative baseline: 16.93.0
+Migration high-water: 0166 (no new migration)
 
-Cumulative baseline: 16.92.0
-Schema baseline: 16.80.0
-Migration high-water: 0166
-New migrations: none
+Implemented: nine stage-specific configuration panels; typed scalar fields; repeatable collection editors; immutable package revision save through existing Market Factory import authority; server-returned version selection; canonical workbench/certification refresh; protected certification and activation stages.
 
-Implemented:
-- Markets portfolio with lifecycle counts and evidence-based launch progress cards.
-- Direct Create Market entry point.
-- Nine fixed launch journeys inside each market workspace.
-- Existing canonical tasks/evidence forms and typed resource preparation are grouped into the journeys.
-- Live-market health slots are explicit about unavailable market-scoped telemetry; no fabricated customer, user, execution, connection or error counts.
-- Canonical market list now includes immutable version count.
-- Existing step-up, canonical ownership, immutable versioning, publication and activation gates preserved.
+Not claimed: direct canonical resource mutation from package forms; live provider credentials/OAuth; legal approval; physical data-residency proof; per-market production telemetry; production security certification; real customer pilot or delivery outcomes.
 
-Not certified by source changes:
-- Bespoke typed forms for every resource type.
-- Market-scoped live telemetry for customers, active users, execution, connections and errors.
-- Legal approvals, provider credentials/contracts, actual German/EU data placement,
-  backup/restore proof, deployed security/runtime tests, real customer onboarding,
-  real physical logistics pilot and authorized live release.
-
-No database migration. No automatic publication, activation or onboarding opening.
+Build requires Node 24.22.1. Available environment is Node 22.16.0; full build must run in Cloudflare Node 24 environment.

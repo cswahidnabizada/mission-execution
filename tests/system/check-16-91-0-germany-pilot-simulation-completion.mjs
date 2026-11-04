@@ -15,7 +15,7 @@ assert.equal(version,'16.91.0');
 assert.equal(pkg.version,'16.91.0');
 assert.equal(lock.version,'16.91.0');
 assert.equal(lock.packages[''].version,'16.91.0');
-assert.equal(manifest.version,'16.93.0');
+assert.equal(manifest.version,'16.94.0');
 assert.match(release,/16\.91\.0 — Germany Pilot Simulation Completion/);
 assert.match(release,/not a live customer pilot/i);
 assert.match(report,/No database migration/);

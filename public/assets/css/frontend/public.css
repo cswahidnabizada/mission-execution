@@ -5,7 +5,7 @@
 
 .public-experience{min-height:100vh;background:var(--onm-bg);color:var(--onm-ink)}.public-top{height:68px;display:flex;justify-content:space-between;align-items:center;padding:0 28px;border-bottom:1px solid var(--onm-line);background:#fff}.public-main{width:min(var(--onm-max),100%);margin:0 auto;padding:64px 28px}.public-hero{padding:34px;max-width:980px}.public-hero h1{font-size:clamp(32px,5vw,58px);line-height:1.02;letter-spacing:-.04em;margin:8px 0 14px}.public-hero p{font-size:16px;max-width:760px;line-height:1.65}@media(max-width:700px){.public-top{padding:0 16px}.public-top .onm-btn:first-child{display:none}.public-main{padding:34px 16px}.public-hero{padding:24px}}
 
-/* ON Mission 16.93.0 — unified, responsive public experience. */
+/* ON Mission 16.94.0 — unified, responsive public experience. */
 .onm-home-v1690{--onm-home-ink:#101b32;--onm-home-muted:#64748b;--onm-home-line:#e5eaf2;--onm-home-accent:#2458d3;color:var(--onm-home-ink);background:linear-gradient(180deg,#f5f8ff 0%,#fff 46%,#f8fafc 100%);min-height:100vh;padding:clamp(12px,3vw,36px)}
 .onm-home-v1690 .public-main{max-width:1160px;margin:0 auto}
 .onm-home-v1690 .ls-renderer-page{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px;align-items:stretch}
