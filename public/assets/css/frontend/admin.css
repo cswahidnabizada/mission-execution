@@ -93,3 +93,35 @@
 .asset-studio-form .asset-field-wide{grid-column:span 2}
 .asset-studio-form .resource-form-section{padding:.75rem 0}
 @media(max-width:760px){.asset-studio-editor .asset-studio-sections{grid-template-columns:repeat(2,minmax(0,1fr))}.asset-studio-form .asset-field-wide{grid-column:1/-1}}
+
+/* 16.93.0 — controlled launch gap register */
+.mf-certification-register{margin:1rem 0;padding:1rem;border:1px solid var(--border,#d9e0e8);border-radius:12px;background:var(--surface,#fff)}
+.mf-certification-register h4{margin:0 0 .75rem;font-size:.95rem}
+.mf-certification-register .table-wrap{max-width:100%;overflow:auto}
+.mf-certification-register table{min-width:760px;width:100%;border-collapse:collapse}
+.mf-certification-register th,.mf-certification-register td{padding:.65rem .7rem;text-align:left;vertical-align:top;border-bottom:1px solid var(--border,#d9e0e8);font-size:.82rem}
+.mf-certification-register th{font-weight:700;color:var(--muted,#586575)}
+.mf-certification-register td .mini{margin-top:.25rem;overflow-wrap:anywhere}
+@media(max-width:700px){.mf-certification-register{padding:.65rem}.mf-certification-register table{min-width:680px}}
+
+/* 16.93.0 — Unified market portfolio and guided launch workspace. */
+.mf-portfolio-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0 18px}
+.mf-portfolio-summary>div,.mf-live-health-grid>div{padding:12px;border:1px solid var(--line,#d9e0e8);border-radius:12px;background:var(--surface,#fff)}
+.mf-portfolio-summary span,.mf-live-health-grid span{display:block;font-size:11px;color:var(--muted,#687586)}
+.mf-portfolio-summary b{display:block;font-size:1.35rem;margin-top:4px;font-variant-numeric:tabular-nums}
+.mf-market-card{display:flex;flex-direction:column;gap:10px;min-width:0}
+.mf-market-card.is-live{border-color:color-mix(in srgb,#16a34a 35%,var(--line,#ddd))}
+.mf-market-progress-head{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:.9rem}
+.mf-market-progress-head strong{font-variant-numeric:tabular-nums}
+.mf-market-next{padding:10px 12px;border-radius:10px;background:var(--surface-muted,#f5f6f8)}
+.mf-live-health{padding:12px;border:1px solid var(--line,#d9e0e8);border-radius:12px}
+.mf-live-health-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.mf-live-health-grid b{display:block;margin-top:5px;font-size:.85rem;overflow-wrap:anywhere}
+.mf-guided-step-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.mf-guided-step{min-width:0;text-align:left;display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;align-items:start;padding:12px;border:1px solid var(--line,#d9e0e8);border-radius:12px;background:var(--surface,#fff);color:inherit}
+.mf-guided-step[aria-pressed=true]{border-color:var(--accent,#2563eb);box-shadow:inset 0 0 0 1px var(--accent,#2563eb)}
+.mf-guided-step-number{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--surface-muted,#eef1f5);font-weight:700;font-size:.8rem}
+.mf-guided-step-copy{min-width:0}.mf-guided-step-copy b{display:block;font-size:.85rem}.mf-guided-step-copy small,.mf-guided-step-state{display:block;margin-top:4px;font-size:.7rem;color:var(--muted,#687586)}
+.mf-guided-step-state{grid-column:2;letter-spacing:.04em}
+@media(max-width:760px){.mf-portfolio-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.mf-guided-step-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){.mf-live-health-grid,.mf-guided-step-list{grid-template-columns:1fr}.mf-market-card .actions{flex-wrap:wrap}}

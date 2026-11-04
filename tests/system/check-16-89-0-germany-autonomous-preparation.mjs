@@ -11,6 +11,6 @@ assert.ok(routes.includes('publicationAttempted:false')&&routes.includes('activa
 assert.ok(studio.includes('id="mfPrepareGermany"')&&studio.includes('PREPARE GERMANY'),'Market Launch Studio must expose one primary preparation action');
 assert.ok(studio.includes('mf-task-details')&&studio.includes('VIEW TASK DETAILS'),'detailed task lists must be collapsed by default behind a single disclosure');
 assert.ok(studio.includes('/prepare-germany')&&studio.includes('GERMANY PREPARATION FINISHED'),'button must invoke server preparation and display real result summary');
-assert.ok(publisher.includes('market-factory.js?v=16.91.0'),'Market Factory browser module must be cache-busted');
+assert.ok(publisher.includes('market-factory.js?v=16.93.0'),'Market Factory browser module must be cache-busted');
 assert.ok(service.includes('CANONICAL_AUTHORITY_VERIFIED')&&service.includes('read-after-write verification'),'preparation must use persisted canonical verification');
 console.log('16.89.0 Germany autonomous preparation and safety contract: PASS');
