@@ -57,3 +57,22 @@ This cumulative release adds a dedicated configuration form to each of the nine 
 Certification and activation remain evidence- and authorization-driven; they do not expose manual completion toggles. Package forms edit staged package data only. Canonical resource mutations, relationships, provider credentials, legal approval, actual region placement, tenant access and physical mission outcomes remain owned by their existing authorities or external reviewers.
 
 This release does not certify legal approval, provider authorization, actual data residency, production security, customer onboarding or real mission outcomes. Physical mission evidence must come from a real supervised customer pilot; simulation does not replace it. The supervisor does not publish, verify, activate or open public onboarding automatically.
+
+
+## 16.95.0 — Intelligent market dependency resolution
+
+This cumulative release upgrades the nine-stage market configuration forms with a canonical dependency preflight. Before a staged package revision is saved, the form inspects resource-like collection entries against the canonical resource-search endpoint. Exact candidates are classified from their returned status where the status vocabulary is recognized (available, needs configuration, requires approval, blocked); unknown statuses remain candidates for review. Search misses are explicitly labeled as not found in the current search scope, never as proof that a resource does not exist.
+
+The administrator receives a dependency assessment before save and must explicitly confirm the immutable package revision. A canonical search failure pauses the save. Existing candidates are not automatically mutated or linked. The staged package is saved through the existing Market Factory import authority with step-up authorization; the server-returned version identity is selected and the workbench is refreshed so canonical readiness is recalculated. Duplicate staged identities are rejected within each collection. Country ISO formatting is validated while immutable market/product identity is preserved.
+
+This is a dependency preflight and safe staged-package save workflow, not an automatic resource-linking engine. Canonical resource creation, editing and relationships continue through their owning services. A search miss is not a definitive missing-resource determination; the resource authority must be consulted before creating a new record. Live telemetry, legal/provider approval, physical residency evidence, production security certification and real customer mission outcomes remain external or separately owned proof obligations.
+
+## 16.95.0 deployment
+
+- Use Node 24.22.1 and npm 10.x.
+- Run `npm ci`, `npm run build`, `npm run check:release`, `npm run check:health`, `npm run check:migrations`, and `npm run check:super-admin-build`.
+- No new database migration is required; migration high-water remains 0166.
+- Deploy through the established Cloudflare Worker pipeline.
+- In a draft market, edit a resource collection in one of the nine stages. Review the dependency assessment and candidate statuses, then explicitly confirm the save.
+- Confirm the server-returned market version is selected and the canonical workbench/certification assessment refreshes.
+- Do not treat search misses as proof of absence, or candidates as automatic links. Do not publish or activate without the existing authorized release lifecycle.

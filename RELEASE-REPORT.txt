@@ -1,9 +1,22 @@
-ON MISSION 16.94.0 — NINE-STAGE MARKET CONFIGURATION
-Cumulative baseline: 16.93.0
+ON MISSION 16.95.0 — INTELLIGENT MARKET CONFIGURATION & DEPENDENCY RESOLUTION
+Cumulative baseline: 16.94.0
 Migration high-water: 0166 (no new migration)
 
-Implemented: nine stage-specific configuration panels; typed scalar fields; repeatable collection editors; immutable package revision save through existing Market Factory import authority; server-returned version selection; canonical workbench/certification refresh; protected certification and activation stages.
+Implemented:
+- Canonical resource dependency preflight for resource-like entries in the nine stage forms.
+- Explicit classifications for recognized canonical statuses: ALREADY_AVAILABLE, NEEDS_CONFIGURATION, REQUIRES_APPROVAL, BLOCKED; unknown exact matches remain CANDIDATE_FOUND.
+- Search misses are explicitly NOT_FOUND_IN_SEARCH_SCOPE, not asserted missing.
+- Search authority failure pauses save.
+- Candidate assessment preview and explicit confirm/cancel before staged package save.
+- Duplicate staged identity checks and ISO country code validation.
+- Existing step-up authorization and Market Factory import authority preserved.
+- Server-returned immutable version selected and canonical workbench refresh requested after save.
+- No database migration.
 
-Not claimed: direct canonical resource mutation from package forms; live provider credentials/OAuth; legal approval; physical data-residency proof; per-market production telemetry; production security certification; real customer pilot or delivery outcomes.
+Not claimed:
+- Automatic canonical resource linking or mutation from staged package forms.
+- Complete exhaustive resource discovery beyond search endpoint scope.
+- Production runtime verification of all nine stages.
+- Legal approval, provider credentials, actual data-residency proof, production security certification, live customer pilot or physical mission outcomes.
 
-Build requires Node 24.22.1. Available environment is Node 22.16.0; full build must run in Cloudflare Node 24 environment.
+Build requirement: Node 24.22.1. Run full build and release gates in Cloudflare Node 24 environment.
