@@ -10,7 +10,7 @@ assert.equal(pkg.version,version,'package version must match canonical VERSION')
 assert.match(market,/Market asset bindings/,'Market Launch Studio must expose pinned Resource Studio assets');
 assert.match(market,/resource-search\?q=/,'asset selection must use canonical resource search');
 assert.match(market,/PIN REVISION/,'market workflow must pin a specific asset revision');
-assert.match(market,/Adding an asset creates a new immutable market package version/,'asset changes must create an immutable market revision');
+assert.match(market,/Selecting an asset creates an audited canonical dependency relationship and a new immutable market package version/,'asset changes must create an immutable market revision');
 assert.match(service,/validatePinnedResourceBindings/,'server must validate pinned canonical resource bindings');
 assert.match(service,/MARKET_RESOURCE_BINDING_STALE/,'changed asset snapshots must block silent market validation');
 assert.match(service,/MARKET_RESOURCE_BINDING_UNRESOLVED/,'unresolved canonical asset must block validation');

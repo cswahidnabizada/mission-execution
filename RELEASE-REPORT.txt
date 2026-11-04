@@ -1,22 +1,20 @@
-ON MISSION 16.95.0 — INTELLIGENT MARKET CONFIGURATION & DEPENDENCY RESOLUTION
-Cumulative baseline: 16.94.0
-Migration high-water: 0166 (no new migration)
+ON Mission 16.96.0 — Canonical Market Resource Selection, Linking & Read-Back
+
+Cumulative baseline: 16.95.0
+Database migration: none
+Migration high-water: 0166
 
 Implemented:
-- Canonical resource dependency preflight for resource-like entries in the nine stage forms.
-- Explicit classifications for recognized canonical statuses: ALREADY_AVAILABLE, NEEDS_CONFIGURATION, REQUIRES_APPROVAL, BLOCKED; unknown exact matches remain CANDIDATE_FOUND.
-- Search misses are explicitly NOT_FOUND_IN_SEARCH_SCOPE, not asserted missing.
-- Search authority failure pauses save.
-- Candidate assessment preview and explicit confirm/cancel before staged package save.
-- Duplicate staged identity checks and ISO country code validation.
-- Existing step-up authorization and Market Factory import authority preserved.
-- Server-returned immutable version selected and canonical workbench refresh requested after save.
-- No database migration.
+- Canonical market_package relationship endpoint.
+- Market Factory relationship read-back.
+- Explicit audited market-package -> canonical-resource dependency edges.
+- Preview + step-up commit through existing resource relationship authority.
+- Immutable market package version save after relationship commit.
+- Dual read-back verification for package binding and relationship.
+- Compensating relationship removal on package import failure.
+- Existing stale canonical resource snapshot validation retained.
 
 Not claimed:
-- Automatic canonical resource linking or mutation from staged package forms.
-- Complete exhaustive resource discovery beyond search endpoint scope.
-- Production runtime verification of all nine stages.
-- Legal approval, provider credentials, actual data-residency proof, production security certification, live customer pilot or physical mission outcomes.
-
-Build requirement: Node 24.22.1. Run full build and release gates in Cloudflare Node 24 environment.
+- No production deployment performed by this source build.
+- No authenticated live UI test performed.
+- No real external provider, legal, residency or customer pilot evidence created.

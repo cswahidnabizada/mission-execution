@@ -14,7 +14,7 @@ const ALLOWED_TYPES=new Set([
   'country_blueprint','product_country','sector','language','currency','region','classification',
   'policy','residency','retention','consent','role','capability','responsibility','storage','provider',
   'component','page','feature','configuration','guidance','plan','eligibility','pricing',
-  'sector_lifecycle','translation_bundle','country','tenant','user','ui','content','product','product_definition'
+  'sector_lifecycle','translation_bundle','country','tenant','user','ui','content','product','product_definition','market_package'
 ]);
 const RELATION_TYPES=new Set(['depends_on']);
 function identity(type,id){return `${type}:${id}`;}
@@ -35,6 +35,11 @@ async function resolveEndpoint(env,type,id){
     const record=await canonicalFirst(env,`SELECT id,product_key,name,country_code,sector_code,status,definition_version FROM platform_product_definitions WHERE id=? LIMIT 1`,[Number(id)],'resource_relationship.product_definition');
     if(!record)throw fail('RESOURCE_RELATIONSHIP_ENDPOINT_NOT_FOUND',404,'RESOURCE_RELATIONSHIP_ENDPOINT_NOT_FOUND');
     return {resourceType:'product_definition',resourceId:String(record.id),displayName:record.name||record.product_key||`Product ${id}`,authority:'Product Definition Authority',scope:{tenant:null,country:record.country_code?String(record.country_code).toUpperCase():null}};
+  }
+  if(type==='market_package'){
+    const record=await canonicalFirst(env,`SELECT id,package_key,country_code,status FROM platform_market_packages WHERE id=? LIMIT 1`,[Number(id)],'resource_relationship.market_package');
+    if(!record)throw fail('RESOURCE_RELATIONSHIP_ENDPOINT_NOT_FOUND',404,'RESOURCE_RELATIONSHIP_ENDPOINT_NOT_FOUND');
+    return {resourceType:'market_package',resourceId:String(record.id),displayName:record.package_key||`Market ${id}`,authority:'Market Factory Authority',scope:{tenant:null,country:String(record.country_code||'').toUpperCase()||null}};
   }
   const inspected=await inspectDataStudioRecord(env,{resourceType:type,resourceId:id});
   return {resourceType:type,resourceId:id,displayName:inspected.record.displayName,authority:inspected.record.authority,scope:scopeOf(type,inspected.record.record)};
