@@ -23,8 +23,8 @@ const groups=[...registry.matchAll(/\{key:'([^']+)',label:'([^']+)'[^]*?items:\[
 const items=[...registry.matchAll(/\['([^']+)','([^']+)'/g)].map(m=>({label:m[1],key:m[2]}));
 const primaryItems=items.filter(x=>x.key!=='overview'); const keys=primaryItems.map(x=>x.key);
 
-assert(groups.length===8,`eight operating areas present (${groups.length})`);
-assert(groups.map(x=>x.key).join(',')==='command,resources,build,release,launch,operate,govern,recover','current operating areas place Resources before Build and preserve the operating journey');
+assert(groups.length===6,`six consolidated operating areas present (${groups.length})`);
+assert(groups.map(x=>x.key).join(',')==='command,markets,platform,customers,ai,security','six areas separate market work from platform, customer, AI and security work');
 assert(items.length>=30,`primary workspaces remain registered (${items.length})`);
 assert(new Set(keys).size===keys.length,'no duplicate primary workspace keys');
 assert(registry.includes("ADMIN_PRIMARY_SECTION=Object.freeze([['Command Center','overview']])"),'Command Center is the sole non-group entry point');
@@ -53,6 +53,8 @@ assert(factory.includes('data-publisher-view="data-control"') || factory.include
 
 // Shell contract: the seven areas are primary; old top-level labels are not rendered as navigation groups.
 assert(shell.includes('Super Admin operating model'),'new operating-model shell is active');
+assert(registry.includes("{key:'markets',label:'MARKETS'") && (registry.match(/\{key:'markets',[\s\S]*?items:\[([\s\S]*?)\]\}/)?.[1].match(/\['/g)||[]).length===1,'MARKETS has one canonical Market Operations entry');
+assert(!shell.includes('data-quick-studio')&&!shell.includes('sa-quick-studio'),'duplicate Market Launch Studio shortcut is retired');
 assert(shell.includes('workspaceGroups.map(renderPrimary)'),'primary navigation is driven by canonical workspace registry');
 assert(shell.includes('sa-primary-nav'),'seven-job primary navigation is rendered');
 assert(!/sa-primary[^\n]*SECURE|sa-primary[^\n]*PLATFORM/.test(shell),'SECURE/PLATFORM are not primary navigation groups');

@@ -11,11 +11,11 @@ const relationship=read('src/worker/security/platform-resource-relationship.serv
 const pkg=JSON.parse(read('package.json'));
 const lock=JSON.parse(read('package-lock.json'));
 const manifest=JSON.parse(read('RELEASE-MANIFEST.json'));
-assert.equal(read('VERSION').trim(),'16.97.0');
-assert.equal(pkg.version,'16.97.0');
-assert.equal(lock.version,'16.97.0');
-assert.equal(lock.packages[''].version,'16.97.0');
-assert.equal(manifest.version,'16.97.0');
+assert.equal(read('VERSION').trim(),'16.98.0');
+assert.equal(pkg.version,'16.98.0');
+assert.equal(lock.version,'16.98.0');
+assert.equal(lock.packages[''].version,'16.98.0');
+assert.equal(manifest.version,'16.98.0');
 
 // One stage navigator controls both package forms and canonical task filtering.
 assert.match(ui,/ONE MARKET · ONE WORKSPACE · NINE JOURNEYS/);
@@ -59,5 +59,5 @@ assert.match(css,/\.mf-stage-config-nav/);
 assert.match(css,/\.mf-stage-config-tab\[aria-pressed="true"\]/);
 assert.match(css,/@media\(max-width:560px\)/);
 assert.match(pkg.scripts['check:release'],/check-16-97-0-unified-market-operations-certification\.mjs/);
-assert.match(read('RELEASE.md'),/16\.97\.0 — Unified Market Operations & Certification/);
-console.log('16.97.0 unified market operations and certification contract: PASS');
+assert.match(read('RELEASE.md'),/16\.98\.0 — Unified Super Admin & Market Operations/);
+console.log('16.98.0 unified market operations and certification contract: PASS');

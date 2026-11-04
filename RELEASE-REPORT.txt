@@ -1,21 +1,20 @@
-ON Mission 16.97.0 — Unified Market Operations & Certification
+ON Mission 16.98.0 — Unified Super Admin & Market Operations
 
-Cumulative baseline: 16.96.0
+Cumulative baseline: 16.97.0
 Database migration: none
 Migration high-water: 0166
 
 Implemented:
-- One nine-stage navigator controls both stage forms and canonical task filtering.
-- Stage task counts, evidence progress and blocker indicators.
-- Market and stage deep-link continuity using marketId and marketStage URL parameters.
-- Legacy structured and raw JSON editors moved to advanced compatibility drawers.
-- Release history consolidated inside the market workspace.
-- Canonical relationship impact read-back included in dependency preflight.
-- Existing canonical resource, relationship, audit, immutable version and release gates preserved.
+- Six Super Admin areas: COMMAND, MARKETS, PLATFORM, CUSTOMERS & ACCESS, AI & INTEGRATIONS, SECURITY & RECOVERY.
+- One primary Market Operations entry; legacy market workspace links converge there.
+- Removed duplicate Market Launch Studio shortcut and duplicate Control Center workspace/release navigation.
+- Moved market launch objective creation into Market Operations.
+- Added read-only market-scoped operational health for product health, organizations, active identities, missions, shared DB reachability and provider policy/contract posture.
+- Unknown source reads are reported as UNAVAILABLE; no platform-wide metrics are substituted for market-scoped figures.
+- No migration; high-water 0166.
 
-Verification:
-- Source contract test added to cumulative release suite.
-- Full release, health, migration and Super Admin checks must pass in Node 24.22.1 environment.
-- Live authenticated browser acceptance remains required after Cloudflare deployment.
-
-No migration required.
+Certification:
+- Source acceptance contract added.
+- Production build requires Node 24.22.1.
+- Authenticated browser and live Cloudflare acceptance remain required.
+- Provider policy state is not a live connectivity probe.

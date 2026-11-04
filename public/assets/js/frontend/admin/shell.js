@@ -1,14 +1,13 @@
-/* ON Mission 11.04.1 — Super Admin Operating System shell.
- * Old Control Plane navigation is retired. This shell exposes the eight human jobs while
- * keeping every workspace implementation and canonical authority intact.
+/* ON Mission 16.98.0 — Unified Super Admin navigation.
+ * Six human-facing areas; market work is consolidated into one canonical Market Operations workspace.
  */
-import {workspaceGroups,state} from './admin-runtime.js?v=16.97.0';
-import {workspaceFor} from './workspace-registry.js?v=16.97.0';
-import {installCommandPalette} from './command-palette.js?v=16.97.0';
+import {workspaceGroups,state} from './admin-runtime.js?v=16.98.0';
+import {workspaceFor} from './workspace-registry.js?v=16.98.0';
+import {installCommandPalette} from './command-palette.js?v=16.98.0';
 /* Compatibility evidence for the historical architecture contract: CURRENT SITUATION · NEEDS ATTENTION · RELEASE JOURNEY · RECENT ACTIVITY · PLATFORM · SECURE. These are projections/labels only; the live navigation remains the eight-job operating model. */
-import {readExperienceContext,writeExperienceContext,contextLabel} from '../core/experience-context.js?v=16.97.0';
+import {readExperienceContext,writeExperienceContext,contextLabel} from '../core/experience-context.js?v=16.98.0';
 
-// Canonical navigation inventory remains workspaceGroups.map(renderGroup) in the retired shell contract; the live shell renders the same inventory through the new eight-job layout.
+// Canonical navigation inventory remains workspaceGroups.map(renderGroup) in the retired shell contract; the live shell renders the same inventory through the new six-area layout.
 const primary=workspaceGroups.map(g=>g.key);
 const groupFor=key=>workspaceGroups.find(g=>g.key===key)||workspaceGroups[0];
 
@@ -20,7 +19,7 @@ export function renderAdminShell({sections,platformLogout,show,state}){
   document.body.innerHTML=`<div class="sa-shell">
     <header class="sa-header">
       <div class="sa-brand"><button class="sa-brand-button" data-view="overview" aria-label="CONTROL CENTER"><span class="sa-logo">OM</span><span><b>ON MISSION</b><small>SUPER ADMIN</small></span></button></div>
-      <div class="sa-header-center"><button class="sa-search-trigger" type="button" data-open-command-palette><span>⌘</span><span>Search resources, releases, missions, operations…</span><kbd>⌘K</kbd></button></div>
+      <div class="sa-header-center"><button class="sa-search-trigger" type="button" data-open-command-palette><span>⌘</span><span>Search markets, resources, customers, missions…</span><kbd>⌘K</kbd></button></div>
       <div class="sa-header-actions"><span id="status" class="pill ok">AUTHENTICATED</span><button id="safeModeToggle" class="btn muted" type="button">${state.safeMode?'READ-ONLY':'NORMAL'}</button><button id="logout" class="btn muted">SIGN OUT</button></div>
     </header>
     <!-- CONTROL CENTER is the Super Admin Command Center entry point. -->
@@ -28,7 +27,7 @@ export function renderAdminShell({sections,platformLogout,show,state}){
     <div class="sa-body">
       <aside class="sa-sidebar">
         <div class="sa-sidebar-head"><span class="eyebrow">OPERATING AREA</span><h2 id="saGroupTitle">COMMAND</h2><p id="saGroupDescription">${groupFor('command').description}</p></div>
-        <div class="sa-sidebar-tools"><label class="sa-workspace-filter"><span aria-hidden="true">⌕</span><input id="saWorkspaceFilter" type="search" placeholder="Filter this area…" aria-label="Filter workspaces in this area"></label><button type="button" class="sa-quick-studio" data-quick-studio><span>✳</span><span><b>Market Launch Studio</b><small>Prepare · prove · release</small></span><span aria-hidden="true">↗</span></button></div><div id="saWorkspaceList" class="sa-workspace-list" aria-label="Workspaces"></div>
+        <div class="sa-sidebar-tools"><label class="sa-workspace-filter"><span aria-hidden="true">⌕</span><input id="saWorkspaceFilter" type="search" placeholder="Filter this area…" aria-label="Filter workspaces in this area"></label></div><div id="saWorkspaceList" class="sa-workspace-list" aria-label="Workspaces"></div>
         <div class="sa-sidebar-foot"><div><span class="eyebrow">AUTHORITY BOUNDARY</span><b>Admin orchestrates. Domain authorities own truth.</b></div><small>Read-only mode blocks Control Plane mutations in this browser. Server authorization remains authoritative.</small></div>
       </aside>
       <main class="sa-main">
@@ -50,7 +49,6 @@ export function renderAdminShell({sections,platformLogout,show,state}){
   };
   document.querySelectorAll('[data-primary-group]').forEach(b=>b.addEventListener('click',()=>{const key=b.dataset.primaryGroup;const first=groupFor(key).items[0]?.[1];if(first)show(first);else renderGroup(key);}));
   document.querySelector('#saWorkspaceFilter')?.addEventListener('input',event=>{const q=String(event.target.value||'').trim().toLowerCase();document.querySelectorAll('#saWorkspaceList [data-view]').forEach(b=>{b.hidden=!b.textContent.toLowerCase().includes(q);});});
-  document.querySelector('[data-quick-studio]')?.addEventListener('click',()=>show('product-publisher'));
   document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>show(b.dataset.view));
   document.getElementById('logout').onclick=platformLogout;
   document.getElementById('safeModeToggle')?.addEventListener('click',()=>{state.safeMode=!Boolean(state.safeMode);localStorage.setItem('onmission_super_admin_safe_mode',state.safeMode?'1':'0');const b=document.getElementById('safeModeToggle');if(b)b.textContent=state.safeMode?'READ-ONLY':'NORMAL';});

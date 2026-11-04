@@ -1,44 +1,58 @@
-# ON Mission 16.97.0 — Unified Market Operations & Certification
+# ON Mission 16.98.0 — Unified Super Admin & Market Operations
 
-Cumulative baseline: 16.96.0  
+Cumulative baseline: 16.97.0  
 Database migration: none  
 Migration high-water mark: 0166
 
-## Objective
+## Product decision
 
-Consolidate market configuration, canonical resource relationships, evidence, certification and release history into one market workspace with one primary nine-stage navigator.
+Reduce the Super Admin Control Plane to six human-facing areas:
+
+1. COMMAND — platform situation, exceptions, approvals and next actions.
+2. MARKETS — one Market Operations workspace for every market lifecycle activity.
+3. PLATFORM — reusable platform resources and shared product experience.
+4. CUSTOMERS & ACCESS — organizations, people, permissions, subscriptions, billing and missions.
+5. AI & INTEGRATIONS — agents, providers, connections and infrastructure.
+6. SECURITY & RECOVERY — privacy, residency, policy, audit, continuity and recovery.
+
+The Market Operations workspace is the only primary navigation entry for market-specific work. Configuration, resource reuse and linking, dependency assessment, evidence, certification, immutable release history, publication, activation, customer onboarding, operational health and market recovery remain coordinated from the selected market.
 
 ## Implemented
 
-- Replaced the duplicated guided-launch and configuration stage navigation with one nine-stage navigator.
-- The same stage selection now controls both the staged package form and the canonical task group.
-- Added stage-level task counts, evidence progress and blocker indicators to the primary navigator.
-- Preserved selected market and stage in URL query parameters (`marketId`, `marketStage`) for deep linking and refresh continuity.
-- Collapsed legacy structured and raw JSON editors into explicitly advanced compatibility drawers.
-- Collapsed immutable release history into the same market workspace.
+- Replaced the eight-area COMMAND / RESOURCES / BUILD / RELEASE / LAUNCH / OPERATE / GOVERN / RECOVER navigation with six consolidated areas.
+- Made MARKETS a single-entry area. All market-related legacy workspace routes resolve to Market Operations.
+- Moved generic resource management to PLATFORM; market resource search, relationship creation, read-back and dependency assessment stay inside the selected market.
+- Consolidated customer and access work into CUSTOMERS & ACCESS.
+- Consolidated AI, provider and infrastructure work into AI & INTEGRATIONS.
+- Consolidated privacy, policy, residency, security, audit, backup and recovery into SECURITY & RECOVERY.
+- Removed the duplicate Market Launch Studio sidebar shortcut.
+- Removed the duplicate workspace-directory and product-release navigation cards from Control Center.
+- Removed market-launch objective creation from the platform objective composer; market launch objectives now start in Market Operations.
+- Kept platform objectives and platform health in Control Center.
+- Preserved old market-related workspace bookmarks by routing them into Market Operations.
+- Added a read-only market-scoped operational health endpoint and panel for database reachability, product health, customer organizations, active users, missions and provider policy/contract posture.
+- Each metric is read from its canonical source and independently reports UNAVAILABLE on read failure. Platform-wide totals are not substituted for market-scoped counts.
+- Provider policy and contract status is explicitly not represented as a live connectivity probe.
+- No database migration; high-water mark remains 0166.
+
+## Authority and safety boundaries
+
 - Search misses are explicitly labeled as scoped search results, not proof of global absence.
-- Added canonical relationship impact read-back to dependency preflight. Existing candidates show the count of linked market dependencies where the relationship authority can be read; unavailable impact state is shown as unavailable, never as zero.
-- Preserved canonical resource search, relationship preview/commit, step-up authorization, immutable market package versions, audit and relationship read-back.
-- Preserved separate publication, activation and public onboarding gates.
-- Added a cumulative 16.97.0 market operations/certification contract test.
-
-## Architecture and safety
-
-- No new resource registry or competing market authority.
-- No database migration.
-- No change to canonical relationship ownership.
-- No weakening of step-up authorization.
-- No direct publish, activate or onboarding bypass. This release does not publish, verify, activate or open public onboarding.
-- Unknown relationship impact remains unknown and is not treated as safe.
-- This release does not certify external legal approval, provider authorization, actual data residency or physical mission evidence.
-- Market package configuration remains separate from canonical resource mutation.
-- The selected market remains the scope for all stage work.
+- Navigation consolidation does not merge or replace canonical domain authorities.
+- The Market Factory remains authoritative for market packages and immutable versions.
+- Resource Relationship Engine remains authoritative for canonical market-resource relationships.
+- Product health, organizations, identities, missions and provider governance retain their owning services/tables.
+- Operational health is read-only.
+- Publication, verification, activation, onboarding and destructive market lifecycle actions remain separately authorized. This release does not publish, verify, activate or open public onboarding.
+- Unknown or unavailable source data is not converted into a healthy or zero state.
+- No real legal approval, residency, provider connectivity or physical mission outcome is inferred from configuration.
+- This source release does not certify the live application or replace authenticated browser verification. It does not certify external legal approval, provider authorization, actual data residency or physical mission evidence.
 
 ## Verification
 
-Source-level release checks validate the unified stage navigator, deep-link continuity, canonical relationship impact read-back, advanced-only legacy editors, release history consolidation and independent release gates.
+The 16.98.0 source acceptance contract checks the six-area navigation, single market entry, legacy-route convergence, removal of duplicate Control Center navigation, market-scoped operational data sources and read-only health endpoint.
 
-A passing source contract does not certify the live application or replace authenticated browser verification against the deployed Cloudflare Worker. Production flow certification still requires the Node 24.22.1 build and live acceptance tests using an authorized Super Admin account and a draft market.
+The cumulative release, health, migration and Super Admin build checks must pass in the Node 24.22.1 build environment. Authenticated browser acceptance against the deployed Worker is still required before production certification.
 
 ## Deployment
 
@@ -54,19 +68,23 @@ npm run check:super-admin-build
 npx wrangler deploy
 ```
 
-No migration is required for 16.97.0.
+No migration is required for 16.98.0.
 
 ## Live acceptance
 
-Use a draft market:
+1. Confirm the Super Admin primary navigation exposes exactly six areas.
+2. Open MARKETS and confirm there is only one Market Operations entry.
+3. Open an existing draft market and complete a stage selection; verify the selected market and stage survive refresh.
+4. Confirm market resources, relationships, certification and release history are available inside that selected market.
+5. Open a live market and inspect the market-scoped operational health panel.
+6. Confirm customer/user counts are scoped by market country and sector; mission counts use the same market scope.
+7. Confirm unavailable sources display UNAVAILABLE and do not display fabricated zero values.
+8. Confirm legacy release, launch, product-health and certification links route into Market Operations.
+9. Confirm publication, activation and public onboarding remain separate authorization-gated operations.
 
-1. Open the market using `Markets`.
-2. Open one of the nine stages.
-3. Confirm the selected stage controls both its configuration panel and task list.
-4. Refresh the page and confirm the same market and stage are restored.
-5. Search for a canonical resource and inspect its dependency impact read-back.
-6. Save a staged change as a new immutable version.
-7. Confirm canonical read-back and stage reassessment.
-8. Confirm publication, activation and onboarding remain independently gated.
+Use a draft market for configuration tests. Do not use a live market for destructive or exploratory acceptance.
 
-Do not use a live market for destructive or exploratory acceptance tests.
+
+## Preserved platform-wide engineering context
+
+This release is cumulative and preserves the existing Global Compliance Context, Private ForYou experience, Consent & Privacy controls and Data Subject Rights workflows. The canonical schema source remains `database/schema.current.sql`; schema generation, deterministic build, migration contract and schema validation remain governed by their existing scripts. Canonical domain ownership, canonical capability boundaries, the Capability Registry and canonical vocabulary remain authoritative. Logistics remains the initial market. The historical term Cargo is retained only as a compatibility reference; the current domain vocabulary uses Object.

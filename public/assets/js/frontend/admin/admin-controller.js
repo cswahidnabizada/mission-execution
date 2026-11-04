@@ -1,7 +1,7 @@
 export function createAdminController({state,renderers,platformLogout,setEcosystemSubview=()=>{},updateContext=()=>{}}){
   const show=async(v)=>{
     const requested=String(v||'overview');
-    const aliases={'product-build':'product-publisher','product-studio':'product-publisher','product-launch':'product-publisher','product-ecosystem':'product-publisher','expansion':'product-publisher','data-entry':'resource-management','data-catalog':'resource-management','data-studio':'resource-management','data-control':'resource-management','trash':'resource-management','user-experience':'product-experience','demo-product':'product-experience'};
+    const aliases={'product-build':'product-publisher','product-studio':'product-publisher','product-launch':'product-publisher','product-ecosystem':'product-publisher','expansion':'product-publisher','countries':'product-publisher','release-center':'product-publisher','launch-center':'product-publisher','product-health':'product-publisher','product-verification':'product-publisher','certification':'product-publisher','product-dependency-impact':'product-publisher','data-entry':'resource-management','data-catalog':'resource-management','data-studio':'resource-management','data-control':'resource-management','trash':'resource-management','user-experience':'product-experience','demo-product':'product-experience'};
     v=aliases[requested]||requested;
     if(v==='health')v='system-health';
     state.view=v;
