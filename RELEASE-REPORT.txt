@@ -1,20 +1,21 @@
-ON Mission 16.96.0 — Canonical Market Resource Selection, Linking & Read-Back
+ON Mission 16.97.0 — Unified Market Operations & Certification
 
-Cumulative baseline: 16.95.0
+Cumulative baseline: 16.96.0
 Database migration: none
 Migration high-water: 0166
 
 Implemented:
-- Canonical market_package relationship endpoint.
-- Market Factory relationship read-back.
-- Explicit audited market-package -> canonical-resource dependency edges.
-- Preview + step-up commit through existing resource relationship authority.
-- Immutable market package version save after relationship commit.
-- Dual read-back verification for package binding and relationship.
-- Compensating relationship removal on package import failure.
-- Existing stale canonical resource snapshot validation retained.
+- One nine-stage navigator controls both stage forms and canonical task filtering.
+- Stage task counts, evidence progress and blocker indicators.
+- Market and stage deep-link continuity using marketId and marketStage URL parameters.
+- Legacy structured and raw JSON editors moved to advanced compatibility drawers.
+- Release history consolidated inside the market workspace.
+- Canonical relationship impact read-back included in dependency preflight.
+- Existing canonical resource, relationship, audit, immutable version and release gates preserved.
 
-Not claimed:
-- No production deployment performed by this source build.
-- No authenticated live UI test performed.
-- No real external provider, legal, residency or customer pilot evidence created.
+Verification:
+- Source contract test added to cumulative release suite.
+- Full release, health, migration and Super Admin checks must pass in Node 24.22.1 environment.
+- Live authenticated browser acceptance remains required after Cloudflare deployment.
+
+No migration required.

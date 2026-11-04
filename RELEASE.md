@@ -1,50 +1,72 @@
-# ON Mission 16.96.0 — Canonical Market Resource Selection, Linking & Read-Back
+# ON Mission 16.97.0 — Unified Market Operations & Certification
 
-## Scope
-This cumulative release extends the 16.95.0 intelligent market configuration workflow with an explicit, auditable relationship between a canonical Market Factory package and selected canonical reusable resources.
+Cumulative baseline: 16.96.0  
+Database migration: none  
+Migration high-water mark: 0166
+
+## Objective
+
+Consolidate market configuration, canonical resource relationships, evidence, certification and release history into one market workspace with one primary nine-stage navigator.
 
 ## Implemented
-- `market_package` is now an inspectable endpoint in the canonical resource relationship authority. Its identity and country scope are resolved from `platform_market_packages`.
-- The Market Launch Studio reads back active canonical relationships for the selected market.
-- Pinning a canonical resource now previews and commits a `depends_on` relationship from the market package to the selected resource through the existing resource relationship authority.
-- Relationship commits require step-up authorization, validate endpoint identity and market/tenant scope, apply cycle protection, and produce critical audit evidence.
-- The resource binding is then saved as a new immutable market package version through the existing Market Factory import authority.
-- The UI reads back both the new package version and the canonical relationship and reports success only when both are present.
-- If package-version creation fails after relationship creation, the UI attempts a compensating relationship removal. Failed compensation is surfaced as an administrator recovery issue.
-- Existing market package binding validation continues to re-resolve the canonical resource and detect stale status/version snapshots.
-- Existing canonical resource ownership remains unchanged; the market package is a composition and dependency endpoint, not a second resource registry.
 
-Search misses are explicitly labeled as scoped search results; they are not treated as proof that a canonical resource does not exist.\n\n## Safety and authority boundaries
-- No canonical resource is created or modified by relationship linking.
-- Relationship linking creates only a graph edge between existing canonical identities.
-- Resource configuration remains with the owning resource authority.
-- Market package edits remain immutable version imports.
-- Step-up authorization is required for relationship mutation and package import.
-- Publication, verification, activation and onboarding remain separate governed operations.
-- No migration is introduced; migration high-water remains 0166.
+- Replaced the duplicated guided-launch and configuration stage navigation with one nine-stage navigator.
+- The same stage selection now controls both the staged package form and the canonical task group.
+- Added stage-level task counts, evidence progress and blocker indicators to the primary navigator.
+- Preserved selected market and stage in URL query parameters (`marketId`, `marketStage`) for deep linking and refresh continuity.
+- Collapsed legacy structured and raw JSON editors into explicitly advanced compatibility drawers.
+- Collapsed immutable release history into the same market workspace.
+- Search misses are explicitly labeled as scoped search results, not proof of global absence.
+- Added canonical relationship impact read-back to dependency preflight. Existing candidates show the count of linked market dependencies where the relationship authority can be read; unavailable impact state is shown as unavailable, never as zero.
+- Preserved canonical resource search, relationship preview/commit, step-up authorization, immutable market package versions, audit and relationship read-back.
+- Preserved separate publication, activation and public onboarding gates.
+- Added a cumulative 16.97.0 market operations/certification contract test.
+
+## Architecture and safety
+
+- No new resource registry or competing market authority.
+- No database migration.
+- No change to canonical relationship ownership.
+- No weakening of step-up authorization.
+- No direct publish, activate or onboarding bypass. This release does not publish, verify, activate or open public onboarding.
+- Unknown relationship impact remains unknown and is not treated as safe.
+- This release does not certify external legal approval, provider authorization, actual data residency or physical mission evidence.
+- Market package configuration remains separate from canonical resource mutation.
+- The selected market remains the scope for all stage work.
 
 ## Verification
-Source-level release tests cover the route contract, market-package endpoint resolution, scope enforcement, audit-backed relationship commit, read-back, compensation path and immutable package import. Cumulative release, health, migration and Super Admin checks must be run in the deployment environment. Authenticated live end-to-end behavior still requires post-deployment verification.
+
+Source-level release checks validate the unified stage navigator, deep-link continuity, canonical relationship impact read-back, advanced-only legacy editors, release history consolidation and independent release gates.
+
+A passing source contract does not certify the live application or replace authenticated browser verification against the deployed Cloudflare Worker. Production flow certification still requires the Node 24.22.1 build and live acceptance tests using an authorized Super Admin account and a draft market.
 
 ## Deployment
-Use Node 24.22.1 and npm 10.x:
-`npm ci`
-`npm run build`
-`npm run check:release`
-`npm run check:health`
-`npm run check:migrations`
-`npm run check:super-admin-build`
-`npx wrangler deploy`
 
-No database migration is required for 16.96.0.
+Use Node 24.22.1 and npm 10.x or 11.x:
 
+```bash
+npm ci
+npm run build
+npm run check:release
+npm run check:health
+npm run check:migrations
+npm run check:super-admin-build
+npx wrangler deploy
+```
 
-Historical cumulative baseline: 16.95.0 — Intelligent market dependency resolution.
+No migration is required for 16.97.0.
 
-16.96.0 — Intelligent market dependency resolution is retained as the cumulative dependency-resolution foundation.
+## Live acceptance
 
-This source release does not certify live production behavior, legal approval, provider credentials, data residency, customer onboarding or real mission outcomes; those require independent evidence and production verification.
+Use a draft market:
 
-Real customer pilots and physical mission evidence are not supplied by simulation or this source package.
+1. Open the market using `Markets`.
+2. Open one of the nine stages.
+3. Confirm the selected stage controls both its configuration panel and task list.
+4. Refresh the page and confirm the same market and stage are restored.
+5. Search for a canonical resource and inspect its dependency impact read-back.
+6. Save a staged change as a new immutable version.
+7. Confirm canonical read-back and stage reassessment.
+8. Confirm publication, activation and onboarding remain independently gated.
 
-Resource linking does not publish, verify, activate or open public onboarding for a market.
+Do not use a live market for destructive or exploratory acceptance tests.
