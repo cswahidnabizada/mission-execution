@@ -1,5 +1,5 @@
 {
-  "version": "16.98.0",
+  "version": "16.99.0",
   "release": "RELEASE.md",
   "base": "16.80.0",
   "baseVersion": "16.80.0",
@@ -9,5 +9,5 @@
     "file": "database/schema.current.sql",
     "sha256": "bf7b4be9d239820ece9147d199450d4b506b321d6d491ef66fadf4185a3b9cf8"
   },
-  "generatedFrom": "cumulative-release-pipeline"
+  "generatedFrom": "deterministic-release-pipeline"
 }

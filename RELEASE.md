@@ -1,6 +1,8 @@
-# ON Mission 16.98.0 — Unified Super Admin & Market Operations
+# ON Mission 16.99.0 — Unified Super Admin & Market Operations
 
-Cumulative baseline: 16.97.0  
+## ON Mission 16.98.0 — Unified Super Admin & Market Operations
+
+Cumulative baseline: 16.98.0  
 Database migration: none  
 Migration high-water mark: 0166
 
@@ -50,7 +52,7 @@ The Market Operations workspace is the only primary navigation entry for market-
 
 ## Verification
 
-The 16.98.0 source acceptance contract checks the six-area navigation, single market entry, legacy-route convergence, removal of duplicate Control Center navigation, market-scoped operational data sources and read-only health endpoint.
+The 16.99.0 source acceptance contract checks the six-area navigation, single market entry, legacy-route convergence, removal of duplicate Control Center navigation, market-scoped operational data sources and read-only health endpoint.
 
 The cumulative release, health, migration and Super Admin build checks must pass in the Node 24.22.1 build environment. Authenticated browser acceptance against the deployed Worker is still required before production certification.
 
@@ -68,7 +70,7 @@ npm run check:super-admin-build
 npx wrangler deploy
 ```
 
-No migration is required for 16.98.0.
+No migration is required for 16.99.0.
 
 ## Live acceptance
 
@@ -88,3 +90,14 @@ Use a draft market for configuration tests. Do not use a live market for destruc
 ## Preserved platform-wide engineering context
 
 This release is cumulative and preserves the existing Global Compliance Context, Private ForYou experience, Consent & Privacy controls and Data Subject Rights workflows. The canonical schema source remains `database/schema.current.sql`; schema generation, deterministic build, migration contract and schema validation remain governed by their existing scripts. Canonical domain ownership, canonical capability boundaries, the Capability Registry and canonical vocabulary remain authoritative. Logistics remains the initial market. The historical term Cargo is retained only as a compatibility reference; the current domain vocabulary uses Object.
+
+
+## 16.99.0 — Persistent Market Operations & Dependency-Aware Readiness
+
+- Persist and restore market, version and stage context across refresh and workspace navigation.
+- Keep a single Market Operations command center and preserve PLATFORM as the owner of shared reusable resources.
+- Add exact-version, step-up-protected dependency invalidation for pinned canonical resources.
+- Preserve previous evidence as stale history, reset affected completed task contracts, and retain unrelated completed tasks.
+- Reject invalidation against immutable release versions.
+- Keep publication, verification, activation and onboarding as independent governed transitions.
+- No database migration; migration high-water remains 0166.
