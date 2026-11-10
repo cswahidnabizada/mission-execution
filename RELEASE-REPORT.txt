@@ -1,21 +1,15 @@
-ON Mission 16.99.0 — Persistent Market Operations & Dependency-Aware Readiness
+ON Mission 16.100.0 — Market Launch Workbench Runtime Repair
 
-Cumulative baseline: 16.98.0
+Cumulative baseline: 16.99.0
 Database migration: none
 Migration high-water: 0166
 
-Implemented:
-- Persistent market context across Market Operations refreshes and navigation using URL state plus browser-local continuity state; market, immutable version and selected stage are restored.
-- One Market Operations workspace remains the sole market command center; platform-wide reusable resources remain in PLATFORM.
-- Canonical resource pinning now invokes server-side dependency-aware readiness invalidation after successful package and relationship read-back.
-- Added an authenticated, step-up-protected dependency invalidation endpoint scoped to the exact mutable market package version and an exact pinned canonical resource.
-- Only completed tasks associated with the changed dependency class are invalidated. Their prior evidence is retained as stale history; persisted substeps are reset and require fresh canonical reads/evidence. Unrelated completed tasks remain complete.
-- Immutable/authorized/published/verified/live versions cannot have evidence invalidated; a new immutable draft is required.
-- Publication, verification, activation and onboarding remain separate transitions.
-- No new authority or migration; market package, resource relationship, canonical resource and task evidence authorities are preserved.
+Root cause confirmed from supplied production-state snapshot: WORKBENCH_UNAVAILABLE: state is not defined. bindWorkbenchActions referenced state through persistMarketContext but neither accepted nor received the application state.
 
-Certification:
-- Source contract tests and cumulative suites are included; run them in the Node 24.x build environment.
-- Authenticated live-worker/browser acceptance remains required for runtime certification.
-- Dependency invalidation is wired to market resource pinning; changes to canonical resources outside this market workflow still require their owning mutation path to emit/route a market dependency change event before claiming automatic cross-workspace invalidation.
-- External legal, residency, provider connectivity, backup restore and physical mission pilot evidence remain external gates.
+Fix: state is now part of bindWorkbenchActions options and passed from renderMarketFactory. Added a regression test for the exact function signature and caller.
+
+Preserved: six-area Super Admin, single Market Operations workspace, persistent market context, canonical resource/relationship authorities, exact-version dependency invalidation, immutable releases, separate publication/verification/activation/onboarding.
+
+No new migration; high-water 0166.
+
+Live authenticated browser verification is pending deployment. External legal, data residency, provider connectivity, backup restore, customer pilot and physical mission evidence remain external gates.

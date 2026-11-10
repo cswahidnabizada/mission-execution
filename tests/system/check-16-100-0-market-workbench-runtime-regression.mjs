@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const file=fs.readFileSync('public/assets/js/frontend/admin/market-factory.js','utf8');
+const signature=file.match(/function bindWorkbenchActions\(box,\{([^}]*)\}\)/);
+assert.ok(signature,'bindWorkbenchActions declaration must exist');
+assert.match(signature[1],/(^|,)\s*state\s*(,|$)/,'bindWorkbenchActions must receive the application state it uses');
+assert.match(file,/bindWorkbenchActions\(box,\{[^}]*\bstate\b[^}]*\}\)/,'renderMarketFactory must pass state into bindWorkbenchActions');
+assert.match(file,/persistMarketContext\(state,\{packageId:[^}]*stage:activeStage\}\)/,'stage navigation must persist selected market context');
+assert.equal(fs.readFileSync('VERSION','utf8').trim(),'16.100.0');
+assert.equal(JSON.parse(fs.readFileSync('package.json','utf8')).version,'16.100.0');
+console.log('16.100.0 Market Launch Workbench runtime regression: PASS');
