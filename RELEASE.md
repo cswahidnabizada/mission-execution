@@ -1,53 +1,61 @@
-# ON Mission 16.100.0 — Market Launch Workbench Runtime Repair
+# Mission Execution 16.105.0 — Germany Market Launch Completion Candidate
+Status: protected candidate
 
-Cumulative baseline: 16.99.0  
-Database migration: none  
+Cumulative source baseline: 16.100.0 — Market Launch Workbench Runtime Repair
+
+The 16.100.0 Market Launch Workbench Runtime Repair remains the protected base of this cumulative release.
+Database migration: none
 Migration high-water mark: 0166
 
-## Confirmed production-state defect
+## 16.101 — Launch Control and Next-Action Engine
+- Added a read-only launch-control projection over the canonical Market Factory workbench.
+- Selects the first outstanding task, skips verified work, and exposes owner, reason, mode and evidence expectation.
+- Unknown canonical authority state and reconciliation conflicts fail closed.
 
-The supplied deployed application snapshot showed `WORKBENCH_UNAVAILABLE: state is not defined`. The failure was reproduced from source inspection: `bindWorkbenchActions` called `persistMarketContext(state, ...)` but did not receive `state` in its destructured options. Its caller also omitted the `state` argument. The workbench renderer therefore threw a `ReferenceError` while binding stage navigation after the workbench data was fetched.
+## 16.102 — Germany Preparation Automation
+- Preserves the existing bounded Germany preparation endpoint and canonical resource adapters.
+- Exposes preparation preview counts (create/reuse/review/conflict) without treating preview as mutation or certification.
+- Keeps preparation, linking, approval and release transitions separate.
 
-## Implemented repair
+## 16.103 — External Dependencies and Human Approvals
+- Adds an explicit dependency register derived from launch tasks, with owner, blocker, due date when recorded and evidence expectation.
+- Legal/content and other human-owned tasks remain human review gates; no approval is fabricated.
 
-- Added `state` to the `bindWorkbenchActions` options contract.
-- Passed the current application state from `renderMarketFactory` into that binding function.
-- Added a regression contract that checks both sides of the dependency contract and guards against reintroducing the missing lexical binding.
-- Bumped runtime release/cache identity to 16.100.0.
-- Preserved the six-area Super Admin navigation, single Market Operations entry, market context persistence, canonical resource and relationship authorities, dependency invalidation, and separate release transitions.
-- No database migration or authority changes.
+## 16.104 — End-to-End Germany Mission Proof
+- Adds eight independent proof cases: tenant isolation, authorization, assignment, execution, effects, independent verification, failure containment and recovery.
+- Generic task completion does not satisfy these proof cases. Each case requires a verified evidence object with source, timestamp and traceable reference.
 
-## Verification
+## 16.105 — Final Market Certification and Release
+- Exposes separate canonical preparation, approval, mission proof, immutable validation, publication, verification, activation and onboarding gates.
+- `COMPLETE` is reserved for a LIVE market and package, OPEN onboarding, verified tasks, all eight proof cases, independent runtime evidence, healthy authorities and zero reconciliation conflicts.
+- The Market Factory certification endpoint remains read-only; it does not publish or activate a market. The route does not yet inject trusted live mission proof into the projection, so the eight proof cases remain required until a tenant-scoped real-mission/adversarial evidence source is connected.
 
-The regression check verifies the exact failing function boundary and its call site. Existing 16.99.0 market-context/dependency checks and cumulative release/security/migration checks are retained. Passing source checks do not substitute for a live authenticated browser test.
+## Infrastructure and integration review
+See `INFRASTRUCTURE-AND-INTEGRATION-OVERVIEW.md` for the source-based infrastructure assessment, runtime architecture, data/authority boundaries, Germany residency caveats, integration contract and prioritized hardening actions.
 
-## Deployment
+## Verification boundary
+The candidate adds no migration and does not change the canonical mission write authority. A passing source suite does not replace Node 24 production build, Cloudflare deployment, authenticated browser acceptance, provider/legal approvals, data-residency evidence, backup/restore proof or a supervised physical mission. Those remain explicit external/live gates.
 
-Use Node 24.22.1 and npm 10.x/11.x. Run `npm ci`, `npm run build`, `npm run check:release`, `npm run check:health`, `npm run check:migrations`, `npm run check:super-admin-build`, `npm run check:super-admin-decomposition`, and `npx wrangler deploy`. No migration is required.
+## Retained cumulative architecture and verification lineage
 
-## Live acceptance
-
-1. Open the existing Germany draft market.
-2. Confirm the Launch Workbench loads its task list and certification summary.
-3. Change stage and refresh; confirm the market, immutable version and stage are retained.
-4. Use Previous/Next stage and Show All; confirm no `state is not defined` error.
-5. Open a task Resolve workspace, close it, and confirm the task returns to its original stage.
-6. Run a safe read-only refresh and verify dependency invalidation only marks dependent tasks stale.
-7. Confirm unrelated completed tasks remain complete.
-8. Confirm validate, authorize, publish, verify, activate and onboarding remain independent.
-
-Do not publish or activate a market as part of this acceptance test.
-
-## Preserved dependency and authority guarantees
-
-Search misses are explicitly labeled as scoped search results, not proof of global absence. Resource candidates are inspected through their canonical owner before linking. Canonical relationship preview, commit and read-back remain required. A market package version remains immutable; changes create a new version. Dependency invalidation is exact-version scoped, preserves unrelated completed tasks and retains stale evidence history. An unavailable authority remains a blocker, never an empty or healthy result.
-
-The Market Factory remains the authority for market packages and versions; the Resource Relationship Engine remains the authority for relationships; canonical customer, identity, mission, provider and product services remain their own authorities. Publication, verification, activation and public onboarding remain separate transitions.
-
-This source release does not certify the live application or replace authenticated browser verification. It does not certify external legal approval, provider authorization, actual data residency or physical mission evidence. A passing source check is not a production pilot certification.
-
-This release does not publish, verify, activate or open public onboarding. Publication, verification, activation and onboarding require their own separately authorized operations and evidence.
+This cumulative release preserves prior protected behavior and evidence contracts:
+- Search misses are explicitly labeled; a scoped search miss is not proof of global absence.
+- No database migration introduced; no schema change is included in this release.
+- This release does not certify Germany-only data residency, provider authorization, or physical mission evidence.
+- This release does not publish, verify, activate or open public onboarding.
+- 16.91.0 — Germany Pilot Simulation Completion remains a simulation-only milestone, not a live customer pilot.
+- Journey completion matrix: EXECUTE → EFFECT → VERIFY remains an explicit boundary; a recorded request is not a verified external effect.
+- The Control Plane retains the Build → release → operate → govern → recover model, the workspace launcher and UI functional certification requirements.
+- No optimistic mutation; no mutation replay; stale views retain last known context and must be visibly identified.
+- Obsolete resources must be retired and duplicates removed through governed lifecycle operations, not shadowed with parallel authorities.
+- Canonical Operational Performance & Observability remains part of the cumulative platform context; no database migration introduced for this release.
+- Final Obsolete Code / Schema Retirement preserves the canonical assignment authority, Executor and Object vocabulary, and Control Plane boundaries.
+- Canonical Failure Semantics + Control Plane Decomposition remain required architecture invariants.
+- Truthful Runtime Certification remains evidence-based and never substitutes simulation for a real mission.
+- Security → Truth → Liveness → Stability → Experience → Scale remains the release priority order.
+- OBSERVE → UNDERSTAND → PLAN → EVALUATE → ACCEPT → AUTHORIZE → PREPARE → ASSIGN → EXECUTE → EFFECT → VERIFY → RECOVER → OUTCOME → LEARN → NEXT SITUATION → OBSERVE remains the canonical mission journey.
+- No competing workflow authority is introduced. The release does not create a second Mission Control, duplicate Action Center or parallel Mission TV action surface.
 
 ## Preserved platform-wide engineering context
 
-This release is cumulative and preserves the existing Global Compliance Context, Private ForYou experience, Consent & Privacy controls and Data Subject Rights workflows. The canonical schema source remains `database/schema.current.sql`; schema generation, deterministic build, migration contract and schema validation remain governed by their existing scripts. the canonical domain ownership model, canonical capability boundaries, the Capability Registry and canonical vocabulary remain authoritative. Logistics remains the initial market. The historical term Cargo is retained only as a compatibility reference; the current domain vocabulary uses Object.
+This cumulative release preserves the Global Compliance Context, Private ForYou experience, Consent & Privacy controls and Data Subject Rights workflows. The canonical schema source remains `database/schema.current.sql`; schema generation remains deterministic and the migration contract remains release-gated. The canonical domain ownership model, canonical capability boundaries, Capability Registry and canonical vocabulary remain authoritative. Logistics remains the initial market. The historical term Cargo is retained only as a compatibility reference; the current domain vocabulary uses Object.

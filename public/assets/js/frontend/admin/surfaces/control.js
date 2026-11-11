@@ -1,7 +1,7 @@
 /* ON Mission 10.82.0 — CONTROL surface composition. Admin orchestrates; authorities own truth. */
-import { renderControlCenter } from '../oversight/product-factory.js?v=16.100.0';
-import { renderPlatformCenter } from '../oversight/product-studio.js?v=16.100.0';
-import { renderHumanPlatformStudio } from '../human-platform-studio.js?v=16.100.0';
+import { renderControlCenter } from '../oversight/product-factory.js?v=16.105.0';
+import { renderPlatformCenter } from '../oversight/product-studio.js?v=16.105.0';
+import { renderHumanPlatformStudio } from '../human-platform-studio.js?v=16.105.0';
 
 export const controlSurface = Object.freeze({
   overview: renderControlCenter,

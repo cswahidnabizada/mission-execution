@@ -1,15 +1,39 @@
-ON Mission 16.100.0 — Market Launch Workbench Runtime Repair
-
-Cumulative baseline: 16.99.0
+ON Mission 16.105.0 — Germany Market Launch Completion Candidate
+Cumulative source baseline: 16.100.0
 Database migration: none
-Migration high-water: 0166
+Migration high-water: 0166 (166 ordered migrations)
+Schema snapshot: database/schema.current.sql (256 tables, 467 indexes)
 
-Root cause confirmed from supplied production-state snapshot: WORKBENCH_UNAVAILABLE: state is not defined. bindWorkbenchActions referenced state through persistMarketContext but neither accepted nor received the application state.
+IMPLEMENTED
+- 16.101: read-only launch-control projection; next canonical task selection; owner, blocker, reason and evidence expectation.
+- 16.102: preserves the existing bounded Germany preparation endpoint and canonical resource adapters; adds accurate create/reuse/update preview projection. Preparation does not publish or activate.
+- 16.103: external dependency and human approval register derived from canonical launch tasks.
+- 16.104: eight independent proof gates; editable workbench evidence cannot satisfy trusted runtime proof.
+- 16.105: distinct preparation, approval, mission-proof, immutable validation, publication, verification, activation and onboarding gates; fail-closed completion rule.
+- Infrastructure and integration handover document included.
+- One root VERSION file; Node runtime pin is .node-version; duplicate .nvmrc removed; old versioned deployment notes consolidated into DEPLOYMENT.md.
 
-Fix: state is now part of bindWorkbenchActions options and passed from renderMarketFactory. Added a regression test for the exact function signature and caller.
+SOURCE VERIFICATION — PASS
+- npm run check:release (includes the cumulative market/resource regression suite, architecture boundary, duplicate-content and release-integrity gates).
+- npm run check:health (security baseline, data integrity, architecture, production readiness and hardening).
+- npm run check:migrations (166 ordered migrations, high-water 0166; data dependency checks).
+- npm run check:super-admin-build.
+- npm run check:super-admin-decomposition.
+- npm run check:release-engineering.
+- 578 JavaScript syntax checks.
+- Architecture: 431 JavaScript files, 1,627 local imports, zero import cycles; one canonical mission lifecycle write path.
+- Schema: 256 tables, 467 indexes.
+- Duplicate file-content gate: PASS (1,600 unique files).
+- Production cleanliness: PASS; release identity 16.105.0; Node pin 24.22.1; migration count/high-water aligned.
 
-Preserved: six-area Super Admin, single Market Operations workspace, persistent market context, canonical resource/relationship authorities, exact-version dependency invalidation, immutable releases, separate publication/verification/activation/onboarding.
+BUILD / DEPLOYMENT LIMITATION
+- npm run build was attempted and correctly stopped at the runtime gate because this build container runs Node 22.16.0 while the project requires Node 24.22.1. No claim of successful production build is made.
+- npm ci / Tailwind build / Wrangler deploy were not completed in the required Node 24 environment.
+- No live Cloudflare deployment or authenticated browser acceptance was performed.
 
-No new migration; high-water 0166.
+REMAINING LIVE / EXTERNAL EVIDENCE
+- The Market Factory certification route currently does not inject a trusted real-mission proof result; all eight proof cases remain EVIDENCE_REQUIRED until a trusted tenant-scoped mission and adversarial evidence source is connected.
+- Legal review, provider connection tests, provider credentials, Germany-only residency/subprocessor evidence, backup/restore test, production monitoring and a supervised real Germany logistics mission remain unverified.
+- Public onboarding must remain invite-only/restricted until the authorized release and evidence gates are completed.
 
-Live authenticated browser verification is pending deployment. External legal, data residency, provider connectivity, backup restore, customer pilot and physical mission evidence remain external gates.
+Release classification: SOURCE-VERIFIED CANDIDATE — NOT YET PRODUCTION-BUILT, DEPLOYED OR LIVE-CERTIFIED.

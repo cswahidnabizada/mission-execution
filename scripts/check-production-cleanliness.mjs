@@ -6,14 +6,12 @@ const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
 const lock=JSON.parse(fs.readFileSync('package-lock.json','utf8'));
 const manifest=JSON.parse(fs.readFileSync('RELEASE-MANIFEST.json','utf8'));
 const nodeVersion=fs.readFileSync('.node-version','utf8').trim();
-const nvmrc=fs.readFileSync('.nvmrc','utf8').trim();
 assert.equal(version,pkg.version,'canonical VERSION must match the package release identity');
 assert.equal(pkg.version,version,'package version must match VERSION');
 assert.equal(lock.version,version,'lockfile version must match VERSION');
 assert.equal(lock.packages[''].version,version,'lockfile root package version must match VERSION');
 assert.equal(manifest.version,version,'release manifest version must match VERSION after generation');
-assert.equal(nodeVersion,'24.18.0','Cloudflare Node pin must match supported runtime');
-assert.equal(nvmrc,nodeVersion,'nvm and Cloudflare Node pins must match');
+assert.equal(nodeVersion,'24.22.1','Cloudflare Node pin must match the declared Node 24.22.1 runtime');
 for(const stale of [
   'build15.py',
   'BUILD-STATUS.md',
@@ -31,8 +29,8 @@ for(const required of ['README.md','RELEASE.md','RELEASE-REPORT.txt','VERSION','
 const ignore=fs.readFileSync('.gitignore','utf8');
 for(const entry of ['.DS_Store','node_modules/','.wrangler/','.env','.dev.vars','*.log','*.tmp']) assert.ok(ignore.includes(entry),`.gitignore missing ${entry}`);
 const migrationFiles=fs.readdirSync('database/migrations').filter(name=>name.endsWith('.sql')).sort();
-assert.equal(migrationFiles.length,163,'migration count must match the current additive release');
-assert.equal(migrationFiles.at(-1).slice(0,4),'0163','migration high-water mark must be 0162');
+assert.equal(migrationFiles.length,166,'migration count must match the current additive release');
+assert.equal(migrationFiles.at(-1).slice(0,4),'0166','migration high-water mark must be 0166');
 const chain=pkg.scripts['check:release'];
 assert.match(chain,/check-production-cleanliness\.mjs/,'cleanliness gate must run in the release suite');
 console.log(`${version} production cleanliness and version convergence: PASS`);
