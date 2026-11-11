@@ -101,7 +101,11 @@ export async function deleteCompanyIfEmpty(env, companyId) {
     WHERE id=?
       AND NOT EXISTS (SELECT 1 FROM mission_canonical_projection WHERE company_id=?)
       AND NOT EXISTS (SELECT 1 FROM drivers WHERE company_id=?)
-  `).bind(companyId, companyId, companyId).run();
+      AND NOT EXISTS (SELECT 1 FROM daftar_private_entries WHERE company_id=?)
+      AND NOT EXISTS (SELECT 1 FROM batch_passports WHERE company_id=? OR current_custodian_company_id=?)
+      AND NOT EXISTS (SELECT 1 FROM daftar_market_consents WHERE company_id=?)
+      AND NOT EXISTS (SELECT 1 FROM daftar_sync_receipts WHERE company_id=?)
+  `).bind(companyId,companyId,companyId,companyId,companyId,companyId,companyId,companyId).run();
 }
 
 export async function markCompanyPending(env, companyId, countryCode) {

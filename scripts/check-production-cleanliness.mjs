@@ -29,8 +29,8 @@ for(const required of ['README.md','RELEASE.md','RELEASE-REPORT.txt','VERSION','
 const ignore=fs.readFileSync('.gitignore','utf8');
 for(const entry of ['.DS_Store','node_modules/','.wrangler/','.env','.dev.vars','*.log','*.tmp']) assert.ok(ignore.includes(entry),`.gitignore missing ${entry}`);
 const migrationFiles=fs.readdirSync('database/migrations').filter(name=>name.endsWith('.sql')).sort();
-assert.equal(migrationFiles.length,166,'migration count must match the current additive release');
-assert.equal(migrationFiles.at(-1).slice(0,4),'0166','migration high-water mark must be 0166');
+assert.equal(migrationFiles.length,167,'migration count must match the current additive release');
+assert.equal(migrationFiles.at(-1).slice(0,4),'0167','migration high-water mark must be 0167');
 const chain=pkg.scripts['check:release'];
 assert.match(chain,/check-production-cleanliness\.mjs/,'cleanliness gate must run in the release suite');
 console.log(`${version} production cleanliness and version convergence: PASS`);

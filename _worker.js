@@ -3,6 +3,7 @@ import { purgeExpiredOperationalData } from "./src/worker/modules/privacy/privac
 import { processPendingAgentSemanticMemory } from "./src/worker/extensions/agentic-layer/agent-semantic-memory.service.js";
 import { recalibrateAgentSignals } from "./src/worker/extensions/agentic-layer/agent-recalibration.service.js";
 import { reconcilePendingAgentExecutions } from "./src/worker/extensions/agentic-layer/agent-execution-recovery.service.js";
+import { aggregateMarketTelemetry } from "./src/worker/modules/daftar/daftar.service.js";
 
 const app = createApp();
 
@@ -11,6 +12,10 @@ export default {
     return app.fetch(request, env, ctx);
   },
   async scheduled(event, env, ctx) {
+    if (String(event?.cron||'') === '*/15 * * * *') {
+      ctx.waitUntil(aggregateMarketTelemetry(env).catch(error => console.error("DAFTAR_MARKET_AGGREGATION", String(error?.message || error))));
+      return;
+    }
     ctx.waitUntil(purgeExpiredOperationalData(env).catch(error => console.error("PRIVACY_RETENTION_CLEANUP", String(error?.message || error))));
     ctx.waitUntil(processPendingAgentSemanticMemory(env,{limit:40}).catch(error => console.error("AGENT_SEMANTIC_INDEXING", String(error?.message || error))));
     ctx.waitUntil(recalibrateAgentSignals(env,{limit:200}).catch(error => console.error("AGENT_RECALIBRATION", String(error?.message || error))));

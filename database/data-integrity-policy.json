@@ -1,5 +1,5 @@
 {
-  "version": 43,
+  "version": 44,
   "drivers": {
     "mission_messages": "set_null",
     "mission_files": "set_null",
@@ -15,7 +15,9 @@
   "preserve_without_fk": {
     "audit_logs.actor_driver_id": "immutable_audit_history",
     "mission_exceptions.driver_id": "set_null_on_driver_delete",
-    "mission_delivery_proofs.driver_id": "set_null_on_driver_delete"
+    "mission_delivery_proofs.driver_id": "set_null_on_driver_delete",
+    "market_telemetry_events.contributor_key": "delete_by_hmac_on_contributor_erasure",
+    "daftar_market_price_indices.country_sector": "invalidate_and_rebuild_on_contributor_erasure"
   },
   "companies": {
     "drivers": "preserve_by_policy_aware_erasure",
@@ -122,7 +124,16 @@
     "demo_execution_events": "delete_or_cascade_derived_demo_execution",
     "platform_certification_fixtures": "delete_or_cascade_policy_configuration",
     "platform_demo_fixtures": "preserve_by_policy_aware_erasure",
-    "platform_demo_fixture_users": "preserve_by_policy_aware_erasure"
+    "platform_demo_fixture_users": "preserve_by_policy_aware_erasure",
+    "daftar_private_entries": "preserve_by_policy_aware_erasure",
+    "daftar_inventory_balances": "preserve_by_policy_aware_erasure",
+    "daftar_inventory_movements": "preserve_historical_truth",
+    "daftar_credit_settlements": "preserve_historical_truth",
+    "daftar_sync_receipts": "preserve_by_policy_aware_erasure",
+    "daftar_market_consents": "preserve_policy_record_or_restrict",
+    "daftar_custody_transfers": "preserve_historical_truth",
+    "batch_passports": "preserve_policy_record_or_restrict",
+    "batch_events": "preserve_historical_truth"
   },
   "missions": {
     "mission_status_history": "preserve_historical_truth",
@@ -219,7 +230,16 @@
     "pseudonymization_policy": true,
     "export_default": "blocked",
     "retention_is_policy_driven": true,
-    "platform_admin_sees_policy_metadata_only": true
+    "platform_admin_sees_policy_metadata_only": true,
+    "market_telemetry": {
+      "consent": "explicit_opt_in_per_tenant_country_sector",
+      "identifier": "keyed_pseudonymous_hmac_not_anonymous",
+      "minimum_distinct_contributors": 5,
+      "outlier_rule": "exclude_outside_plus_minus_20_percent_of_weighted_median",
+      "raw_retention_days": 90,
+      "withdrawal": "delete_contributor_raw_and_invalidate_market_projection",
+      "trust": "merchant_reported_until_server_verified_provider_event"
+    }
   },
   "governance": {
     "compliance_evidence_registry": "preserve_policy_record_or_restrict",
@@ -245,6 +265,10 @@
     "platform_market_packages": "preserve_policy_record_or_restrict",
     "platform_market_package_versions": "preserve_policy_record_or_restrict",
     "platform_market_package_imports": "preserve_policy_record_or_restrict",
-    "platform_market_release_contracts": "preserve_policy_record_or_restrict"
+    "platform_market_release_contracts": "preserve_policy_record_or_restrict",
+    "daftar_market_profiles": "preserve_country_sector_market_configuration",
+    "daftar_unit_conversions": "preserve_governed_metrology_reference",
+    "daftar_fx_quotes": "preserve_governed_fx_reference",
+    "daftar_market_price_indices": "rebuildable_aggregate_projection"
   }
 }

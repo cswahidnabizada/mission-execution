@@ -1,5 +1,5 @@
 -- ON Mission current database schema snapshot
--- Generated from the complete ordered migration chain through 0166.
+-- Generated from the complete ordered migration chain through 0167.
 -- This is the canonical schema snapshot for fresh/recovery environments.
 -- Production evolution remains migration-first: apply database/migrations/*.sql in order.
 -- Do not edit manually; regenerate with scripts/generate-schema-current.mjs.
@@ -717,6 +717,58 @@ CREATE TABLE backup_restore_requests (
   FOREIGN KEY(company_id) REFERENCES companies(id) ON DELETE SET NULL
 );
 
+-- table: batch_events
+CREATE TABLE batch_events (
+  id TEXT PRIMARY KEY,
+  passport_id TEXT NOT NULL,
+  company_id INTEGER NOT NULL,
+  event_type TEXT NOT NULL CHECK(event_type IN ('origin','production','inspection','lab_test','mission','packaging','mass_balance','custody_handoff','recall')),
+  input_quantity_milli INTEGER,
+  output_quantity_milli INTEGER,
+  additive_quantity_milli INTEGER NOT NULL DEFAULT 0,
+  waste_quantity_milli INTEGER NOT NULL DEFAULT 0,
+  unit_code TEXT,
+  evidence_class TEXT NOT NULL DEFAULT 'merchant_attested' CHECK(evidence_class IN ('merchant_attested','mission_linked','file_hash_linked','counterparty_acknowledged','system_rule_checked')) ,
+  evidence_sha256 TEXT,
+  mission_id INTEGER,
+  file_id INTEGER,
+  evidence_reference TEXT,
+  details_json TEXT NOT NULL DEFAULT '{}',
+  created_by_identity_id INTEGER NOT NULL,
+  retention_status TEXT NOT NULL DEFAULT 'active' CHECK(retention_status IN ('active','review_due','legal_hold')),
+  retention_review_at TEXT NOT NULL DEFAULT (datetime('now','+1095 days')),
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY(passport_id) REFERENCES batch_passports(id) ON DELETE CASCADE,
+  FOREIGN KEY(company_id) REFERENCES companies(id) ON DELETE CASCADE
+);
+
+-- table: batch_passports
+CREATE TABLE batch_passports (
+  id TEXT PRIMARY KEY,
+  company_id INTEGER NOT NULL,
+  current_custodian_company_id INTEGER NOT NULL,
+  country_code TEXT NOT NULL,
+  sector_code TEXT NOT NULL,
+  product_code TEXT NOT NULL,
+  batch_code TEXT NOT NULL,
+  quantity_milli INTEGER NOT NULL CHECK(quantity_milli > 0),
+  unit_code TEXT NOT NULL,
+  normalized_quantity_milli INTEGER,
+  normalized_unit_code TEXT,
+  public_token_hash TEXT NOT NULL UNIQUE,
+  visibility TEXT NOT NULL DEFAULT 'private' CHECK(visibility IN ('private','public')),
+  status TEXT NOT NULL DEFAULT 'active' CHECK(status IN ('active','recalled','closed')),
+  created_by_identity_id INTEGER NOT NULL,
+  retention_status TEXT NOT NULL DEFAULT 'active' CHECK(retention_status IN ('active','review_due','legal_hold')),
+  retention_review_at TEXT NOT NULL DEFAULT (datetime('now','+1095 days')),
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(company_id,batch_code),
+  FOREIGN KEY(company_id) REFERENCES companies(id) ON DELETE CASCADE,
+  FOREIGN KEY(current_custodian_company_id) REFERENCES companies(id) ON DELETE RESTRICT,
+  FOREIGN KEY(country_code) REFERENCES country_catalog(code)
+);
+
 -- table: billing_identities
 CREATE TABLE billing_identities (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -1142,6 +1194,218 @@ CREATE TABLE critical_audit_events (
   completed_at TEXT
 );
 
+-- table: daftar_credit_settlements
+CREATE TABLE daftar_credit_settlements (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  company_id INTEGER NOT NULL,
+  entry_id TEXT NOT NULL,
+  client_settlement_id TEXT NOT NULL,
+  amount_minor INTEGER NOT NULL CHECK(amount_minor > 0),
+  currency_code TEXT NOT NULL,
+  payment_method TEXT NOT NULL CHECK(payment_method IN ('cash','hesabpay','afpay','hawala_record','other')),
+  recorded_by_identity_id INTEGER NOT NULL,
+  retention_status TEXT NOT NULL DEFAULT 'active' CHECK(retention_status IN ('active','review_due','legal_hold')),
+  retention_review_at TEXT NOT NULL DEFAULT (datetime('now','+1095 days')),
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(company_id,client_settlement_id),
+  FOREIGN KEY(company_id) REFERENCES companies(id) ON DELETE CASCADE,
+  FOREIGN KEY(entry_id) REFERENCES daftar_private_entries(id) ON DELETE CASCADE
+);
+
+-- table: daftar_custody_transfers
+CREATE TABLE daftar_custody_transfers (
+  id TEXT PRIMARY KEY,
+  passport_id TEXT NOT NULL,
+  from_company_id INTEGER NOT NULL,
+  to_company_id INTEGER NOT NULL,
+  challenge_hash TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','confirmed','expired','cancelled')),
+  expires_at TEXT NOT NULL,
+  confirmed_at TEXT,
+  created_by_identity_id INTEGER NOT NULL,
+  retention_status TEXT NOT NULL DEFAULT 'active' CHECK(retention_status IN ('active','review_due','legal_hold')),
+  retention_review_at TEXT NOT NULL DEFAULT (datetime('now','+1095 days')),
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY(passport_id) REFERENCES batch_passports(id) ON DELETE CASCADE,
+  FOREIGN KEY(from_company_id) REFERENCES companies(id) ON DELETE CASCADE,
+  FOREIGN KEY(to_company_id) REFERENCES companies(id) ON DELETE CASCADE
+);
+
+-- table: daftar_fx_quotes
+CREATE TABLE daftar_fx_quotes (
+  id TEXT PRIMARY KEY,
+  country_code TEXT NOT NULL,
+  base_currency TEXT NOT NULL,
+  quote_currency TEXT NOT NULL,
+  rate_numerator INTEGER NOT NULL CHECK(rate_numerator > 0),
+  rate_denominator INTEGER NOT NULL CHECK(rate_denominator > 0),
+  source_code TEXT NOT NULL,
+  source_reference TEXT,
+  observed_at TEXT NOT NULL,
+  valid_until TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'proposed' CHECK(status IN ('proposed','approved','expired','rejected')),
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY(country_code) REFERENCES country_catalog(code)
+);
+
+-- table: daftar_inventory_balances
+CREATE TABLE daftar_inventory_balances (
+  company_id INTEGER NOT NULL,
+  item_code TEXT NOT NULL,
+  quantity_milli INTEGER NOT NULL CHECK(quantity_milli >= 0),
+  unit_code TEXT NOT NULL,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY(company_id,item_code),
+  FOREIGN KEY(company_id) REFERENCES companies(id) ON DELETE CASCADE
+);
+
+-- table: daftar_inventory_movements
+CREATE TABLE daftar_inventory_movements (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  company_id INTEGER NOT NULL,
+  entry_id TEXT NOT NULL,
+  item_code TEXT NOT NULL,
+  delta_quantity_milli INTEGER NOT NULL,
+  unit_code TEXT NOT NULL,
+  retention_status TEXT NOT NULL DEFAULT 'active' CHECK(retention_status IN ('active','review_due','legal_hold')),
+  retention_review_at TEXT NOT NULL DEFAULT (datetime('now','+1095 days')),
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(entry_id),
+  FOREIGN KEY(company_id) REFERENCES companies(id) ON DELETE CASCADE,
+  FOREIGN KEY(entry_id) REFERENCES daftar_private_entries(id) ON DELETE CASCADE
+);
+
+-- table: daftar_market_consents
+CREATE TABLE daftar_market_consents (
+  company_id INTEGER NOT NULL,
+  country_code TEXT NOT NULL,
+  sector_code TEXT NOT NULL,
+  telemetry_opt_in INTEGER NOT NULL DEFAULT 0 CHECK(telemetry_opt_in IN (0,1)),
+  contributor_key TEXT,
+  consent_version TEXT NOT NULL,
+  consented_by_identity_id INTEGER NOT NULL,
+  consented_at TEXT,
+  withdrawn_at TEXT,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY(company_id,country_code,sector_code),
+  FOREIGN KEY(company_id) REFERENCES companies(id) ON DELETE CASCADE,
+  FOREIGN KEY(country_code) REFERENCES country_catalog(code)
+);
+
+-- table: daftar_market_price_indices
+CREATE TABLE daftar_market_price_indices (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  country_code TEXT NOT NULL,
+  sector_code TEXT NOT NULL,
+  city_code TEXT,
+  item_code TEXT NOT NULL,
+  unit_code TEXT NOT NULL,
+  currency_code TEXT NOT NULL,
+  median_unit_price_minor INTEGER NOT NULL,
+  sample_count INTEGER NOT NULL,
+  contributor_count INTEGER NOT NULL,
+  outlier_count INTEGER NOT NULL DEFAULT 0,
+  trust_class TEXT NOT NULL DEFAULT 'merchant_reported',
+  window_started_at TEXT NOT NULL,
+  window_ended_at TEXT NOT NULL,
+  generated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(country_code,sector_code,city_code,item_code,unit_code,currency_code,window_ended_at)
+);
+
+-- table: daftar_market_profiles
+CREATE TABLE daftar_market_profiles (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  country_code TEXT NOT NULL,
+  sector_code TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'draft' CHECK(status IN ('draft','pilot','active','suspended','retired')),
+  template_version TEXT NOT NULL DEFAULT '1.0.0',
+  telemetry_enabled INTEGER NOT NULL DEFAULT 0 CHECK(telemetry_enabled IN (0,1)),
+  minimum_cohort_size INTEGER NOT NULL DEFAULT 5 CHECK(minimum_cohort_size BETWEEN 5 AND 1000),
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(country_code,sector_code),
+  FOREIGN KEY(country_code) REFERENCES country_catalog(code)
+);
+
+-- table: daftar_private_entries
+CREATE TABLE daftar_private_entries (
+  id TEXT PRIMARY KEY,
+  company_id INTEGER NOT NULL,
+  country_code TEXT NOT NULL,
+  sector_code TEXT NOT NULL,
+  client_entry_id TEXT NOT NULL,
+  entry_type TEXT NOT NULL,
+  direction TEXT NOT NULL CHECK(direction IN ('give','get')),
+  item_code TEXT,
+  origin_code TEXT,
+  destination_code TEXT,
+  reference_code TEXT,
+  quantity_milli INTEGER,
+  unit_code TEXT,
+  normalized_quantity_milli INTEGER,
+  normalized_unit_code TEXT,
+  unit_conversion_version TEXT,
+  unit_price_minor INTEGER,
+  amount_minor INTEGER NOT NULL CHECK(amount_minor >= 0),
+  settled_amount_minor INTEGER NOT NULL DEFAULT 0 CHECK(settled_amount_minor >= 0 AND settled_amount_minor <= amount_minor),
+  currency_code TEXT NOT NULL,
+  counter_amount_minor INTEGER,
+  counter_currency_code TEXT,
+  exchange_rate_numerator INTEGER,
+  exchange_rate_denominator INTEGER,
+  exchange_rate_source TEXT,
+  exchange_rate_observed_at TEXT,
+  payment_method TEXT NOT NULL CHECK(payment_method IN ('cash','hesabpay','afpay','hawala_record','credit','other')),
+  payment_status TEXT NOT NULL CHECK(payment_status IN ('reported_paid','reported_pending','partially_settled','settled')),
+  counterparty_label TEXT,
+  city_code TEXT,
+  private_note TEXT,
+  related_entry_id TEXT,
+  client_recorded_at TEXT,
+  created_by_identity_id INTEGER NOT NULL,
+  retention_status TEXT NOT NULL DEFAULT 'active' CHECK(retention_status IN ('active','review_due','legal_hold')),
+  retention_review_at TEXT NOT NULL DEFAULT (datetime('now','+1095 days')),
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(company_id,client_entry_id),
+  FOREIGN KEY(company_id) REFERENCES companies(id) ON DELETE CASCADE,
+  FOREIGN KEY(country_code) REFERENCES country_catalog(code),
+  FOREIGN KEY(related_entry_id) REFERENCES daftar_private_entries(id)
+);
+
+-- table: daftar_sync_receipts
+CREATE TABLE daftar_sync_receipts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  company_id INTEGER NOT NULL,
+  idempotency_key TEXT NOT NULL,
+  client_entry_id TEXT NOT NULL,
+  entry_id TEXT NOT NULL,
+  result_json TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(company_id,idempotency_key),
+  UNIQUE(company_id,client_entry_id),
+  FOREIGN KEY(company_id) REFERENCES companies(id) ON DELETE CASCADE,
+  FOREIGN KEY(entry_id) REFERENCES daftar_private_entries(id) ON DELETE CASCADE
+);
+
+-- table: daftar_unit_conversions
+CREATE TABLE daftar_unit_conversions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  country_code TEXT NOT NULL,
+  region_code TEXT NOT NULL DEFAULT '*',
+  unit_code TEXT NOT NULL,
+  base_unit_code TEXT NOT NULL,
+  multiplier_numerator INTEGER NOT NULL CHECK(multiplier_numerator > 0),
+  multiplier_denominator INTEGER NOT NULL CHECK(multiplier_denominator > 0),
+  status TEXT NOT NULL DEFAULT 'proposed' CHECK(status IN ('proposed','approved','rejected','retired')),
+  source_reference TEXT NOT NULL,
+  version TEXT NOT NULL DEFAULT '1',
+  approved_by_identity_id INTEGER,
+  approved_at TEXT,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(country_code,region_code,unit_code,version),
+  FOREIGN KEY(country_code) REFERENCES country_catalog(code)
+);
+
 -- table: data_classification_registry
 CREATE TABLE data_classification_registry (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -1423,6 +1687,25 @@ CREATE TABLE location_policies (
   FOREIGN KEY(jurisdiction_code) REFERENCES jurisdiction_policies(code),
   FOREIGN KEY(purpose_code) REFERENCES processing_purposes(code),
   FOREIGN KEY(retention_policy_code) REFERENCES retention_policies(code)
+);
+
+-- table: market_telemetry_events
+CREATE TABLE market_telemetry_events (
+  id TEXT PRIMARY KEY,
+  country_code TEXT NOT NULL,
+  sector_code TEXT NOT NULL,
+  city_code TEXT,
+  item_code TEXT,
+  event_kind TEXT NOT NULL CHECK(event_kind IN ('price','freight','wage','fx_reference')),
+  quantity_base_milli INTEGER,
+  unit_code TEXT NOT NULL,
+  unit_price_minor INTEGER NOT NULL CHECK(unit_price_minor >= 0),
+  trust_weight_milli INTEGER NOT NULL DEFAULT 350 CHECK(trust_weight_milli BETWEEN 1 AND 1000),
+  currency_code TEXT NOT NULL,
+  contributor_key TEXT NOT NULL,
+  trust_class TEXT NOT NULL DEFAULT 'merchant_reported' CHECK(trust_class IN ('merchant_reported','provider_verified')),
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  expires_at TEXT NOT NULL
 );
 
 -- table: mission_access_codes
@@ -4279,6 +4562,944 @@ LEFT JOIN mission_objects o
   ON o.company_id=m.company_id AND o.mission_id=m.id
   AND o.id=(SELECT x.id FROM mission_objects x WHERE x.company_id=m.company_id AND x.mission_id=m.id ORDER BY x.sequence_no LIMIT 1);
 
+-- trigger: agent_action_autonomy_policies_no_delete
+CREATE TRIGGER agent_action_autonomy_policies_no_delete
+BEFORE DELETE ON agent_action_autonomy_policies
+BEGIN
+  SELECT RAISE(ABORT, 'AGENT_AUTONOMY_POLICY_DELETE_FORBIDDEN');
+END;
+
+-- trigger: agent_calibration_observations_no_delete
+CREATE TRIGGER agent_calibration_observations_no_delete
+BEFORE DELETE ON agent_calibration_observations
+BEGIN
+  SELECT RAISE(ABORT, 'AGENT_CALIBRATION_OBSERVATION_APPEND_ONLY');
+END;
+
+-- trigger: agent_calibration_observations_no_update
+CREATE TRIGGER agent_calibration_observations_no_update
+BEFORE UPDATE ON agent_calibration_observations
+BEGIN
+  SELECT RAISE(ABORT, 'AGENT_CALIBRATION_OBSERVATION_APPEND_ONLY');
+END;
+
+-- trigger: agent_company_autonomy_config_no_delete
+CREATE TRIGGER agent_company_autonomy_config_no_delete
+BEFORE DELETE ON agent_company_autonomy_config
+BEGIN
+  SELECT RAISE(ABORT, 'AGENT_COMPANY_AUTONOMY_DELETE_FORBIDDEN');
+END;
+
+-- trigger: agent_decision_events_no_delete
+CREATE TRIGGER agent_decision_events_no_delete
+BEFORE DELETE ON agent_decision_events
+BEGIN
+  SELECT RAISE(ABORT, 'AGENT_DECISION_EVENT_APPEND_ONLY');
+END;
+
+-- trigger: agent_decision_events_no_update
+CREATE TRIGGER agent_decision_events_no_update
+BEFORE UPDATE ON agent_decision_events
+BEGIN
+  SELECT RAISE(ABORT, 'AGENT_DECISION_EVENT_APPEND_ONLY');
+END;
+
+-- trigger: agent_execution_attempts_no_delete
+CREATE TRIGGER agent_execution_attempts_no_delete
+BEFORE DELETE ON agent_execution_attempts
+BEGIN
+  SELECT RAISE(ABORT, 'AGENT_EXECUTION_ATTEMPT_DELETE_FORBIDDEN');
+END;
+
+-- trigger: agent_execution_recovery_events_no_delete
+CREATE TRIGGER agent_execution_recovery_events_no_delete
+BEFORE DELETE ON agent_execution_recovery_events
+BEGIN
+  SELECT RAISE(ABORT, 'AGENT_EXECUTION_RECOVERY_DELETE_FORBIDDEN');
+END;
+
+-- trigger: agent_learning_observations_no_delete
+CREATE TRIGGER agent_learning_observations_no_delete BEFORE DELETE ON agent_learning_observations BEGIN SELECT RAISE(ABORT,'AGENT_LEARNING_OBSERVATION_APPEND_ONLY'); END;
+
+-- trigger: agent_learning_observations_no_update
+CREATE TRIGGER agent_learning_observations_no_update BEFORE UPDATE ON agent_learning_observations BEGIN SELECT RAISE(ABORT,'AGENT_LEARNING_OBSERVATION_APPEND_ONLY'); END;
+
+-- trigger: agent_outcome_events_no_delete
+CREATE TRIGGER agent_outcome_events_no_delete
+BEFORE DELETE ON agent_outcome_events
+BEGIN
+  SELECT RAISE(ABORT, 'AGENT_OUTCOME_EVENT_APPEND_ONLY');
+END;
+
+-- trigger: agent_outcome_events_no_update
+CREATE TRIGGER agent_outcome_events_no_update
+BEFORE UPDATE ON agent_outcome_events
+BEGIN
+  SELECT RAISE(ABORT, 'AGENT_OUTCOME_EVENT_APPEND_ONLY');
+END;
+
+-- trigger: agent_outcome_resolution_no_delete
+CREATE TRIGGER agent_outcome_resolution_no_delete BEFORE DELETE ON agent_outcome_resolution_events BEGIN SELECT RAISE(ABORT,'AGENT_OUTCOME_RESOLUTION_APPEND_ONLY'); END;
+
+-- trigger: agent_outcome_resolution_no_update
+CREATE TRIGGER agent_outcome_resolution_no_update BEFORE UPDATE ON agent_outcome_resolution_events BEGIN SELECT RAISE(ABORT,'AGENT_OUTCOME_RESOLUTION_APPEND_ONLY'); END;
+
+-- trigger: agent_pilot_events_no_delete
+CREATE TRIGGER agent_pilot_events_no_delete BEFORE DELETE ON agent_pilot_events BEGIN SELECT RAISE(ABORT,'AGENT_PILOT_EVENT_DELETE_FORBIDDEN'); END;
+
+-- trigger: agent_pilot_events_no_update
+CREATE TRIGGER agent_pilot_events_no_update BEFORE UPDATE ON agent_pilot_events BEGIN SELECT RAISE(ABORT,'AGENT_PILOT_EVENT_UPDATE_FORBIDDEN'); END;
+
+-- trigger: agent_pilot_readiness_no_delete
+CREATE TRIGGER agent_pilot_readiness_no_delete BEFORE DELETE ON agent_pilot_readiness_checks BEGIN SELECT RAISE(ABORT,'AGENT_PILOT_READINESS_DELETE_FORBIDDEN'); END;
+
+-- trigger: agent_production_execution_events_no_delete
+CREATE TRIGGER agent_production_execution_events_no_delete BEFORE DELETE ON agent_production_execution_events BEGIN SELECT RAISE(ABORT,'AGENT_PRODUCTION_EXECUTION_APPEND_ONLY'); END;
+
+-- trigger: agent_production_execution_events_no_update
+CREATE TRIGGER agent_production_execution_events_no_update BEFORE UPDATE ON agent_production_execution_events BEGIN SELECT RAISE(ABORT,'AGENT_PRODUCTION_EXECUTION_APPEND_ONLY'); END;
+
+-- trigger: external_provider_execution_events_no_delete
+CREATE TRIGGER external_provider_execution_events_no_delete
+BEFORE DELETE ON external_provider_execution_events
+BEGIN
+  SELECT RAISE(ABORT, 'EXTERNAL_PROVIDER_EXECUTION_EVENT_DELETE_FORBIDDEN');
+END;
+
+-- trigger: mission_execution_intents_no_delete
+CREATE TRIGGER mission_execution_intents_no_delete
+BEFORE DELETE ON mission_execution_intents
+BEGIN
+  SELECT RAISE(ABORT, 'MISSION_EXECUTION_INTENT_DELETE_FORBIDDEN');
+END;
+
+-- trigger: mission_next_situations_no_delete
+CREATE TRIGGER mission_next_situations_no_delete
+BEFORE DELETE ON mission_next_situations
+BEGIN
+  SELECT RAISE(ABORT,'MISSION_NEXT_SITUATION_APPEND_ONLY');
+END;
+
+-- trigger: mission_next_situations_no_update
+CREATE TRIGGER mission_next_situations_no_update
+BEFORE UPDATE ON mission_next_situations
+BEGIN
+  SELECT RAISE(ABORT,'MISSION_NEXT_SITUATION_APPEND_ONLY');
+END;
+
+-- trigger: mission_outcome_assessments_no_delete
+CREATE TRIGGER mission_outcome_assessments_no_delete
+BEFORE DELETE ON mission_outcome_assessments
+BEGIN
+  SELECT RAISE(ABORT, 'MISSION_OUTCOME_ASSESSMENT_APPEND_ONLY');
+END;
+
+-- trigger: mission_outcome_assessments_no_update
+CREATE TRIGGER mission_outcome_assessments_no_update
+BEFORE UPDATE ON mission_outcome_assessments
+BEGIN
+  SELECT RAISE(ABORT, 'MISSION_OUTCOME_ASSESSMENT_APPEND_ONLY');
+END;
+
+-- trigger: trg_admin_control_audit_events_no_delete
+CREATE TRIGGER trg_admin_control_audit_events_no_delete BEFORE DELETE ON admin_control_audit_events BEGIN SELECT RAISE(ABORT,'AUDIT_EVENTS_IMMUTABLE'); END;
+
+-- trigger: trg_admin_control_audit_events_no_update
+CREATE TRIGGER trg_admin_control_audit_events_no_update BEFORE UPDATE ON admin_control_audit_events BEGIN SELECT RAISE(ABORT,'AUDIT_EVENTS_IMMUTABLE'); END;
+
+-- trigger: trg_audit_logs_no_early_delete
+CREATE TRIGGER trg_audit_logs_no_early_delete
+BEFORE DELETE ON audit_logs
+WHEN OLD.created_at > datetime('now','-365 days')
+BEGIN
+  SELECT RAISE(ABORT,'AUDIT_LOG_RETENTION_FLOOR');
+END;
+
+-- trigger: trg_audit_logs_no_update
+CREATE TRIGGER trg_audit_logs_no_update BEFORE UPDATE ON audit_logs BEGIN SELECT RAISE(ABORT,'AUDIT_LOG_IMMUTABLE'); END;
+
+-- trigger: trg_daftar_credit_settlement_apply
+CREATE TRIGGER trg_daftar_credit_settlement_apply
+AFTER INSERT ON daftar_credit_settlements
+BEGIN
+  UPDATE daftar_private_entries
+  SET settled_amount_minor=settled_amount_minor+NEW.amount_minor,
+      payment_status=CASE WHEN settled_amount_minor+NEW.amount_minor>=amount_minor THEN 'settled' ELSE 'partially_settled' END
+  WHERE id=NEW.entry_id AND company_id=NEW.company_id;
+END;
+
+-- trigger: trg_daftar_credit_settlement_validate
+CREATE TRIGGER trg_daftar_credit_settlement_validate
+BEFORE INSERT ON daftar_credit_settlements
+BEGIN
+  SELECT CASE WHEN NOT EXISTS (
+    SELECT 1 FROM daftar_private_entries e
+    WHERE e.id=NEW.entry_id AND e.company_id=NEW.company_id
+      AND e.payment_method='credit'
+      AND e.currency_code=NEW.currency_code
+      AND e.settled_amount_minor + NEW.amount_minor <= e.amount_minor
+  ) THEN RAISE(ABORT,'DAFTAR_CREDIT_SETTLEMENT_INVALID') END;
+END;
+
+-- trigger: trg_daftar_custody_transfer_confirm_guard
+CREATE TRIGGER trg_daftar_custody_transfer_confirm_guard
+BEFORE UPDATE OF status ON daftar_custody_transfers
+WHEN NEW.status='confirmed' AND OLD.status='pending'
+BEGIN
+  SELECT CASE WHEN NOT EXISTS (SELECT 1 FROM batch_passports p WHERE p.id=NEW.passport_id AND p.current_custodian_company_id=NEW.from_company_id)
+    THEN RAISE(ABORT,'DAFTAR_TRANSFER_CUSTODY_CHANGED') END;
+END;
+
+-- trigger: trg_daftar_inventory_movement_apply
+CREATE TRIGGER trg_daftar_inventory_movement_apply
+AFTER INSERT ON daftar_inventory_movements
+BEGIN
+  INSERT INTO daftar_inventory_balances(company_id,item_code,quantity_milli,unit_code)
+  SELECT NEW.company_id,NEW.item_code,NEW.delta_quantity_milli,NEW.unit_code WHERE NEW.delta_quantity_milli>=0
+  ON CONFLICT(company_id,item_code) DO UPDATE SET
+    quantity_milli=quantity_milli+excluded.quantity_milli,
+    updated_at=CURRENT_TIMESTAMP
+  WHERE unit_code=excluded.unit_code;
+  UPDATE daftar_inventory_balances
+  SET quantity_milli=quantity_milli+NEW.delta_quantity_milli,updated_at=CURRENT_TIMESTAMP
+  WHERE company_id=NEW.company_id AND item_code=NEW.item_code
+    AND unit_code=NEW.unit_code AND NEW.delta_quantity_milli<0;
+END;
+
+-- trigger: trg_daftar_inventory_movement_validate
+CREATE TRIGGER trg_daftar_inventory_movement_validate
+BEFORE INSERT ON daftar_inventory_movements
+BEGIN
+  SELECT CASE WHEN EXISTS (
+    SELECT 1 FROM daftar_inventory_balances b
+    WHERE b.company_id=NEW.company_id AND b.item_code=NEW.item_code AND b.unit_code<>NEW.unit_code
+  ) THEN RAISE(ABORT,'DAFTAR_INVENTORY_UNIT_MISMATCH') END;
+  SELECT CASE WHEN NEW.delta_quantity_milli<0 AND NOT EXISTS (
+    SELECT 1 FROM daftar_inventory_balances b
+    WHERE b.company_id=NEW.company_id AND b.item_code=NEW.item_code
+      AND b.unit_code=NEW.unit_code AND b.quantity_milli>=ABS(NEW.delta_quantity_milli)
+  ) THEN RAISE(ABORT,'DAFTAR_INVENTORY_INSUFFICIENT_STOCK') END;
+END;
+
+-- trigger: trg_mission_assignments_integrity_insert
+CREATE TRIGGER trg_mission_assignments_integrity_insert
+BEFORE INSERT ON mission_assignments
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+OR (NEW.assignee_type='driver' AND NOT EXISTS (
+  SELECT 1 FROM drivers d WHERE d.id=NEW.assignee_id AND (NEW.assignee_company_id IS NULL OR d.company_id=NEW.assignee_company_id)
+))
+OR (NEW.assignee_type='executor' AND NOT EXISTS (
+  SELECT 1 FROM public_executor_identities e WHERE e.id=NEW.assignee_id AND e.deleted_at IS NULL
+))
+OR (NEW.assignee_type IN ('device','robot') AND NOT EXISTS (
+  SELECT 1 FROM mission_assignment_subjects s
+  WHERE s.id=NEW.assignee_id AND s.company_id=NEW.company_id AND s.subject_type=NEW.assignee_type
+    AND s.status='verified'
+))
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission assignment integrity failure');
+END;
+
+-- trigger: trg_mission_assignments_integrity_update
+CREATE TRIGGER trg_mission_assignments_integrity_update
+BEFORE UPDATE OF company_id,mission_id,assignee_type,assignee_id,assignee_company_id ON mission_assignments
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+OR (NEW.assignee_type='driver' AND NOT EXISTS (
+  SELECT 1 FROM drivers d WHERE d.id=NEW.assignee_id AND (NEW.assignee_company_id IS NULL OR d.company_id=NEW.assignee_company_id)
+))
+OR (NEW.assignee_type='executor' AND NOT EXISTS (
+  SELECT 1 FROM public_executor_identities e WHERE e.id=NEW.assignee_id AND e.deleted_at IS NULL
+))
+OR (NEW.assignee_type IN ('device','robot') AND NOT EXISTS (
+  SELECT 1 FROM mission_assignment_subjects s
+  WHERE s.id=NEW.assignee_id AND s.company_id=NEW.company_id AND s.subject_type=NEW.assignee_type
+    AND s.status='verified'
+))
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission assignment integrity failure');
+END;
+
+-- trigger: trg_mission_assignments_scope_hardening_insert
+CREATE TRIGGER trg_mission_assignments_scope_hardening_insert
+BEFORE INSERT ON mission_assignments
+WHEN
+  (NEW.assignee_type='driver' AND NEW.assignment_type='owner_driver' AND (
+    NEW.assignee_company_id IS NULL OR NEW.assignee_company_id<>NEW.company_id OR NOT EXISTS (
+      SELECT 1 FROM drivers d WHERE d.id=NEW.assignee_id AND d.company_id=NEW.company_id
+    )
+  ))
+  OR
+  (NEW.assignee_type='driver' AND NEW.assignment_type='tenant_driver' AND (
+    NEW.assignee_company_id IS NULL OR NOT EXISTS (
+      SELECT 1 FROM drivers d WHERE d.id=NEW.assignee_id AND d.company_id=NEW.assignee_company_id
+    ) OR NOT EXISTS (
+      SELECT 1 FROM mission_tenant_access a
+      WHERE a.mission_id=NEW.mission_id AND a.owner_company_id=NEW.company_id
+        AND a.access_company_id=NEW.assignee_company_id AND a.status='active'
+    )
+  ))
+  OR
+  (NEW.assignee_type IN ('device','robot') AND (
+    NEW.assignment_type<>'executor' OR NEW.assignee_company_id<>NEW.company_id
+  ))
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: canonical assignment scope mismatch');
+END;
+
+-- trigger: trg_mission_assignments_scope_hardening_update
+CREATE TRIGGER trg_mission_assignments_scope_hardening_update
+BEFORE UPDATE OF company_id,mission_id,assignment_type,assignee_type,assignee_id,assignee_company_id ON mission_assignments
+WHEN
+  (NEW.assignee_type='driver' AND NEW.assignment_type='owner_driver' AND (
+    NEW.assignee_company_id IS NULL OR NEW.assignee_company_id<>NEW.company_id OR NOT EXISTS (
+      SELECT 1 FROM drivers d WHERE d.id=NEW.assignee_id AND d.company_id=NEW.company_id
+    )
+  ))
+  OR
+  (NEW.assignee_type='driver' AND NEW.assignment_type='tenant_driver' AND (
+    NEW.assignee_company_id IS NULL OR NOT EXISTS (
+      SELECT 1 FROM drivers d WHERE d.id=NEW.assignee_id AND d.company_id=NEW.assignee_company_id
+    ) OR NOT EXISTS (
+      SELECT 1 FROM mission_tenant_access a
+      WHERE a.mission_id=NEW.mission_id AND a.owner_company_id=NEW.company_id
+        AND a.access_company_id=NEW.assignee_company_id AND a.status='active'
+    )
+  ))
+  OR
+  (NEW.assignee_type IN ('device','robot') AND (
+    NEW.assignment_type<>'executor' OR NEW.assignee_company_id<>NEW.company_id
+  ))
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: canonical assignment scope mismatch');
+END;
+
+-- trigger: trg_mission_cancellations_scope_guard_insert
+CREATE TRIGGER trg_mission_cancellations_scope_guard_insert
+BEFORE INSERT ON mission_cancellations
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission cancellation scope mismatch');
+END;
+
+-- trigger: trg_mission_cancellations_scope_guard_update
+CREATE TRIGGER trg_mission_cancellations_scope_guard_update
+BEFORE UPDATE OF company_id,mission_id ON mission_cancellations
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission cancellation scope mismatch');
+END;
+
+-- trigger: trg_mission_custody_cases_scope_guard_insert
+CREATE TRIGGER trg_mission_custody_cases_scope_guard_insert
+BEFORE INSERT ON mission_custody_cases
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+ OR (NEW.current_holder_type='driver' AND NEW.current_holder_id IS NOT NULL AND NOT EXISTS (
+   SELECT 1 FROM drivers d WHERE d.id=NEW.current_holder_id AND d.company_id=NEW.company_id
+ ))
+ OR (NEW.current_holder_type='executor' AND NEW.current_holder_id IS NOT NULL AND NOT EXISTS (
+   SELECT 1 FROM public_executor_identities e WHERE e.id=NEW.current_holder_id AND e.deleted_at IS NULL
+ ))
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission custody case scope mismatch');
+END;
+
+-- trigger: trg_mission_custody_cases_scope_guard_update
+CREATE TRIGGER trg_mission_custody_cases_scope_guard_update
+BEFORE UPDATE OF company_id,mission_id,current_holder_type,current_holder_id ON mission_custody_cases
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+ OR (NEW.current_holder_type='driver' AND NEW.current_holder_id IS NOT NULL AND NOT EXISTS (
+   SELECT 1 FROM drivers d WHERE d.id=NEW.current_holder_id AND d.company_id=NEW.company_id
+ ))
+ OR (NEW.current_holder_type='executor' AND NEW.current_holder_id IS NOT NULL AND NOT EXISTS (
+   SELECT 1 FROM public_executor_identities e WHERE e.id=NEW.current_holder_id AND e.deleted_at IS NULL
+ ))
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission custody case scope mismatch');
+END;
+
+-- trigger: trg_mission_custody_events_company_guard_insert
+CREATE TRIGGER trg_mission_custody_events_company_guard_insert
+BEFORE INSERT ON mission_custody_events
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: custody event company/mission mismatch');
+END;
+
+-- trigger: trg_mission_custody_events_company_guard_update
+CREATE TRIGGER trg_mission_custody_events_company_guard_update
+BEFORE UPDATE OF company_id,mission_id ON mission_custody_events
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: custody event company/mission mismatch');
+END;
+
+-- trigger: trg_mission_delivery_proofs_scope_guard_insert
+CREATE TRIGGER trg_mission_delivery_proofs_scope_guard_insert
+BEFORE INSERT ON mission_delivery_proofs
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+ OR NOT EXISTS (
+  SELECT 1 FROM mission_files f
+  WHERE f.id=NEW.file_id AND f.mission_id=NEW.mission_id AND f.company_id=NEW.company_id
+)
+ OR (NEW.driver_id IS NOT NULL AND NOT EXISTS (
+  SELECT 1 FROM drivers d
+  WHERE d.id=NEW.driver_id AND d.company_id=NEW.company_id
+ ))
+ OR (NEW.executor_id IS NOT NULL AND NOT EXISTS (
+  SELECT 1 FROM public_executor_identities e
+  WHERE e.id=NEW.executor_id AND e.deleted_at IS NULL
+ ))
+ OR (NEW.submitted_by_role='driver' AND NEW.driver_id IS NULL)
+ OR (NEW.submitted_by_role='executor' AND NEW.executor_id IS NULL)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission delivery proof scope mismatch');
+END;
+
+-- trigger: trg_mission_delivery_proofs_scope_guard_update
+CREATE TRIGGER trg_mission_delivery_proofs_scope_guard_update
+BEFORE UPDATE OF company_id,mission_id,file_id,submitted_by_role,driver_id,executor_id ON mission_delivery_proofs
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+ OR NOT EXISTS (
+  SELECT 1 FROM mission_files f
+  WHERE f.id=NEW.file_id AND f.mission_id=NEW.mission_id AND f.company_id=NEW.company_id
+)
+ OR (NEW.driver_id IS NOT NULL AND NOT EXISTS (
+  SELECT 1 FROM drivers d
+  WHERE d.id=NEW.driver_id AND d.company_id=NEW.company_id
+ ))
+ OR (NEW.executor_id IS NOT NULL AND NOT EXISTS (
+  SELECT 1 FROM public_executor_identities e
+  WHERE e.id=NEW.executor_id AND e.deleted_at IS NULL
+ ))
+ OR (NEW.submitted_by_role='driver' AND NEW.driver_id IS NULL)
+ OR (NEW.submitted_by_role='executor' AND NEW.executor_id IS NULL)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission delivery proof scope mismatch');
+END;
+
+-- trigger: trg_mission_event_ledger_company_guard_insert
+CREATE TRIGGER trg_mission_event_ledger_company_guard_insert
+BEFORE INSERT ON mission_event_ledger
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: event ledger company/mission mismatch');
+END;
+
+-- trigger: trg_mission_event_ledger_company_guard_update
+CREATE TRIGGER trg_mission_event_ledger_company_guard_update
+BEFORE UPDATE OF company_id,mission_id ON mission_event_ledger
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: event ledger company/mission mismatch');
+END;
+
+-- trigger: trg_mission_evidence_events_company_guard_insert
+CREATE TRIGGER trg_mission_evidence_events_company_guard_insert
+BEFORE INSERT ON mission_evidence_events
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+ OR (NEW.file_id IS NOT NULL AND NOT EXISTS (
+   SELECT 1 FROM mission_files f
+   WHERE f.id=NEW.file_id
+     AND f.mission_id=NEW.mission_id
+     AND f.company_id=NEW.company_id
+ ))
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: evidence event scope mismatch');
+END;
+
+-- trigger: trg_mission_evidence_events_company_guard_update
+CREATE TRIGGER trg_mission_evidence_events_company_guard_update
+BEFORE UPDATE OF company_id,mission_id,file_id ON mission_evidence_events
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+ OR (NEW.file_id IS NOT NULL AND NOT EXISTS (
+   SELECT 1 FROM mission_files f
+   WHERE f.id=NEW.file_id
+     AND f.mission_id=NEW.mission_id
+     AND f.company_id=NEW.company_id
+ ))
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: evidence event scope mismatch');
+END;
+
+-- trigger: trg_mission_exceptions_scope_guard_insert
+CREATE TRIGGER trg_mission_exceptions_scope_guard_insert
+BEFORE INSERT ON mission_exceptions
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+ OR (NEW.driver_id IS NOT NULL AND NOT EXISTS (
+   SELECT 1 FROM drivers d WHERE d.id=NEW.driver_id AND d.company_id=NEW.company_id
+ ))
+ OR (NEW.executor_id IS NOT NULL AND NOT EXISTS (
+   SELECT 1 FROM public_executor_identities e WHERE e.id=NEW.executor_id AND e.deleted_at IS NULL
+ ))
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission exception scope mismatch');
+END;
+
+-- trigger: trg_mission_exceptions_scope_guard_update
+CREATE TRIGGER trg_mission_exceptions_scope_guard_update
+BEFORE UPDATE OF company_id,mission_id,driver_id,executor_id ON mission_exceptions
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+ OR (NEW.driver_id IS NOT NULL AND NOT EXISTS (
+   SELECT 1 FROM drivers d WHERE d.id=NEW.driver_id AND d.company_id=NEW.company_id
+ ))
+ OR (NEW.executor_id IS NOT NULL AND NOT EXISTS (
+   SELECT 1 FROM public_executor_identities e WHERE e.id=NEW.executor_id AND e.deleted_at IS NULL
+ ))
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission exception scope mismatch');
+END;
+
+-- trigger: trg_mission_files_scope_guard_insert
+CREATE TRIGGER trg_mission_files_scope_guard_insert
+BEFORE INSERT ON mission_files
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+ OR (NEW.driver_id IS NOT NULL AND NOT EXISTS (
+  SELECT 1 FROM drivers d
+  WHERE d.id=NEW.driver_id AND d.company_id=NEW.company_id
+ ))
+ OR (NEW.controller_company_id IS NOT NULL AND NEW.controller_company_id<>NEW.company_id)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission file scope mismatch');
+END;
+
+-- trigger: trg_mission_files_scope_guard_update
+CREATE TRIGGER trg_mission_files_scope_guard_update
+BEFORE UPDATE OF company_id,mission_id,driver_id,controller_company_id ON mission_files
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+ OR (NEW.driver_id IS NOT NULL AND NOT EXISTS (
+  SELECT 1 FROM drivers d
+  WHERE d.id=NEW.driver_id AND d.company_id=NEW.company_id
+ ))
+ OR (NEW.controller_company_id IS NOT NULL AND NEW.controller_company_id<>NEW.company_id)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission file scope mismatch');
+END;
+
+-- trigger: trg_mission_lifecycle_events_scope_guard_insert
+CREATE TRIGGER trg_mission_lifecycle_events_scope_guard_insert
+BEFORE INSERT ON mission_lifecycle_events
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission lifecycle event scope mismatch');
+END;
+
+-- trigger: trg_mission_lifecycle_events_scope_guard_update
+CREATE TRIGGER trg_mission_lifecycle_events_scope_guard_update
+BEFORE UPDATE OF company_id,mission_id ON mission_lifecycle_events
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission lifecycle event scope mismatch');
+END;
+
+-- trigger: trg_mission_management_requirements_scope_guard_insert
+CREATE TRIGGER trg_mission_management_requirements_scope_guard_insert
+BEFORE INSERT ON mission_management_requirements
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission management requirement scope mismatch');
+END;
+
+-- trigger: trg_mission_management_requirements_scope_guard_update
+CREATE TRIGGER trg_mission_management_requirements_scope_guard_update
+BEFORE UPDATE OF company_id,mission_id ON mission_management_requirements
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission management requirement scope mismatch');
+END;
+
+-- trigger: trg_mission_messages_scope_guard_insert
+CREATE TRIGGER trg_mission_messages_scope_guard_insert
+BEFORE INSERT ON mission_messages
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+ OR (NEW.driver_id IS NOT NULL AND NOT EXISTS (
+  SELECT 1 FROM drivers d
+  WHERE d.id=NEW.driver_id AND d.company_id=NEW.company_id
+ ))
+ OR (NEW.file_id IS NOT NULL AND NOT EXISTS (
+  SELECT 1 FROM mission_files f
+  WHERE f.id=NEW.file_id AND f.mission_id=NEW.mission_id AND f.company_id=NEW.company_id
+ ))
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission message scope mismatch');
+END;
+
+-- trigger: trg_mission_messages_scope_guard_update
+CREATE TRIGGER trg_mission_messages_scope_guard_update
+BEFORE UPDATE OF company_id,mission_id,driver_id,file_id ON mission_messages
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+ OR (NEW.driver_id IS NOT NULL AND NOT EXISTS (
+  SELECT 1 FROM drivers d
+  WHERE d.id=NEW.driver_id AND d.company_id=NEW.company_id
+ ))
+ OR (NEW.file_id IS NOT NULL AND NOT EXISTS (
+  SELECT 1 FROM mission_files f
+  WHERE f.id=NEW.file_id AND f.mission_id=NEW.mission_id AND f.company_id=NEW.company_id
+ ))
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission message scope mismatch');
+END;
+
+-- trigger: trg_mission_objects_company_guard_insert
+CREATE TRIGGER trg_mission_objects_company_guard_insert
+BEFORE INSERT ON mission_objects
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission object company/mission mismatch');
+END;
+
+-- trigger: trg_mission_objects_company_guard_update
+CREATE TRIGGER trg_mission_objects_company_guard_update
+BEFORE UPDATE OF company_id,mission_id ON mission_objects
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission object company/mission mismatch');
+END;
+
+-- trigger: trg_mission_recipient_state_scope_guard_insert
+CREATE TRIGGER trg_mission_recipient_state_scope_guard_insert
+BEFORE INSERT ON mission_recipient_state
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.mission_owner_company_id
+)
+ OR (NEW.recipient_driver_id IS NOT NULL AND NEW.recipient_tenant_id IS NOT NULL AND NOT EXISTS (
+   SELECT 1 FROM drivers d WHERE d.id=NEW.recipient_driver_id AND d.company_id=NEW.recipient_tenant_id
+ ))
+ OR (NEW.recipient_executor_id IS NOT NULL AND NOT EXISTS (
+   SELECT 1 FROM public_executor_identities e WHERE e.id=NEW.recipient_executor_id AND e.deleted_at IS NULL
+ ))
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission recipient state scope mismatch');
+END;
+
+-- trigger: trg_mission_recipient_state_scope_guard_update
+CREATE TRIGGER trg_mission_recipient_state_scope_guard_update
+BEFORE UPDATE OF mission_id,mission_owner_company_id,recipient_tenant_id,recipient_driver_id,recipient_executor_id ON mission_recipient_state
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.mission_owner_company_id
+)
+ OR (NEW.recipient_driver_id IS NOT NULL AND NEW.recipient_tenant_id IS NOT NULL AND NOT EXISTS (
+   SELECT 1 FROM drivers d WHERE d.id=NEW.recipient_driver_id AND d.company_id=NEW.recipient_tenant_id
+ ))
+ OR (NEW.recipient_executor_id IS NOT NULL AND NOT EXISTS (
+   SELECT 1 FROM public_executor_identities e WHERE e.id=NEW.recipient_executor_id AND e.deleted_at IS NULL
+ ))
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission recipient state scope mismatch');
+END;
+
+-- trigger: trg_mission_status_history_mission_guard_insert
+CREATE TRIGGER trg_mission_status_history_mission_guard_insert
+BEFORE INSERT ON mission_status_history
+WHEN NOT EXISTS (SELECT 1 FROM missions m WHERE m.id=NEW.mission_id)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission status history references unknown mission');
+END;
+
+-- trigger: trg_mission_status_history_mission_guard_update
+CREATE TRIGGER trg_mission_status_history_mission_guard_update
+BEFORE UPDATE OF mission_id ON mission_status_history
+WHEN NOT EXISTS (SELECT 1 FROM missions m WHERE m.id=NEW.mission_id)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission status history references unknown mission');
+END;
+
+-- trigger: trg_mission_stops_company_guard_insert
+CREATE TRIGGER trg_mission_stops_company_guard_insert
+BEFORE INSERT ON mission_stops
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission stop company/mission mismatch');
+END;
+
+-- trigger: trg_mission_stops_company_guard_update
+CREATE TRIGGER trg_mission_stops_company_guard_update
+BEFORE UPDATE OF company_id,mission_id ON mission_stops
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission stop company/mission mismatch');
+END;
+
+-- trigger: trg_mission_tenant_access_scope_guard_insert
+CREATE TRIGGER trg_mission_tenant_access_scope_guard_insert
+BEFORE INSERT ON mission_tenant_access
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.owner_company_id
+)
+ OR (NEW.request_id IS NOT NULL AND NOT EXISTS (
+   SELECT 1 FROM public_mission_requests r
+   WHERE r.id=NEW.request_id AND r.mission_id=NEW.mission_id AND r.company_id=NEW.owner_company_id
+ ))
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission tenant access scope mismatch');
+END;
+
+-- trigger: trg_mission_tenant_access_scope_guard_update
+CREATE TRIGGER trg_mission_tenant_access_scope_guard_update
+BEFORE UPDATE OF mission_id,owner_company_id,request_id ON mission_tenant_access
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.owner_company_id
+)
+ OR (NEW.request_id IS NOT NULL AND NOT EXISTS (
+   SELECT 1 FROM public_mission_requests r
+   WHERE r.id=NEW.request_id AND r.mission_id=NEW.mission_id AND r.company_id=NEW.owner_company_id
+ ))
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission tenant access scope mismatch');
+END;
+
+-- trigger: trg_mission_tenant_driver_assignment_scope_guard_insert
+CREATE TRIGGER trg_mission_tenant_driver_assignment_scope_guard_insert
+BEFORE INSERT ON mission_tenant_driver_assignments
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.owner_company_id
+)
+ OR NOT EXISTS (
+   SELECT 1 FROM companies c WHERE c.id=NEW.access_company_id
+ )
+ OR NOT EXISTS (
+   SELECT 1 FROM drivers d WHERE d.id=NEW.driver_id AND d.company_id=NEW.access_company_id
+ )
+ OR NOT EXISTS (
+   SELECT 1 FROM mission_tenant_access a
+   WHERE a.mission_id=NEW.mission_id
+     AND a.owner_company_id=NEW.owner_company_id
+     AND a.access_company_id=NEW.access_company_id
+     AND a.status='active'
+ )
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission tenant driver assignment scope mismatch');
+END;
+
+-- trigger: trg_mission_tenant_driver_assignment_scope_guard_update
+CREATE TRIGGER trg_mission_tenant_driver_assignment_scope_guard_update
+BEFORE UPDATE OF mission_id,owner_company_id,access_company_id,driver_id ON mission_tenant_driver_assignments
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.owner_company_id
+)
+ OR NOT EXISTS (
+   SELECT 1 FROM companies c WHERE c.id=NEW.access_company_id
+ )
+ OR NOT EXISTS (
+   SELECT 1 FROM drivers d WHERE d.id=NEW.driver_id AND d.company_id=NEW.access_company_id
+ )
+ OR NOT EXISTS (
+   SELECT 1 FROM mission_tenant_access a
+   WHERE a.mission_id=NEW.mission_id
+     AND a.owner_company_id=NEW.owner_company_id
+     AND a.access_company_id=NEW.access_company_id
+     AND a.status='active'
+ )
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: mission tenant driver assignment scope mismatch');
+END;
+
+-- trigger: trg_mission_transition_events_company_guard_insert
+CREATE TRIGGER trg_mission_transition_events_company_guard_insert
+BEFORE INSERT ON mission_transition_events
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: transition event company/mission mismatch');
+END;
+
+-- trigger: trg_mission_transition_events_company_guard_update
+CREATE TRIGGER trg_mission_transition_events_company_guard_update
+BEFORE UPDATE OF company_id,mission_id ON mission_transition_events
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: transition event company/mission mismatch');
+END;
+
+-- trigger: trg_mission_transition_requests_company_guard_insert
+CREATE TRIGGER trg_mission_transition_requests_company_guard_insert
+BEFORE INSERT ON mission_transition_requests
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: transition request company/mission mismatch');
+END;
+
+-- trigger: trg_mission_transition_requests_company_guard_update
+CREATE TRIGGER trg_mission_transition_requests_company_guard_update
+BEFORE UPDATE OF company_id,mission_id ON mission_transition_requests
+WHEN NOT EXISTS (
+  SELECT 1 FROM missions m
+  WHERE m.id=NEW.mission_id AND m.company_id=NEW.company_id
+)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: transition request company/mission mismatch');
+END;
+
+-- trigger: trg_missions_lifecycle_binding_insert
+CREATE TRIGGER trg_missions_lifecycle_binding_insert
+BEFORE INSERT ON missions
+WHEN NEW.lifecycle_definition_id IS NOT NULL
+ AND NOT EXISTS (
+   SELECT 1 FROM platform_lifecycle_definitions d
+   WHERE d.id=NEW.lifecycle_definition_id
+ )
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: unknown lifecycle definition');
+END;
+
+-- trigger: trg_missions_lifecycle_binding_update
+CREATE TRIGGER trg_missions_lifecycle_binding_update
+BEFORE UPDATE OF lifecycle_definition_id,lifecycle_state_code ON missions
+WHEN (NEW.lifecycle_definition_id IS NOT NULL AND NOT EXISTS (
+   SELECT 1 FROM platform_lifecycle_definitions d
+   WHERE d.id=NEW.lifecycle_definition_id
+ ))
+ OR (NEW.lifecycle_definition_id IS NOT NULL AND NEW.lifecycle_state_code IS NOT NULL AND NOT EXISTS (
+   SELECT 1 FROM platform_lifecycle_states s
+   WHERE s.lifecycle_definition_id=NEW.lifecycle_definition_id
+     AND s.state_code=NEW.lifecycle_state_code
+ ))
+ OR (OLD.lifecycle_definition_id IS NOT NULL AND NEW.lifecycle_definition_id IS NOT OLD.lifecycle_definition_id)
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: invalid or changed lifecycle binding');
+END;
+
+-- trigger: trg_missions_lifecycle_state_insert
+CREATE TRIGGER trg_missions_lifecycle_state_insert
+BEFORE INSERT ON missions
+WHEN NEW.lifecycle_definition_id IS NOT NULL
+ AND NEW.lifecycle_state_code IS NOT NULL
+ AND NOT EXISTS (
+   SELECT 1 FROM platform_lifecycle_states s
+   WHERE s.lifecycle_definition_id=NEW.lifecycle_definition_id
+     AND s.state_code=NEW.lifecycle_state_code
+ )
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: unknown lifecycle state');
+END;
+
+-- trigger: trg_missions_lifecycle_transition_update
+CREATE TRIGGER trg_missions_lifecycle_transition_update
+BEFORE UPDATE OF lifecycle_state_code ON missions
+WHEN OLD.lifecycle_state_code IS NOT NULL
+ AND NEW.lifecycle_state_code IS NOT OLD.lifecycle_state_code
+ AND NEW.lifecycle_definition_id IS NOT NULL
+ AND NOT EXISTS (
+   SELECT 1 FROM platform_lifecycle_transitions t
+   WHERE t.lifecycle_definition_id=NEW.lifecycle_definition_id
+     AND t.from_state_code=OLD.lifecycle_state_code
+     AND t.to_state_code=NEW.lifecycle_state_code
+ )
+BEGIN
+  SELECT RAISE(ABORT,'INVARIANT_VIOLATION: illegal lifecycle transition');
+END;
+
+-- trigger: trg_platform_layout_draft_versions_no_delete
+CREATE TRIGGER trg_platform_layout_draft_versions_no_delete
+BEFORE DELETE ON platform_layout_draft_versions
+BEGIN SELECT RAISE(ABORT, 'LAYOUT_DRAFT_VERSIONS_IMMUTABLE'); END;
+
+-- trigger: trg_platform_layout_draft_versions_no_update
+CREATE TRIGGER trg_platform_layout_draft_versions_no_update
+BEFORE UPDATE ON platform_layout_draft_versions
+BEGIN SELECT RAISE(ABORT, 'LAYOUT_DRAFT_VERSIONS_IMMUTABLE'); END;
+
+-- trigger: trg_platform_simulation_runs_no_delete
+CREATE TRIGGER trg_platform_simulation_runs_no_delete BEFORE DELETE ON platform_simulation_runs BEGIN SELECT RAISE(ABORT,'SIMULATION_RUNS_IMMUTABLE'); END;
+
+-- trigger: trg_platform_simulation_runs_no_update
+CREATE TRIGGER trg_platform_simulation_runs_no_update BEFORE UPDATE ON platform_simulation_runs BEGIN SELECT RAISE(ABORT,'SIMULATION_RUNS_IMMUTABLE'); END;
+
 -- index: idx_action_execution_telemetry_company_time
 CREATE INDEX idx_action_execution_telemetry_company_time
   ON action_execution_telemetry(company_id,created_at DESC,id DESC);
@@ -4540,6 +5761,18 @@ CREATE INDEX idx_backup_recovery_points_scope ON backup_recovery_points(backup_c
 -- index: idx_backup_restore_requests_status
 CREATE INDEX idx_backup_restore_requests_status ON backup_restore_requests(execution_status,authorization_status,requested_at DESC);
 
+-- index: idx_batch_events_passport
+CREATE INDEX idx_batch_events_passport ON batch_events(passport_id,created_at);
+
+-- index: idx_batch_events_retention
+CREATE INDEX idx_batch_events_retention ON batch_events(retention_status,retention_review_at);
+
+-- index: idx_batch_passport_custodian
+CREATE INDEX idx_batch_passport_custodian ON batch_passports(current_custodian_company_id,created_at DESC);
+
+-- index: idx_batch_passport_retention
+CREATE INDEX idx_batch_passport_retention ON batch_passports(retention_status,retention_review_at);
+
 -- index: idx_billing_identities_provider
 CREATE INDEX idx_billing_identities_provider ON billing_identities(provider_code,provider_customer_id);
 
@@ -4683,6 +5916,39 @@ ON mission_custody_cases(company_id,mission_id,transfer_channel,status);
 
 -- index: idx_customer_locations
 CREATE INDEX idx_customer_locations ON network_customer_locations(company_id,customer_id,active,label);
+
+-- index: idx_daftar_credit_settlements_retention
+CREATE INDEX idx_daftar_credit_settlements_retention ON daftar_credit_settlements(retention_status,retention_review_at);
+
+-- index: idx_daftar_custody_transfers_retention
+CREATE INDEX idx_daftar_custody_transfers_retention ON daftar_custody_transfers(retention_status,retention_review_at);
+
+-- index: idx_daftar_entries_retention
+CREATE INDEX idx_daftar_entries_retention ON daftar_private_entries(retention_status,retention_review_at);
+
+-- index: idx_daftar_entries_tenant_created
+CREATE INDEX idx_daftar_entries_tenant_created ON daftar_private_entries(company_id,created_at DESC);
+
+-- index: idx_daftar_entries_tenant_credit
+CREATE INDEX idx_daftar_entries_tenant_credit ON daftar_private_entries(company_id,payment_method,payment_status,created_at DESC);
+
+-- index: idx_daftar_entries_tenant_item
+CREATE INDEX idx_daftar_entries_tenant_item ON daftar_private_entries(company_id,item_code,created_at DESC);
+
+-- index: idx_daftar_fx_quote_lookup
+CREATE INDEX idx_daftar_fx_quote_lookup ON daftar_fx_quotes(country_code,base_currency,quote_currency,status,observed_at DESC);
+
+-- index: idx_daftar_inventory_movements_retention
+CREATE INDEX idx_daftar_inventory_movements_retention ON daftar_inventory_movements(retention_status,retention_review_at);
+
+-- index: idx_daftar_inventory_tenant_item
+CREATE INDEX idx_daftar_inventory_tenant_item ON daftar_inventory_movements(company_id,item_code,created_at DESC);
+
+-- index: idx_daftar_transfers_recipient
+CREATE INDEX idx_daftar_transfers_recipient ON daftar_custody_transfers(to_company_id,status,expires_at);
+
+-- index: idx_daftar_unit_conversion_lookup
+CREATE INDEX idx_daftar_unit_conversion_lookup ON daftar_unit_conversions(country_code,region_code,unit_code,status);
 
 -- index: idx_data_classification_registry_table
 CREATE INDEX idx_data_classification_registry_table
@@ -4879,6 +6145,12 @@ CREATE INDEX idx_market_publication_operations_status ON platform_market_publica
 -- index: idx_market_release_contract_status
 CREATE INDEX idx_market_release_contract_status
   ON platform_market_release_contracts(status,updated_at DESC);
+
+-- index: idx_market_telemetry_aggregate
+CREATE INDEX idx_market_telemetry_aggregate ON market_telemetry_events(country_code,sector_code,city_code,item_code,event_kind,created_at);
+
+-- index: idx_market_telemetry_expiry
+CREATE INDEX idx_market_telemetry_expiry ON market_telemetry_events(expires_at);
 
 -- index: idx_mission_access_codes_active
 CREATE UNIQUE INDEX idx_mission_access_codes_active

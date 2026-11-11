@@ -44,6 +44,8 @@ import { registerOperationsCommandRoutes } from "./extensions/operations-context
 import { registerPredictiveOperationsRoutes } from "./extensions/operations-context/predictive-operations.routes.js";
 import { registerAdaptiveOrchestrationRoutes } from "./extensions/adaptive-orchestration/adaptive-orchestration.routes.js";
 import { registerTelemetryRoutes } from "./modules/telemetry/telemetry.routes.js";
+import { registerDaftarRoutes } from "./modules/daftar/daftar.routes.js";
+import { registerDaftarAdminRoutes } from "./modules/daftar/daftar-admin.routes.js";
 import { registerAdaptiveActionOrchestrationRoutes } from "./extensions/action-orchestration/action-orchestration.routes.js";
 import { registerSecuredActionExecutionRoutes } from "./extensions/action-execution/secured-action-execution.routes.js";
 import { registerCanonicalActionRoutes } from "./extensions/action-execution/canonical-action.routes.js";
@@ -84,6 +86,8 @@ export function createApp() {
   registerPredictiveOperationsRoutes(router);
   registerAdaptiveOrchestrationRoutes(router);
   registerTelemetryRoutes(router);
+  registerDaftarRoutes(router);
+  registerDaftarAdminRoutes(router);
   registerAdaptiveActionOrchestrationRoutes(router);
   registerSecuredActionExecutionRoutes(router);
   registerCanonicalActionRoutes(router);

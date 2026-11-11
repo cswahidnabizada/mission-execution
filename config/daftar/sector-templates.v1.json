@@ -1,0 +1,322 @@
+{
+  "schemaVersion": "1.0.0",
+  "module": "embedded-trade-ledger",
+  "countryCode": "AF",
+  "defaultCurrency": "AFN",
+  "supportedCurrencies": [
+    "AFN",
+    "USD",
+    "EUR"
+  ],
+  "privacy": {
+    "privateLedgerByDefault": true,
+    "marketTelemetryOptInRequired": true,
+    "minimumDistinctContributors": 5,
+    "telemetryRetentionDays": 90,
+    "counterpartyDetailsNeverEnterTelemetry": true
+  },
+  "units": {
+    "canonical": [
+      {
+        "code": "kg",
+        "label": "Kilogram",
+        "dimension": "mass",
+        "baseUnit": "kg",
+        "numerator": 1,
+        "denominator": 1,
+        "status": "approved"
+      },
+      {
+        "code": "g",
+        "label": "Gram",
+        "dimension": "mass",
+        "baseUnit": "kg",
+        "numerator": 1,
+        "denominator": 1000,
+        "status": "approved"
+      },
+      {
+        "code": "tonne",
+        "label": "Metric tonne",
+        "dimension": "mass",
+        "baseUnit": "kg",
+        "numerator": 1000,
+        "denominator": 1,
+        "status": "approved"
+      },
+      {
+        "code": "piece",
+        "label": "Piece",
+        "dimension": "count",
+        "baseUnit": "piece",
+        "numerator": 1,
+        "denominator": 1,
+        "status": "approved"
+      },
+      {
+        "code": "hour",
+        "label": "Hour",
+        "dimension": "time",
+        "baseUnit": "hour",
+        "numerator": 1,
+        "denominator": 1,
+        "status": "approved"
+      },
+      {
+        "code": "day",
+        "label": "Day",
+        "dimension": "time",
+        "baseUnit": "hour",
+        "numerator": 24,
+        "denominator": 1,
+        "status": "approved"
+      },
+      {
+        "code": "liter",
+        "label": "Liter",
+        "dimension": "volume",
+        "baseUnit": "liter",
+        "numerator": 1,
+        "denominator": 1,
+        "status": "approved"
+      }
+    ],
+    "proposedLocalMappings": [
+      {
+        "code": "seer",
+        "label": "Seer",
+        "regionCode": "AF-HERAT",
+        "baseUnit": "kg",
+        "numerator": 7,
+        "denominator": 1,
+        "status": "proposed",
+        "source": "Karwan Daftar prototype; requires local metrology approval"
+      },
+      {
+        "code": "seer",
+        "label": "Seer",
+        "regionCode": "AF-KABUL",
+        "baseUnit": "kg",
+        "numerator": 7,
+        "denominator": 1,
+        "status": "proposed",
+        "source": "Karwan Daftar prototype; requires local metrology approval"
+      },
+      {
+        "code": "man",
+        "label": "Man",
+        "regionCode": "AF-KANDAHAR",
+        "baseUnit": "kg",
+        "numerator": 9,
+        "denominator": 2,
+        "status": "proposed",
+        "source": "Karwan Daftar prototype; requires local metrology approval"
+      }
+    ]
+  },
+  "paymentMethods": [
+    "cash",
+    "hesabpay",
+    "afpay",
+    "hawala_record",
+    "credit",
+    "other"
+  ],
+  "sectors": {
+    "general": {
+      "label": "Give & Get Daftar",
+      "entryTypes": [
+        "sale",
+        "purchase",
+        "expense",
+        "credit_settlement",
+        "service"
+      ],
+      "inventory": true,
+      "priceTelemetry": true,
+      "formFields": [
+        "entryType",
+        "direction",
+        "itemCode",
+        "quantity",
+        "unitCode",
+        "unitPrice",
+        "amount",
+        "currencyCode",
+        "paymentMethod",
+        "counterpartyLabel"
+      ]
+    },
+    "trade": {
+      "label": "Shop & Wholesale",
+      "entryTypes": [
+        "sale",
+        "purchase",
+        "expense",
+        "credit_settlement"
+      ],
+      "inventory": true,
+      "priceTelemetry": true,
+      "formFields": [
+        "entryType",
+        "direction",
+        "itemCode",
+        "quantity",
+        "unitCode",
+        "unitPrice",
+        "amount",
+        "currencyCode",
+        "paymentMethod",
+        "counterpartyLabel"
+      ]
+    },
+    "retail": {
+      "label": "Retail Shop",
+      "entryTypes": [
+        "sale",
+        "purchase",
+        "expense",
+        "credit_settlement"
+      ],
+      "inventory": true,
+      "priceTelemetry": true,
+      "formFields": [
+        "entryType",
+        "direction",
+        "itemCode",
+        "quantity",
+        "unitCode",
+        "unitPrice",
+        "amount",
+        "currencyCode",
+        "paymentMethod",
+        "counterpartyLabel"
+      ]
+    },
+    "logistics": {
+      "label": "Transport & Logistics",
+      "entryTypes": [
+        "freight",
+        "expense",
+        "wage"
+      ],
+      "inventory": false,
+      "priceTelemetry": true,
+      "formFields": [
+        "entryType",
+        "direction",
+        "originCode",
+        "destinationCode",
+        "referenceCode",
+        "quantity",
+        "unitCode",
+        "amount",
+        "currencyCode",
+        "paymentMethod",
+        "counterpartyLabel"
+      ]
+    },
+    "fx": {
+      "label": "Sarafi Reference Ledger",
+      "entryTypes": [
+        "fx_exchange"
+      ],
+      "inventory": false,
+      "priceTelemetry": false,
+      "recordOnly": true,
+      "formFields": [
+        "entryType",
+        "direction",
+        "amount",
+        "currencyCode",
+        "counterAmount",
+        "counterCurrencyCode",
+        "exchangeRateSource",
+        "paymentMethod",
+        "counterpartyLabel"
+      ],
+      "disclaimer": "Record-only reference ledger. No money transfer, custody, remittance or exchange execution."
+    },
+    "labor": {
+      "label": "Labor & Services",
+      "entryTypes": [
+        "wage",
+        "service",
+        "expense"
+      ],
+      "inventory": false,
+      "priceTelemetry": true,
+      "formFields": [
+        "entryType",
+        "direction",
+        "itemCode",
+        "quantity",
+        "unitCode",
+        "amount",
+        "currencyCode",
+        "paymentMethod",
+        "counterpartyLabel"
+      ],
+      "paymentVerification": "Payment status is merchant-reported unless a trusted provider integration verifies it."
+    }
+  },
+  "entryTypes": {
+    "sale": {
+      "directions": [
+        "give"
+      ],
+      "label": "Sold / gave"
+    },
+    "purchase": {
+      "directions": [
+        "get"
+      ],
+      "label": "Bought / received"
+    },
+    "expense": {
+      "directions": [
+        "give"
+      ],
+      "label": "Expense"
+    },
+    "credit_settlement": {
+      "directions": [
+        "get"
+      ],
+      "label": "Qarz payment received"
+    },
+    "service": {
+      "directions": [
+        "give",
+        "get"
+      ],
+      "label": "Service"
+    },
+    "freight": {
+      "directions": [
+        "give",
+        "get"
+      ],
+      "label": "Freight"
+    },
+    "wage": {
+      "directions": [
+        "give",
+        "get"
+      ],
+      "label": "Wage"
+    },
+    "fx_exchange": {
+      "directions": [
+        "give",
+        "get"
+      ],
+      "label": "Currency exchange reference"
+    }
+  },
+  "locales": [
+    "en",
+    "fa-AF",
+    "ps-AF"
+  ]
+}

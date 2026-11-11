@@ -18,7 +18,7 @@ try {
   const database=new DatabaseSync(db);
   try {
     database.exec(fs.readFileSync(tmp,'utf8'));
-    const rows=database.prepare("SELECT type,name,tbl_name,sql FROM sqlite_master WHERE sql IS NOT NULL AND name NOT LIKE 'sqlite_%' AND type IN ('table','index','view') ORDER BY CASE type WHEN 'table' THEN 0 WHEN 'view' THEN 1 ELSE 2 END,name").all();
+    const rows=database.prepare("SELECT type,name,tbl_name,sql FROM sqlite_master WHERE sql IS NOT NULL AND name NOT LIKE 'sqlite_%' AND type IN ('table','view','trigger','index') ORDER BY CASE type WHEN 'table' THEN 0 WHEN 'view' THEN 1 WHEN 'trigger' THEN 2 ELSE 3 END,name").all();
     const highWater=fs.readdirSync(path.join(root,'database/migrations')).filter(x=>x.endsWith('.sql')).sort().at(-1)?.slice(0,4) || 'unknown';
     const out=[
       '-- ON Mission current database schema snapshot',

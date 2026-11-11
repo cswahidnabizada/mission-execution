@@ -1,5 +1,5 @@
-import {attachLayoutStudioRouteAdapter,resolveLayoutStudioRoute} from '../admin/layout-studio-production-adapter.js?v=16.105.0';
-import {renderComponent,STUDIO_RENDERER_VERSION} from '../admin/layout-studio-renderer.js?v=16.105.0';
+import {attachLayoutStudioRouteAdapter,resolveLayoutStudioRoute} from '../admin/layout-studio-production-adapter.js?v=16.106.0';
+import {renderComponent,STUDIO_RENDERER_VERSION} from '../admin/layout-studio-renderer.js?v=16.106.0';
 import {mountShell,syncNav} from '../shell/app-shell.js';
 import {canonicalizeAppHash} from '../navigation/registry.js';
 import {api,esc} from '../core/api.js';
@@ -12,6 +12,7 @@ import {executeCanonicalObjectAction} from '../../core/canonical-action-client.j
 import {loadExecutorWorkContext,loadCompanyOperationsContext} from '../work/role-work-model.js';
 import {renderContextWorkspace} from '../work/context-workspace.js';
 import {initActivationModule} from '../../core/activation-module.js';
+import {renderDaftarWorkspace} from '../daftar/daftar.js?v=16.106.0';
 
 const root=document.getElementById('root');
 attachLayoutStudioRouteAdapter({root, getRouteId:()=>resolveLayoutStudioRoute({pathname:location.pathname,hash:location.hash,role:document.documentElement.dataset.onmRole||''})||'tenant-workspace'});
@@ -33,6 +34,7 @@ async function render({root,s}){
     if(key==='work')return work(surface,s);
     if(key==='network')return network(surface,s);
     if(key==='objects')return objects(surface,s);
+    if(key==='daftar')return renderDaftarWorkspace(surface,s.session);
     if(key==='people')return people(surface,s);
     if(key==='account')return account(surface,s);
     if(key==='context')return renderContextWorkspace(surface,s);

@@ -1,39 +1,41 @@
-ON Mission 16.105.0 — Germany Market Launch Completion Candidate
-Cumulative source baseline: 16.100.0
-Database migration: none
-Migration high-water: 0166 (166 ordered migrations)
-Schema snapshot: database/schema.current.sql (256 tables, 467 indexes)
+ON MISSION 16.106.0 — RELEASE REPORT
+==================================
+Feature: Embedded Trade Ledger & Market Telemetry / Digital Daftar
+Version: 16.106.0
+Base source: 16.105.0
+D1 migration: 0167_embedded_trade_ledger_daftar.sql
+Migration chain: 167 ordered migrations, high-water 0167
+Canonical schema: 270 tables, 484 indexes, 84 active triggers
+Architecture scan: 434 JS files, 1,639 local imports, 0 cycles; one canonical mission lifecycle writer
 
 IMPLEMENTED
-- 16.101: read-only launch-control projection; next canonical task selection; owner, blocker, reason and evidence expectation.
-- 16.102: preserves the existing bounded Germany preparation endpoint and canonical resource adapters; adds accurate create/reuse/update preview projection. Preparation does not publish or activate.
-- 16.103: external dependency and human approval register derived from canonical launch tasks.
-- 16.104: eight independent proof gates; editable workbench evidence cannot satisfy trusted runtime proof.
-- 16.105: distinct preparation, approval, mission-proof, immutable validation, publication, verification, activation and onboarding gates; fail-closed completion rule.
-- Infrastructure and integration handover document included.
-- One root VERSION file; Node runtime pin is .node-version; duplicate .nvmrc removed; old versioned deployment notes consolidated into DEPLOYMENT.md.
+- Existing workspace route and mobile-responsive Daftar UI.
+- Formal JSON Sector Template schema and Afghanistan instance.
+- Tenant-private Give & Get ledger, encrypted tenant/identity-scoped offline IndexedDB queue and idempotent sync API.
+- Append-only inventory movements with atomic D1 balance triggers.
+- Qarz credit and settlement enforcement.
+- Record-only two-currency FX entries and approved FX quote/preview API.
+- Canonical units; regional Seer/Man mappings remain proposed pending local metrology review.
+- Opt-in pseudonymous market telemetry restricted to currently verified tenants, tenant/country/sector-scoped HMAC contributor keys, 90-day expiry, weighted median, +/-20% outlier filtering, minimum five contributors and KV feed.
+- Batch passports, SHA-256 file references, mission links, mass-balance validation and two-party custody confirmation.
+- Existing privacy export extended; account erasure withdraws telemetry, redacts private fields and closes/restricts passport visibility; business/passport retention is marked for review at 1,095 days.
+- Super Admin APIs for country/sector profiles, unit conversion approval and FX quote approval.
 
-SOURCE VERIFICATION — PASS
-- npm run check:release (includes the cumulative market/resource regression suite, architecture boundary, duplicate-content and release-integrity gates).
-- npm run check:health (security baseline, data integrity, architecture, production readiness and hardening).
-- npm run check:migrations (166 ordered migrations, high-water 0166; data dependency checks).
-- npm run check:super-admin-build.
-- npm run check:super-admin-decomposition.
-- npm run check:release-engineering.
-- 578 JavaScript syntax checks.
-- Architecture: 431 JavaScript files, 1,627 local imports, zero import cycles; one canonical mission lifecycle write path.
-- Schema: 256 tables, 467 indexes.
-- Duplicate file-content gate: PASS (1,600 unique files).
-- Production cleanliness: PASS; release identity 16.105.0; Node pin 24.22.1; migration count/high-water aligned.
+VERIFICATION — PASSED
+- Cumulative release regression suite, including the 16.106 Daftar in-memory D1 integration test.
+- Security, data-integrity, architecture, production-readiness and production-hardening checks.
+- Migration contract and migration data dependency checks.
+- Unified Super Admin build and decomposition checks.
+- Release engineering, current schema, duplicate-file and release-integrity checks.
+- Sector template and JSON Schema parsed and validated.
+- 1,612 unique files; no duplicate-content files detected.
 
-BUILD / DEPLOYMENT LIMITATION
-- npm run build was attempted and correctly stopped at the runtime gate because this build container runs Node 22.16.0 while the project requires Node 24.22.1. No claim of successful production build is made.
-- npm ci / Tailwind build / Wrangler deploy were not completed in the required Node 24 environment.
-- No live Cloudflare deployment or authenticated browser acceptance was performed.
+NOT VERIFIED / NOT CLAIMED
+- Full Cloudflare production build/deployment and live browser acceptance.
+- Node 24.22.1 build: the authoring runtime is Node 22.16.0; the declared runtime is 24.22.1. The full build was stopped by the runtime-version gate. CSS build also could not run because local project dependencies are not installed in this container.
+- Live production D1 migration ledger and migration 0036 application; the existing readiness check continues to emit its migration-0036 note.
+- Afghanistan country product activation, legal approval, payment provider verification, remittance, accredited lab verification, EU DPP compliance, physical truth, public B2B API, QR rendering/scanning, full local language translation, data residency proof, backup/restore proof or live production acceptance.
 
-REMAINING LIVE / EXTERNAL EVIDENCE
-- The Market Factory certification route currently does not inject a trusted real-mission proof result; all eight proof cases remain EVIDENCE_REQUIRED until a trusted tenant-scoped mission and adversarial evidence source is connected.
-- Legal review, provider connection tests, provider credentials, Germany-only residency/subprocessor evidence, backup/restore test, production monitoring and a supervised real Germany logistics mission remain unverified.
-- Public onboarding must remain invite-only/restricted until the authorized release and evidence gates are completed.
-
-Release classification: SOURCE-VERIFIED CANDIDATE — NOT YET PRODUCTION-BUILT, DEPLOYED OR LIVE-CERTIFIED.
+NEXT
+- Build/deploy with Node 24.22.1 in the existing Cloudflare pipeline after reviewing migration 0167 and configuring DAFTAR_TELEMETRY_HMAC_SECRET.
+- Activate Afghanistan through the existing Market Launch authority, then test with separate real tenants and real low-bandwidth devices.

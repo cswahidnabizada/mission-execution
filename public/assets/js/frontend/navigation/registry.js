@@ -5,6 +5,7 @@ export const NAV=Object.freeze([
   {key:'work',label:'Work',href:'#work',intent:'execution',description:'Act and follow through',roles:ROLE_SET},
   {key:'network',label:'Network',href:'#network',intent:'collaboration',description:'People and organizations connected to work',roles:ROLE_SET},
   {key:'objects',label:'Objects',href:'#objects',intent:'operations',description:'Things being operated on',roles:ROLE_SET},
+  {key:'daftar',label:'Daftar',href:'#daftar',intent:'market-records',description:'Give & Get ledger, stock and product passports',roles:['owner','admin','operator','manager']},
   {key:'people',label:'People',href:'#people',intent:'responsibility',description:'People, roles and access',roles:ROLE_SET},
   {key:'account',label:'Account',href:'#account',intent:'identity',description:'Identity, organization and security',roles:ROLE_SET}
 ]);

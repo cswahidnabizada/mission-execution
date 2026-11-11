@@ -21,7 +21,7 @@ const POLICY_PRESERVED_COMPANY_RELATIONSHIPS = Object.freeze([
   'mission_tenant_access','driver_operational_profiles','driver_direct_messages','driver_daily_notes',
   'driver_content_preferences','notifications','notification_policy_registry','analytics_policy_registry','mission_exceptions','mission_delivery_proofs','network_customers','network_tenant_trust','network_executor_trust',
   'network_mission_invitations','network_customer_locations','mission_recipient_state','organization_onboarding_records','organization_provisioning_events','mission_management_requirements','mission_cancellations',
-  'mission_lifecycle_events','mission_transition_requests','mission_transition_events','mission_custody_cases','consent_records','consent_policy_versions','consent_policy_audit_events','company_management_profiles','external_provider_policies','external_provider_audit_events','backup_recovery_points','organization_invitations','organization_capability_eligibility','backup_restore_requests','backup_reconciliation_events','compliance_evidence_registry','subscription_entitlements','subscription_state_transitions','billing_identities','billing_invoices','billing_payments','billing_provider_events','billing_reconciliation_events','billing_state_transitions','platform_product_verification_runs','mission_assignments','mission_assignment_reconciliation','mission_assignment_subjects','mission_assignment_decisions','mission_outcome_assessments','mission_next_situations','mission_plans','mission_plan_evaluations','agent_semantic_memory_documents','agent_calibration_observations','agent_calibration_profiles','agent_calibration_runs','agent_execution_attempts','agent_execution_recovery_events','external_provider_execution_events','agent_pilot_mission_enrollments','agent_pilot_events','agent_action_autonomy_policies','agent_company_autonomy_config','agent_decision_events','agent_customer_pilot_profiles','agent_pilot_mission_enrollments','agent_pilot_events','agent_outcome_resolution_events','agent_learning_observations','agent_learning_profiles','agent_learning_runs','agent_production_execution_events'
+  'mission_lifecycle_events','mission_transition_requests','mission_transition_events','mission_custody_cases','consent_records','consent_policy_versions','consent_policy_audit_events','company_management_profiles','external_provider_policies','external_provider_audit_events','backup_recovery_points','organization_invitations','organization_capability_eligibility','backup_restore_requests','backup_reconciliation_events','compliance_evidence_registry','subscription_entitlements','subscription_state_transitions','billing_identities','billing_invoices','billing_payments','billing_provider_events','billing_reconciliation_events','billing_state_transitions','platform_product_verification_runs','mission_assignments','mission_assignment_reconciliation','mission_assignment_subjects','mission_assignment_decisions','mission_outcome_assessments','mission_next_situations','mission_plans','mission_plan_evaluations','agent_semantic_memory_documents','agent_calibration_observations','agent_calibration_profiles','agent_calibration_runs','agent_execution_attempts','agent_execution_recovery_events','external_provider_execution_events','agent_pilot_mission_enrollments','agent_pilot_events','agent_action_autonomy_policies','agent_company_autonomy_config','agent_decision_events','agent_customer_pilot_profiles','agent_pilot_mission_enrollments','agent_pilot_events','agent_outcome_resolution_events','agent_learning_observations','agent_learning_profiles','agent_learning_runs','agent_production_execution_events','daftar_private_entries','daftar_inventory_balances','daftar_inventory_movements','daftar_credit_settlements','daftar_sync_receipts','daftar_market_consents','daftar_custody_transfers','batch_passports','batch_events'
 ]);
 const POLICY_PRESERVED_MISSION_RELATIONSHIPS = Object.freeze([
   'mission_messages','mission_files','public_mission_requests','mission_assignments','mission_assignment_decisions','mission_tenant_access',
@@ -176,6 +176,7 @@ async function deleteTenant(env, session, password) {
   const companyId=Number(identity.company_id);
   void POLICY_PRESERVED_COMPANY_RELATIONSHIPS;
   void POLICY_PRESERVED_MISSION_RELATIONSHIPS;
+  const daftarErasure=await prepareDaftarTenantErasure(env,companyId);
   const existing=await canonicalFirst(env,`SELECT id FROM privacy_requests WHERE company_id=? AND identity_type='tenant' AND identity_id=? AND request_type='erasure' AND status IN ('received','processing','restricted') ORDER BY id DESC LIMIT 1`,[companyId,companyId],'privacy_request_authority');
   if(existing) throw conflict('Account deletion is already in progress');
   const requestId=await createPrivacyDeletionRequest(env,{companyId,identityType:'tenant',identityId:companyId,reason:'Account owner requested erasure',session});
@@ -183,6 +184,7 @@ async function deleteTenant(env, session, password) {
   await deleteSemanticMemoryForCompany(env,companyId);
   await env.DB.batch([
     env.DB.prepare(`UPDATE companies SET deletion_status='deleted',deleted_at=CURRENT_TIMESTAMP,deletion_request_id=? WHERE id=?`).bind(requestId,companyId),
+    ...daftarErasure.statements,
     env.DB.prepare(`UPDATE auth_identities SET active=0,deleted_at=CURRENT_TIMESTAMP,session_version=session_version+1,login='deleted-tenant-'||id||'@invalid.onmission',email=NULL,display_name='Deleted account',updated_at=CURRENT_TIMESTAMP WHERE company_id=?`).bind(companyId),
     env.DB.prepare(`UPDATE drivers SET active=0,deleted_at=CURRENT_TIMESTAMP,name='Deleted executor',removed_at=COALESCE(removed_at,CURRENT_TIMESTAMP),removal_reason='account_erasure' WHERE company_id=?`).bind(companyId),
     env.DB.prepare(`UPDATE mission_access_codes SET status='revoked',updated_at=CURRENT_TIMESTAMP WHERE owner_company_id=?`).bind(companyId),
@@ -197,11 +199,30 @@ async function deleteTenant(env, session, password) {
     env.DB.prepare(`DELETE FROM agent_learning_runs WHERE company_id=?`).bind(companyId),
     env.DB.prepare(`UPDATE privacy_requests SET status='processing' WHERE id=?`).bind(requestId)
   ]);
+  for(const key of daftarErasure.kvKeys) await env.KV_BINDING.delete(key).catch(()=>{});
   await purgeSessions(env,s=>Number(s.tenantId)===companyId);
   await completePrivacyDeletionRequest(env,requestId,{status:'restricted',outcomeCode:'ACCOUNT_DEACTIVATED_DATA_PRESERVED_BY_POLICY',outcomeNote:'Account access was revoked and direct identifiers were pseudonymized. Historical operational Truth, audit and legally retained records remain governed by retention policy.'});
   await completeCriticalAudit(env,criticalEventId,{success:true});
   await audit(env,{session:{...session,tenantId:companyId},action:'account.erasure_requested',resourceType:'privacy_request',resourceId:requestId,metadata:{requestType:'erasure',policyVersion:'current'}});
   return { deleted:true, accountType:'tenant', deletionRequestId:requestId, deletionMode:'policy_preserving_pseudonymization' };
+}
+
+async function prepareDaftarTenantErasure(env,companyId){
+  const consent=(await env.DB.prepare(`SELECT country_code,sector_code,contributor_key FROM daftar_market_consents WHERE company_id=?`).bind(companyId).all()).results||[];
+  const statements=[
+    env.DB.prepare(`UPDATE daftar_market_consents SET telemetry_opt_in=0,contributor_key=NULL,withdrawn_at=CURRENT_TIMESTAMP,updated_at=CURRENT_TIMESTAMP WHERE company_id=?`).bind(companyId),
+    env.DB.prepare(`UPDATE daftar_private_entries SET counterparty_label=NULL,private_note=NULL,city_code=NULL,origin_code=NULL,destination_code=NULL,reference_code=NULL,exchange_rate_source=NULL WHERE company_id=?`).bind(companyId),
+    env.DB.prepare(`UPDATE batch_passports SET visibility='private',status=CASE WHEN current_custodian_company_id=? THEN 'closed' ELSE status END,updated_at=CURRENT_TIMESTAMP WHERE company_id=? OR current_custodian_company_id=?`).bind(companyId,companyId,companyId),
+    env.DB.prepare(`UPDATE batch_events SET evidence_reference=NULL,details_json='{}' WHERE company_id=?`).bind(companyId),
+    env.DB.prepare(`UPDATE daftar_custody_transfers SET status='cancelled' WHERE status='pending' AND (from_company_id=? OR to_company_id=?)`).bind(companyId,companyId)
+  ];
+  for(const row of consent){if(row.contributor_key)statements.push(env.DB.prepare(`DELETE FROM market_telemetry_events WHERE contributor_key=?`).bind(row.contributor_key));}
+  const kvKeys=[];
+  for(const row of consent){
+    statements.push(env.DB.prepare(`DELETE FROM daftar_market_price_indices WHERE country_code=? AND sector_code=?`).bind(row.country_code,row.sector_code));
+    kvKeys.push(`daftar:market-prices:${row.country_code}:${row.sector_code}`);
+  }
+  return {statements,kvKeys};
 }
 
 async function deleteExecutor(env, session, password) {

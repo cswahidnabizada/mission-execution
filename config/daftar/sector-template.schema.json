@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://onmissionok.com/schemas/daftar/sector-template.v1.schema.json",
+  "title": "ON Mission Digital Daftar Sector Template",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "module", "countryCode", "defaultCurrency", "supportedCurrencies", "privacy", "units", "paymentMethods", "sectors", "entryTypes"],
+  "properties": {
+    "schemaVersion": {"type":"string","pattern":"^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "module": {"const":"embedded-trade-ledger"},
+    "countryCode": {"type":"string","pattern":"^[A-Z]{2}$"},
+    "defaultCurrency": {"type":"string","enum":["AFN","USD","EUR"]},
+    "supportedCurrencies": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","enum":["AFN","USD","EUR"]}},
+    "locales": {"type":"array","items":{"type":"string","enum":["en","fa-AF","ps-AF"]}},
+    "privacy": {
+      "type":"object","additionalProperties":false,
+      "required":["privateLedgerByDefault","marketTelemetryOptInRequired","minimumDistinctContributors","telemetryRetentionDays","counterpartyDetailsNeverEnterTelemetry"],
+      "properties": {
+        "privateLedgerByDefault":{"const":true},
+        "marketTelemetryOptInRequired":{"const":true},
+        "minimumDistinctContributors":{"type":"integer","minimum":5,"maximum":1000},
+        "telemetryRetentionDays":{"type":"integer","minimum":1,"maximum":365},
+        "counterpartyDetailsNeverEnterTelemetry":{"const":true}
+      }
+    },
+    "units": {
+      "type":"object","required":["canonical","proposedLocalMappings"],"properties": {
+        "canonical":{"type":"array","items":{"type":"object","required":["code","label","dimension","baseUnit","numerator","denominator","status"],"properties":{"code":{"type":"string"},"label":{"type":"string"},"dimension":{"type":"string"},"baseUnit":{"type":"string"},"numerator":{"type":"integer","minimum":1},"denominator":{"type":"integer","minimum":1},"status":{"const":"approved"}},"additionalProperties":false}},
+        "proposedLocalMappings":{"type":"array","items":{"type":"object","required":["code","label","regionCode","baseUnit","numerator","denominator","status","source"],"properties":{"code":{"type":"string"},"label":{"type":"string"},"regionCode":{"type":"string"},"baseUnit":{"type":"string"},"numerator":{"type":"integer","minimum":1},"denominator":{"type":"integer","minimum":1},"status":{"const":"proposed"},"source":{"type":"string"}},"additionalProperties":false}}
+      },"additionalProperties":false
+    },
+    "paymentMethods":{"type":"array","uniqueItems":true,"items":{"type":"string","enum":["cash","hesabpay","afpay","hawala_record","credit","other"]}},
+    "sectors":{"type":"object","minProperties":1,"patternProperties":{"^[a-z][a-z0-9_-]*$":{"type":"object","required":["label","entryTypes","inventory","priceTelemetry","formFields"],"properties":{"label":{"type":"string"},"entryTypes":{"type":"array","items":{"type":"string"}},"inventory":{"type":"boolean"},"priceTelemetry":{"type":"boolean"},"recordOnly":{"type":"boolean"},"formFields":{"type":"array","items":{"type":"string"}},"disclaimer":{"type":"string"},"paymentVerification":{"type":"string"}},"additionalProperties":false}},"additionalProperties":false},
+    "entryTypes":{"type":"object","minProperties":1,"patternProperties":{"^[a-z][a-z0-9_-]*$":{"type":"object","required":["directions","label"],"properties":{"directions":{"type":"array","minItems":1,"items":{"type":"string","enum":["give","get"]}},"label":{"type":"string"}},"additionalProperties":false}},"additionalProperties":false}
+  }
+}

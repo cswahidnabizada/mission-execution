@@ -18,3 +18,12 @@ The bundled Germany Logistics package is available at `config/markets/germany-lo
 - `npm run deploy:production`
 
 The production deploy script runs build, release and certification gates, applies ordered D1 migrations from `database/migrations` (configured as the D1 `migrations_dir`), then deploys the Worker. If deploying with a bare `npx wrangler deploy`, run `npm run migrate:production` first: Worker deployment does not apply D1 migrations. Review migration output and production backups before deployment.
+
+## Embedded Digital Daftar (16.106.0)
+
+ON Mission now includes an Afghanistan-first, country/sector-governed Give & Get ledger, offline sync, opt-in pseudonymous market telemetry and batch Product Passport foundation. It reuses the existing Worker, D1, KV, R2, tenant identity, country/sector profile, audit and privacy authorities. See:
+
+- `docs/DAFTAR-ARCHITECTURE.md`
+- `docs/DAFTAR-INTEGRATION-CONTRACT.md`
+- `config/daftar/sector-template.schema.json`
+- `config/daftar/sector-templates.v1.json`
