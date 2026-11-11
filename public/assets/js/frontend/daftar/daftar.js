@@ -1,4 +1,4 @@
-import { api, esc } from '../core/api.js?v=16.106.0';
+import { api, esc } from '../core/api.js?v=16.107.0';
 
 const DB_NAME='onmission-daftar-offline-v1';
 const CONFIG_KEY='onmission-daftar-offline-config-v1';

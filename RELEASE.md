@@ -1,8 +1,11 @@
-# Mission Execution 16.106.0 — Embedded Trade Ledger & Digital Daftar
+# Mission Execution 16.107.0 — Country-aware Homepage, Afghanistan Market Experience & Public Data
 
 Status: hardening candidate
 
 ## Release objective
+
+The 16.107.0 increment adds a country-aware public homepage to the cumulative 16.106.0 Digital Daftar foundation. The homepage explains mission execution and data infrastructure, discovers country markets from the existing availability authority, presents Germany Logistics current state and Afghanistan Daftar capability/activation status, and provides a free public aggregate-data view with cohort and freshness protections.
+
 
 Add an embedded, country/sector-governed Give & Get ledger, privacy-split market telemetry pipeline and batch Digital Product Passport capability inside the existing ON Mission multi-tenant application. No separate backend, authentication system, tenant authority or admin panel is introduced.
 
@@ -64,21 +67,29 @@ Add an embedded, country/sector-governed Give & Get ledger, privacy-split market
 
 ## Canonical release identity
 
-- Version: `16.106.0`
+- Version: `16.107.0`
 - D1 migration high-water: `0167`
 - Node requirement: `24.22.1`
 - No new backend/auth/admin plane; existing ON Mission authorities reused.
 
 ## Preserved cumulative release history
 
-The 16.106.0 source retains the prior governed market-launch work. Historical baseline: **16.100.0 — Market Launch Workbench Runtime Repair**. Search misses are explicitly labeled; the workbench selects a canonical next action, keeps external dependencies visible, and does not turn task completion into launch certification.
+The 16.107.0 source retains the prior governed market-launch work and includes the 16.106.0 Daftar foundation plus the public homepage increment. Historical baseline: **16.100.0 — Market Launch Workbench Runtime Repair**. Search misses are explicitly labeled; the workbench selects a canonical next action, keeps external dependencies visible, and does not turn task completion into launch certification.
 
 The 16.105.0 source introduced the Germany launch-control and proof-gate candidate. At that point, **No database migration** was added; the release did not certify production deployment, legal approval, provider connectivity, residency, backup restoration or physical mission evidence. Its preparation automation did not publish, verify, activate or open public onboarding. Those statements describe the historical 16.105.0 boundary; 16.106.0 adds migration 0167 for Digital Daftar and does not claim the external proofs are complete.
 
-The historical 16.105.0 candidate **does not certify** a production market, and its physical mission evidence remained an external launch gate. The 16.106.0 Daftar module likewise does not certify product authenticity, payment settlement, accredited laboratory status or legal compliance from self-reported data.
+The historical 16.105.0 candidate **does not certify** a production market, and its physical mission evidence remained an external launch gate. The 16.106.0 Daftar module, retained in 16.107.0, likewise does not certify product authenticity, payment settlement, accredited laboratory status or legal compliance from self-reported data.
 
 The historical preparation path **does not publish, verify, activate or open public onboarding**; these remain separate authorized market-release transitions.
 
 ## Cumulative platform release-engineering context
 
 This additive release preserves the platform's **Global Compliance Context**, **Private ForYou** workspace semantics, **Consent & Privacy** controls and **Data Subject Rights** workflow. The deterministic build and migration contract remain canonical. `database/schema.current.sql` is generated from the ordered migration history and now includes active database triggers. New code must remain inside the canonical domain boundary, use the canonical capability model and preserve canonical vocabulary. Capability gates remain server-enforced. The Germany Logistics pilot and its existing Cargo terminology/compatibility contracts are preserved; Daftar adds a distinct Afghanistan-first trade/field-record capability rather than changing the Germany logistics mission authority.
+
+## 16.107.0 public experience increment
+
+- Reworked the canonical `/` homepage around mission execution, data infrastructure, markets, platform capabilities, current situation and public market data.
+- Added a country-aware market discovery projection to the existing `/api/product/availability` endpoint. Germany state remains sourced from Market Factory and country product launch truth; Afghanistan state is sourced from existing Daftar market profiles and the canonical country product launch authority.
+- Added read-only `/api/public/market-data` for cohort-protected, fresh aggregate price indices only. It requires an active country product, a pilot/active telemetry-enabled Daftar profile, at least the configured contributor cohort (never below five), and a snapshot no older than 20 minutes. It never returns private ledger fields or individual telemetry events.
+- Afghanistan remains a controlled pilot until the canonical Country Product Launch is activated. This release does not activate the market or bypass tenant eligibility.
+- Release status remains a hardening candidate; no production build, deployment or live browser acceptance is claimed.

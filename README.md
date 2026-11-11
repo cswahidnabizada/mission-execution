@@ -1,4 +1,4 @@
-# ON Mission 16.87.0 — Germany Logistics Market Platform
+# ON Mission 16.107.0 — Country-aware Mission Execution Platform
 
 Cumulative release candidate based on the deployed 16.80.0 Germany Logistics / Super Admin baseline. This release consolidates owner lifecycle completion, durable mutation idempotency and reconciliation, 26-family resource certification contracts, Asset 360/dependency governance, a staged Germany Logistics Market Package, versioned onboarding legal acknowledgements, and adversarial production-certification gates.
 
@@ -18,6 +18,10 @@ The bundled Germany Logistics package is available at `config/markets/germany-lo
 - `npm run deploy:production`
 
 The production deploy script runs build, release and certification gates, applies ordered D1 migrations from `database/migrations` (configured as the D1 `migrations_dir`), then deploys the Worker. If deploying with a bare `npx wrangler deploy`, run `npm run migrate:production` first: Worker deployment does not apply D1 migrations. Review migration output and production backups before deployment.
+
+## Country-aware homepage and market experience (16.107.0)
+
+The public homepage now explains mission execution, data infrastructure, country markets, platform capabilities and public aggregate data. Germany Logistics displays its current Market Factory and onboarding state. Afghanistan displays the provisioned Digital Daftar features and the canonical market-activation gate. Public data is served only from fresh cohort-protected aggregates; private ledgers are never exposed. See `docs/16.107-public-homepage-and-market-experience.md` and `DEPLOYMENT-16.107.md`.
 
 ## Embedded Digital Daftar (16.106.0)
 

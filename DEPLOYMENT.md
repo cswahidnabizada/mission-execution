@@ -1,3 +1,5 @@
+> Current cumulative source: **16.107.0**. Follow `DEPLOYMENT-16.107.md` for the country-aware homepage and public-data release checks. This document retains the 16.106.0 Daftar-specific deployment details.
+
 # ON Mission 16.106.0 — Deployment
 
 ## Requirements

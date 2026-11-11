@@ -1,41 +1,34 @@
-ON MISSION 16.106.0 — RELEASE REPORT
-==================================
-Feature: Embedded Trade Ledger & Market Telemetry / Digital Daftar
-Version: 16.106.0
-Base source: 16.105.0
-D1 migration: 0167_embedded_trade_ledger_daftar.sql
-Migration chain: 167 ordered migrations, high-water 0167
-Canonical schema: 270 tables, 484 indexes, 84 active triggers
-Architecture scan: 434 JS files, 1,639 local imports, 0 cycles; one canonical mission lifecycle writer
+ON MISSION 16.107.0 — RELEASE CANDIDATE
 
-IMPLEMENTED
-- Existing workspace route and mobile-responsive Daftar UI.
-- Formal JSON Sector Template schema and Afghanistan instance.
-- Tenant-private Give & Get ledger, encrypted tenant/identity-scoped offline IndexedDB queue and idempotent sync API.
-- Append-only inventory movements with atomic D1 balance triggers.
-- Qarz credit and settlement enforcement.
-- Record-only two-currency FX entries and approved FX quote/preview API.
-- Canonical units; regional Seer/Man mappings remain proposed pending local metrology review.
-- Opt-in pseudonymous market telemetry restricted to currently verified tenants, tenant/country/sector-scoped HMAC contributor keys, 90-day expiry, weighted median, +/-20% outlier filtering, minimum five contributors and KV feed.
-- Batch passports, SHA-256 file references, mission links, mass-balance validation and two-party custody confirmation.
-- Existing privacy export extended; account erasure withdraws telemetry, redacts private fields and closes/restricts passport visibility; business/passport retention is marked for review at 1,095 days.
-- Super Admin APIs for country/sector profiles, unit conversion approval and FX quote approval.
+Purpose: Country-aware public homepage, Germany current-market situation, Afghanistan Digital Daftar capability discovery, and a privacy-bounded public market-data view.
 
-VERIFICATION — PASSED
-- Cumulative release regression suite, including the 16.106 Daftar in-memory D1 integration test.
-- Security, data-integrity, architecture, production-readiness and production-hardening checks.
-- Migration contract and migration data dependency checks.
-- Unified Super Admin build and decomposition checks.
-- Release engineering, current schema, duplicate-file and release-integrity checks.
-- Sector template and JSON Schema parsed and validated.
-- 1,612 unique files; no duplicate-content files detected.
+Completed in source:
+- Reworked the canonical public homepage around mission execution, data infrastructure, markets, platform capabilities, current situation and public data.
+- Country discovery remains read-only and is sourced from the existing canonical product availability and country launch authorities.
+- Germany Logistics shows its current Market Factory/release/onboarding state; the homepage does not open registration unless the existing authority says it is live.
+- Afghanistan discovery exposes the six provisioned Daftar sector templates and the implemented capabilities, while explicitly showing the country product activation gate.
+- Added a public read-only aggregate price-index endpoint with active-market, telemetry-enabled profile, minimum cohort (>=5), and 20-minute freshness checks.
+- Public data excludes private ledger fields and individual telemetry records; disclosures explain source class and limitations.
+- Responsive desktop/mobile navigation and country/data selectors.
+- Existing public route, auth/session and Layout Studio route adapter retained; no new backend or identity system.
 
-NOT VERIFIED / NOT CLAIMED
-- Full Cloudflare production build/deployment and live browser acceptance.
-- Node 24.22.1 build: the authoring runtime is Node 22.16.0; the declared runtime is 24.22.1. The full build was stopped by the runtime-version gate. CSS build also could not run because local project dependencies are not installed in this container.
-- Live production D1 migration ledger and migration 0036 application; the existing readiness check continues to emit its migration-0036 note.
-- Afghanistan country product activation, legal approval, payment provider verification, remittance, accredited lab verification, EU DPP compliance, physical truth, public B2B API, QR rendering/scanning, full local language translation, data residency proof, backup/restore proof or live production acceptance.
+Validation performed:
+- JavaScript syntax checks: changed browser and Worker modules pass `node --check`.
+- `npm run check:release`: PASS, including the new 16.107.0 homepage/public-data contract and all cumulative market/resource tests.
+- `npm run check:health`: PASS.
+- `npm run check:migrations`: PASS (167 ordered migrations; high-water 0167).
+- `npm run check:schema`: PASS (270 tables, 484 indexes, 84 triggers).
+- `npm run check:release-engineering`: PASS.
+- Super Admin build and decomposition checks: PASS.
+- Architecture boundary check: 434 JS files, 1,639 local imports, zero cycles; one canonical mission lifecycle writer.
+- Duplicate-file-content gate: PASS (1,615 unique files).
+- `npm run build`: NOT RUN TO COMPLETION; blocked at the environment gate because this authoring runtime is Node 22.16.0 while the project requires Node 24.22.1.
 
-NEXT
-- Build/deploy with Node 24.22.1 in the existing Cloudflare pipeline after reviewing migration 0167 and configuring DAFTAR_TELEMETRY_HMAC_SECRET.
-- Activate Afghanistan through the existing Market Launch authority, then test with separate real tenants and real low-bandwidth devices.
+Not claimed:
+- No production build or deployment has been performed by this release preparation.
+- No live browser, device, tenant-isolation or public-data API acceptance has been performed.
+- Afghanistan product launch is not activated by this source change.
+- Public data will remain empty until valid market activation, verified opt-in contributors, secret configuration, cohort and freshness requirements are met.
+- No Dari/Pashto localization, official national statistics feed, payment execution, remittance, or independently verified FX provider integration is included.
+
+Release status: HARDENING CANDIDATE — NOT DEPLOYED.
