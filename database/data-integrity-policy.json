@@ -1,5 +1,5 @@
 {
-  "version": 44,
+  "version": 46,
   "drivers": {
     "mission_messages": "set_null",
     "mission_files": "set_null",
@@ -133,7 +133,12 @@
     "daftar_market_consents": "preserve_policy_record_or_restrict",
     "daftar_custody_transfers": "preserve_historical_truth",
     "batch_passports": "preserve_policy_record_or_restrict",
-    "batch_events": "preserve_historical_truth"
+    "batch_events": "preserve_historical_truth",
+    "daftar_book_journal_transactions": "preserve_historical_truth",
+    "daftar_export_audit": "preserve_policy_record_or_restrict",
+    "daftar_restore_previews": "preserve_policy_record_or_restrict",
+    "daftar_pilot_tenant_access": "preserve_policy_record_or_restrict",
+    "daftar_pilot_access_events": "preserve_historical_truth"
   },
   "missions": {
     "mission_status_history": "preserve_historical_truth",
@@ -269,6 +274,18 @@
     "daftar_market_profiles": "preserve_country_sector_market_configuration",
     "daftar_unit_conversions": "preserve_governed_metrology_reference",
     "daftar_fx_quotes": "preserve_governed_fx_reference",
-    "daftar_market_price_indices": "rebuildable_aggregate_projection"
+    "daftar_market_price_indices": "rebuildable_aggregate_projection",
+    "platform_capabilities": "preserve_policy_record_or_restrict",
+    "platform_market_capabilities": "preserve_policy_record_or_restrict",
+    "platform_capability_lifecycle_events": "preserve_historical_truth",
+    "platform_simulation_scenarios": "preserve_policy_record_or_restrict",
+    "daftar_pilot_reviews": "preserve_historical_truth",
+    "public_data_publications": "preserve_policy_record_or_restrict",
+    "public_data_quality_runs": "preserve_historical_truth",
+    "public_data_api_access_log": "preserve_policy_record_or_restrict",
+    "daftar_pilot_tenant_access": "preserve_policy_record_or_restrict",
+    "daftar_pilot_access_events": "preserve_historical_truth",
+    "platform_simulation_evidence_links": "preserve_immutable_platform_evidence",
+    "platform_simulation_runs": "preserve_simulation_history"
   }
 }

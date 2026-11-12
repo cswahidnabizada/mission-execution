@@ -21,7 +21,8 @@ export const ADMIN_WORKSPACE_GROUPS=Object.freeze([
     ['Human Platform','human-platform','Configure and certify shared human experience capabilities.','Human Platform Governance','WRITE','PLATFORM'],
     ['Product Experience','product-experience','Manage shared product experience and demo journeys.','Product Experience Orchestration','WRITE','PLATFORM'],
     ['Layout Studio','layout-studio','Compose and preview shared product layouts.','Canonical Experience Composition','WRITE','PLATFORM'],
-    ['Simulation Lab','simulation-lab','Run isolated mission simulations; simulation is never proof of physical execution.','Governed Simulation Records','WRITE','PLATFORM']
+    ['Simulation Lab','simulation-lab','Run isolated mission simulations; simulation is never proof of physical execution.','Governed Simulation Records','WRITE','PLATFORM'],
+    ['Capabilities & Data','capability-governance','Govern reusable capability contracts, market bindings, Daftar policy, public data publication and lifecycle evidence.','Capability Registry + Market/Data Authorities','WRITE','PLATFORM']
   ]},
   {key:'customers',label:'CUSTOMERS & ACCESS',description:'Manage customer organizations, people, permissions, commercial accounts and their mission activity.',items:[
     ['Organizations','companies','Organization lifecycle, readiness and governed access.','Organization Lifecycle','WRITE','CUSTOMERS'],

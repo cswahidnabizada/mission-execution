@@ -17,5 +17,5 @@ assert.ok(relationship.includes('RESOURCE_RELATIONSHIP_CYCLE_BLOCKED'));
 assert.ok(relationship.includes('RESOURCE_RELATIONSHIP_TENANT_SCOPE_MISMATCH'));
 assert.ok(relationship.includes('RESOURCE_RELATIONSHIP_MARKET_SCOPE_MISMATCH'));
 assert.ok(lifecycle.includes('export async function getDataLifecycle'));
-assert.equal(manifest.version,'16.107.0');
+assert.equal(manifest.version,'16.113.0');
 console.log('16.70.0 Resource Management completion integration: PASS');

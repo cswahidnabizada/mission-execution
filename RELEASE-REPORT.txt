@@ -1,34 +1,92 @@
-ON MISSION 16.107.0 — RELEASE CANDIDATE
+ON MISSION 16.113.0 — RELEASE REPORT
+Status: HARDENING CANDIDATE — NOT DEPLOYED
 
-Purpose: Country-aware public homepage, Germany current-market situation, Afghanistan Digital Daftar capability discovery, and a privacy-bounded public market-data view.
+SUMMARY
+Cumulative source release implementing proposed roadmap 16.108–16.113 on the existing ON Mission platform. No parallel backend, identity system, tenant authority or mission lifecycle was added.
 
-Completed in source:
-- Reworked the canonical public homepage around mission execution, data infrastructure, markets, platform capabilities, current situation and public data.
-- Country discovery remains read-only and is sourced from the existing canonical product availability and country launch authorities.
-- Germany Logistics shows its current Market Factory/release/onboarding state; the homepage does not open registration unless the existing authority says it is live.
-- Afghanistan discovery exposes the six provisioned Daftar sector templates and the implemented capabilities, while explicitly showing the country product activation gate.
-- Added a public read-only aggregate price-index endpoint with active-market, telemetry-enabled profile, minimum cohort (>=5), and 20-minute freshness checks.
-- Public data excludes private ledger fields and individual telemetry records; disclosures explain source class and limitations.
-- Responsive desktop/mobile navigation and country/data selectors.
-- Existing public route, auth/session and Layout Studio route adapter retained; no new backend or identity system.
+IMPLEMENTED IN SOURCE
+16.108 Unified Control Plane and Capability Governance
+- Capability registry, market/sector bindings and append-only lifecycle history.
+- Super Admin Capabilities & Data workspace.
+- Step-up lifecycle transitions, evidence-backed certification, release-backed publication and market-gated activation.
+- Daftar market profile governance, pilot review records and controlled pilot tenant allowlist.
+- Workspace next-action guidance for Markets, Capabilities & Data and Simulation Lab.
 
-Validation performed:
-- JavaScript syntax checks: changed browser and Worker modules pass `node --check`.
-- `npm run check:release`: PASS, including the new 16.107.0 homepage/public-data contract and all cumulative market/resource tests.
-- `npm run check:health`: PASS.
-- `npm run check:migrations`: PASS (167 ordered migrations; high-water 0167).
-- `npm run check:schema`: PASS (270 tables, 484 indexes, 84 triggers).
-- `npm run check:release-engineering`: PASS.
-- Super Admin build and decomposition checks: PASS.
-- Architecture boundary check: 434 JS files, 1,639 local imports, zero cycles; one canonical mission lifecycle writer.
-- Duplicate-file-content gate: PASS (1,615 unique files).
-- `npm run build`: NOT RUN TO COMPLETION; blocked at the environment gate because this authoring runtime is Node 22.16.0 while the project requires Node 24.22.1.
+16.109 Shared Simulation Lab
+- Afghanistan Daftar scenario catalogue and Germany Logistics regression scenarios for normal execution, provider unavailable, route blocked, mission recovery, device disconnect, proof required, late delivery and cancellation.
+- Synthetic shop-day, Qarz, offline replay, consent withdrawal, cohort privacy, tenant isolation and inactive-market scenarios.
+- Saved model-only evidence links with scenario/capability/market/sector scope checks; runs are marked `client_model_unverified` and do not advance lifecycle or certify a release.
+- IMPORTANT: these are deterministic synthetic models. Production service code is not executed; runtime-backed simulation remains open. Capability promotion to SIMULATED/CERTIFIED is blocked until a server-side runtime verification adapter and receipt exist.
 
-Not claimed:
-- No production build or deployment has been performed by this release preparation.
-- No live browser, device, tenant-isolation or public-data API acceptance has been performed.
-- Afghanistan product launch is not activated by this source change.
-- Public data will remain empty until valid market activation, verified opt-in contributors, secret configuration, cohort and freshness requirements are met.
-- No Dari/Pashto localization, official national statistics feed, payment execution, remittance, or independently verified FX provider integration is included.
+16.110 Daftar Business Book
+- Append-only debit/credit journal in same atomic D1 batch as supported private ledger events.
+- Sale, purchase, expense, service, wage, freight and Qarz settlement postings, with receivables and payables separated by the original give/get direction.
+- Merchant-reported payment evidence; non-cash clearing account; no client-supplied provider verification.
+- Account balance reconciliation, separate Qarz receivable/payable balances, 30-day daily summaries and merchant-printable transaction receipts.
+- Not statutory accounting or tax-compliance certification.
 
-Release status: HARDENING CANDIDATE — NOT DEPLOYED.
+16.111 PWA and Portability
+- Installable web manifest, app icons, shell cache and install prompt.
+- Offline queue visibility, retry/rejected states and explicit removal after confirmation.
+- Owner/admin CSV and JSON exports; browser print-to-PDF statement.
+- AES-256-GCM/PBKDF2 encrypted ZIP backup with manifest.
+- Bounded, tenant/market-scoped restore validation preview; no live import/restore.
+
+16.112 Afghanistan Controlled Pilot
+- Append-only legal, operational, merchant-acceptance, security, data-residency and metrology review records.
+- Accepted reviews require active critical/compliance evidence file references and hashes.
+- Pilot profiles require explicit tenant/sector allowlisting.
+- Profile activation requires accepted reviews and active country product launch.
+- Local unit conversion approval requires accepted metrology evidence.
+- Initial Dari (prs-AF) and Pashto (ps-AF) RTL translations; beta coverage only.
+- Actual field testing, legal review and launch approvals remain human obligations.
+
+16.113 Public Market Data
+- Versioned publication contracts, quality-run history and API access logging.
+- Quality metrics include inputs, qualified indices, qualified contributors, suppressed groups and freshness.
+- Public API /api/public/market-data/v1/{countryCode}/{sectorCode}.
+- Opt-in pseudonymous merchant price indicators with minimum cohort and freshness gates.
+- Approved FX reference publication from existing quote authority.
+- No tenant or contributor identifiers in public response; public endpoint rate-limited 60 requests/minute/IP; access logs cleaned after 90 days.
+
+DATABASE
+- New migrations: 0168–0173.
+- Total ordered migrations: 173; high-water 0173.
+- Schema snapshot regenerated.
+- Data classification, retention and tenant erasure dependencies extended.
+
+VERIFICATION
+- npm run check:migrations: PASS (173 ordered migrations, high-water 0173).
+- npm run check:release: PASS (16.108–16.113 tests plus cumulative regression suite).
+- Architecture boundaries: 437 JS files, 1,653 local imports, 0 cycles; one canonical mission lifecycle writer.
+- Current schema gate: PASS (284 tables, 495 indexes, 98 triggers).
+- Data integrity, health, Super Admin build/decomposition and release engineering: PASS.
+- Runtime release identity generation: PASS.
+- Production certification: BLOCKED because runtime URL, certification account and adversarial account credentials were not supplied.
+- Production build: BLOCKED at environment gate because authoring Node 22.16.0 does not match required Node 24.22.1.
+- No live acceptance is claimed.
+
+NOT COMPLETE / NOT CERTIFIED
+- Not deployed to Cloudflare; production D1 migrations not applied.
+- No production build: authoring environment Node 22.16.0; required Node 24.22.1.
+- No live browser/mobile, tenant isolation, backup restore or field acceptance test.
+- Afghanistan country product launch remains a separate Market Factory prerequisite.
+- Real merchant acceptance, local legal, data-residency and metrology reviews not performed.
+- Dari/Pashto localization not fully translated or native-reviewed.
+- Simulation Lab does not execute production service code; isolated runtime adapter remains. Continuous automated health-feed integration for the MONITORED lifecycle state remains open. Capability definition/version authoring is not yet available in the UI.
+- Restore preview only; no live restore/import. PDF and receipt output are browser print-to-PDF, not server-generated signed documents.
+- Business book is not statutory accounting/tax software. Qarz aging, due dates, reminders, disputes, counterparty acknowledgment, opening balances, refunds/returns, tax invoices and period locks remain future work.
+- Public price data will remain unavailable until qualified opted-in contributor cohort and fresh quality pass exist.
+
+RECOMMENDED OPERATOR ORDER
+1. Run Node 24.22.1 npm ci, full health/release/build checks.
+2. Back up staging D1/R2 and apply migrations 0168–0173.
+3. Deploy to staging and inspect migration high-water/schema.
+4. Configure DAFTAR_TELEMETRY_HMAC_SECRET as Cloudflare secret.
+5. Run Germany regression and all Daftar model scenarios.
+6. Upload/verify Afghanistan legal/operational/security/residency/merchant evidence; allowlist pilot tenants.
+7. Activate Afghanistan only through existing Market Factory and review gates.
+8. Publish public data only after quality/provenance/freshness gates.
+9. Run live tenant acceptance; protect baseline only after actual production verification.
+
+See RELEASE.md and DEPLOYMENT-16.113.md.

@@ -39,6 +39,7 @@ function createTenant(id,sector='general',region='AF-HERAT',orgStatus='ACTIVE',v
   db.prepare(`INSERT INTO companies(id,name,deletion_status) VALUES(?,?,'active')`).run(id,`Test tenant ${id}`);
   db.prepare(`INSERT INTO company_management_profiles(company_id,legal_name,country_code,region_code,organization_type,sector_code,compliance_status,status) VALUES(?,?,'AF',?,'company',?,'configured',?)`).run(id,`Test tenant ${id}`,region,sector,orgStatus);
   db.prepare(`INSERT INTO company_verification_status(company_id,status,country_code) VALUES(?,?,'AF')`).run(id,verification);
+  db.prepare(`INSERT INTO daftar_pilot_tenant_access(id,company_id,country_code,sector_code,access_status,approved_by_identity_id,reason) VALUES(?,?,'AF',?,'approved',1,'Automated isolated test fixture allowlist.')`).run(`pilot-access-test-${id}`,id,sector);
   if(sector!=='fx')db.prepare(`INSERT INTO daftar_market_consents(company_id,country_code,sector_code,telemetry_opt_in,consent_version,consented_by_identity_id) VALUES(?,'AF',?,0,'1.0.0',?)`).run(id,sector,id+1000);
 }
 createTenant(1,'general','HERAT','ACTIVE');createTenant(2,'general','KABUL','ONBOARDING','pending');
@@ -132,4 +133,4 @@ assert.ok(fs.readFileSync('public/assets/js/frontend/navigation/registry.js','ut
 assert.ok(fs.readFileSync('public/assets/js/frontend/app/app.js','utf8').includes("key==='daftar'"));
 assert.ok(fs.existsSync('public/daftar-sw.js'));const offlineUi=fs.readFileSync('public/assets/js/frontend/daftar/daftar.js','utf8');assert.ok(offlineUi.includes('current.offlineScope'));assert.ok(offlineUi.includes('scopedDbName'));assert.ok(offlineUi.includes('AES-GCM'));assert.ok(offlineUi.includes('Account context changed'));assert.ok(offlineUi.includes('1,000 unsynchronized entries'));
 assert.ok(fs.readFileSync('database/schema.current.sql','utf8').includes('trg_daftar_inventory_movement_apply'));
-console.log('16.107.0 Embedded Daftar ledger, offline sync, privacy, telemetry, inventory and DPP runtime: PASS');
+console.log('16.113.0 Embedded Daftar ledger, offline sync, privacy, telemetry, inventory and DPP runtime: PASS');

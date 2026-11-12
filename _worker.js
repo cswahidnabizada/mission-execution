@@ -17,6 +17,7 @@ export default {
       return;
     }
     ctx.waitUntil(purgeExpiredOperationalData(env).catch(error => console.error("PRIVACY_RETENTION_CLEANUP", String(error?.message || error))));
+    ctx.waitUntil(env.DB.prepare(`DELETE FROM public_data_api_access_log WHERE created_at < datetime('now','-90 days')`).run().catch(error => console.error('PUBLIC_DATA_ACCESS_LOG_RETENTION', String(error?.message || error))));
     ctx.waitUntil(processPendingAgentSemanticMemory(env,{limit:40}).catch(error => console.error("AGENT_SEMANTIC_INDEXING", String(error?.message || error))));
     ctx.waitUntil(recalibrateAgentSignals(env,{limit:200}).catch(error => console.error("AGENT_RECALIBRATION", String(error?.message || error))));
     ctx.waitUntil(reconcilePendingAgentExecutions(env,{limit:50}).catch(error => console.error("AGENT_EXECUTION_RECOVERY", String(error?.message || error))));

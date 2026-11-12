@@ -10,9 +10,9 @@ const routes=read('src/worker/modules/admin-control/admin-build-data.routes.js')
 const css=read('public/assets/css/frontend/admin.css');
 const pkg=JSON.parse(read('package.json'));
 const manifest=JSON.parse(read('RELEASE-MANIFEST.json'));
-assert.equal(read('VERSION').trim(),'16.107.0');
-assert.equal(pkg.version,'16.107.0');
-assert.equal(manifest.version,'16.107.0');
+assert.equal(read('VERSION').trim(),'16.113.0');
+assert.equal(pkg.version,'16.113.0');
+assert.equal(manifest.version,'16.113.0');
 assert.match(relationships,/'market_package'/);
 assert.match(relationships,/SELECT id,package_key,country_code,status FROM platform_market_packages/);
 assert.match(relationships,/authority:'Market Factory Authority'/);

@@ -46,6 +46,9 @@ import { registerAdaptiveOrchestrationRoutes } from "./extensions/adaptive-orche
 import { registerTelemetryRoutes } from "./modules/telemetry/telemetry.routes.js";
 import { registerDaftarRoutes } from "./modules/daftar/daftar.routes.js";
 import { registerDaftarAdminRoutes } from "./modules/daftar/daftar-admin.routes.js";
+import { registerDaftarPortabilityRoutes } from "./modules/daftar/daftar-portability.routes.js";
+import { registerPublicMarketDataRoutes } from "./modules/daftar/public-data.routes.js";
+import { registerCapabilityGovernanceRoutes } from "./modules/admin-control/capability-governance.routes.js";
 import { registerAdaptiveActionOrchestrationRoutes } from "./extensions/action-orchestration/action-orchestration.routes.js";
 import { registerSecuredActionExecutionRoutes } from "./extensions/action-execution/secured-action-execution.routes.js";
 import { registerCanonicalActionRoutes } from "./extensions/action-execution/canonical-action.routes.js";
@@ -88,6 +91,9 @@ export function createApp() {
   registerTelemetryRoutes(router);
   registerDaftarRoutes(router);
   registerDaftarAdminRoutes(router);
+  registerDaftarPortabilityRoutes(router);
+  registerPublicMarketDataRoutes(router);
+  registerCapabilityGovernanceRoutes(router);
   registerAdaptiveActionOrchestrationRoutes(router);
   registerSecuredActionExecutionRoutes(router);
   registerCanonicalActionRoutes(router);

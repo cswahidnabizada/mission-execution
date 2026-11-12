@@ -10,9 +10,9 @@ const css = read('public/assets/css/frontend/admin.css');
 const pkg = JSON.parse(read('package.json'));
 const manifest = JSON.parse(read('RELEASE-MANIFEST.json'));
 
-assert.equal(read('VERSION').trim(), '16.107.0');
-assert.equal(pkg.version, '16.107.0');
-assert.equal(manifest.version, '16.107.0');
+assert.equal(read('VERSION').trim(), '16.113.0');
+assert.equal(pkg.version, '16.113.0');
+assert.equal(manifest.version, '16.113.0');
 assert.match(source, /function bindStageConfiguration/);
 assert.match(source, /\/api\/platform\/admin\/resource-search\?q=/);
 for (const state of ['ALREADY_AVAILABLE','NEEDS_CONFIGURATION','REQUIRES_APPROVAL','BLOCKED','CANDIDATE_FOUND','NOT_FOUND_IN_SEARCH_SCOPE','AUTHORITY_UNAVAILABLE']) {

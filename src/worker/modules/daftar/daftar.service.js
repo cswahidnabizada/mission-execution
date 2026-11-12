@@ -27,12 +27,13 @@ export async function getDaftarContext(env, session) {
       JOIN daftar_market_profiles mp ON mp.country_code=cmp.country_code AND mp.sector_code=cmp.sector_code
       WHERE c.id=? AND c.deletion_status='active' AND cmp.status IN ('ACTIVE','ONBOARDING','PENDING_VERIFICATION','VERIFIED')
         AND mp.status IN ('pilot','active')
+        AND (mp.status='active' OR EXISTS(SELECT 1 FROM daftar_pilot_tenant_access pa WHERE pa.company_id=c.id AND pa.country_code=cmp.country_code AND pa.sector_code=cmp.sector_code AND pa.access_status='approved' AND (pa.expires_at IS NULL OR datetime(pa.expires_at)>datetime('now'))))
       ORDER BY l.updated_at DESC LIMIT 1
     `).bind(companyId).first();
   } catch (error) {
     throw httpError('DAFTAR_AUTHORITY_UNAVAILABLE', 503, error);
   }
-  if (!row) throw httpError('DAFTAR_MARKET_NOT_ACTIVE', 403);
+  if (!row) {const pilot=await env.DB.prepare(`SELECT mp.status FROM companies c JOIN company_management_profiles cmp ON cmp.company_id=c.id JOIN daftar_market_profiles mp ON mp.country_code=cmp.country_code AND mp.sector_code=cmp.sector_code JOIN country_product_launches l ON l.country_code=cmp.country_code AND l.status='active' AND l.active=1 WHERE c.id=? AND c.deletion_status='active' AND mp.status='pilot' LIMIT 1`).bind(companyId).first().catch(()=>null);if(pilot)throw httpError('DAFTAR_PILOT_ACCESS_REQUIRED',403);throw httpError('DAFTAR_MARKET_NOT_ACTIVE', 403);}
   const sectorCode = String(row.sector_code || 'general').toLowerCase();
   if(String(row.template_version||'')!==template.schemaVersion)throw httpError('DAFTAR_TEMPLATE_VERSION_UNAVAILABLE',409);
   const sector = template.sectors[sectorCode];
@@ -121,7 +122,8 @@ async function recordOneEntry(env,session,context,input,requestId) {
   if(entryType==='freight'&&context.sectorCode==='logistics'&&(!originCode||!destinationCode))throw httpError('DAFTAR_FREIGHT_ROUTE_REQUIRED',400);
   const relatedEntryId=entryType==='credit_settlement'?validateOpaqueId(input?.relatedEntryId,'DAFTAR_CREDIT_ENTRY_REQUIRED'):null;
   if (entryType==='credit_settlement'&&paymentMethod==='credit') throw httpError('DAFTAR_SETTLEMENT_METHOD_INVALID',400);
-  const paymentStatus=paymentMethod==='credit'?'reported_pending':(paymentMethod==='cash'?'reported_paid':'reported_pending');
+  if(['sale','purchase','expense','credit_settlement','service','wage','freight'].includes(entryType)&&amountMinor<=0)throw httpError('DAFTAR_AMOUNT_REQUIRED',400);
+  const paymentStatus=paymentMethod==='cash'?'reported_paid':'reported_pending';
   let fx=null;
   if (entryType==='fx_exchange') {
     const counter=normalizeMoney({amount:input?.counterAmount,currencyCode:input?.counterCurrencyCode});
@@ -142,9 +144,13 @@ async function recordOneEntry(env,session,context,input,requestId) {
     statements.push(env.DB.prepare(`INSERT INTO daftar_inventory_movements(company_id,entry_id,item_code,delta_quantity_milli,unit_code) VALUES(?,?,?,?,?)`)
       .bind(context.companyId,entryId,itemCode,inventoryDelta,normalizedUnit));
   }
+  let settlementOriginal=null;if(entryType==='credit_settlement'){settlementOriginal=await env.DB.prepare(`SELECT id,entry_type,direction,currency_code,payment_method,amount_minor,settled_amount_minor FROM daftar_private_entries WHERE id=? AND company_id=? LIMIT 1`).bind(relatedEntryId,context.companyId).first();if(!settlementOriginal||settlementOriginal.payment_method!=='credit'||settlementOriginal.currency_code!==currencyCode)throw httpError('DAFTAR_CREDIT_ENTRY_NOT_FOUND',404);if(settlementOriginal.amount_minor-settlementOriginal.settled_amount_minor<amountMinor)throw httpError('DAFTAR_CREDIT_SETTLEMENT_EXCEEDS_BALANCE',409);}
+  // Every monetary business entry receives a balanced, single-currency journal event
+  // in the same D1 batch as the private operational entry and its idempotency receipt.
+  const journalPosting=buildJournalPosting({entryType,direction,paymentMethod,amountMinor,currencyCode,clientEntryId,entryId,identityId:Number(session.identityId),relatedEntry:settlementOriginal});
+  if(journalPosting) statements.push(env.DB.prepare(`INSERT INTO daftar_book_journal_transactions(id,company_id,source_entry_id,client_transaction_id,transaction_type,debit_account,credit_account,amount_minor,currency_code,payment_method,payment_evidence_class,memo,created_by_identity_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)`)
+    .bind(journalPosting.id,context.companyId,entryId,clientEntryId,journalPosting.transactionType,journalPosting.debitAccount,journalPosting.creditAccount,amountMinor,currencyCode,paymentMethod,'merchant_reported',null,Number(session.identityId)));
   if (entryType==='credit_settlement') {
-    const original=await env.DB.prepare(`SELECT id,currency_code,payment_method,amount_minor,settled_amount_minor FROM daftar_private_entries WHERE id=? AND company_id=? LIMIT 1`).bind(relatedEntryId,context.companyId).first();
-    if (!original||original.payment_method!=='credit'||original.currency_code!==currencyCode) throw httpError('DAFTAR_CREDIT_ENTRY_NOT_FOUND',404);
     statements.push(env.DB.prepare(`INSERT INTO daftar_credit_settlements(company_id,entry_id,client_settlement_id,amount_minor,currency_code,payment_method,recorded_by_identity_id) VALUES(?,?,?,?,?,?,?)`)
       .bind(context.companyId,relatedEntryId,clientEntryId,amountMinor,currencyCode,paymentMethod,Number(session.identityId)));
   }
@@ -175,15 +181,28 @@ async function recordOneEntry(env,session,context,input,requestId) {
   return {...result,accepted:true,replayed:false};
 }
 
+function buildJournalPosting({entryType,direction,paymentMethod,clientEntryId,entryId,identityId,relatedEntry}) {
+  const settlementAccount=paymentMethod==='cash'?'cash':'adjustment_clearing';let transactionType=entryType,debitAccount=null,creditAccount=null;
+  if(entryType==='sale'){debitAccount=paymentMethod==='credit'?'accounts_receivable':settlementAccount;creditAccount='sales_revenue';}
+  else if(entryType==='purchase'){debitAccount='inventory';creditAccount=paymentMethod==='credit'?'accounts_payable':settlementAccount;}
+  else if(entryType==='expense'){debitAccount='operating_expense';creditAccount=paymentMethod==='credit'?'accounts_payable':settlementAccount;}
+  else if(entryType==='credit_settlement'){const payable=relatedEntry?.entry_type==='purchase'||relatedEntry?.direction==='get';transactionType=payable?'payment_out':'payment_in';if(payable){debitAccount='accounts_payable';creditAccount=settlementAccount;}else{debitAccount=settlementAccount;creditAccount='accounts_receivable';}}
+  else if(entryType==='service'){if(direction==='give'){debitAccount=paymentMethod==='credit'?'accounts_receivable':settlementAccount;creditAccount='sales_revenue';}else{debitAccount='operating_expense';creditAccount=paymentMethod==='credit'?'accounts_payable':settlementAccount;}}
+  else if(entryType==='wage'){debitAccount='wage_expense';creditAccount=paymentMethod==='credit'?'accounts_payable':settlementAccount;}
+  else if(entryType==='freight'){if(direction==='give'){debitAccount=paymentMethod==='credit'?'accounts_receivable':settlementAccount;creditAccount='other_income';}else{debitAccount='freight_expense';creditAccount=paymentMethod==='credit'?'accounts_payable':settlementAccount;}}
+  if(!debitAccount||!creditAccount||debitAccount===creditAccount)return null;
+  return {id:crypto.randomUUID(),sourceEntryId:entryId,clientEntryId,transactionType,debitAccount,creditAccount,identityId};
+}
+
 export async function getDaftarDashboard(env,context) {
   const [summary,inventory,entries,sales,credit]=await Promise.all([
     env.DB.prepare(`SELECT COUNT(*) AS entry_count FROM daftar_private_entries WHERE company_id=? AND created_at>=datetime('now','-30 days')`).bind(context.companyId).first(),
     env.DB.prepare(`SELECT item_code,quantity_milli,unit_code,updated_at FROM daftar_inventory_balances WHERE company_id=? ORDER BY item_code LIMIT 100`).bind(context.companyId).all(),
     env.DB.prepare(`SELECT id,entry_type,direction,item_code,origin_code,destination_code,reference_code,quantity_milli,unit_code,amount_minor,currency_code,payment_method,payment_status,counterparty_label,created_at FROM daftar_private_entries WHERE company_id=? ORDER BY created_at DESC LIMIT 20`).bind(context.companyId).all(),
     env.DB.prepare(`SELECT currency_code,COALESCE(SUM(amount_minor),0) AS amount_minor FROM daftar_private_entries WHERE company_id=? AND entry_type='sale' AND created_at>=datetime('now','-30 days') GROUP BY currency_code ORDER BY currency_code`).bind(context.companyId).all(),
-    env.DB.prepare(`SELECT currency_code,COUNT(*) AS open_count,COALESCE(SUM(amount_minor-settled_amount_minor),0) AS outstanding_minor FROM daftar_private_entries WHERE company_id=? AND payment_method='credit' AND settled_amount_minor<amount_minor GROUP BY currency_code ORDER BY currency_code`).bind(context.companyId).all()
+    env.DB.prepare(`SELECT CASE WHEN direction='get' THEN 'payable' ELSE 'receivable' END AS credit_side,currency_code,COUNT(*) AS open_count,COALESCE(SUM(amount_minor-settled_amount_minor),0) AS outstanding_minor FROM daftar_private_entries WHERE company_id=? AND payment_method='credit' AND settled_amount_minor<amount_minor GROUP BY credit_side,currency_code ORDER BY credit_side,currency_code`).bind(context.companyId).all()
   ]);
-  return {summary:{entryCount:Number(summary?.entry_count||0),reportedSalesByCurrency:(sales.results||[]).map(x=>({currencyCode:x.currency_code,amountMinor:Number(x.amount_minor||0)})),qarzOutstandingByCurrency:(credit.results||[]).map(x=>({currencyCode:x.currency_code,amountMinor:Number(x.outstanding_minor||0),openCount:Number(x.open_count||0)})),openCreditEntries:(credit.results||[]).reduce((n,x)=>n+Number(x.open_count||0),0)},inventory:inventory.results||[],recentEntries:entries.results||[]};
+  const receivables=(credit.results||[]).filter(x=>x.credit_side==='receivable').map(x=>({currencyCode:x.currency_code,amountMinor:Number(x.outstanding_minor||0),openCount:Number(x.open_count||0)}));const payables=(credit.results||[]).filter(x=>x.credit_side==='payable').map(x=>({currencyCode:x.currency_code,amountMinor:Number(x.outstanding_minor||0),openCount:Number(x.open_count||0)}));return {summary:{entryCount:Number(summary?.entry_count||0),reportedSalesByCurrency:(sales.results||[]).map(x=>({currencyCode:x.currency_code,amountMinor:Number(x.amount_minor||0)})),qarzReceivableByCurrency:receivables,qarzPayableByCurrency:payables,qarzOutstandingByCurrency:[...receivables,...payables],openReceivableEntries:receivables.reduce((n,x)=>n+x.openCount,0),openPayableEntries:payables.reduce((n,x)=>n+x.openCount,0),openCreditEntries:(credit.results||[]).reduce((n,x)=>n+Number(x.open_count||0),0)},inventory:inventory.results||[],recentEntries:entries.results||[]};
 }
 
 export async function updateTelemetryConsent(env,session,context,optIn) {
@@ -213,12 +232,15 @@ export async function aggregateMarketTelemetry(env,{now=new Date()}={}) {
   const since=new Date(now.getTime()-24*60*60*1000).toISOString();
   const sinceSql=since.replace('T',' ').slice(0,19);
   const profiles=await env.DB.prepare(`SELECT mp.country_code,mp.sector_code,mp.minimum_cohort_size,mp.status,mp.telemetry_enabled,EXISTS(SELECT 1 FROM country_product_launches l WHERE l.country_code=mp.country_code AND l.status='active' AND l.active=1) AS product_active FROM daftar_market_profiles mp`).all();
-  const secret=String(env.DAFTAR_TELEMETRY_HMAC_SECRET||'');
-  if(secret.length<32){await env.DB.prepare(`DELETE FROM daftar_market_price_indices`).run();for(const p of profiles.results||[])await env.KV_BINDING.delete(`daftar:market-prices:${p.country_code}:${p.sector_code}`);return {groups:0,indices:0,received:0,reason:'telemetry_secret_not_configured'};}
-  // Re-check current tenant verification and consent before selecting any sample.
+  // Privacy cleanup runs even when aggregation is disabled or the HMAC secret is missing.
   await env.DB.prepare(`DELETE FROM market_telemetry_events WHERE contributor_key NOT IN (SELECT mc.contributor_key FROM daftar_market_consents mc JOIN company_verification_status cvs ON cvs.company_id=mc.company_id JOIN companies c ON c.id=mc.company_id WHERE mc.telemetry_opt_in=1 AND mc.withdrawn_at IS NULL AND mc.contributor_key IS NOT NULL AND lower(cvs.status)='verified' AND c.deletion_status='active')`).run();
+  await env.DB.prepare(`DELETE FROM market_telemetry_events WHERE expires_at<=CURRENT_TIMESTAMP`).run();
+  const secret=String(env.DAFTAR_TELEMETRY_HMAC_SECRET||'');
+  if(secret.length<32){await env.DB.prepare(`DELETE FROM daftar_market_price_indices`).run();for(const p of profiles.results||[]){await env.KV_BINDING.delete(`daftar:market-prices:${p.country_code}:${p.sector_code}`);const publication=await env.DB.prepare(`SELECT publication_id,allowed_indicators_json FROM public_data_publications WHERE country_code=? AND sector_code=? AND status IN ('approved','published') ORDER BY created_at DESC LIMIT 1`).bind(p.country_code,p.sector_code).first().catch(()=>null);const allowed=JSON.parse(publication?.allowed_indicators_json||'[]');const needsTelemetry=allowed.includes('median_unit_price');let fxReferenceCount=0;if(publication&&allowed.includes('approved_fx_reference')){const fx=await env.DB.prepare(`SELECT COUNT(*) count FROM daftar_fx_quotes WHERE country_code=? AND status='approved' AND valid_until>CURRENT_TIMESTAMP`).bind(p.country_code).first();fxReferenceCount=Number(fx?.count||0);}const status=!needsTelemetry&&allowed.includes('approved_fx_reference')&&fxReferenceCount>0&&p.status==='active'&&Number(p.product_active)===1?'pass':'blocked';await env.DB.prepare(`INSERT INTO public_data_quality_runs(quality_run_id,country_code,sector_code,publication_id,run_status,input_count,qualified_index_count,qualified_contributor_count,suppressed_index_count,stale_index_count,checks_json) VALUES(?,?,?, ?,?,0,0,0,0,0,?)`).bind(crypto.randomUUID(),p.country_code,p.sector_code,publication?.publication_id||null,status,JSON.stringify({telemetrySecretConfigured:false,telemetryPricePublicationBlocked:true,approvedFxReferenceCount:fxReferenceCount,marketProductActive:Number(p.product_active)===1,marketProfileActive:p.status==='active',reason:'telemetry_secret_not_configured_for_merchant_telemetry'})).run().catch(()=>{});}return {groups:0,indices:0,received:0,reason:'telemetry_secret_not_configured'};}
+  // The current verified/consented contributor set has already been rechecked above.
   const rows=await env.DB.prepare(`SELECT country_code,sector_code,city_code,item_code,event_kind,unit_code,unit_price_minor,trust_weight_milli,currency_code,contributor_key,trust_class,created_at FROM market_telemetry_events WHERE created_at>=? AND expires_at>CURRENT_TIMESTAMP AND item_code IS NOT NULL ORDER BY created_at DESC LIMIT 10000`).bind(sinceSql).all();
-  const profileMap=new Map((profiles.results||[]).filter(p=>['pilot','active'].includes(p.status)&&Number(p.telemetry_enabled)===1&&Number(p.product_active)===1).map(p=>[`${p.country_code}|${p.sector_code}`,Math.max(5,Number(p.minimum_cohort_size)||5)]));
+  const publications=await env.DB.prepare(`SELECT country_code,sector_code,minimum_cohort_size FROM public_data_publications WHERE status IN ('approved','published')`).all();const publicationMap=new Map((publications.results||[]).map(p=>[`${p.country_code}|${p.sector_code}`,Number(p.minimum_cohort_size)||5]));
+  const profileMap=new Map((profiles.results||[]).filter(p=>['pilot','active'].includes(p.status)&&Number(p.telemetry_enabled)===1&&Number(p.product_active)===1).map(p=>{const key=`${p.country_code}|${p.sector_code}`;return [key,Math.max(5,Number(p.minimum_cohort_size)||5,publicationMap.get(key)||5)];}));
   const groups=new Map();
   for (const row of rows.results||[]) {
     const profileKey=`${row.country_code}|${row.sector_code}`;
@@ -227,7 +249,7 @@ export async function aggregateMarketTelemetry(env,{now=new Date()}={}) {
     const group=groups.get(key)||{countryCode:row.country_code,sectorCode:row.sector_code,cityCode:row.city_code||'ALL',itemCode:row.item_code,eventKind:row.event_kind,unitCode:row.unit_code,currencyCode:row.currency_code,prices:[]};
     group.prices.push({price:Number(row.unit_price_minor),weight:Number(row.trust_weight_milli)||350,contributor:row.contributor_key,trustClass:row.trust_class});groups.set(key,group);
   }
-  const feeds=new Map();const writes=[];
+  const feeds=new Map();const writes=[];const qualifiedContributorSets=new Map();
   for (const group of groups.values()) {
     const minimum=profileMap.get(`${group.countryCode}|${group.sectorCode}`)||5;
     const distinct=new Set(group.prices.map(x=>x.contributor));if(distinct.size<minimum)continue;
@@ -235,6 +257,7 @@ export async function aggregateMarketTelemetry(env,{now=new Date()}={}) {
     const kept=group.prices.filter(value=>value.price>=median*0.8&&value.price<=median*1.2);
     const keptContributors=new Set(kept.map(x=>x.contributor));
     if(kept.length<minimum||keptContributors.size<minimum)continue;
+    const contributorKey=`${group.countryCode}|${group.sectorCode}`;const contributorSet=qualifiedContributorSets.get(contributorKey)||new Set();for(const contributor of keptContributors)contributorSet.add(contributor);qualifiedContributorSets.set(contributorKey,contributorSet);
     const cleanMedian=Math.round(weightedMedian(kept));
     const item={countryCode:group.countryCode,sectorCode:group.sectorCode,cityCode:group.cityCode,itemCode:group.itemCode,eventKind:group.eventKind,unitCode:group.unitCode,currencyCode:group.currencyCode,medianUnitPriceMinor:cleanMedian,sampleCount:kept.length,contributorCount:keptContributors.size,outlierCount:group.prices.length-kept.length,trustClass:kept.every(x=>x.trustClass==='provider_verified')?'provider_verified':'merchant_reported',windowStartedAt:since,windowEndedAt:now.toISOString(),generatedAt:now.toISOString()};
     const key=`${item.countryCode}|${item.sectorCode}`;const feed=feeds.get(key)||{countryCode:item.countryCode,sectorCode:item.sectorCode,generatedAt:now.toISOString(),windowHours:24,minimumCohortSize:minimum,items:[]};feed.items.push(item);feeds.set(key,feed);
@@ -248,7 +271,11 @@ export async function aggregateMarketTelemetry(env,{now=new Date()}={}) {
     const key=`${profile.country_code}|${profile.sector_code}`;const kvKey=`daftar:market-prices:${profile.country_code}:${profile.sector_code}`;const feed=feeds.get(key);
     if(feed&&profileMap.has(key))await env.KV_BINDING.put(kvKey,JSON.stringify(feed),{expirationTtl:1200});else await env.KV_BINDING.delete(kvKey);
   }
-  await env.DB.prepare(`DELETE FROM market_telemetry_events WHERE expires_at<=CURRENT_TIMESTAMP`).run();
+  for(const profile of profiles.results||[]){
+    const key=`${profile.country_code}|${profile.sector_code}`;const feed=feeds.get(key);const publication=await env.DB.prepare(`SELECT publication_id,minimum_cohort_size,maximum_age_minutes,allowed_indicators_json FROM public_data_publications WHERE country_code=? AND sector_code=? AND status IN ('approved','published') ORDER BY created_at DESC LIMIT 1`).bind(profile.country_code,profile.sector_code).first();
+    const qualified=feed?.items?.length||0;const inputCount=(rows.results||[]).filter(r=>r.country_code===profile.country_code&&r.sector_code===profile.sector_code).length;const inputGroups=[...groups.values()].filter(g=>g.countryCode===profile.country_code&&g.sectorCode===profile.sector_code).length;const suppressed=Math.max(0,inputGroups-qualified);const allowed=JSON.parse(publication?.allowed_indicators_json||'[]');const needsPrice=allowed.includes('median_unit_price'),needsFx=allowed.includes('approved_fx_reference');let fxReferenceCount=0;if(publication&&needsFx){const fx=await env.DB.prepare(`SELECT COUNT(*) count FROM daftar_fx_quotes WHERE country_code=? AND status='approved' AND valid_until>CURRENT_TIMESTAMP`).bind(profile.country_code).first();fxReferenceCount=Number(fx?.count||0);}const pricePass=!needsPrice||(qualified>0&&Number(profile.telemetry_enabled)===1&&secret.length>=32);const fxPass=!needsFx||fxReferenceCount>0;const dataPass=publication?(allowed.length>0&&pricePass&&fxPass):qualified>0;const runStatus=dataPass&&Number(profile.product_active)===1&&profile.status==='active'?'pass':inputCount>0?'partial':'blocked';
+    await env.DB.prepare(`INSERT INTO public_data_quality_runs(quality_run_id,country_code,sector_code,publication_id,run_status,input_count,qualified_index_count,qualified_contributor_count,suppressed_index_count,stale_index_count,checks_json) VALUES(?,?,?,?,?,?,?,?,?,0,?)`).bind(crypto.randomUUID(),profile.country_code,profile.sector_code,publication?.publication_id||null,runStatus,inputCount,qualified,qualifiedContributorSets.get(`${profile.country_code}|${profile.sector_code}`)?.size||0,suppressed,JSON.stringify({minimumCohort:Number(publication?.minimum_cohort_size||profile.minimum_cohort_size||5),marketProductActive:Number(profile.product_active)===1,marketProfileActive:profile.status==='active',telemetrySecretConfigured:true,aggregationWindowHours:24,outlierFilter:'±20%',approvedFxReferenceCount:fxReferenceCount,priceIndicatorRequired:needsPrice,fxReferenceRequired:needsFx,priceIndicatorPass:pricePass,fxReferencePass:fxPass,rawTenantIdentifiersExposed:false})).run();
+  }
   return {groups:feeds.size,indices:writes.length,received:(rows.results||[]).length};
 }
 

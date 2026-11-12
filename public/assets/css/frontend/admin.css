@@ -175,3 +175,5 @@
 @media(max-width:1100px){.sa-primary-tab{flex:1 1 0;min-width:0;padding:0 7px}.sa-primary-tab b{font-size:9px}}
 @media(max-width:760px){.sa-primary-nav{display:flex;overflow-x:auto}.sa-primary-tab{flex:0 0 auto;min-width:max-content;padding:0 12px}.mf-ops-health-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:480px){.mf-ops-health-grid{grid-template-columns:1fr}}
+/* 16.108 capability contract inspection */
+.cg-contract{margin-top:7px;max-width:360px;font-size:11px;color:var(--muted,#667085)}.cg-contract summary{cursor:pointer;font-weight:700;letter-spacing:.06em}.cg-contract p{margin:7px 0}.cg-contract small{display:block;margin:4px 0;line-height:1.4}.df-locale-note{font-size:10px;color:var(--muted)}.df-queue-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.df-text-button{border:0;background:transparent;color:#9a3c3c;font-size:10px;font-weight:700;cursor:pointer}

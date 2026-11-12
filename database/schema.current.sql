@@ -1,5 +1,5 @@
 -- ON Mission current database schema snapshot
--- Generated from the complete ordered migration chain through 0167.
+-- Generated from the complete ordered migration chain through 0173.
 -- This is the canonical schema snapshot for fresh/recovery environments.
 -- Production evolution remains migration-first: apply database/migrations/*.sql in order.
 -- Do not edit manually; regenerate with scripts/generate-schema-current.mjs.
@@ -1194,6 +1194,29 @@ CREATE TABLE critical_audit_events (
   completed_at TEXT
 );
 
+-- table: daftar_book_journal_transactions
+CREATE TABLE daftar_book_journal_transactions (
+  id TEXT PRIMARY KEY,
+  company_id INTEGER NOT NULL,
+  source_entry_id TEXT,
+  client_transaction_id TEXT NOT NULL,
+  transaction_type TEXT NOT NULL CHECK(transaction_type IN ('sale','purchase','expense','income','payment_in','payment_out','refund','service','wage','freight','opening_balance','adjustment')),
+  debit_account TEXT NOT NULL CHECK(debit_account IN ('cash','accounts_receivable','inventory','operating_expense','sales_returns','other_income','wage_expense','freight_expense','opening_equity','adjustment_clearing','accounts_payable','sales_revenue')),
+  credit_account TEXT NOT NULL CHECK(credit_account IN ('cash','accounts_receivable','inventory','operating_expense','sales_returns','other_income','wage_expense','freight_expense','opening_equity','adjustment_clearing','accounts_payable','sales_revenue')),
+  amount_minor INTEGER NOT NULL CHECK(amount_minor > 0),
+  currency_code TEXT NOT NULL CHECK(currency_code IN ('AFN','USD','EUR')),
+  payment_method TEXT NOT NULL CHECK(payment_method IN ('cash','hesabpay','afpay','hawala_record','credit','other')),
+  payment_evidence_class TEXT NOT NULL DEFAULT 'merchant_reported' CHECK(payment_evidence_class IN ('merchant_reported','counterparty_acknowledged','provider_verified')),
+  memo TEXT,
+  created_by_identity_id INTEGER NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(company_id,client_transaction_id),
+  UNIQUE(company_id,source_entry_id),
+  CHECK(debit_account<>credit_account),
+  FOREIGN KEY(company_id) REFERENCES companies(id) ON DELETE CASCADE,
+  FOREIGN KEY(source_entry_id) REFERENCES daftar_private_entries(id) ON DELETE RESTRICT
+);
+
 -- table: daftar_credit_settlements
 CREATE TABLE daftar_credit_settlements (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -1229,6 +1252,18 @@ CREATE TABLE daftar_custody_transfers (
   FOREIGN KEY(passport_id) REFERENCES batch_passports(id) ON DELETE CASCADE,
   FOREIGN KEY(from_company_id) REFERENCES companies(id) ON DELETE CASCADE,
   FOREIGN KEY(to_company_id) REFERENCES companies(id) ON DELETE CASCADE
+);
+
+-- table: daftar_export_audit
+CREATE TABLE daftar_export_audit (
+  id TEXT PRIMARY KEY,
+  company_id INTEGER NOT NULL,
+  actor_identity_id INTEGER NOT NULL,
+  export_format TEXT NOT NULL CHECK(export_format IN ('json','csv','backup_preview')),
+  record_count INTEGER NOT NULL CHECK(record_count>=0),
+  content_sha256 TEXT NOT NULL CHECK(length(content_sha256)=64),
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY(company_id) REFERENCES companies(id) ON DELETE CASCADE
 );
 
 -- table: daftar_fx_quotes
@@ -1327,6 +1362,58 @@ CREATE TABLE daftar_market_profiles (
   FOREIGN KEY(country_code) REFERENCES country_catalog(code)
 );
 
+-- table: daftar_pilot_access_events
+CREATE TABLE daftar_pilot_access_events (
+  event_id TEXT PRIMARY KEY,
+  access_id TEXT NOT NULL,
+  company_id INTEGER NOT NULL,
+  country_code TEXT NOT NULL,
+  sector_code TEXT NOT NULL,
+  access_status TEXT NOT NULL CHECK(access_status IN ('approved','revoked')),
+  actor_identity_id INTEGER NOT NULL,
+  reason TEXT NOT NULL,
+  expires_at TEXT,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY(access_id) REFERENCES daftar_pilot_tenant_access(id),
+  FOREIGN KEY(company_id) REFERENCES companies(id) ON DELETE CASCADE
+);
+
+-- table: daftar_pilot_reviews
+CREATE TABLE daftar_pilot_reviews (
+  id TEXT PRIMARY KEY,
+  country_code TEXT NOT NULL DEFAULT 'AF',
+  sector_code TEXT NOT NULL,
+  review_type TEXT NOT NULL CHECK(review_type IN ('legal','operational','merchant_acceptance','security','data_residency','metrology')),
+  review_status TEXT NOT NULL CHECK(review_status IN ('pending','in_review','accepted','rejected','waived')),
+  reviewer_identity_id INTEGER NOT NULL,
+  evidence_reference TEXT NOT NULL CHECK(length(evidence_reference) BETWEEN 8 AND 300),
+  evidence_file_id INTEGER,
+  evidence_sha256 TEXT CHECK(evidence_sha256 IS NULL OR length(evidence_sha256)=64),
+  review_notes TEXT,
+  reviewed_at TEXT,
+  expires_at TEXT,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY(country_code) REFERENCES country_catalog(code),
+  FOREIGN KEY(evidence_file_id) REFERENCES mission_files(id) ON DELETE RESTRICT
+);
+
+-- table: daftar_pilot_tenant_access
+CREATE TABLE daftar_pilot_tenant_access (
+  id TEXT PRIMARY KEY,
+  company_id INTEGER NOT NULL,
+  country_code TEXT NOT NULL,
+  sector_code TEXT NOT NULL,
+  access_status TEXT NOT NULL CHECK(access_status IN ('approved','revoked')),
+  approved_by_identity_id INTEGER NOT NULL,
+  reason TEXT NOT NULL CHECK(length(reason) BETWEEN 8 AND 500),
+  expires_at TEXT,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(company_id,country_code,sector_code),
+  FOREIGN KEY(company_id) REFERENCES companies(id) ON DELETE CASCADE,
+  FOREIGN KEY(country_code) REFERENCES country_catalog(code)
+);
+
 -- table: daftar_private_entries
 CREATE TABLE daftar_private_entries (
   id TEXT PRIMARY KEY,
@@ -1370,6 +1457,22 @@ CREATE TABLE daftar_private_entries (
   FOREIGN KEY(company_id) REFERENCES companies(id) ON DELETE CASCADE,
   FOREIGN KEY(country_code) REFERENCES country_catalog(code),
   FOREIGN KEY(related_entry_id) REFERENCES daftar_private_entries(id)
+);
+
+-- table: daftar_restore_previews
+CREATE TABLE daftar_restore_previews (
+  preview_id TEXT PRIMARY KEY,
+  company_id INTEGER NOT NULL,
+  actor_identity_id INTEGER NOT NULL,
+  backup_version TEXT NOT NULL,
+  source_country_code TEXT NOT NULL,
+  source_sector_code TEXT NOT NULL,
+  record_count INTEGER NOT NULL CHECK(record_count>=0),
+  content_sha256 TEXT NOT NULL CHECK(length(content_sha256)=64),
+  validation_status TEXT NOT NULL CHECK(validation_status IN ('valid','blocked','incompatible')),
+  validation_json TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY(company_id) REFERENCES companies(id) ON DELETE CASCADE
 );
 
 -- table: daftar_sync_receipts
@@ -2666,6 +2769,40 @@ CREATE TABLE platform_archive_governance (
   updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+-- table: platform_capabilities
+CREATE TABLE platform_capabilities (
+  capability_code TEXT PRIMARY KEY CHECK(length(capability_code) BETWEEN 3 AND 100),
+  label TEXT NOT NULL CHECK(length(label) BETWEEN 2 AND 140),
+  description TEXT NOT NULL,
+  owner_domain TEXT NOT NULL,
+  contract_version TEXT NOT NULL,
+  risk_class TEXT NOT NULL CHECK(risk_class IN ('low','moderate','high','critical')),
+  lifecycle_status TEXT NOT NULL DEFAULT 'defined' CHECK(lifecycle_status IN ('defined','configured','simulated','certified','published','activated','monitored','suspended','retired')),
+  supported_scope_json TEXT NOT NULL DEFAULT '{}',
+  dependencies_json TEXT NOT NULL DEFAULT '[]',
+  required_evidence_json TEXT NOT NULL DEFAULT '[]',
+  canonical_authority TEXT NOT NULL,
+  rollback_strategy TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- table: platform_capability_lifecycle_events
+CREATE TABLE platform_capability_lifecycle_events (
+  event_id TEXT PRIMARY KEY,
+  capability_code TEXT NOT NULL,
+  country_code TEXT,
+  sector_code TEXT,
+  from_status TEXT,
+  to_status TEXT NOT NULL,
+  actor_identity_id INTEGER NOT NULL,
+  evidence_reference TEXT,
+  reason TEXT NOT NULL,
+  event_json TEXT NOT NULL DEFAULT '{}',
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY(capability_code) REFERENCES platform_capabilities(capability_code)
+);
+
 -- table: platform_certification_evidence
 CREATE TABLE platform_certification_evidence (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -3220,6 +3357,25 @@ CREATE TABLE platform_lifecycle_transitions (
   UNIQUE(lifecycle_definition_id,from_state_code,to_state_code),
   UNIQUE(lifecycle_definition_id,transition_code),
   FOREIGN KEY(lifecycle_definition_id) REFERENCES platform_lifecycle_definitions(id) ON DELETE CASCADE
+);
+
+-- table: platform_market_capabilities
+CREATE TABLE platform_market_capabilities (
+  country_code TEXT NOT NULL,
+  sector_code TEXT NOT NULL,
+  capability_code TEXT NOT NULL,
+  capability_version TEXT NOT NULL,
+  lifecycle_status TEXT NOT NULL DEFAULT 'defined' CHECK(lifecycle_status IN ('defined','configured','simulated','certified','published','activated','monitored','suspended','retired')),
+  configuration_json TEXT NOT NULL DEFAULT '{}',
+  latest_simulation_run_id TEXT,
+  certification_reference TEXT,
+  release_reference TEXT,
+  updated_by_identity_id INTEGER,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY(country_code,sector_code,capability_code,capability_version),
+  FOREIGN KEY(country_code) REFERENCES country_catalog(code),
+  FOREIGN KEY(capability_code) REFERENCES platform_capabilities(capability_code),
+  FOREIGN KEY(latest_simulation_run_id) REFERENCES platform_simulation_runs(run_id) ON DELETE RESTRICT
 );
 
 -- table: platform_market_launch_task_evidence
@@ -3953,6 +4109,22 @@ CREATE TABLE platform_reusable_responsibilities (code TEXT PRIMARY KEY,name TEXT
 -- table: platform_reusable_sectors
 CREATE TABLE platform_reusable_sectors (code TEXT PRIMARY KEY,name TEXT NOT NULL,description TEXT NOT NULL DEFAULT '',active INTEGER NOT NULL DEFAULT 1,created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, data_entry_id TEXT);
 
+-- table: platform_simulation_evidence_links
+CREATE TABLE platform_simulation_evidence_links (
+  run_id TEXT NOT NULL,
+  scenario_id TEXT NOT NULL,
+  capability_code TEXT NOT NULL,
+  country_code TEXT,
+  sector_code TEXT,
+  linked_by_identity_id INTEGER NOT NULL,
+  verification_status TEXT NOT NULL DEFAULT 'model_only' CHECK(verification_status IN ('model_only','runtime_verified')),
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY(run_id,scenario_id,capability_code),
+  FOREIGN KEY(run_id) REFERENCES platform_simulation_runs(run_id) ON DELETE RESTRICT,
+  FOREIGN KEY(scenario_id) REFERENCES platform_simulation_scenarios(scenario_id),
+  FOREIGN KEY(capability_code) REFERENCES platform_capabilities(capability_code)
+);
+
 -- table: platform_simulation_runs
 CREATE TABLE platform_simulation_runs (
   run_id TEXT PRIMARY KEY CHECK(length(run_id) BETWEEN 8 AND 100),
@@ -3966,8 +4138,25 @@ CREATE TABLE platform_simulation_runs (
   schema_version TEXT NOT NULL,
   run_json TEXT NOT NULL CHECK(length(run_json) BETWEEN 2 AND 1000000),
   content_sha256 TEXT NOT NULL CHECK(length(content_sha256)=64),
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, verification_status TEXT NOT NULL DEFAULT 'client_model_unverified' CHECK(verification_status IN ('client_model_unverified','runtime_verified')),
   CHECK((owner_scope='platform' AND tenant_id IS NULL) OR (owner_scope='tenant' AND tenant_id IS NOT NULL))
+);
+
+-- table: platform_simulation_scenarios
+CREATE TABLE platform_simulation_scenarios (
+  scenario_id TEXT PRIMARY KEY,
+  label TEXT NOT NULL,
+  description TEXT NOT NULL,
+  market_code TEXT,
+  sector_code TEXT,
+  capability_code TEXT,
+  scenario_version TEXT NOT NULL DEFAULT '1.0.0',
+  risk_class TEXT NOT NULL CHECK(risk_class IN ('low','moderate','high','critical')),
+  scenario_json TEXT NOT NULL,
+  active INTEGER NOT NULL DEFAULT 1 CHECK(active IN (0,1)),
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY(capability_code) REFERENCES platform_capabilities(capability_code)
 );
 
 -- table: platform_storage_registry
@@ -4113,6 +4302,60 @@ CREATE TABLE processing_purposes (
   data_minimization_rule TEXT NOT NULL,
   active INTEGER NOT NULL DEFAULT 1,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- table: public_data_api_access_log
+CREATE TABLE public_data_api_access_log (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  publication_id TEXT NOT NULL,
+  country_code TEXT NOT NULL,
+  sector_code TEXT NOT NULL,
+  response_status INTEGER NOT NULL,
+  returned_indicator_count INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY(publication_id) REFERENCES public_data_publications(publication_id)
+);
+
+-- table: public_data_publications
+CREATE TABLE public_data_publications (
+  publication_id TEXT PRIMARY KEY,
+  country_code TEXT NOT NULL,
+  sector_code TEXT NOT NULL,
+  publication_version TEXT NOT NULL DEFAULT '1.0.0',
+  status TEXT NOT NULL DEFAULT 'draft' CHECK(status IN ('draft','approved','published','suspended','retired')),
+  minimum_cohort_size INTEGER NOT NULL DEFAULT 5 CHECK(minimum_cohort_size BETWEEN 5 AND 1000),
+  maximum_age_minutes INTEGER NOT NULL DEFAULT 20 CHECK(maximum_age_minutes BETWEEN 1 AND 1440),
+  allowed_indicators_json TEXT NOT NULL DEFAULT '["median_unit_price"]',
+  public_api_enabled INTEGER NOT NULL DEFAULT 0 CHECK(public_api_enabled IN (0,1)),
+  approval_reference TEXT,
+  approval_evidence_file_id INTEGER,
+  approved_by_identity_id INTEGER,
+  approved_at TEXT,
+  published_by_identity_id INTEGER,
+  published_at TEXT,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(country_code,sector_code,publication_version),
+  FOREIGN KEY(country_code) REFERENCES country_catalog(code),
+  FOREIGN KEY(approval_evidence_file_id) REFERENCES mission_files(id) ON DELETE RESTRICT
+);
+
+-- table: public_data_quality_runs
+CREATE TABLE public_data_quality_runs (
+  quality_run_id TEXT PRIMARY KEY,
+  country_code TEXT NOT NULL,
+  sector_code TEXT NOT NULL,
+  publication_id TEXT,
+  run_status TEXT NOT NULL CHECK(run_status IN ('pass','partial','blocked','failed')),
+  input_count INTEGER NOT NULL DEFAULT 0,
+  qualified_index_count INTEGER NOT NULL DEFAULT 0,
+  qualified_contributor_count INTEGER NOT NULL DEFAULT 0,
+  suppressed_index_count INTEGER NOT NULL DEFAULT 0,
+  stale_index_count INTEGER NOT NULL DEFAULT 0,
+  checks_json TEXT NOT NULL,
+  generated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY(country_code) REFERENCES country_catalog(code),
+  FOREIGN KEY(publication_id) REFERENCES public_data_publications(publication_id)
 );
 
 -- table: public_executor_identities
@@ -4718,6 +4961,12 @@ END;
 -- trigger: trg_audit_logs_no_update
 CREATE TRIGGER trg_audit_logs_no_update BEFORE UPDATE ON audit_logs BEGIN SELECT RAISE(ABORT,'AUDIT_LOG_IMMUTABLE'); END;
 
+-- trigger: trg_capability_events_no_delete
+CREATE TRIGGER trg_capability_events_no_delete BEFORE DELETE ON platform_capability_lifecycle_events BEGIN SELECT RAISE(ABORT,'CAPABILITY_EVENTS_IMMUTABLE'); END;
+
+-- trigger: trg_capability_events_no_update
+CREATE TRIGGER trg_capability_events_no_update BEFORE UPDATE ON platform_capability_lifecycle_events BEGIN SELECT RAISE(ABORT,'CAPABILITY_EVENTS_IMMUTABLE'); END;
+
 -- trigger: trg_daftar_credit_settlement_apply
 CREATE TRIGGER trg_daftar_credit_settlement_apply
 AFTER INSERT ON daftar_credit_settlements
@@ -4780,6 +5029,30 @@ BEGIN
       AND b.unit_code=NEW.unit_code AND b.quantity_milli>=ABS(NEW.delta_quantity_milli)
   ) THEN RAISE(ABORT,'DAFTAR_INVENTORY_INSUFFICIENT_STOCK') END;
 END;
+
+-- trigger: trg_daftar_journal_no_delete
+CREATE TRIGGER trg_daftar_journal_no_delete BEFORE DELETE ON daftar_book_journal_transactions BEGIN SELECT RAISE(ABORT,'DAFTAR_JOURNAL_IMMUTABLE'); END;
+
+-- trigger: trg_daftar_journal_no_update
+CREATE TRIGGER trg_daftar_journal_no_update BEFORE UPDATE ON daftar_book_journal_transactions BEGIN SELECT RAISE(ABORT,'DAFTAR_JOURNAL_IMMUTABLE'); END;
+
+-- trigger: trg_daftar_pilot_access_events_no_delete
+CREATE TRIGGER trg_daftar_pilot_access_events_no_delete BEFORE DELETE ON daftar_pilot_access_events BEGIN SELECT RAISE(ABORT,'DAFTAR_PILOT_ACCESS_EVENTS_IMMUTABLE'); END;
+
+-- trigger: trg_daftar_pilot_access_events_no_update
+CREATE TRIGGER trg_daftar_pilot_access_events_no_update BEFORE UPDATE ON daftar_pilot_access_events BEGIN SELECT RAISE(ABORT,'DAFTAR_PILOT_ACCESS_EVENTS_IMMUTABLE'); END;
+
+-- trigger: trg_daftar_pilot_reviews_no_delete
+CREATE TRIGGER trg_daftar_pilot_reviews_no_delete BEFORE DELETE ON daftar_pilot_reviews BEGIN SELECT RAISE(ABORT,'DAFTAR_PILOT_REVIEWS_IMMUTABLE'); END;
+
+-- trigger: trg_daftar_pilot_reviews_no_update
+CREATE TRIGGER trg_daftar_pilot_reviews_no_update BEFORE UPDATE ON daftar_pilot_reviews BEGIN SELECT RAISE(ABORT,'DAFTAR_PILOT_REVIEWS_IMMUTABLE'); END;
+
+-- trigger: trg_daftar_restore_previews_no_delete
+CREATE TRIGGER trg_daftar_restore_previews_no_delete BEFORE DELETE ON daftar_restore_previews BEGIN SELECT RAISE(ABORT,'DAFTAR_RESTORE_PREVIEWS_IMMUTABLE'); END;
+
+-- trigger: trg_daftar_restore_previews_no_update
+CREATE TRIGGER trg_daftar_restore_previews_no_update BEFORE UPDATE ON daftar_restore_previews BEGIN SELECT RAISE(ABORT,'DAFTAR_RESTORE_PREVIEWS_IMMUTABLE'); END;
 
 -- trigger: trg_mission_assignments_integrity_insert
 CREATE TRIGGER trg_mission_assignments_integrity_insert
@@ -5500,6 +5773,18 @@ CREATE TRIGGER trg_platform_simulation_runs_no_delete BEFORE DELETE ON platform_
 -- trigger: trg_platform_simulation_runs_no_update
 CREATE TRIGGER trg_platform_simulation_runs_no_update BEFORE UPDATE ON platform_simulation_runs BEGIN SELECT RAISE(ABORT,'SIMULATION_RUNS_IMMUTABLE'); END;
 
+-- trigger: trg_public_data_quality_runs_no_delete
+CREATE TRIGGER trg_public_data_quality_runs_no_delete BEFORE DELETE ON public_data_quality_runs BEGIN SELECT RAISE(ABORT,'PUBLIC_DATA_QUALITY_RUNS_IMMUTABLE'); END;
+
+-- trigger: trg_public_data_quality_runs_no_update
+CREATE TRIGGER trg_public_data_quality_runs_no_update BEFORE UPDATE ON public_data_quality_runs BEGIN SELECT RAISE(ABORT,'PUBLIC_DATA_QUALITY_RUNS_IMMUTABLE'); END;
+
+-- trigger: trg_simulation_evidence_links_no_delete
+CREATE TRIGGER trg_simulation_evidence_links_no_delete BEFORE DELETE ON platform_simulation_evidence_links BEGIN SELECT RAISE(ABORT,'SIMULATION_EVIDENCE_LINKS_IMMUTABLE'); END;
+
+-- trigger: trg_simulation_evidence_links_no_update
+CREATE TRIGGER trg_simulation_evidence_links_no_update BEFORE UPDATE ON platform_simulation_evidence_links BEGIN SELECT RAISE(ABORT,'SIMULATION_EVIDENCE_LINKS_IMMUTABLE'); END;
+
 -- index: idx_action_execution_telemetry_company_time
 CREATE INDEX idx_action_execution_telemetry_company_time
   ON action_execution_telemetry(company_id,created_at DESC,id DESC);
@@ -5806,6 +6091,9 @@ CREATE INDEX idx_canonical_relationship_scope ON canonical_relationship_type_reg
 -- index: idx_capability_contract_status
 CREATE INDEX idx_capability_contract_status ON canonical_capability_contracts(status,capability_code);
 
+-- index: idx_capability_events_target
+CREATE INDEX idx_capability_events_target ON platform_capability_lifecycle_events(capability_code,country_code,sector_code,created_at DESC);
+
 -- index: idx_certification_fixture_status
 CREATE INDEX idx_certification_fixture_status
   ON platform_certification_fixtures(status,updated_at DESC);
@@ -5935,6 +6223,9 @@ CREATE INDEX idx_daftar_entries_tenant_credit ON daftar_private_entries(company_
 -- index: idx_daftar_entries_tenant_item
 CREATE INDEX idx_daftar_entries_tenant_item ON daftar_private_entries(company_id,item_code,created_at DESC);
 
+-- index: idx_daftar_export_audit_company
+CREATE INDEX idx_daftar_export_audit_company ON daftar_export_audit(company_id,created_at DESC);
+
 -- index: idx_daftar_fx_quote_lookup
 CREATE INDEX idx_daftar_fx_quote_lookup ON daftar_fx_quotes(country_code,base_currency,quote_currency,status,observed_at DESC);
 
@@ -5943,6 +6234,24 @@ CREATE INDEX idx_daftar_inventory_movements_retention ON daftar_inventory_moveme
 
 -- index: idx_daftar_inventory_tenant_item
 CREATE INDEX idx_daftar_inventory_tenant_item ON daftar_inventory_movements(company_id,item_code,created_at DESC);
+
+-- index: idx_daftar_journal_company_account
+CREATE INDEX idx_daftar_journal_company_account ON daftar_book_journal_transactions(company_id,debit_account,credit_account,currency_code);
+
+-- index: idx_daftar_journal_company_date
+CREATE INDEX idx_daftar_journal_company_date ON daftar_book_journal_transactions(company_id,created_at DESC);
+
+-- index: idx_daftar_pilot_access_events_company
+CREATE INDEX idx_daftar_pilot_access_events_company ON daftar_pilot_access_events(company_id,created_at DESC);
+
+-- index: idx_daftar_pilot_access_market
+CREATE INDEX idx_daftar_pilot_access_market ON daftar_pilot_tenant_access(country_code,sector_code,access_status,expires_at);
+
+-- index: idx_daftar_pilot_review_scope
+CREATE INDEX idx_daftar_pilot_review_scope ON daftar_pilot_reviews(country_code,sector_code,review_type,review_status,created_at DESC);
+
+-- index: idx_daftar_restore_previews_company
+CREATE INDEX idx_daftar_restore_previews_company ON daftar_restore_previews(company_id,created_at DESC);
 
 -- index: idx_daftar_transfers_recipient
 CREATE INDEX idx_daftar_transfers_recipient ON daftar_custody_transfers(to_company_id,status,expires_at);
@@ -6653,6 +6962,9 @@ CREATE INDEX idx_platform_layout_draft_events_experience ON platform_layout_draf
 -- index: idx_platform_layout_draft_versions_experience
 CREATE INDEX idx_platform_layout_draft_versions_experience ON platform_layout_draft_versions(experience_id, revision DESC);
 
+-- index: idx_platform_market_capabilities_scope
+CREATE INDEX idx_platform_market_capabilities_scope ON platform_market_capabilities(country_code,sector_code,lifecycle_status);
+
 -- index: idx_platform_mutation_leases_expiry
 CREATE INDEX idx_platform_mutation_leases_expiry
   ON platform_mutation_leases(expires_at);
@@ -6879,6 +7191,12 @@ CREATE INDEX idx_product_test_scenario_steps_status ON platform_product_test_sce
 
 -- index: idx_product_test_scenario_target
 CREATE INDEX idx_product_test_scenario_target ON platform_product_test_scenarios(company_id,mission_id);
+
+-- index: idx_public_data_api_access_date
+CREATE INDEX idx_public_data_api_access_date ON public_data_api_access_log(publication_id,created_at DESC);
+
+-- index: idx_public_data_quality_scope
+CREATE INDEX idx_public_data_quality_scope ON public_data_quality_runs(country_code,sector_code,generated_at DESC);
 
 -- index: idx_public_requests_company_mission_status_type_updated
 CREATE INDEX idx_public_requests_company_mission_status_type_updated

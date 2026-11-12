@@ -6,7 +6,7 @@ export function replaySimulation(original){
   if(!original||original.schema!=='onmission.simulation-run.v1'||original.simulationOnly!==true)throw new Error('SIMULATION_REPLAY_INPUT_INVALID');
   const input=original.replay?.input;
   if(!input||input.scenarioVersion!=='1')throw new Error('SIMULATION_REPLAY_VERSION_UNSUPPORTED');
-  const replayed=simulate({scenarioId:input.scenarioId,executor:input.executorId,missionId:input.missionId,deadline:input.deadlineMinutes,seed:input.seed,resources:input.resources,runTimestamp:original.createdAt});
+  const replayed=simulate({scenarioId:input.scenarioId,executor:input.executorId,missionId:input.missionId,deadline:input.deadlineMinutes,seed:input.seed,resources:input.resources,runTimestamp:original.createdAt,marketCode:input.marketCode,sectorCode:input.sectorCode});
   const expected=original.replay?.outcomeFingerprint||fingerprint(outcomeProjection(original));
   const sourceObserved=fingerprint(outcomeProjection(original));
   const actual=fingerprint(outcomeProjection(replayed));
