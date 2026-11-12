@@ -132,6 +132,9 @@ async function recordOneEntry(env,session,context,input,requestId) {
   }
   const entryId=crypto.randomUUID();
   const createdAt=validClientTime(input?.recordedAt);
+  const accountingMonth=String(createdAt||new Date().toISOString()).slice(0,7);
+  const lockedPeriod=await env.DB.prepare(`SELECT 1 FROM daftar_book_period_locks WHERE company_id=? AND period_month=? AND lock_status='locked' LIMIT 1`).bind(context.companyId,accountingMonth).first().catch(error=>{throw httpError('DAFTAR_BOOK_PERIOD_AUTHORITY_UNAVAILABLE',503,error);});
+  if(lockedPeriod)throw httpError('DAFTAR_BOOK_PERIOD_LOCKED',409);
   const inventoryApplied=Boolean(context.sector.inventory&&['sale','purchase'].includes(entryType)&&itemCode&&quantity?.normalizedQuantityMilli!==null);
   const normalizedUnit=quantity?.normalizedUnitCode||null;
   const inventoryDelta=inventoryApplied?(direction==='give'?-quantity.normalizedQuantityMilli:quantity.normalizedQuantityMilli):0;

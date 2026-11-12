@@ -47,6 +47,7 @@ import { registerTelemetryRoutes } from "./modules/telemetry/telemetry.routes.js
 import { registerDaftarRoutes } from "./modules/daftar/daftar.routes.js";
 import { registerDaftarAdminRoutes } from "./modules/daftar/daftar-admin.routes.js";
 import { registerDaftarPortabilityRoutes } from "./modules/daftar/daftar-portability.routes.js";
+import { registerDaftarControlsRoutes } from "./modules/daftar/daftar-controls.routes.js";
 import { registerPublicMarketDataRoutes } from "./modules/daftar/public-data.routes.js";
 import { registerCapabilityGovernanceRoutes } from "./modules/admin-control/capability-governance.routes.js";
 import { registerAdaptiveActionOrchestrationRoutes } from "./extensions/action-orchestration/action-orchestration.routes.js";
@@ -92,6 +93,7 @@ export function createApp() {
   registerDaftarRoutes(router);
   registerDaftarAdminRoutes(router);
   registerDaftarPortabilityRoutes(router);
+  registerDaftarControlsRoutes(router);
   registerPublicMarketDataRoutes(router);
   registerCapabilityGovernanceRoutes(router);
   registerAdaptiveActionOrchestrationRoutes(router);

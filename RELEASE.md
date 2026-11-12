@@ -1,10 +1,10 @@
-# Mission Execution 16.113.0 — Unified Control Plane, Digital Daftar and Public Market Data
+# Mission Execution 16.114.0 — Unified Platform Operational Controls
 
 Status: hardening candidate
 
 ## Release objective
 
-16.108–16.113 are a cumulative implementation series on the existing ON Mission platform. They do not introduce a second backend, identity provider, tenant authority, mission lifecycle or Super Admin application. They add capability governance, a shared Simulation Lab market catalogue, an append-only Daftar business journal, PWA/data portability, controlled Afghanistan pilot gates, and a governed public market-data API.
+16.108–16.114 are a cumulative implementation series on the existing ON Mission platform. They do not introduce a second backend, identity provider, tenant authority, mission lifecycle or Super Admin application. They add capability governance, a shared Simulation Lab market catalogue, an append-only Daftar business journal, PWA/data portability, controlled Afghanistan pilot gates, and a governed public market-data API.
 
 The release preserves the platform priority order: Security → Truth → Liveness → Stability → Experience → Scale.
 
@@ -190,3 +190,7 @@ This additive release preserves the platform's **Global Compliance Context**, **
 - Added read-only `/api/public/market-data` for cohort-protected, fresh aggregate price indices only. It requires an active country product, a pilot/active telemetry-enabled Daftar profile, at least the configured contributor cohort (never below five), and a snapshot no older than 20 minutes. It never returns private ledger fields or individual telemetry events.
 - Afghanistan remains a controlled pilot until the canonical Country Product Launch is activated. This release does not activate the market or bypass tenant eligibility.
 - Release status remains a hardening candidate; no production build, deployment or live browser acceptance is claimed.
+
+
+## 16.114.0
+Operational completion wave: Qarz aging and case history, immutable monthly book locks, controlled opening-balance and refund journal adjustments. See `RELEASE-16.114.md` and `DEPLOYMENT-16.114.md`.

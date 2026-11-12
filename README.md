@@ -1,4 +1,4 @@
-# ON Mission 16.113.0 — One Governed Platform, Multiple Market Experiences
+# ON Mission 16.114.0 — One Governed Platform, Multiple Market Experiences
 
 Cumulative source candidate. This release extends the existing ON Mission multi-tenant mission-execution platform with a unified capability governance workspace, shared synthetic Simulation Lab scenarios, Digital Daftar business journal, installable Daftar PWA and data portability, controlled Afghanistan pilot controls, and a governed public market-data API.
 
@@ -6,7 +6,7 @@ Cumulative source candidate. This release extends the existing ON Mission multi-
 
 ## Current release state
 
-- Version: `16.113.0`
+- Version: `16.114.0`
 - Status: hardening candidate; not deployed by this build task.
 - Node.js production requirement: `24.22.1` (`.node-version`).
 - Database migrations: 173 ordered migrations; new high-water mark `0173`.

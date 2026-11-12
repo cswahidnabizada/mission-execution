@@ -1,7 +1,7 @@
 /* ON Mission 10.79.0 — unified operational Command Center */
-import {statusTone,displayValue,escapeHtml} from './ui-system.js?v=16.113.0';
-import {openAdminDrawer} from './detail-drawer.js?v=16.113.0';
-import {governanceReadiness,renderGovernanceReadiness} from './governance-readiness.js?v=16.113.0';
+import {statusTone,displayValue,escapeHtml} from './ui-system.js?v=16.114.0';
+import {openAdminDrawer} from './detail-drawer.js?v=16.114.0';
+import {governanceReadiness,renderGovernanceReadiness} from './governance-readiness.js?v=16.114.0';
 
 export async function renderCommandCenter({$,state,esc,loadCommandCenter,api,navigate}){
  const box=$('#view-overview');

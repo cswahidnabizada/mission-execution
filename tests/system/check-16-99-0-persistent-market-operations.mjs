@@ -4,8 +4,8 @@ const frontend=fs.readFileSync('public/assets/js/frontend/admin/market-factory.j
 const routes=fs.readFileSync('src/worker/modules/admin-control/admin-build-data.routes.js','utf8');
 const registry=fs.readFileSync('public/assets/js/frontend/admin/workspace-registry.js','utf8');
 const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
-assert.equal(fs.readFileSync('VERSION','utf8').trim(),'16.113.0');
-assert.equal(pkg.version,'16.113.0');
+assert.equal(fs.readFileSync('VERSION','utf8').trim(),'16.114.0');
+assert.equal(pkg.version,'16.114.0');
 assert.match(frontend,/MARKET_CONTEXT_KEY/);
 assert.match(frontend,/function restoreMarketContext\(/);
 assert.match(frontend,/function persistMarketContext\(/);

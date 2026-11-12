@@ -1,0 +1,24 @@
+import {spawnSync} from 'node:child_process';
+import {createHmac,randomUUID} from 'node:crypto';
+
+const env={...process.env};
+const base=String(env.ON_MISSION_RUNTIME_URL||'').replace(/\/$/,'');
+if(env.ON_MISSION_RUNTIME_ENVIRONMENT!=='isolated_staging')throw new Error('Set ON_MISSION_RUNTIME_ENVIRONMENT=isolated_staging. Production targets are not accepted.');
+if(!base||!/^https:\/\//i.test(base)||/onmissionok\.com$/i.test(new URL(base).hostname))throw new Error('ON_MISSION_RUNTIME_URL must be an HTTPS non-production staging URL.');
+if(!env.SIMULATION_RUNTIME_RECEIPT_SECRET||env.SIMULATION_RUNTIME_RECEIPT_SECRET.length<32)throw new Error('SIMULATION_RUNTIME_RECEIPT_SECRET must be at least 32 characters and match the Cloudflare Worker secret.');
+for(const name of ['ON_MISSION_CERT_EMAIL','ON_MISSION_CERT_PASSWORD','ON_MISSION_CERT_ATTACK_EMAIL','ON_MISSION_CERT_ATTACK_PASSWORD'])if(!env[name])throw new Error(`${name} is required for staging runtime certification.`);
+if(env.ON_MISSION_CERT_COUNTRY!=='DE'||env.ON_MISSION_CERT_SECTOR!=='logistics')throw new Error('This runner is currently scoped to the Germany Logistics regression scenario (DE/logistics).');
+env.ON_MISSION_CERT_CREATE_MISSION='1';env.ON_MISSION_CERT_EXECUTE='1';env.ON_MISSION_CERTIFICATION_ENABLED='1';env.ON_MISSION_CERT_REQUIRE_EFFECT='1';
+const child=spawnSync(process.execPath,['tests/runtime/runtime-certification-harness.mjs','--required'],{cwd:process.cwd(),env,encoding:'utf8',maxBuffer:8*1024*1024});
+process.stdout.write(child.stdout||'');process.stderr.write(child.stderr||'');
+if(child.status!==0)throw new Error(`Runtime certification harness failed (exit ${child.status}). No runtime receipt was submitted.`);
+const marker=(child.stdout||'').lastIndexOf('{"status":"passed"');if(marker<0)throw new Error('Runtime harness did not emit a machine-readable PASS receipt.');
+const result=JSON.parse(child.stdout.slice(marker));
+const journeyEvidence=(result.evidence||[]).find(x=>x.name==='canonical journey completeness');
+if(!journeyEvidence||journeyEvidence.status!=='passed')throw new Error('Canonical mission journey evidence is missing.');
+const failed=(result.evidence||[]).filter(x=>x.status!=='passed');if(failed.length)throw new Error(`Runtime evidence contains non-passing steps: ${failed.map(x=>x.name+':'+x.status).join(', ')}`);
+const receipt={runId:`sim-${randomUUID()}`,scenarioId:'de-logistics-regression',capabilityCode:'germany-logistics',countryCode:'DE',sectorCode:'logistics',environmentClass:'isolated_staging',runtimeUrl:base,releaseVersion:result.version,status:'PASS',runtimeSimulationVerified:true,simulationOnly:true,realWorldEffects:false,productionMutation:false,deviceCommandSent:false,journey:journeyEvidence.evidence.phases,checks:result.evidence.map(x=>({name:x.name,status:'passed',durationMs:x.durationMs||0})),evidence:result.evidence,traceId:randomUUID(),executedAt:new Date().toISOString()};
+const signature=createHmac('sha256',env.SIMULATION_RUNTIME_RECEIPT_SECRET).update(JSON.stringify(receipt)).digest('hex');
+const response=await fetch(`${base}/api/platform/admin/simulation/runtime-receipts`,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json','X-ONM-Runtime-Signature':signature},body:JSON.stringify(receipt)});
+const payload=await response.json().catch(()=>({}));if(!response.ok||payload.success!==true)throw new Error(`Runtime receipt submission failed (${response.status}): ${payload.code||payload.error||'unknown error'}`);
+console.log(JSON.stringify({status:'runtime_verified',runId:payload.runId,verificationStatus:payload.verificationStatus,contentSha256:payload.contentSha256,environment:'isolated_staging',countryCode:'DE',sectorCode:'logistics'},null,2));

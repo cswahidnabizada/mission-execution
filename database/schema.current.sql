@@ -1,5 +1,5 @@
 -- ON Mission current database schema snapshot
--- Generated from the complete ordered migration chain through 0173.
+-- Generated from the complete ordered migration chain through 0174.
 -- This is the canonical schema snapshot for fresh/recovery environments.
 -- Production evolution remains migration-first: apply database/migrations/*.sql in order.
 -- Do not edit manually; regenerate with scripts/generate-schema-current.mjs.
@@ -1217,6 +1217,19 @@ CREATE TABLE daftar_book_journal_transactions (
   FOREIGN KEY(source_entry_id) REFERENCES daftar_private_entries(id) ON DELETE RESTRICT
 );
 
+-- table: daftar_book_period_locks
+CREATE TABLE daftar_book_period_locks (
+  id TEXT PRIMARY KEY,
+  company_id INTEGER NOT NULL,
+  period_month TEXT NOT NULL CHECK(length(period_month)=7 AND substr(period_month,5,1)='-'),
+  lock_status TEXT NOT NULL CHECK(lock_status IN ('locked','reopened')),
+  reason TEXT NOT NULL CHECK(length(reason) BETWEEN 8 AND 500),
+  actor_identity_id INTEGER NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(company_id,period_month),
+  FOREIGN KEY(company_id) REFERENCES companies(id) ON DELETE CASCADE
+);
+
 -- table: daftar_credit_settlements
 CREATE TABLE daftar_credit_settlements (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -1457,6 +1470,35 @@ CREATE TABLE daftar_private_entries (
   FOREIGN KEY(company_id) REFERENCES companies(id) ON DELETE CASCADE,
   FOREIGN KEY(country_code) REFERENCES country_catalog(code),
   FOREIGN KEY(related_entry_id) REFERENCES daftar_private_entries(id)
+);
+
+-- table: daftar_qarz_case_events
+CREATE TABLE daftar_qarz_case_events (
+  event_id TEXT PRIMARY KEY,
+  case_id TEXT NOT NULL,
+  company_id INTEGER NOT NULL,
+  event_type TEXT NOT NULL CHECK(event_type IN ('opened','acknowledged','disputed','resolved','rejected','note_added')),
+  event_note TEXT NOT NULL CHECK(length(event_note) BETWEEN 1 AND 1000),
+  actor_identity_id INTEGER NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY(case_id) REFERENCES daftar_qarz_cases(case_id) ON DELETE RESTRICT,
+  FOREIGN KEY(company_id) REFERENCES companies(id) ON DELETE CASCADE
+);
+
+-- table: daftar_qarz_cases
+CREATE TABLE daftar_qarz_cases (
+  case_id TEXT PRIMARY KEY,
+  company_id INTEGER NOT NULL,
+  entry_id TEXT NOT NULL,
+  case_status TEXT NOT NULL CHECK(case_status IN ('open','acknowledged','disputed','resolved','rejected')),
+  case_reason TEXT NOT NULL CHECK(length(case_reason) BETWEEN 8 AND 500),
+  opened_by_identity_id INTEGER NOT NULL,
+  assigned_to_label TEXT,
+  due_date TEXT,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY(company_id) REFERENCES companies(id) ON DELETE CASCADE,
+  FOREIGN KEY(entry_id) REFERENCES daftar_private_entries(id) ON DELETE RESTRICT
 );
 
 -- table: daftar_restore_previews
@@ -4967,6 +5009,12 @@ CREATE TRIGGER trg_capability_events_no_delete BEFORE DELETE ON platform_capabil
 -- trigger: trg_capability_events_no_update
 CREATE TRIGGER trg_capability_events_no_update BEFORE UPDATE ON platform_capability_lifecycle_events BEGIN SELECT RAISE(ABORT,'CAPABILITY_EVENTS_IMMUTABLE'); END;
 
+-- trigger: trg_daftar_book_period_locks_no_delete
+CREATE TRIGGER trg_daftar_book_period_locks_no_delete BEFORE DELETE ON daftar_book_period_locks BEGIN SELECT RAISE(ABORT,'DAFTAR_BOOK_PERIOD_LOCKS_IMMUTABLE'); END;
+
+-- trigger: trg_daftar_book_period_locks_no_update
+CREATE TRIGGER trg_daftar_book_period_locks_no_update BEFORE UPDATE ON daftar_book_period_locks BEGIN SELECT RAISE(ABORT,'DAFTAR_BOOK_PERIOD_LOCKS_IMMUTABLE'); END;
+
 -- trigger: trg_daftar_credit_settlement_apply
 CREATE TRIGGER trg_daftar_credit_settlement_apply
 AFTER INSERT ON daftar_credit_settlements
@@ -5047,6 +5095,12 @@ CREATE TRIGGER trg_daftar_pilot_reviews_no_delete BEFORE DELETE ON daftar_pilot_
 
 -- trigger: trg_daftar_pilot_reviews_no_update
 CREATE TRIGGER trg_daftar_pilot_reviews_no_update BEFORE UPDATE ON daftar_pilot_reviews BEGIN SELECT RAISE(ABORT,'DAFTAR_PILOT_REVIEWS_IMMUTABLE'); END;
+
+-- trigger: trg_daftar_qarz_case_events_no_delete
+CREATE TRIGGER trg_daftar_qarz_case_events_no_delete BEFORE DELETE ON daftar_qarz_case_events BEGIN SELECT RAISE(ABORT,'DAFTAR_QARZ_CASE_EVENTS_IMMUTABLE'); END;
+
+-- trigger: trg_daftar_qarz_case_events_no_update
+CREATE TRIGGER trg_daftar_qarz_case_events_no_update BEFORE UPDATE ON daftar_qarz_case_events BEGIN SELECT RAISE(ABORT,'DAFTAR_QARZ_CASE_EVENTS_IMMUTABLE'); END;
 
 -- trigger: trg_daftar_restore_previews_no_delete
 CREATE TRIGGER trg_daftar_restore_previews_no_delete BEFORE DELETE ON daftar_restore_previews BEGIN SELECT RAISE(ABORT,'DAFTAR_RESTORE_PREVIEWS_IMMUTABLE'); END;
@@ -6205,6 +6259,9 @@ ON mission_custody_cases(company_id,mission_id,transfer_channel,status);
 -- index: idx_customer_locations
 CREATE INDEX idx_customer_locations ON network_customer_locations(company_id,customer_id,active,label);
 
+-- index: idx_daftar_book_period_lock
+CREATE INDEX idx_daftar_book_period_lock ON daftar_book_period_locks(company_id,period_month,lock_status);
+
 -- index: idx_daftar_credit_settlements_retention
 CREATE INDEX idx_daftar_credit_settlements_retention ON daftar_credit_settlements(retention_status,retention_review_at);
 
@@ -6249,6 +6306,15 @@ CREATE INDEX idx_daftar_pilot_access_market ON daftar_pilot_tenant_access(countr
 
 -- index: idx_daftar_pilot_review_scope
 CREATE INDEX idx_daftar_pilot_review_scope ON daftar_pilot_reviews(country_code,sector_code,review_type,review_status,created_at DESC);
+
+-- index: idx_daftar_qarz_case_events
+CREATE INDEX idx_daftar_qarz_case_events ON daftar_qarz_case_events(company_id,case_id,created_at);
+
+-- index: idx_daftar_qarz_cases_entry
+CREATE INDEX idx_daftar_qarz_cases_entry ON daftar_qarz_cases(company_id,entry_id,created_at DESC);
+
+-- index: idx_daftar_qarz_cases_tenant_status
+CREATE INDEX idx_daftar_qarz_cases_tenant_status ON daftar_qarz_cases(company_id,case_status,created_at DESC);
 
 -- index: idx_daftar_restore_previews_company
 CREATE INDEX idx_daftar_restore_previews_company ON daftar_restore_previews(company_id,created_at DESC);

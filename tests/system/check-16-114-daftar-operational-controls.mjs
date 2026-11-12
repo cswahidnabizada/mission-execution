@@ -1,0 +1,23 @@
+import fs from 'node:fs';import assert from 'node:assert/strict';
+const migration=fs.readFileSync('database/migrations/0174_daftar_book_controls_and_qarz_cases.sql','utf8');
+const routes=fs.readFileSync('src/worker/modules/daftar/daftar-controls.routes.js','utf8');
+const service=fs.readFileSync('src/worker/modules/daftar/daftar.service.js','utf8');
+const app=fs.readFileSync('src/worker/app.js','utf8');
+assert.match(migration,/CREATE TABLE IF NOT EXISTS daftar_book_period_locks/);
+assert.match(migration,/trg_daftar_book_period_locks_no_update/);
+assert.match(migration,/CREATE TABLE IF NOT EXISTS daftar_qarz_cases/);
+assert.match(migration,/CREATE TABLE IF NOT EXISTS daftar_qarz_case_events/);
+assert.match(migration,/trg_daftar_qarz_case_events_no_delete/);
+assert.match(routes,/api\/v1\/daftar\/qarz\/aging/);
+assert.match(routes,/api\/v1\/daftar\/qarz\/:entryId\/cases/);
+assert.match(routes,/api\/v1\/daftar\/qarz\/cases\/:caseId\/events/);
+assert.match(routes,/api\/v1\/daftar\/book\/periods\/lock/);
+assert.match(routes,/api\/v1\/daftar\/book\/adjustments/);
+assert.match(routes,/opening_balance/);
+assert.match(routes,/sales_returns/);
+assert.match(service,/DAFTAR_BOOK_PERIOD_LOCKED/);
+assert.match(service,/daftar_book_period_locks/);
+assert.match(app,/registerDaftarControlsRoutes\(router\)/);
+console.log('16.114 Daftar operational controls: PASS');
+
+const governance=fs.readFileSync('src/worker/modules/admin-control/capability-governance.routes.js','utf8');const runner=fs.readFileSync('scripts/run-staging-runtime-simulation.mjs','utf8');assert.match(governance,/api\/platform\/admin\/simulation\/runtime-receipts/);assert.match(governance,/SIMULATION_RUNTIME_RECEIPT_SECRET/);assert.match(governance,/runtime_verified/);assert.match(governance,/RUNTIME_RECEIPT_CANONICAL_JOURNEY_INCOMPLETE/);assert.match(runner,/isolated_staging/);assert.match(runner,/runtime-certification-harness\.mjs/);assert.match(runner,/X-ONM-Runtime-Signature/);console.log('16.114 signed isolated-staging runtime receipt bridge: PASS');

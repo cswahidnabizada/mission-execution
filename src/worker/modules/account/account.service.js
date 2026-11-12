@@ -208,6 +208,7 @@ async function deleteTenant(env, session, password) {
 }
 
 async function prepareDaftarTenantErasure(env,companyId,session){
+  // Preserve immutable governance history by policy: daftar_book_period_locks, daftar_qarz_cases and daftar_qarz_case_events remain tenant-scoped historical records after account deactivation; do not cascade-delete or rewrite these records.
   const pilotAccess=(await env.DB.prepare(`SELECT id,country_code,sector_code FROM daftar_pilot_tenant_access WHERE company_id=? AND access_status='approved'`).bind(companyId).all()).results||[];
   const consent=(await env.DB.prepare(`SELECT country_code,sector_code,contributor_key FROM daftar_market_consents WHERE company_id=?`).bind(companyId).all()).results||[];
   const statements=[

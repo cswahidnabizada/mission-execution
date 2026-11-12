@@ -1,5 +1,5 @@
 {
-  "version": 46,
+  "version": 47,
   "drivers": {
     "mission_messages": "set_null",
     "mission_files": "set_null",
@@ -138,7 +138,10 @@
     "daftar_export_audit": "preserve_policy_record_or_restrict",
     "daftar_restore_previews": "preserve_policy_record_or_restrict",
     "daftar_pilot_tenant_access": "preserve_policy_record_or_restrict",
-    "daftar_pilot_access_events": "preserve_historical_truth"
+    "daftar_pilot_access_events": "preserve_historical_truth",
+    "daftar_book_period_locks": "preserve_policy_record_or_restrict",
+    "daftar_qarz_cases": "preserve_policy_record_or_restrict",
+    "daftar_qarz_case_events": "preserve_historical_truth"
   },
   "missions": {
     "mission_status_history": "preserve_historical_truth",

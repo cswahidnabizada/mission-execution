@@ -1,4 +1,4 @@
-import {api,esc,ensureStepUp} from './admin-runtime.js?v=16.113.0';
+import {api,esc,ensureStepUp} from './admin-runtime.js?v=16.114.0';
 const $=s=>document.querySelector(s);let state={country:'AF',sector:'trade',data:null};
 const NEXT={defined:'configured',simulated:'certified',certified:'published',published:'activated',activated:'monitored',suspended:'configured'};
 const pill=s=>`<span class="pill ${['activated','monitored','published','certified'].includes(s)?'ok':['suspended','retired'].includes(s)?'warn':'neutral'}">${esc(String(s||'').toUpperCase())}</span>`;

@@ -1,5 +1,5 @@
-import {attachLayoutStudioRouteAdapter} from '../admin/layout-studio-production-adapter.js?v=16.113.0';
-import {api,esc} from '../core/api.js?v=16.113.0';
+import {attachLayoutStudioRouteAdapter} from '../admin/layout-studio-production-adapter.js?v=16.114.0';
+import {api,esc} from '../core/api.js?v=16.114.0';
 
 const root=document.getElementById('root');
 attachLayoutStudioRouteAdapter({root,routeId:'public-homepage'});

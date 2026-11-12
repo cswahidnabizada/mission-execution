@@ -1,0 +1,17 @@
+import fs from 'node:fs';import assert from 'node:assert/strict';import {DatabaseSync} from 'node:sqlite';
+const db=new DatabaseSync(':memory:');db.exec(fs.readFileSync('database/schema.current.sql','utf8'));
+db.prepare(`INSERT INTO country_catalog(code,name) VALUES('AF','Afghanistan')`).run();db.prepare(`INSERT INTO companies(name) VALUES('16.114 control test')`).run();const companyId=Number(db.prepare('SELECT last_insert_rowid() id').get().id);
+const lock=db.prepare(`INSERT INTO daftar_book_period_locks(id,company_id,period_month,lock_status,reason,actor_identity_id) VALUES('lock-1',?,'2026-10','locked','Monthly close reviewed',1)`);lock.run(companyId);
+assert.throws(()=>db.prepare(`UPDATE daftar_book_period_locks SET lock_status='reopened' WHERE id='lock-1'`).run(),/DAFTAR_BOOK_PERIOD_LOCKS_IMMUTABLE/);
+assert.throws(()=>db.prepare(`DELETE FROM daftar_book_period_locks WHERE id='lock-1'`).run(),/DAFTAR_BOOK_PERIOD_LOCKS_IMMUTABLE/);
+const entryId='qarz-entry-1';db.prepare(`INSERT INTO daftar_private_entries(id,company_id,country_code,sector_code,client_entry_id,entry_type,direction,amount_minor,currency_code,payment_method,payment_status,created_by_identity_id) VALUES(?,?,'AF','trade','client-qarz','sale','give',5000,'AFN','credit','reported_pending',1)`).run(entryId,companyId);
+db.prepare(`INSERT INTO daftar_qarz_cases(case_id,company_id,entry_id,case_status,case_reason,opened_by_identity_id) VALUES('case-1',?,?,'open','Customer disputes remaining balance',1)`).run(companyId,entryId);
+db.prepare(`INSERT INTO daftar_qarz_case_events(event_id,case_id,company_id,event_type,event_note,actor_identity_id) VALUES('event-1','case-1',?,'opened','Case opened by owner',1)`).run(companyId);
+assert.throws(()=>db.prepare(`UPDATE daftar_qarz_case_events SET event_note='rewritten' WHERE event_id='event-1'`).run(),/DAFTAR_QARZ_CASE_EVENTS_IMMUTABLE/);
+const journal=db.prepare(`INSERT INTO daftar_book_journal_transactions(id,company_id,client_transaction_id,transaction_type,debit_account,credit_account,amount_minor,currency_code,payment_method,payment_evidence_class,memo,created_by_identity_id,created_at) VALUES(?,?,?,'opening_balance','cash','opening_equity',10000,'AFN','other','merchant_reported','Opening cash balance',1,'2026-11-01 00:00:00')`);
+journal.run('j-open',companyId,'opening-2026-11');
+db.prepare(`INSERT INTO daftar_book_journal_transactions(id,company_id,client_transaction_id,transaction_type,debit_account,credit_account,amount_minor,currency_code,payment_method,payment_evidence_class,memo,created_by_identity_id,created_at) VALUES(?,?,?,'refund','sales_returns','cash',1000,'AFN','cash','merchant_reported','Cash refund adjustment',1,'2026-11-01 00:00:00')`).run('j-refund',companyId,'refund-2026-11');
+const totals=db.prepare(`SELECT SUM(amount_minor) AS debit_credit_pair_amount,COUNT(*) AS rows_count FROM daftar_book_journal_transactions WHERE company_id=? AND transaction_type IN ('opening_balance','refund')`).get(companyId);
+assert.equal(Number(totals.rows_count),2);assert.equal(Number(totals.debit_credit_pair_amount),11000);
+assert.throws(()=>journal.run('j-open-duplicate',companyId,'opening-2026-11'),/UNIQUE constraint failed/);
+console.log('16.114 SQLite period locks, immutable Qarz case history and append-only adjustments: PASS');

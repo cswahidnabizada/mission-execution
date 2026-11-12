@@ -7,7 +7,7 @@ const availability=read('src/worker/modules/product-availability.routes.js');
 const daftar=read('src/worker/modules/daftar/daftar.routes.js');
 const publicData=read('src/worker/modules/daftar/public-data.routes.js');
 const index=read('public/index.html');
-assert.equal(read('VERSION').trim(),'16.113.0');
+assert.equal(read('VERSION').trim(),'16.114.0');
 assert.ok(landing.includes('attachLayoutStudioRouteAdapter'),'homepage must preserve the existing Layout Studio route adapter');
 assert.ok(landing.includes('/api/product/availability')&&landing.includes('marketDiscovery'),'country experiences must come from canonical product availability');
 for(const key of ['Germany Logistics','AFGHANISTAN','Digital Daftar','Current market situation','Data infrastructure','Public data','Mission execution'])assert.ok(landing.toLowerCase().includes(key.toLowerCase()),`homepage missing ${key}`);
@@ -23,4 +23,4 @@ assert.ok(!availability.includes('/api/public/market-data'),'public data must ha
 assert.ok(css.includes('.om-country-card')&&css.includes('.om-public-data')&&css.includes('@media(max-width:520px)'),'country-aware homepage must be responsive');
 assert.ok(index.includes('landing.js'),'public homepage entry point must remain canonical');
 assert.ok(!daftar.includes('/api/public/market-data'),'public read-only data must not be mixed into tenant Daftar routes');
-console.log('16.113.0 country-aware public homepage, Afghanistan capability preview and cohort-protected public data: PASS');
+console.log('16.114.0 country-aware public homepage, Afghanistan capability preview and cohort-protected public data: PASS');
