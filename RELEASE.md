@@ -1,4 +1,4 @@
-# Mission Execution 16.114.0 — Unified Platform Operational Controls
+# Mission Execution 16.116.0 — Unified Platform Operational Controls
 
 Status: hardening candidate
 
@@ -194,3 +194,12 @@ This additive release preserves the platform's **Global Compliance Context**, **
 
 ## 16.114.0
 Operational completion wave: Qarz aging and case history, immutable monthly book locks, controlled opening-balance and refund journal adjustments. See `RELEASE-16.114.md` and `DEPLOYMENT-16.114.md`.
+
+
+## 16.116.0
+
+Universal Platform Foundation: global default package, onboarding classification contract, configuration release registry and safe forward repair of AF capability bindings. See `RELEASE-16.115.md`.
+
+## 16.116.0
+
+Governed universal configuration resolution. The published global package now composes with exact country, sector and product scopes, carries release provenance, and enforces non-overridable security invariants. Universal onboarding uses the resolved package chain without granting access. Public intake idempotency rejects same-key/different-payload collisions. No new migration; migration 0175 remains the prerequisite foundation.

@@ -1,5 +1,5 @@
 -- ON Mission current database schema snapshot
--- Generated from the complete ordered migration chain through 0174.
+-- Generated from the complete ordered migration chain through 0175.
 -- This is the canonical schema snapshot for fresh/recovery environments.
 -- Production evolution remains migration-first: apply database/migrations/*.sql in order.
 -- Do not edit manually; regenerate with scripts/generate-schema-current.mjs.
@@ -2907,6 +2907,36 @@ CREATE TABLE platform_configuration_change_requests (
   FOREIGN KEY(configuration_version_id) REFERENCES platform_configuration_versions(id) ON DELETE CASCADE
 );
 
+-- table: platform_configuration_release_events
+CREATE TABLE platform_configuration_release_events (
+ event_id TEXT PRIMARY KEY,
+ release_id TEXT NOT NULL,
+ event_type TEXT NOT NULL CHECK(event_type IN ('created','validated','certified','published','suspended','retired','rollback')),
+ actor_identity_id INTEGER,
+ reason TEXT NOT NULL,
+ evidence_json TEXT NOT NULL DEFAULT '{}',
+ created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ FOREIGN KEY(release_id) REFERENCES platform_configuration_releases(release_id)
+);
+
+-- table: platform_configuration_releases
+CREATE TABLE platform_configuration_releases (
+ release_id TEXT PRIMARY KEY,
+ scope_type TEXT NOT NULL CHECK(scope_type IN ('global','country','sector','product','tenant')),
+ scope_key TEXT NOT NULL,
+ version TEXT NOT NULL,
+ lifecycle_status TEXT NOT NULL CHECK(lifecycle_status IN ('draft','validated','certified','published','retired','suspended')),
+ configuration_json TEXT NOT NULL CHECK(json_valid(configuration_json)),
+ parent_release_id TEXT,
+ evidence_json TEXT NOT NULL DEFAULT '{}',
+ created_by_identity_id INTEGER,
+ published_at TEXT,
+ created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ UNIQUE(scope_type,scope_key,version),
+ FOREIGN KEY(parent_release_id) REFERENCES platform_configuration_releases(release_id)
+);
+
 -- table: platform_configuration_versions
 CREATE TABLE platform_configuration_versions (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -3650,6 +3680,22 @@ CREATE TABLE platform_objectives (
   revision INTEGER NOT NULL DEFAULT 1,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- table: platform_onboarding_intakes
+CREATE TABLE platform_onboarding_intakes (
+ intake_id TEXT PRIMARY KEY,
+ idempotency_key TEXT NOT NULL UNIQUE,
+ intent_code TEXT NOT NULL CHECK(intent_code IN ('mission_execution','business_management','digital_daftar','logistics_operations','market_intelligence','explore_platform')),
+ account_type TEXT NOT NULL CHECK(account_type IN ('individual','business','organization','service_provider')),
+ country_code TEXT,
+ sector_code TEXT NOT NULL DEFAULT 'general',
+ product_code TEXT,
+ preferred_language TEXT NOT NULL DEFAULT 'en',
+ consent_version TEXT NOT NULL,
+ lifecycle_status TEXT NOT NULL DEFAULT 'received' CHECK(lifecycle_status IN ('received','reviewing','converted','closed')),
+ created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- table: platform_owner_lifecycle_operations
@@ -5811,6 +5857,12 @@ BEGIN
   SELECT RAISE(ABORT,'INVARIANT_VIOLATION: illegal lifecycle transition');
 END;
 
+-- trigger: trg_platform_configuration_events_no_delete
+CREATE TRIGGER trg_platform_configuration_events_no_delete BEFORE DELETE ON platform_configuration_release_events BEGIN SELECT RAISE(ABORT,'PLATFORM_CONFIGURATION_EVENTS_IMMUTABLE'); END;
+
+-- trigger: trg_platform_configuration_events_no_update
+CREATE TRIGGER trg_platform_configuration_events_no_update BEFORE UPDATE ON platform_configuration_release_events BEGIN SELECT RAISE(ABORT,'PLATFORM_CONFIGURATION_EVENTS_IMMUTABLE'); END;
+
 -- trigger: trg_platform_layout_draft_versions_no_delete
 CREATE TRIGGER trg_platform_layout_draft_versions_no_delete
 BEFORE DELETE ON platform_layout_draft_versions
@@ -6992,6 +7044,15 @@ CREATE INDEX idx_platform_config_effective ON platform_configuration_versions(ef
 -- index: idx_platform_config_lookup
 CREATE INDEX idx_platform_config_lookup ON platform_configuration_versions(domain_code,config_key,status,active);
 
+-- index: idx_platform_configuration_events_release
+CREATE INDEX idx_platform_configuration_events_release ON platform_configuration_release_events(release_id,created_at DESC);
+
+-- index: idx_platform_configuration_one_published_scope
+CREATE UNIQUE INDEX idx_platform_configuration_one_published_scope ON platform_configuration_releases(scope_type,scope_key) WHERE lifecycle_status='published';
+
+-- index: idx_platform_configuration_scope_status
+CREATE INDEX idx_platform_configuration_scope_status ON platform_configuration_releases(scope_type,scope_key,lifecycle_status,updated_at DESC);
+
 -- index: idx_platform_data_actions_resource
 CREATE INDEX idx_platform_data_actions_resource ON platform_admin_data_actions(resource_type,resource_id,created_at DESC);
 
@@ -7055,6 +7116,9 @@ CREATE INDEX idx_platform_objective_steps_status ON platform_objective_steps(sta
 
 -- index: idx_platform_objectives_status_updated
 CREATE INDEX idx_platform_objectives_status_updated ON platform_objectives(status,updated_at DESC);
+
+-- index: idx_platform_onboarding_intakes_review
+CREATE INDEX idx_platform_onboarding_intakes_review ON platform_onboarding_intakes(lifecycle_status,created_at DESC);
 
 -- index: idx_platform_product_verification_idempotency
 CREATE UNIQUE INDEX idx_platform_product_verification_idempotency

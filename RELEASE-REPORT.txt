@@ -1,43 +1,41 @@
-ON MISSION 16.114.0 — RELEASE REPORT
-Status: HARDENING CANDIDATE — NOT DEPLOYED
+ON MISSION 16.116.0 — RELEASE REPORT
 
-SUMMARY
-Cumulative source candidate containing releases 16.108–16.113 plus 16.114 operational controls. Existing canonical identity, tenant, mission, accounting journal and market authorities are preserved.
+Release: 16.116.0
+Base: cumulative 16.115.0 source
+Focus: governed universal configuration resolution and onboarding idempotency
 
-16.114 IMPLEMENTED IN SOURCE
-- Tenant-scoped Qarz aging endpoint with 0–30, 31–60, 61–90 and 90+ day buckets, calculated from recorded transaction timestamps.
-- Qarz case workflow with open, acknowledge, dispute, resolve and reject transitions; append-only event history and audit. Internal acknowledgement is not counterparty verification.
-- Immutable owner/admin monthly accounting-period locks. The normal Daftar sync path rejects new entries targeting locked months.
-- Owner/admin opening-balance and refund journal adjustments. They create balanced, append-only, idempotent journal entries and audit events. Opening balances are restricted to cash, inventory, receivables and payables. Refunds are financial journal-only adjustments; they do not reverse inventory or alter original entries.
-- Signed isolated-staging runtime receipt bridge. It validates HMAC, current release identity, non-production HTTPS target, timestamp, trace ID, canonical mission phases, passing checks, safety invariants and market/capability/scenario scope before inserting immutable runtime_verified simulation evidence.
-- Protected CI runner `npm run certify:staging-simulation` invokes the existing real deployed runtime harness against a non-production staging Worker and submits the signed receipt. No such deployed run was executed in this authoring session.
-- Migration 0174; schema snapshot and release manifest regenerated.
+Implemented in source:
+- Global → country → sector → product → trusted tenant package resolution.
+- Effective configuration provenance with exact published release references.
+- Fail-closed enforcement of non-overridable security configuration invariants.
+- Universal onboarding classification uses the resolved package chain without granting authorization.
+- Public intake idempotency rejects payload collisions with HTTP 409 and replays identical submissions safely.
+- Regression tests cover layered merge, provenance, security-invariant rejection, validation, classification and intake idempotency.
 
-CUMULATIVE SOURCE VERIFICATION — PASS
-- `npm run check:release`: PASS, including new 16.114 tests and cumulative regressions.
-- `npm run check:health`: PASS (security, data integrity, architecture, production-readiness and production-hardening checks).
-- `npm run check:migrations`: PASS (174 ordered migrations, high-water 0174).
-- `npm run check:schema`: PASS (287 tables, 499 indexes, 102 triggers).
-- `npm run check:release-engineering`: PASS (release 16.114.0; schema hash 19f32c41fccd67fc…; 174 migrations).
-- `npm run check:dependency-lock`: PASS.
-- Architecture: 438 JS files, 1,660 local imports, zero cycles; one canonical mission lifecycle writer.
-- Duplicate-file-content gate: PASS (1,648 unique files).
-- SQLite tests: PASS for journal behavior, period locks, immutable Qarz cases/events and runtime receipt persistence.
+Verified in the available container (Node 22.16.0):
+- npm run check:release: PASS (cumulative regression suite).
+- npm run check:health: PASS (security, data integrity, architecture, production readiness and hardening).
+- npm run check:migrations: PASS (175 ordered migrations, high-water 0175).
+- npm run check:schema: PASS (290 tables, 503 indexes, 104 triggers).
+- npm run check:release-engineering: PASS.
+- npm run check:dependency-lock: PASS.
+- Duplicate-content gate: PASS (1659 unique files).
+- Architecture: 440 JS files, 1664 local imports, 0 cycles; one canonical mission lifecycle writer.
 
-BUILD / DEPLOYMENT
-- `npm run build`: BLOCKED at environment gate. Current authoring Node is 22.16.0; `.node-version` requires 24.22.1 and `engines.node` requires 24.x. CSS build and Worker bundle were not reached.
-- Not deployed to Cloudflare; migration 0174 has not been applied to staging or production D1.
-- No live runtime receipt, live Germany Logistics mission, browser/mobile acceptance or production tenant-isolation test was performed.
+Build limitation:
+- The local build-environment gate is BLOCKED because this container runs Node 22.16.0 while the repository requires Node 24.22.1. Therefore npm run build / CSS compilation was not certified here. Run the full build in the required Node 24.22.1 environment (the prior Cloudflare build environment was Node 24.22.1).
 
-REMAINING / NOT CERTIFIED
-- Simulation Lab's synthetic scenarios remain model-only. The new signed bridge can accept results from the existing real runtime harness running against isolated staging, but that staging run still must be executed. The Lab does not yet run the full production service graph in an isolated ephemeral database per scenario.
-- Live backup restore/import remains disabled. A safe restore still needs staged file evidence, collision policy, complete dependency mapping, owner step-up, atomicity/rollback design and restore certification.
-- Tax computation/statutory tax accounting is not implemented. Country-specific tax rules, invoice requirements, account mappings and professional review are required.
-- Full sale-return workflow with stock reversal is not implemented; refund adjustment is journal-only.
-- Qarz reminders, external counterparty confirmation and payment-provider verification remain external integrations.
-- Afghanistan legal review, native-speaker localization validation, metrology approval and real merchant acceptance are human obligations. No market approval or activation is claimed.
-- Public Market Data needs real eligible opt-in contributors, current quality/freshness passes and approved publication contracts before indicators become available.
-- Germany Logistics needs deployed runtime regression and full canonical journey verification with authorized, separate test tenants.
-- Production build, deployment and acceptance remain outstanding.
+Database and deployment:
+- No new migration in 16.116.0. It requires migration 0175 from the 16.115.0 foundation if not already applied.
+- No Cloudflare deployment, live D1 migration verification, API smoke test, browser acceptance or production user test is claimed for 16.116.0.
 
-NO LIVE DEPLOYMENT OR PRODUCTION ACCEPTANCE IS CLAIMED.
+Still outstanding for the universal transformation:
+- Full universal account provisioning, identity verification, subscription/payment, activation-code redemption and tenant activation.
+- Enforce resolved package provenance on every protected mission mutation and persist version pins on missions.
+- Super Admin package authoring, validation, certification, publishing and rollback UI/API.
+- Complete Germany Logistics and Afghanistan Daftar extraction into governed packages.
+- Full capability eligibility/entitlement authority integration.
+- Runtime certification across supported country/sector combinations.
+- Live Market Intelligence contribution, quality, privacy aggregation and publication pipeline.
+
+Operational status: SOURCE CANDIDATE — NOT YET DEPLOYED OR PRODUCTION-CERTIFIED.

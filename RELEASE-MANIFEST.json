@@ -1,13 +1,13 @@
 {
-  "version": "16.114.0",
+  "version": "16.116.0",
   "release": "RELEASE.md",
   "base": null,
   "baseVersion": "16.80.0",
-  "migrationHighWaterMark": "0174",
-  "migrationCount": 174,
+  "migrationHighWaterMark": "0175",
+  "migrationCount": 175,
   "schemaSnapshot": {
     "file": "database/schema.current.sql",
-    "sha256": "19f32c41fccd67fc4961972468d0fccca228e3ce1a4357bc91efd4dc67f83ab4"
+    "sha256": "32fc8d38e27bd6d702064cc4af33bd3c851dc7c94647907a8c709e3a7089aeb2"
   },
   "generatedFrom": "deterministic-release-pipeline"
 }

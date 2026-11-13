@@ -68,10 +68,29 @@ INSERT OR IGNORE INTO platform_capabilities(capability_code,label,description,ow
 INSERT OR IGNORE INTO platform_market_capabilities(country_code,sector_code,capability_code,capability_version,lifecycle_status,configuration_json)
 SELECT 'DE','logistics',capability_code,'1.0.0','configured','{"source":"existing_market_package","activationAuthority":"country_product_launches"}' FROM platform_capabilities WHERE capability_code IN ('mission-execution','germany-logistics');
 INSERT OR IGNORE INTO platform_market_capabilities(country_code,sector_code,capability_code,capability_version,lifecycle_status,configuration_json)
-SELECT 'AF',s.sector_code,c.capability_code,'1.0.0','configured','{"source":"daftar_market_profiles","activationAuthority":"country_product_launches"}'
-FROM (SELECT 'general' sector_code UNION ALL SELECT 'trade' UNION ALL SELECT 'retail' UNION ALL SELECT 'logistics' UNION ALL SELECT 'fx' UNION ALL SELECT 'labor') s
-CROSS JOIN platform_capabilities c WHERE c.capability_code IN ('digital-daftar','daftar-inventory','daftar-credit','daftar-accounting-book','daftar-offline','public-market-data')
-AND EXISTS(SELECT 1 FROM daftar_market_profiles p WHERE p.country_code='AF' AND p.sector_code=s.sector_code);
+SELECT 'AF','general',c.capability_code,'1.0.0','configured','{"source":"daftar_market_profiles","activationAuthority":"country_product_launches"}'
+FROM platform_capabilities c WHERE c.capability_code IN ('digital-daftar','daftar-inventory','daftar-credit','daftar-accounting-book','daftar-offline','public-market-data')
+AND EXISTS(SELECT 1 FROM daftar_market_profiles p WHERE p.country_code='AF' AND p.sector_code='general');
+INSERT OR IGNORE INTO platform_market_capabilities(country_code,sector_code,capability_code,capability_version,lifecycle_status,configuration_json)
+SELECT 'AF','trade',c.capability_code,'1.0.0','configured','{"source":"daftar_market_profiles","activationAuthority":"country_product_launches"}'
+FROM platform_capabilities c WHERE c.capability_code IN ('digital-daftar','daftar-inventory','daftar-credit','daftar-accounting-book','daftar-offline','public-market-data')
+AND EXISTS(SELECT 1 FROM daftar_market_profiles p WHERE p.country_code='AF' AND p.sector_code='trade');
+INSERT OR IGNORE INTO platform_market_capabilities(country_code,sector_code,capability_code,capability_version,lifecycle_status,configuration_json)
+SELECT 'AF','retail',c.capability_code,'1.0.0','configured','{"source":"daftar_market_profiles","activationAuthority":"country_product_launches"}'
+FROM platform_capabilities c WHERE c.capability_code IN ('digital-daftar','daftar-inventory','daftar-credit','daftar-accounting-book','daftar-offline','public-market-data')
+AND EXISTS(SELECT 1 FROM daftar_market_profiles p WHERE p.country_code='AF' AND p.sector_code='retail');
+INSERT OR IGNORE INTO platform_market_capabilities(country_code,sector_code,capability_code,capability_version,lifecycle_status,configuration_json)
+SELECT 'AF','logistics',c.capability_code,'1.0.0','configured','{"source":"daftar_market_profiles","activationAuthority":"country_product_launches"}'
+FROM platform_capabilities c WHERE c.capability_code IN ('digital-daftar','daftar-inventory','daftar-credit','daftar-accounting-book','daftar-offline','public-market-data')
+AND EXISTS(SELECT 1 FROM daftar_market_profiles p WHERE p.country_code='AF' AND p.sector_code='logistics');
+INSERT OR IGNORE INTO platform_market_capabilities(country_code,sector_code,capability_code,capability_version,lifecycle_status,configuration_json)
+SELECT 'AF','fx',c.capability_code,'1.0.0','configured','{"source":"daftar_market_profiles","activationAuthority":"country_product_launches"}'
+FROM platform_capabilities c WHERE c.capability_code IN ('digital-daftar','daftar-inventory','daftar-credit','daftar-accounting-book','daftar-offline','public-market-data')
+AND EXISTS(SELECT 1 FROM daftar_market_profiles p WHERE p.country_code='AF' AND p.sector_code='fx');
+INSERT OR IGNORE INTO platform_market_capabilities(country_code,sector_code,capability_code,capability_version,lifecycle_status,configuration_json)
+SELECT 'AF','labor',c.capability_code,'1.0.0','configured','{"source":"daftar_market_profiles","activationAuthority":"country_product_launches"}'
+FROM platform_capabilities c WHERE c.capability_code IN ('digital-daftar','daftar-inventory','daftar-credit','daftar-accounting-book','daftar-offline','public-market-data')
+AND EXISTS(SELECT 1 FROM daftar_market_profiles p WHERE p.country_code='AF' AND p.sector_code='labor');
 INSERT OR IGNORE INTO data_classification_registry(table_name,column_name,classification,purpose_code,retention_policy_code,export_allowed,audit_required,jurisdiction_policy_code) VALUES
 ('platform_capabilities','dependencies_json','INTERNAL','product_configuration','DE_COMPLIANCE_REVIEW',0,1,'DE-GDPR-1'),
 ('platform_capabilities','required_evidence_json','INTERNAL','product_configuration','DE_COMPLIANCE_REVIEW',0,1,'DE-GDPR-1'),

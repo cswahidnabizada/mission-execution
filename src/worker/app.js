@@ -13,6 +13,7 @@ import { registerExecutorOperationalRoutes } from "./modules/executors/executor-
 import { registerAccountRoutes } from "./modules/account/account.routes.js";
 import { registerVerificationRoutes } from "./modules/verification/verification.routes.js";
 import { registerOnboardingRoutes } from "./modules/onboarding/onboarding.routes.js";
+import { registerUniversalPlatformRoutes } from "./modules/onboarding/universal-platform.routes.js";
 import { registerPeopleWorkspaceRoutes } from "./modules/people/people-workspace.routes.js";
 import { registerNotificationRoutes } from "./modules/notifications/notifications.routes.js";
 import { registerNetworkRoutes } from "./modules/network/network.routes.js";
@@ -123,6 +124,7 @@ export function createApp() {
   registerAccountRoutes(router);
   registerVerificationRoutes(router);
   registerOnboardingRoutes(router);
+  registerUniversalPlatformRoutes(router);
   registerNotificationRoutes(router);
   registerNetworkRoutes(router);
   registerAttentionRoutes(router);

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Start with your goal. ON Mission guides you to the appropriate platform experience.">
+  <title>Start with ON Mission</title>
+  <link rel="stylesheet" href="/assets/css/tailwind.local.css?v=16.116.0">
+  <link rel="stylesheet" href="/assets/css/frontend/tokens.css?v=16.116.0">
+  <link rel="stylesheet" href="/assets/css/frontend/foundation.css?v=16.116.0">
+  <link rel="stylesheet" href="/assets/css/frontend/public.css?v=16.116.0">
+  <style>
+    body{background:#f6f8f7;color:#10201c;font-family:system-ui,sans-serif}.start-shell{max-width:900px;margin:0 auto;padding:32px 20px 80px}.start-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:48px}.brand{font-weight:900;letter-spacing:.08em}.brand small{display:block;font-size:10px;color:#64746e}.start-card{background:white;border:1px solid #dce5e0;border-radius:24px;padding:clamp(22px,4vw,40px);box-shadow:0 16px 48px #10201c0a}.eyebrow{font-size:11px;font-weight:900;letter-spacing:.16em;color:#167653}.start-card h1{font-size:clamp(32px,5vw,52px);line-height:1.05;font-weight:900;margin:12px 0}.muted{color:#63736c}.field{display:grid;gap:7px}.field label{font-size:12px;font-weight:800}.field select,.field input{width:100%;padding:13px 14px;border:1px solid #cbd8d1;border-radius:12px;background:#fff}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:22px}.primary{background:#123d30;color:white;border:0;border-radius:12px;padding:14px 20px;font-weight:900;cursor:pointer}.primary:disabled{opacity:.55;cursor:wait}.result{margin-top:20px;padding:16px;border-radius:14px;background:#eef6f1;border:1px solid #cfe2d6}.notice{font-size:12px;line-height:1.5;color:#64746e}.actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:24px}.actions a{color:#126346;font-weight:800}@media(max-width:640px){.grid{grid-template-columns:1fr}.start-head{margin-bottom:28px}}
+  </style>
+</head>
+<body>
+  <main class="start-shell">
+    <header class="start-head"><a class="brand" href="/">ON MISSION<small>ONE PLATFORM · MANY CAPABILITIES</small></a><a href="/login.html">Sign in</a></header>
+    <section class="start-card">
+      <div class="eyebrow">UNIVERSAL ONBOARDING</div>
+      <h1>Start with what you want to accomplish.</h1>
+      <p class="muted">You do not need to understand our country or product structure. Tell us what you need; ON Mission will identify the appropriate experience and explain what is available.</p>
+      <form id="universalStartForm">
+        <div class="grid">
+          <div class="field"><label for="intent">What would you like to do?</label><select id="intent" required><option value="mission_execution">Execute and coordinate missions</option><option value="business_management">Manage a business</option><option value="digital_daftar">Use a digital business book (Daftar)</option><option value="logistics_operations">Manage logistics operations</option><option value="market_intelligence">Explore market information</option><option value="explore_platform">Explore ON Mission</option></select></div>
+          <div class="field"><label for="accountType">What describes you?</label><select id="accountType" required><option value="individual">Individual</option><option value="business">Business</option><option value="organization">Organization</option><option value="service_provider">Service provider</option></select></div>
+          <div class="field"><label for="countryCode">Country (optional, ISO 2-letter code)</label><input id="countryCode" maxlength="2" minlength="2" autocomplete="country" placeholder="e.g. DE or AF" autocapitalize="characters"></div>
+          <div class="field"><label for="sectorCode">Sector</label><select id="sectorCode"><option value="general">General / not sure yet</option><option value="logistics">Logistics</option><option value="trade">Trade</option><option value="retail">Retail</option><option value="labor">Labor</option><option value="fx">Currency / FX</option></select></div>
+        </div>
+        <div class="field" style="margin-top:18px"><label for="language">Preferred language</label><select id="language"><option value="en">English</option><option value="de">Deutsch</option><option value="fa">فارسی</option><option value="ps">پښتو</option></select></div>
+        <label class="notice" style="display:flex;gap:10px;align-items:flex-start;margin-top:22px"><input id="consent" type="checkbox" required style="margin-top:2px"><span>I agree that ON Mission may store this limited onboarding preference (intention, account type, country, sector and language) to route and improve the onboarding experience. This is not account registration, identity verification, or permission to execute missions. See the <a href="/legal/?code=privacy" target="_blank" rel="noopener">privacy information</a>.</span></label>
+        <div class="actions"><button id="submit" class="primary" type="submit">Continue onboarding</button><a href="/">Explore the platform</a></div>
+        <p id="feedback" class="notice" role="status" aria-live="polite" style="margin-top:16px"></p>
+        <div id="result" class="result" hidden></div>
+      </form>
+    </section>
+  </main>
+  <script type="module" src="/assets/js/pages/universal-onboarding.js?v=16.116.0"></script>
+</body>
+</html>
