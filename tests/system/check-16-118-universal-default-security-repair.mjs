@@ -1,0 +1,13 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const migration=fs.readFileSync('database/migrations/0176_universal_default_security_contract_repair.sql','utf8');
+const service=fs.readFileSync('src/worker/security/universal-platform.service.js','utf8');
+const routes=fs.readFileSync('src/worker/modules/onboarding/universal-platform.routes.js','utf8');
+const page=fs.readFileSync('public/start.html','utf8');
+const script=fs.readFileSync('public/assets/js/pages/universal-onboarding.js','utf8');
+assert.match(migration,/json_set\(/);assert.match(migration,/\$\.security\.tenantIsolation', json\('true'\)/);assert.match(migration,/\$\.security\.serverSideAuthorization', json\('true'\)/);
+assert.match(service,/tenantIsolation:true/);assert.match(service,/serverSideAuthorization:true/);
+assert.match(routes,/classifyUniversalOnboarding\(env,b\)/);
+assert.match(page,/id="intent"/);assert.doesNotMatch(page,/id="countryCode"|id="sectorCode"|id="language"|id="accountType"/);
+assert.match(script,/api\("\/api\/platform\/public\/intakes"/);assert.doesNotMatch(script,/classify-onboarding/);
+console.log('16.118.0 universal default security repair and minimal onboarding checks passed');

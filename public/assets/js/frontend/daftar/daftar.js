@@ -1,5 +1,5 @@
-import { api, esc } from '../core/api.js?v=16.117.0';
-import {downloadEncryptedDaftarZip,previewEncryptedDaftarZip} from './daftar-portability.js?v=16.117.0';
+import { api, esc } from '../core/api.js?v=16.118.0';
+import {downloadEncryptedDaftarZip,previewEncryptedDaftarZip} from './daftar-portability.js?v=16.118.0';
 
 const DB_NAME='onmission-daftar-offline-v1';
 const CONFIG_KEY='onmission-daftar-offline-config-v1';

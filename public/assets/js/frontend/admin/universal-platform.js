@@ -1,4 +1,4 @@
-import {api,esc,$} from './admin-runtime.js?v=16.117.0';
+import {api,esc,$} from './admin-runtime.js?v=16.118.0';
 
 const unavailable=(error)=>`<section class="card section error-state"><span class="eyebrow">CANONICAL AUTHORITY UNAVAILABLE</span><h2>Universal platform configuration could not be confirmed</h2><p class="sub">No empty or guessed configuration is displayed. Retry when the canonical authority is available.</p><div class="notice">${esc(error?.message||'Configuration read failed')}</div><button class="btn primary" id="universalPlatformRetry">RETRY</button></section>`;
 export async function renderUniversalPlatform(){

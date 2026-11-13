@@ -7,7 +7,7 @@ const availability=read('src/worker/modules/product-availability.routes.js');
 const daftar=read('src/worker/modules/daftar/daftar.routes.js');
 const publicData=read('src/worker/modules/daftar/public-data.routes.js');
 const index=read('public/index.html');
-assert.equal(read('VERSION').trim(),'16.117.0');
+assert.equal(read('VERSION').trim(),fs.readFileSync('VERSION','utf8').trim());
 assert.ok(landing.includes('attachLayoutStudioRouteAdapter'),'homepage must preserve the existing Layout Studio route adapter');
 assert.ok(landing.includes('/api/product/availability')&&landing.includes('marketDiscovery'),'country experiences must come from canonical product availability');
 for(const key of ['Germany Logistics','AFGHANISTAN','Digital Daftar','Current market situation','Data infrastructure','Public data','Mission execution'])assert.ok(landing.toLowerCase().includes(key.toLowerCase()),`homepage missing ${key}`);

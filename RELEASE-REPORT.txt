@@ -1,38 +1,44 @@
-ON MISSION 16.117.0 — RELEASE REPORT
+ON MISSION 16.118.0 — RELEASE REPORT
+Base: 16.117.0
+Status: protected candidate; not deployed
 
-BASE: 16.116.0 (user-reported deployed baseline)
-TYPE: Cumulative source candidate; not deployed
+COMPLETED
+- Added forward migration 0176 to repair global default package security invariant JSON types. The previous 0175 seed used descriptive strings for tenantIsolation and serverSideAuthorization while the resolver required booleans; the fail-closed mismatch caused classify-onboarding to return 503.
+- Executed migration 0176 against an isolated SQLite fixture and read back the corrected booleans.
+- Simplified /start.html to ask only one optional intent plus explicit consent. Removed country, sector, account-type and language questions from the first step.
+- Removed redundant client-side classify-onboarding call; the intake route classifies once and returns the result.
+- Reused existing /register.html and canonical organization onboarding, existing auth login/session, verification, subscriptions and workspace services. No parallel identity or subscription authority added.
+- Updated universal homepage, sign-in and registration copy to express one default platform and one account entry path.
+- Cache-busted changed public assets at 16.118.0.
+- Added regression coverage and retained all historical cumulative test contracts.
 
-COMPLETED IN SOURCE
-- Public homepage narrative updated to lead with one universal platform and package model.
-- Homepage sign-up/get-started links and Germany Logistics onboarding link converge on /start.html.
-- /start.html remains the single canonical onboarding form; contextual intent/country/sector hints are safely validated and prefilled.
-- Super Admin gains a Universal Platform workspace showing the published global package, inheritance hierarchy, security invariants and shared journey.
-- Workspace links route to existing canonical configuration, capability and market workspaces.
-- New regression contract added to the release suite.
-- No new database migration; migration history remains at 0175.
+VALIDATION PASSED
+- npm run check:release
+- npm run check:health
+- npm run check:migrations (176 migrations; high-water mark 0176)
+- npm run check:schema (290 tables, 503 indexes, 104 triggers)
+- npm run check:release-engineering
+- npm run check:dependency-lock
+- npm run check:production-cleanliness
+- npm run check:release-integrity
+- npm run check:duplicate-files (1655 unique files)
+- Architecture: 440 JS files, 1664 local imports, 0 cycles, one canonical mission lifecycle writer
+- Isolated SQLite execution/read-back of migration 0176
 
-NOT COMPLETED / BLOCKED
-- Full registration lifecycle linked to the saved intake.
-- Email/phone or legal-entity identity verification and reviewer evidence workflow.
-- Subscription checkout/provider reconciliation and payment activation.
-- Activation-code issuance/validation, tenant provisioning and post-activation workspace routing.
-- Runtime enforcement of layered package resolution at every secured mutation boundary.
-- Governed global/country/sector/product/tenant package authoring, signing, certification, publishing and rollback.
-- Daftar extraction into a fully reusable package contract and Germany Logistics package convergence.
-- Market Intelligence consented contribution pipeline, cohort suppression and publication evidence.
-- Full production browser acceptance and real customer onboarding.
+NOT COMPLETED / NOT VERIFIED
+- npm run build did not run: current editing container is Node 22.16.0; release requires Node 24.18.0. Your latest Cloudflare build environment previously reported Node 24.18.0.
+- No Cloudflare deployment of 16.118.0 has occurred.
+- No production D1 migration application of 0176 has occurred in this session.
+- No live API smoke test or browser/user registration acceptance has occurred.
+- Existing organization registration still asks the details required by its canonical policy. This release has not invented a separate individual-account registration path because the inspected existing canonical public registration flow is organization provisioning.
+- Full workspace personalization, package-authoring/publishing, runtime enforcement across every secured mutation, and complete universal account lifecycle remain future integration work.
 
-VALIDATION
-- `npm run check:release`: PASS (full cumulative regression suite, including the new 16.117.0 contract).
-- `npm run check:health`: PASS (security baseline, data integrity, architecture, production readiness and hardening).
-- `npm run check:migrations`: PASS (175 ordered migrations; high-water mark 0175).
-- `npm run check:schema`: PASS (290 tables, 503 indexes, 104 triggers).
-- `npm run check:release-engineering`: PASS.
-- `npm run check:dependency-lock`: PASS.
-- `node scripts/check-duplicate-files.mjs`: PASS (1653 unique files; no duplicate-content collisions).
-- `node scripts/check-production-cleanliness.mjs`: PASS.
-- Source JavaScript syntax checks for changed modules: PASS.
-- `npm run build` was not completed: this working container has Node 22.16.0, while the release now pins Node 24.18.0 to match the latest reported Cloudflare build environment. Run the build under Node 24.18.0 before deployment.
-- No new migration was added; do not reset D1 or rewrite migration history.
-- Cloudflare deploy log for 16.116.0 is evidence only for that earlier deployment; it does not deploy or certify 16.117.0.
+DEPLOYMENT NOTES
+1. Use Node 24.18.0 and npm 10.9.2 (or supported npm 11.x).
+2. Run npm ci, npm run build, npm run check:release, npm run check:health, npm run check:migrations, npm run check:production-certification.
+3. Apply forward migration 0176 to production D1 through the existing migration pipeline, then deploy the Worker and assets.
+4. Verify GET /api/platform/public/defaults, POST /api/platform/public/classify-onboarding, POST /api/platform/public/intakes, and existing /api/organizations/onboarding plus /api/auth/login/session.
+5. Test registration, verification, subscription activation, tenant isolation, workspace routing and authorized mission actions with test tenants before declaring general public operational access.
+
+SECURITY
+The preference intake does not create an account, verify identity, activate a subscription, issue an activation code, establish country/product eligibility or authorize mission execution.

@@ -9,7 +9,7 @@ assert.ok(landing.includes("/api/product/availability")&&landing.includes('marke
 assert.ok(landing.includes('Public onboarding remains closed')&&landing.includes('ACTIVATION REQUIRED'),'market preparation must not imply onboarding is open');
 assert.ok(landing.includes('state.session')&&landing.includes('Open workspace'),'workspace CTA must route authenticated users correctly');
 assert.ok(landing.includes('Physical actions remain human-authorized'),'public product copy must preserve human physical execution boundary');
-assert.ok(landing.includes('16.117.0'),'public assets must use current cache identity');
+assert.ok(landing.includes(fs.readFileSync('VERSION','utf8').trim()),'public assets must use current cache identity');
 assert.ok(css.includes('.om-home')&&css.includes('@media(max-width:520px)'),'modern responsive homepage styling must exist');
 assert.ok(renderer.includes("case 'hero'")&&renderer.includes("case 'status-panel'"),'homepage must use approved production renderer components');
 assert.ok(market.includes('PREPARE GERMANY')&&market.includes('CONTROLLED LAUNCH SUPERVISOR'),'Market Launch Studio must retain the primary preparation action and canonical supervisor');

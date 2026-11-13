@@ -1,5 +1,5 @@
-import {attachLayoutStudioRouteAdapter,resolveLayoutStudioRoute} from '../admin/layout-studio-production-adapter.js?v=16.117.0';
-import {renderComponent,STUDIO_RENDERER_VERSION} from '../admin/layout-studio-renderer.js?v=16.117.0';
+import {attachLayoutStudioRouteAdapter,resolveLayoutStudioRoute} from '../admin/layout-studio-production-adapter.js?v=16.118.0';
+import {renderComponent,STUDIO_RENDERER_VERSION} from '../admin/layout-studio-renderer.js?v=16.118.0';
 import {mountShell,syncNav} from '../shell/app-shell.js';
 import {canonicalizeAppHash} from '../navigation/registry.js';
 import {api,esc} from '../core/api.js';
@@ -12,7 +12,7 @@ import {executeCanonicalObjectAction} from '../../core/canonical-action-client.j
 import {loadExecutorWorkContext,loadCompanyOperationsContext} from '../work/role-work-model.js';
 import {renderContextWorkspace} from '../work/context-workspace.js';
 import {initActivationModule} from '../../core/activation-module.js';
-import {renderDaftarWorkspace} from '../daftar/daftar.js?v=16.117.0';
+import {renderDaftarWorkspace} from '../daftar/daftar.js?v=16.118.0';
 
 const root=document.getElementById('root');
 attachLayoutStudioRouteAdapter({root, getRouteId:()=>resolveLayoutStudioRoute({pathname:location.pathname,hash:location.hash,role:document.documentElement.dataset.onmRole||''})||'tenant-workspace'});

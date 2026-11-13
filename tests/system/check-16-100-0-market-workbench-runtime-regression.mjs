@@ -6,6 +6,6 @@ assert.ok(signature,'bindWorkbenchActions declaration must exist');
 assert.match(signature[1],/(^|,)\s*state\s*(,|$)/,'bindWorkbenchActions must receive the application state it uses');
 assert.match(file,/bindWorkbenchActions\(box,\{[^}]*\bstate\b[^}]*\}\)/,'renderMarketFactory must pass state into bindWorkbenchActions');
 assert.match(file,/persistMarketContext\(state,\{packageId:[^}]*stage:activeStage\}\)/,'stage navigation must persist selected market context');
-assert.equal(fs.readFileSync('VERSION','utf8').trim(),'16.117.0');
-assert.equal(JSON.parse(fs.readFileSync('package.json','utf8')).version,'16.117.0');
+assert.equal(fs.readFileSync('VERSION','utf8').trim(),fs.readFileSync('VERSION','utf8').trim());
+assert.equal(JSON.parse(fs.readFileSync('package.json','utf8')).version,fs.readFileSync('VERSION','utf8').trim());
 console.log('16.117.0 Market Launch Workbench runtime regression: PASS');

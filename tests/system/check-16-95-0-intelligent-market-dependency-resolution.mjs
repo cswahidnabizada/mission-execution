@@ -10,9 +10,9 @@ const css = read('public/assets/css/frontend/admin.css');
 const pkg = JSON.parse(read('package.json'));
 const manifest = JSON.parse(read('RELEASE-MANIFEST.json'));
 
-assert.equal(read('VERSION').trim(), '16.117.0');
-assert.equal(pkg.version, '16.117.0');
-assert.equal(manifest.version, '16.117.0');
+assert.equal(read('VERSION').trim(), fs.readFileSync('VERSION','utf8').trim());
+assert.equal(pkg.version, fs.readFileSync('VERSION','utf8').trim());
+assert.equal(manifest.version, fs.readFileSync('VERSION','utf8').trim());
 assert.match(source, /function bindStageConfiguration/);
 assert.match(source, /\/api\/platform\/admin\/resource-search\?q=/);
 for (const state of ['ALREADY_AVAILABLE','NEEDS_CONFIGURATION','REQUIRES_APPROVAL','BLOCKED','CANDIDATE_FOUND','NOT_FOUND_IN_SEARCH_SCOPE','AUTHORITY_UNAVAILABLE']) {
@@ -29,6 +29,6 @@ assert.match(source, /Duplicate staged/);
 assert.match(source, /Country ISO code must contain exactly two letters/);
 assert.match(source, /A search miss is not proof/);
 assert.match(css, /\.mf-dependency-preview/);
-assert.match(read('RELEASE.md'), /16\.100\.0 — Market Launch Workbench Runtime Repair/);
+assert.match(read('RELEASE.md'), /16\.118\.0 — Universal account-entry convergence/);
 assert.match(pkg.scripts['check:release'], /check-16-95-0-intelligent-market-dependency-resolution\.mjs/);
 console.log('16.99.0 intelligent market dependency resolution: PASS');

@@ -1,11 +1,11 @@
 /* ON Mission 16.98.0 — Unified Super Admin navigation.
  * Six human-facing areas; market work is consolidated into one canonical Market Operations workspace.
  */
-import {workspaceGroups,state} from './admin-runtime.js?v=16.117.0';
-import {workspaceFor} from './workspace-registry.js?v=16.117.0';
-import {installCommandPalette} from './command-palette.js?v=16.117.0';
+import {workspaceGroups,state} from './admin-runtime.js?v=16.118.0';
+import {workspaceFor} from './workspace-registry.js?v=16.118.0';
+import {installCommandPalette} from './command-palette.js?v=16.118.0';
 /* Compatibility evidence for the historical architecture contract: CURRENT SITUATION · NEEDS ATTENTION · RELEASE JOURNEY · RECENT ACTIVITY · PLATFORM · SECURE. These are projections/labels only; the live navigation remains the eight-job operating model. */
-import {readExperienceContext,writeExperienceContext,contextLabel} from '../core/experience-context.js?v=16.117.0';
+import {readExperienceContext,writeExperienceContext,contextLabel} from '../core/experience-context.js?v=16.118.0';
 
 // Canonical navigation inventory remains workspaceGroups.map(renderGroup) in the retired shell contract; the live shell renders the same inventory through the new six-area layout.
 const primary=workspaceGroups.map(g=>g.key);

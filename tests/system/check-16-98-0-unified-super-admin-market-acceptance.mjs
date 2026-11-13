@@ -18,11 +18,11 @@ const model=read('public/assets/js/frontend/admin/control-plane-model.js');
 const pkg=JSON.parse(read('package.json'));
 const lock=JSON.parse(read('package-lock.json'));
 const manifest=JSON.parse(read('RELEASE-MANIFEST.json'));
-assert.equal(read('VERSION').trim(),'16.117.0');
-assert.equal(pkg.version,'16.117.0');
-assert.equal(lock.version,'16.117.0');
-assert.equal(lock.packages[''].version,'16.117.0');
-assert.equal(manifest.version,'16.117.0');
+assert.equal(read('VERSION').trim(),fs.readFileSync('VERSION','utf8').trim());
+assert.equal(pkg.version,fs.readFileSync('VERSION','utf8').trim());
+assert.equal(lock.version,fs.readFileSync('VERSION','utf8').trim());
+assert.equal(lock.packages[''].version,fs.readFileSync('VERSION','utf8').trim());
+assert.equal(manifest.version,fs.readFileSync('VERSION','utf8').trim());
 
 // Six primary human-facing areas; every market operation has one canonical entry.
 const groupBlock=registry.match(/export const ADMIN_WORKSPACE_GROUPS=Object\.freeze\(\[([\s\S]*?)\]\);/)?.[1]||'';
@@ -90,5 +90,5 @@ assert.equal((model.match(/\{key:'/g)||[]).length,6);
 assert.match(model,/label:'Markets'/);
 assert.match(model,/action:'product-publisher'/);
 assert.match(pkg.scripts['check:release'],/check-16-98-0-unified-super-admin-market-acceptance\.mjs/);
-assert.match(read('RELEASE.md'),/16\.100\.0 — Market Launch Workbench Runtime Repair/);
+assert.match(read('RELEASE.md'),/16\.118\.0 — Universal account-entry convergence/);
 console.log('16.117.0 cumulative Super Admin navigation and market operations acceptance contract: PASS');

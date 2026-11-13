@@ -1,10 +1,10 @@
 {
-  "version": "16.117.0",
+  "version": "16.118.0",
   "release": "RELEASE.md",
-  "base": null,
+  "base": "16.117.0",
   "baseVersion": "16.80.0",
-  "migrationHighWaterMark": "0175",
-  "migrationCount": 175,
+  "migrationHighWaterMark": "0176",
+  "migrationCount": 176,
   "schemaSnapshot": {
     "file": "database/schema.current.sql",
     "sha256": "32fc8d38e27bd6d702064cc4af33bd3c851dc7c94647907a8c709e3a7089aeb2"
