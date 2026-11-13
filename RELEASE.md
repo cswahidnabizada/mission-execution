@@ -1,4 +1,4 @@
-# Mission Execution 16.116.0 — Unified Platform Operational Controls
+# Mission Execution 16.117.0 — Unified Platform Operational Controls
 
 Status: hardening candidate
 
@@ -203,3 +203,11 @@ Universal Platform Foundation: global default package, onboarding classification
 ## 16.116.0
 
 Governed universal configuration resolution. The published global package now composes with exact country, sector and product scopes, carries release provenance, and enforces non-overridable security invariants. Universal onboarding uses the resolved package chain without granting access. Public intake idempotency rejects same-key/different-payload collisions. No new migration; migration 0175 remains the prerequisite foundation.
+
+## 16.117.0 — Universal Platform Experience
+
+This cumulative source candidate updates the public homepage to lead with the universal platform model, converges public onboarding navigation on the single `/start.html` entry, supports validated contextual intent/country/sector prefill, and adds a first-class read-only Universal Platform workspace in Super Admin.
+
+The workspace reads the published global default package and existing canonical platform configuration registry. It exposes the configuration hierarchy and security invariants without pretending that package authoring, signing, certification, publication or rollback are complete. No new database migration is introduced; the migration high-water mark remains 0175.
+
+This source candidate is not deployed or production-certified. Identity verification, payment/subscription activation, activation codes, tenant provisioning, secured runtime enforcement of layered packages, complete package lifecycle governance, Daftar package extraction, Market Intelligence contribution, and end-to-end user acceptance remain outstanding.

@@ -133,4 +133,4 @@ assert.ok(fs.readFileSync('public/assets/js/frontend/navigation/registry.js','ut
 assert.ok(fs.readFileSync('public/assets/js/frontend/app/app.js','utf8').includes("key==='daftar'"));
 assert.ok(fs.existsSync('public/daftar-sw.js'));const offlineUi=fs.readFileSync('public/assets/js/frontend/daftar/daftar.js','utf8');assert.ok(offlineUi.includes('current.offlineScope'));assert.ok(offlineUi.includes('scopedDbName'));assert.ok(offlineUi.includes('AES-GCM'));assert.ok(offlineUi.includes('Account context changed'));assert.ok(offlineUi.includes('1,000 unsynchronized entries'));
 assert.ok(fs.readFileSync('database/schema.current.sql','utf8').includes('trg_daftar_inventory_movement_apply'));
-console.log('16.116.0 Embedded Daftar ledger, offline sync, privacy, telemetry, inventory and DPP runtime: PASS');
+console.log('16.117.0 Embedded Daftar ledger, offline sync, privacy, telemetry, inventory and DPP runtime: PASS');

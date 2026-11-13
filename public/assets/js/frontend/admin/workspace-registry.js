@@ -15,7 +15,8 @@ export const ADMIN_WORKSPACE_GROUPS=Object.freeze([
   {key:'markets',label:'MARKETS',description:'One workspace for every market: prepare, configure, link, prove, release, activate, onboard, operate and recover.',items:[
     ['Market Operations','product-publisher','The single market workspace. All market configuration, canonical resources, relationships, evidence, certification, release history, activation, customers, execution health and recovery start here.','Canonical Market Factory + Market Operations Authorities','WRITE','MARKET']
   ]},
-  {key:'platform',label:'PLATFORM',description:'Manage reusable platform capabilities, experience and canonical resources that are not specific to one market.',items:[
+  {key:'platform',label:'PLATFORM',description:'Govern the universal platform defaults, package composition, reusable capabilities, experience and canonical resources.',items:[
+    ['Universal Platform','universal-platform','Inspect the global default package, layered configuration model, security invariants and the governed package-authoring path.','Universal Platform Configuration Registry','READ','PLATFORM'],
     ['Resource Management','resource-management','Create, inspect and govern reusable canonical platform resources.','Canonical Resource Management','WRITE','PLATFORM'],
     ['Product Identity','product-identity','Govern product identity through versioned, audited publication.','Canonical Product Identity Registry','WRITE','PLATFORM'],
     ['Human Platform','human-platform','Configure and certify shared human experience capabilities.','Human Platform Governance','WRITE','PLATFORM'],

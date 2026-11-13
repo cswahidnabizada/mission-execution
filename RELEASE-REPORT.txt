@@ -1,41 +1,38 @@
-ON MISSION 16.116.0 — RELEASE REPORT
+ON MISSION 16.117.0 — RELEASE REPORT
 
-Release: 16.116.0
-Base: cumulative 16.115.0 source
-Focus: governed universal configuration resolution and onboarding idempotency
+BASE: 16.116.0 (user-reported deployed baseline)
+TYPE: Cumulative source candidate; not deployed
 
-Implemented in source:
-- Global → country → sector → product → trusted tenant package resolution.
-- Effective configuration provenance with exact published release references.
-- Fail-closed enforcement of non-overridable security configuration invariants.
-- Universal onboarding classification uses the resolved package chain without granting authorization.
-- Public intake idempotency rejects payload collisions with HTTP 409 and replays identical submissions safely.
-- Regression tests cover layered merge, provenance, security-invariant rejection, validation, classification and intake idempotency.
+COMPLETED IN SOURCE
+- Public homepage narrative updated to lead with one universal platform and package model.
+- Homepage sign-up/get-started links and Germany Logistics onboarding link converge on /start.html.
+- /start.html remains the single canonical onboarding form; contextual intent/country/sector hints are safely validated and prefilled.
+- Super Admin gains a Universal Platform workspace showing the published global package, inheritance hierarchy, security invariants and shared journey.
+- Workspace links route to existing canonical configuration, capability and market workspaces.
+- New regression contract added to the release suite.
+- No new database migration; migration history remains at 0175.
 
-Verified in the available container (Node 22.16.0):
-- npm run check:release: PASS (cumulative regression suite).
-- npm run check:health: PASS (security, data integrity, architecture, production readiness and hardening).
-- npm run check:migrations: PASS (175 ordered migrations, high-water 0175).
-- npm run check:schema: PASS (290 tables, 503 indexes, 104 triggers).
-- npm run check:release-engineering: PASS.
-- npm run check:dependency-lock: PASS.
-- Duplicate-content gate: PASS (1659 unique files).
-- Architecture: 440 JS files, 1664 local imports, 0 cycles; one canonical mission lifecycle writer.
+NOT COMPLETED / BLOCKED
+- Full registration lifecycle linked to the saved intake.
+- Email/phone or legal-entity identity verification and reviewer evidence workflow.
+- Subscription checkout/provider reconciliation and payment activation.
+- Activation-code issuance/validation, tenant provisioning and post-activation workspace routing.
+- Runtime enforcement of layered package resolution at every secured mutation boundary.
+- Governed global/country/sector/product/tenant package authoring, signing, certification, publishing and rollback.
+- Daftar extraction into a fully reusable package contract and Germany Logistics package convergence.
+- Market Intelligence consented contribution pipeline, cohort suppression and publication evidence.
+- Full production browser acceptance and real customer onboarding.
 
-Build limitation:
-- The local build-environment gate is BLOCKED because this container runs Node 22.16.0 while the repository requires Node 24.22.1. Therefore npm run build / CSS compilation was not certified here. Run the full build in the required Node 24.22.1 environment (the prior Cloudflare build environment was Node 24.22.1).
-
-Database and deployment:
-- No new migration in 16.116.0. It requires migration 0175 from the 16.115.0 foundation if not already applied.
-- No Cloudflare deployment, live D1 migration verification, API smoke test, browser acceptance or production user test is claimed for 16.116.0.
-
-Still outstanding for the universal transformation:
-- Full universal account provisioning, identity verification, subscription/payment, activation-code redemption and tenant activation.
-- Enforce resolved package provenance on every protected mission mutation and persist version pins on missions.
-- Super Admin package authoring, validation, certification, publishing and rollback UI/API.
-- Complete Germany Logistics and Afghanistan Daftar extraction into governed packages.
-- Full capability eligibility/entitlement authority integration.
-- Runtime certification across supported country/sector combinations.
-- Live Market Intelligence contribution, quality, privacy aggregation and publication pipeline.
-
-Operational status: SOURCE CANDIDATE — NOT YET DEPLOYED OR PRODUCTION-CERTIFIED.
+VALIDATION
+- `npm run check:release`: PASS (full cumulative regression suite, including the new 16.117.0 contract).
+- `npm run check:health`: PASS (security baseline, data integrity, architecture, production readiness and hardening).
+- `npm run check:migrations`: PASS (175 ordered migrations; high-water mark 0175).
+- `npm run check:schema`: PASS (290 tables, 503 indexes, 104 triggers).
+- `npm run check:release-engineering`: PASS.
+- `npm run check:dependency-lock`: PASS.
+- `node scripts/check-duplicate-files.mjs`: PASS (1653 unique files; no duplicate-content collisions).
+- `node scripts/check-production-cleanliness.mjs`: PASS.
+- Source JavaScript syntax checks for changed modules: PASS.
+- `npm run build` was not completed: this working container has Node 22.16.0, while the release now pins Node 24.18.0 to match the latest reported Cloudflare build environment. Run the build under Node 24.18.0 before deployment.
+- No new migration was added; do not reset D1 or rewrite migration history.
+- Cloudflare deploy log for 16.116.0 is evidence only for that earlier deployment; it does not deploy or certify 16.117.0.

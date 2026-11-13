@@ -1,7 +1,7 @@
 import {api} from '../../core/api.js';
 import {SCENARIOS,JOURNEY,simulate} from './simulation-engine.js';
 import {replaySimulation} from './simulation-replay.js';
-import {ensureStepUp} from './admin-runtime.js?v=16.116.0';
+import {ensureStepUp} from './admin-runtime.js?v=16.117.0';
 const $=s=>document.querySelector(s);
 const simParams=new URLSearchParams(location.search);if($('#marketCode')&&['AF','DE'].includes(simParams.get('market')))$('#marketCode').value=simParams.get('market');if($('#sectorCode')&&['trade','retail','general','logistics','fx','labor'].includes(simParams.get('sector')))$('#sectorCode').value=simParams.get('sector');
 let lastRun=null, authorized=false;

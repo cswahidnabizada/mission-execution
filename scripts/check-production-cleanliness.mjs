@@ -11,7 +11,7 @@ assert.equal(pkg.version,version,'package version must match VERSION');
 assert.equal(lock.version,version,'lockfile version must match VERSION');
 assert.equal(lock.packages[''].version,version,'lockfile root package version must match VERSION');
 assert.equal(manifest.version,version,'release manifest version must match VERSION after generation');
-assert.equal(nodeVersion,'24.22.1','Cloudflare Node pin must match the declared Node 24.22.1 runtime');
+assert.equal(nodeVersion,'24.18.0','Cloudflare Node pin must match the deployed Node 24.18.0 runtime');
 for(const stale of [
   'build15.py',
   'BUILD-STATUS.md',

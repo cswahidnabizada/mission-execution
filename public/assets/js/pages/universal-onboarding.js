@@ -1,4 +1,9 @@
-import {api,jsonOptions} from "../core/api.js?v=16.116.0";
+import {api,jsonOptions} from "../core/api.js?v=16.117.0";
+const params=new URLSearchParams(location.search);
+const intentHint=params.get("intent"),countryHint=params.get("country"),sectorHint=params.get("sector");
+if(intentHint&&["mission_execution","business_management","digital_daftar","logistics_operations","market_intelligence","explore_platform"].includes(intentHint))document.querySelector("#intent").value=intentHint;
+if(countryHint&&/^[A-Za-z]{2}$/.test(countryHint))document.querySelector("#countryCode").value=countryHint.toUpperCase();
+if(sectorHint&&/^[a-z][a-z0-9_-]{1,39}$/i.test(sectorHint))document.querySelector("#sectorCode").value=sectorHint.toLowerCase();
 const form=document.querySelector("#universalStartForm"),button=document.querySelector("#submit"),feedback=document.querySelector("#feedback"),result=document.querySelector("#result");
 form?.addEventListener("submit",async event=>{
  event.preventDefault();button.disabled=true;feedback.textContent="Checking the universal platform configuration…";result.hidden=true;

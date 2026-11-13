@@ -1,16 +1,16 @@
-# ON Mission 16.116.0 — One Governed Platform, Multiple Market Experiences
+# ON Mission 16.117.0 — One Universal Platform, Multiple Market Experiences
 
-Cumulative source candidate. This release extends the existing ON Mission multi-tenant mission-execution platform with a unified capability governance workspace, shared synthetic Simulation Lab scenarios, Digital Daftar business journal, installable Daftar PWA and data portability, controlled Afghanistan pilot controls, and a governed public market-data API.
+Cumulative source candidate based on 16.116.0. This release updates the universal public homepage and onboarding entry, adds a first-class Universal Platform workspace in Super Admin, and retains the existing shared mission-execution core, layered package resolver, capability governance, Digital Daftar, controlled markets and public-data safeguards.
 
 **The product remains one system:** shared identity, tenants, canonical mission lifecycle, security, audit, data governance, resources and authorization. Country/sector packages configure distinct user experiences; they do not create parallel authorities.
 
 ## Current release state
 
-- Version: `16.114.0`
-- Status: hardening candidate; not deployed by this build task.
-- Node.js production requirement: `24.22.1` (`.node-version`).
-- Database migrations: 173 ordered migrations; new high-water mark `0173`.
-- See `RELEASE.md`, `RELEASE-REPORT.txt` and `DEPLOYMENT-16.113.md` for implementation boundaries, verification and rollout steps.
+- Version: `16.117.0`
+- Status: source candidate; not deployed.
+- Node.js production requirement: `24.18.0` (`.node-version`), matching the latest reported Cloudflare build environment.
+- Database migrations: 175 ordered migrations; high-water mark `0175`; this release adds no migration.
+- See `RELEASE.md`, `RELEASE-REPORT.txt` and `DEPLOYMENT.md` for implementation boundaries, verification and rollout steps.
 
 ## Main new workspaces and user features
 
@@ -30,7 +30,7 @@ npm run check:health
 npm run check:production-certification
 ```
 
-Use Node 24.22.1. `npm run deploy:production` is the existing deployment path; review the migration plan and backup first. Do not use a bare Worker deployment as a substitute for applying the ordered D1 migrations.
+Use Node 24.18.0. `npm run deploy:production` is the existing deployment path; review the migration plan and backup first. Do not use a bare Worker deployment as a substitute for applying the ordered D1 migrations.
 
 ## Important safety boundaries
 

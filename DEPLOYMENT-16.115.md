@@ -1,3 +1,0 @@
-# Deployment — ON Mission 16.115.0
-
-Use Node 24.22.1 and npm 10.9.2. Run `npm ci`, `npm run check:release`, `npm run check:health`, `npm run check:migrations`, `npm run check:schema`, and `npm run check:release-engineering`. Review and apply migration 0175 in staging through the normal migration pipeline. Verify the public defaults and classification endpoints. Run tenant-isolation, onboarding, payment, activation and canonical mission acceptance tests before production. Do not reset D1 or rewrite migration history. Existing databases with 0168 already applied require 0175; clean installs receive the corrected 0168 plus 0175.

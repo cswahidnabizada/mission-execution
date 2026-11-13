@@ -4,7 +4,7 @@
 
 ## Requirements
 
-- Node.js 24.22.1 (`.node-version`)
+- Node.js 24.18.0 (`.node-version`)
 - npm 10.x or 11.x
 - Existing Cloudflare Worker `onmissionok-repo`
 - Existing D1 `onmission-db`, KV, R2, AI and Vectorize bindings
